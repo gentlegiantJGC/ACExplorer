@@ -28,7 +28,7 @@ else:
 	tempFiles = {}
 
 global lightDict
-with open("D:\\Unity_Dump\\Dictionary\\lightDict2.txt", 'r') as f:
+with open(config["lightDict2"], 'r') as f:
 	lightDict = eval(f.read())
 	
 from misc import *
@@ -104,7 +104,7 @@ def exportTexture(id):
 	fi.write(buffer)
 	fi.close()
 	if imgDXT == 8:
-		texconv = '"C:\\Program Files (x86)\\TBotR\\ARchive_neXt\\texconv.exe" '
+		texconv = config["texconv"] + " "
 		# else
 		# {
 			# str4 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_";
@@ -114,7 +114,7 @@ def exportTexture(id):
 		os.system(texconv+arguments)
 	
 def exportDataBlock(id):
-	f = open("C:\\Users\\james_000\\Desktop\\temp.txt", 'w')
+	f = open(config["temp"], 'w')
 	if id not in tempFiles:
 		decompressDatablock(id.upper())
 	path1 = tempFiles[id]['dir']
@@ -211,9 +211,9 @@ def exportData(typ, data, pos, n = None, returnLOD0 = False):
 		
 		ticker = 0
 		fakeExport = {}
-		scatterx = open(r"C:\Users\james_000\Desktop\scatterx", 'w')
-		scattery = open(r"C:\Users\james_000\Desktop\scattery", 'w')
-		scatterz = open(r"C:\Users\james_000\Desktop\scatterz", 'w')
+		scatterx = open(config["scatterx"], 'w')
+		scattery = open(config["scattery"], 'w')
+		scatterz = open(config["scatterz"], 'w')
 		for n in fakeMesh:
 			if binascii.unhexlify('3B966E53') in fakeMesh[n]['tmp']:
 				MIDStart = fakeMesh[n]['tmp'].find(binascii.unhexlify('3B966E53'))
@@ -295,7 +295,7 @@ def exportData(typ, data, pos, n = None, returnLOD0 = False):
 			del fakeMesh[n]['tmp']
 			
 			for m in fakeMesh[n]:
-				ftmp = open(r'C:\Users\james_000\Desktop\ACModels'+os.sep+m, 'a')
+				ftmp = open(config["desktopACModels"]+os.sep+m, 'a')
 				ftmp.write(' '.join(a+b for a,b in zip(fakeMesh[n][m][::2], fakeMesh[n][m][1::2])))
 				ftmp.write('\n')
 				ftmp.close()
@@ -410,7 +410,7 @@ def exportData(typ, data, pos, n = None, returnLOD0 = False):
 				raise Exception(BEHEX2(data[pos:pos+4]).upper())
 			pos += 4
 		
-		f = open(r"C:\Users\james_000\Desktop\temp3.txt", 'a')
+		# f = open(config["temp3"], 'a')
 		# if meshid != '':
 			# f.write("plot("+str(xpos)+", "+str(ypos)+", 'xr')\n")
 			# f.write("text("+str(xpos)+", "+str(ypos)+", '"+tempFiles[meshid]['fileName']+"')\n")
@@ -701,7 +701,7 @@ def searchFor():
 	print 'no file found'
 		
 		
-		# dictionary = open("D:/Unity_Dump/Dictionary/dictionaryDoc.txt", 'r')
+		# dictionary = open(config["dictionaryDoc"], 'r')
 		# for line in dictionary:
 			# if id in line[0:16]:
 				# action_with_arg = partial(loadData, id)
@@ -723,7 +723,7 @@ def loadData(id):
 	buttonNo = 0
 	for but in loadDataList:
 		but.destroy()
-	dictionary = open("D:/Unity_Dump/Dictionary/dictionaryDoc.txt", 'r')
+	dictionary = open(config["dictionaryDoc"], 'r')
 	for line in dictionary:
 		if line[0:16] == id:
 			idlist = eval(line.split(':::::')[1])

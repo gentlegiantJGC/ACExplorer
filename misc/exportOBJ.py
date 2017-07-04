@@ -101,7 +101,7 @@ def exportOBJ(fileTree, fileList, config, fileID):
 				fim.write("Ks 0.000 0.000 0.000\n")
 				fim.write("Ns 0.000\n")
 				if textureIDs == None:
-					fim.write("map_Kd C:\\Users\\james_000\\Desktop\\missingNo.png\n")
+					fim.write("map_Kd " + config["missingNo"] + "\n")
 				else:
 					for texType in textureIDs:
 						if texType == 'diffuse':

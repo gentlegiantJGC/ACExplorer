@@ -70,7 +70,7 @@ def exportTexture(fileTree, fileList, config, fileID):
 	fi.write(buffer)
 	fi.close()
 	if imgDXT == 8:
-		texconv = '"C:\\Program Files (x86)\\TBotR\\ARchive_neXt\\texconv.exe" '
+		texconv = config["texconv"] + " "
 		# else
 		# {
 			# str4 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_";

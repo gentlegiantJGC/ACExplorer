@@ -9,7 +9,7 @@ def decompressDatafile(fileTree, fileList, config, fileID, forgeFile=None):
 			if fileID in fileList[forgeFile]:
 				break
 		if fileID not in fileList[forgeFile]:
-			# with open("D:\\Unity_Dump\\Dictionary\\lightDict2.txt", 'r') as f:
+			# with open(config["lightDict2"], 'r') as f:
 				# lightDict = eval(f.read())
 			# if fileID in lightDict:
 				# for forgeFile in fileList:
@@ -19,8 +19,8 @@ def decompressDatafile(fileTree, fileList, config, fileID, forgeFile=None):
 			# else:
 				# return
 				
-			if fileID in os.listdir("D:\\Unity_Dump\\Dictionary\\lightDict"):
-				with open("D:\\Unity_Dump\\Dictionary\\lightDict"+os.sep+fileID, 'r') as f:
+			if fileID in os.listdir(config["lightDict"]):
+				with open(config["lightDict"]+os.sep+fileID, 'r') as f:
 					fileID2 = f.read()
 				for forgeFile in fileList:
 					if fileID2 in fileList[forgeFile]:

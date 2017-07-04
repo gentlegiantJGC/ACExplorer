@@ -22,7 +22,7 @@ import json
 config = json.load(open('AC_Explorer.config'))
 
 # global lightDict
-# with open("D:\\Unity_Dump\\Dictionary\\lightDict2.txt", 'r') as f:
+# with open(config["lightDict2"], 'r') as f:
 	# lightDict = eval(f.read())
 
 # readForge(ACUnityFolder)
@@ -105,7 +105,7 @@ def loadData(id):
 	buttonNo = 0
 	for but in loadDataList:
 		but.destroy()
-	dictionary = open("D:/Unity_Dump/Dictionary/dictionaryDoc.txt", 'r')
+	dictionary = open(config["dictionaryDoc"], 'r')
 	for line in dictionary:
 		if line[0:16] == id:
 			idlist = eval(line.split(':::::')[1])

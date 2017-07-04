@@ -1,2 +1,2 @@
-"H:\Programs\AC Explorer\run.py"
+"run.py"
 pause
