@@ -2,7 +2,7 @@
 	"ACUnityFolder":   "H:\\Programs\\Ubisoft\\Assassin's Creed Unity",
 	"dumpFolder":      "D:\\Unity_Dump\\ACModels",
 	"lightDict":       "D:\\Unity_Dump\\Dictionary\\lightDict",
-	"missingNo":       "misc\\missingNo.png",
-	"texconv":         "misc\\texconv.exe",
-	"LZOPath":         "misc\\lzo.dll"
+	"missingNo":       "resources\\missingNo.png",
+	"texconv":         "resources\\texconv.exe",
+	"LZOPath":         "resources\\lzo.dll"
 }
