@@ -1,3 +1,11 @@
+'''
+	the original version of this program when it was all contained
+	in one single script. The rewrite has moved functions into modules
+	to make the code more readable.
+	This is old code and has been kept here because some of it may
+	still be useful
+'''
+
 import random
 from Tkinter import *
 import os
