@@ -1,7 +1,11 @@
-def decompress(mode, src, dst_len, config):
-	from ctypes import CDLL, c_byte, c_ushort
-	import binascii
-	lzo = CDLL(config['LZOPath'])
+import binascii
+from ctypes import CDLL, c_byte, c_ushort
+
+from ACExplorer import CONFIG
+
+
+def decompress(mode, src, dst_len):
+	lzo = CDLL(CONFIG['LZOPath'])
 	src = [int(binascii.hexlify(x), 16) for x in src]
 	src = (c_byte * len(src))(*src)
 	src_len = (c_ushort*1)(len(src))

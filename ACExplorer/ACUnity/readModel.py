@@ -1,9 +1,12 @@
-def readModel(fileTree, fileList, config, fileID):
-	from misc.dataTypes import LE2BE2, LE2DEC2, BEHEX2, float32
-	from misc import tempFiles
-	if not tempFiles.exists(config, fileID):
-		decompressDatafile(fileTree, fileList, config, fileID)
-	data = tempFiles.read(config, fileID)
+from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.misc import tempFiles
+from ACExplorer.misc.dataTypes import BEHEX2, LE2BE2, LE2DEC2, float32
+
+
+def readModel(fileTree, fileList, fileID):
+	if not tempFiles.exists(fileID):
+		decompressDatafile(fileTree, fileList, fileID)
+	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]

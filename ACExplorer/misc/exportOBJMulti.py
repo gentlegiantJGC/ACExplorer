@@ -1,9 +1,14 @@
-def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
-	from ACUnity.getMaterialIDs import getMaterialIDs
-	from ACUnity.exportTexture import exportTexture
-	from ACUnity.readModel import readModel
-	import os
-	from misc import tempFiles
+import os
+
+from ACExplorer import CONFIG
+from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.ACUnity.exportTexture import exportTexture
+from ACExplorer.ACUnity.getMaterialIDs import getMaterialIDs
+from ACExplorer.ACUnity.readModel import readModel
+from ACExplorer.misc import tempFiles
+
+
+def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	#fileIDList format
 	# {
 	# 0:{'id':'0000000000000000', 'x':0, 'y':0, 'z':0},
@@ -11,10 +16,9 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 	# 2:{'id':'0000000000000000', 'x':0, 'y':0, 'z':0}
 	# }
 	
-	if not tempFiles.exists(config, rootID):
-		from ACUnity.decompressDatafile import decompressDatafile
-		decompressDatafile(fileTree, fileList, config, rootID)
-	rootData = tempFiles.read(config, rootID)
+	if not tempFiles.exists(rootID):
+		decompressDatafile(fileTree, fileList, rootID)
+	rootData = tempFiles.read(rootID)
 	if len(rootData) == 0:
 		raise Exception('file '+rootID+' is empty')
 	rootData = rootData[0]
@@ -24,17 +28,16 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 	for index0 in fileIDList:
 		fileID = fileIDList[index0]['id'].upper()
 		
-		if not tempFiles.exists(config, fileID):
-			from ACUnity.decompressDatafile import decompressDatafile
-			decompressDatafile(fileTree, fileList, config, fileID)
-		data = tempFiles.read(config, fileID)
+		if not tempFiles.exists(fileID):
+			decompressDatafile(fileTree, fileList, fileID)
+		data = tempFiles.read(fileID)
 		if len(data) == 0:
 			raise Exception('file '+fileID+' is empty')
 		data = data[0]
 		
 		if not os.path.isfile(data['dir'].replace('.acu', '.dictionary')):
 			try:
-				readModel(fileTree, fileList, config, fileID)
+				readModel(fileTree, fileList, fileID)
 			except:
 				print 'Failed reading model '+data['fileName']
 		if os.path.isfile(data['dir'].replace('.acu', '.dictionary')):
@@ -45,7 +48,7 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 	
 	rootID = rootID.upper()
 	fileName = rootData['fileName']
-	savePath = config['dumpFolder'] + os.sep + fileName
+	savePath = CONFIG['dumpFolder'] + os.sep + fileName
 	# savePath = path[:-4] + ".obj"
 	# str1 = os.sep.join(savePath.split(os.sep)[:-1])	#save path folder
 	# while (treeNode1.Parent != null)
@@ -63,10 +66,9 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 	for index0 in fileIDList:
 		fileID = fileIDList[index0]['id'].upper()
 
-		if not tempFiles.exists(config, fileID):
-			from ACUnity.decompressDatafile import decompressDatafile
-			decompressDatafile(fileTree, fileList, config, fileID)
-		data = tempFiles.read(config, fileID)
+		if not tempFiles.exists(fileID):
+			decompressDatafile(fileTree, fileList, fileID)
+		data = tempFiles.read(fileID)
 		if len(data) == 0:
 			raise Exception('file '+fileID+' is empty')
 		data = data[0]
@@ -107,10 +109,9 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 	for index0 in fileIDList:
 		fileID = fileIDList[index0]['id'].upper()
 		
-		if not tempFiles.exists(config, fileID):
-			from ACUnity.decompressDatafile import decompressDatafile
-			decompressDatafile(fileTree, fileList, config, fileID)
-		data = tempFiles.read(config, fileID)
+		if not tempFiles.exists(fileID):
+			decompressDatafile(fileTree, fileList, fileID)
+		data = tempFiles.read(fileID)
 		if len(data) == 0:
 			raise Exception('file '+fileID+' is empty')
 		data = data[0]
@@ -130,10 +131,9 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 	for index0 in fileIDList:
 		fileID = fileIDList[index0]['id'].upper()
 		
-		if not tempFiles.exists(config, fileID):
-			from ACUnity.decompressDatafile import decompressDatafile
-			decompressDatafile(fileTree, fileList, config, fileID)
-		data = tempFiles.read(config, fileID)
+		if not tempFiles.exists(fileID):
+			decompressDatafile(fileTree, fileList, fileID)
+		data = tempFiles.read(fileID)
 		if len(data) == 0:
 			raise Exception('file '+fileID+' is empty')
 		data = data[0]
@@ -158,7 +158,7 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 				
 				
 				
-				textureIDs = getMaterialIDs(fileTree, fileList, config, model['materialId'][index1])
+				textureIDs = getMaterialIDs(fileTree, fileList, model['materialId'][index1])
 				
 				if textureIDs == None:
 					fio.write("usemtl missingNo\n")
@@ -166,8 +166,8 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 				else:
 					for hexid in textureIDs:
 						# textureFile = getFile(workingDir, textureIDs[hexid])
-						exportTexture(fileTree, fileList, config, textureIDs[hexid])
-					data2 = tempFiles.read(config, model['materialId'][index1].upper())
+						exportTexture(fileTree, fileList, textureIDs[hexid])
+					data2 = tempFiles.read(model['materialId'][index1].upper())
 					if len(data2) == 0:
 						raise Exception('file '+model['materialId'][index1].upper()+' is empty')
 					data2 = data2[0]
@@ -200,10 +200,9 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 	for index0 in fileIDList:
 		fileID = fileIDList[index0]['id'].upper()
 		
-		if not tempFiles.exists(config, fileID):
-			from ACUnity.decompressDatafile import decompressDatafile
-			decompressDatafile(fileTree, fileList, config, fileID)
-		data = tempFiles.read(config, fileID)
+		if not tempFiles.exists(fileID):
+			decompressDatafile(fileTree, fileList, fileID)
+		data = tempFiles.read(fileID)
 		if len(data) == 0:
 			raise Exception('file '+fileID+' is empty')
 		data = data[0]
@@ -216,14 +215,14 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 				else:
 					idsAdded.append(model['materialId'][index1])
 					
-				data2 = tempFiles.read(config, model['materialId'][index1].upper())
+				data2 = tempFiles.read(model['materialId'][index1].upper())
 				if len(data2) == 0:
 					raise Exception('file '+model['materialId'][index1].upper()+' is empty')
 				data2 = data2[0]
 				
 				material = data2['fileName']
 				if material != "NULL":
-					textureIDs = getMaterialIDs(fileTree, fileList, config, model['materialId'][index1])
+					textureIDs = getMaterialIDs(fileTree, fileList, model['materialId'][index1])
 					
 					if textureIDs == None:
 						missingNo = True
@@ -243,7 +242,7 @@ def exportOBJMulti(fileTree, fileList, config, rootID, fileIDList):
 						else:
 							continue
 							
-						data3 = tempFiles.read(config, textureIDs[texType].upper())
+						data3 = tempFiles.read(textureIDs[texType].upper())
 						if len(data3) == 0:
 							raise Exception('file '+textureIDs[texType].upper()+' is empty')
 						data3 = data3[0]

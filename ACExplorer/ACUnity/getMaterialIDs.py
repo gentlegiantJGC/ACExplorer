@@ -1,10 +1,12 @@
-def getMaterialIDs(fileTree, fileList, config, fileID):
-	from misc.dataTypes import BEHEX2
-	from misc import tempFiles
-	from ACUnity.decompressDatafile import decompressDatafile
-	if not tempFiles.exists(config, fileID):
-		decompressDatafile(fileTree, fileList, config, fileID)
-	data = tempFiles.read(config, fileID)
+from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.misc import tempFiles
+from ACExplorer.misc.dataTypes import BEHEX2
+
+
+def getMaterialIDs(fileTree, fileList, fileID):
+	if not tempFiles.exists(fileID):
+		decompressDatafile(fileTree, fileList, fileID)
+	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]
@@ -23,11 +25,11 @@ def getMaterialIDs(fileTree, fileList, config, fileID):
 	# if materialTemplateName+'.acu' not in os.listdir(folder):
 		# print 'Material Template ('+materialTemplateName+') not in Folder'
 		# return
-	if not tempFiles.exists(config, materialTemplateID):
-		decompressDatafile(fileTree, fileList, config, materialTemplateID)
+	if not tempFiles.exists(materialTemplateID):
+		decompressDatafile(fileTree, fileList, materialTemplateID)
 
 	try:
-		materialTemplate = open(tempFiles.read(config, materialTemplateID)[0]['dir'], 'rb')
+		materialTemplate = open(tempFiles.read(materialTemplateID)[0]['dir'], 'rb')
 	except:
 		return
 	textures = {}

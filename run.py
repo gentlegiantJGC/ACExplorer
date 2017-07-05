@@ -7,30 +7,19 @@
 	The 'folders' in the top level of the forge file will from this point on be referred to as datafiles.
 	Contained within the datafiles are a variety of files related to that datafile.
 '''
-
-# should perhaps work out a way to allow multiple games to be supported
-game = 'ACU'
-if game == 'ACU':
-	from ACUnity.readForge import *
-	from ACUnity.decompressDatafile import *
-	from ACUnity.readFile import *
-
-from misc import tempFiles
-import random
-# this should probably be rewritten to not import all
-from Tkinter import *
 import ttk
-import os
+from Tkinter import *
+
+from ACExplorer import CONFIG
+from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.ACUnity.readFile import readFile
+from ACExplorer.ACUnity.readForge import readForge
+from ACExplorer.misc import tempFiles
 
 # a dictionary containing file ids
 # location in the file, size and file name
 # this is rebuilt each time the program opens
 # fileList = {}
-
-#set up config values
-import json
-config = json.load(open('AC_Explorer.config'))
-
 
 top = Tk()
 
@@ -47,14 +36,14 @@ fileTree.configure(yscrollcommand=fileTreeScroll.set)
 def onClick(event):
 	fileID = fileTree.selection()[0]
 	if len(fileID.split('|')) == 3 and len(fileTree.get_children(fileID)) == 0:
-		decompressDatafile(fileTree, fileList, config, fileID.split('|')[2], fileID.split('|')[1])
+		decompressDatafile(fileTree, fileList, fileID.split('|')[2], fileID.split('|')[1])
 
 fileTree.bind("<<TreeviewSelect>>", onClick)
 
 def onDoubleClick(event):
 	fileID = fileTree.selection()[0]
 	if len(fileID.split('|')) == 4:
-		readFile(fileTree, fileList, config, fileID.split('|')[3])
+		readFile(fileTree, fileList, fileID.split('|')[3])
 
 fileTree.bind("<Double-1>", onDoubleClick)
 
@@ -62,17 +51,17 @@ fileTree.bind("<Double-1>", onDoubleClick)
 # each datafile on the second level under each forge file. This is used
 # as a cheap way to find the location a file is stored under.
 # this function also loads all the forge files and datafiles onto the TK Tree
-fileList = readForge(fileTree, config["ACUnityFolder"])
+fileList = readForge(fileTree, CONFIG["ACUnityFolder"])
 
 # load all the decompressed files onto the TK Tree
-tempFiles.populateTree(fileTree, config)
+tempFiles.populateTree(fileTree)
 
 print 'Done'
 
 def searchFor():
 	if search.get() != '':
 		fileID = search.get().replace(' ', '').upper()
-		readFile(fileTree, fileList, config, fileID)
+		readFile(fileTree, fileList, fileID)
 
 search = Entry(top)
 search.grid(row=0, column=1)
@@ -98,13 +87,12 @@ def info(input=None):
 		fileID = search.get().replace(' ', '').upper()
 	if input != None:
 		fileID = input.replace(' ', '').upper()
-	import tempFiles
-	if not tempFiles.exists(config, fileID):
-		decompressDatafile(fileTree, fileList, config, fileID)
-	if not tempFiles.exists(config, fileID):
+	if not tempFiles.exists(fileID):
+		decompressDatafile(fileTree, fileList, fileID)
+	if not tempFiles.exists(fileID):
 		raise Exception()
 	print fileID
-	print tempFiles.read(config, fileID)
+	print tempFiles.read(fileID)
 		
 infobutton = Button(top, text = 'Info', command=info)
 infobutton.grid(row=0, column=8)

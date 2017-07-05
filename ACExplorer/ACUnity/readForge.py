@@ -1,8 +1,10 @@
+import os
+
+from ACExplorer.misc.dataTypes import BE, BEHEX, LE2DEC
+
+
 def readForge(fileTree, folder):
-	from misc.dataTypes import LE2DEC, BEHEX, BE
-	import binascii
 	fileList = {}
-	import os
 	for x in os.listdir(folder):
 		if x.endswith('.forge'):
 			print 'Building file tree for '+x

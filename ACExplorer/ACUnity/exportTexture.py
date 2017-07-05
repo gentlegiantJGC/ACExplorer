@@ -1,18 +1,21 @@
-def exportTexture(fileTree, fileList, config, fileID):
-	from misc.dataTypes import LE2DEC2
-	from misc import tempFiles
-	import os
+import os
 
-	if not tempFiles.exists(config, fileID):
-		from ACUnity.decompressDatafile import decompressDatafile
-		decompressDatafile(fileTree, fileList, config, fileID)
-	data = tempFiles.read(config, fileID)
+from ACExplorer import CONFIG
+from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.misc import tempFiles
+from ACExplorer.misc.dataTypes import LE2DEC2
+
+
+def exportTexture(fileTree, fileList, fileID):
+	if not tempFiles.exists(fileID):
+		decompressDatafile(fileTree, fileList, fileID)
+	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]
 	path1 = data['dir']
 	fileName = data['fileName']
-	path2 = config['dumpFolder'] + os.sep + fileName + '.dds'
+	path2 = CONFIG['dumpFolder'] + os.sep + fileName + '.dds'
 	if os.path.isfile(path2):
 		return
 	fi = open(path1, 'rb')
@@ -26,9 +29,9 @@ def exportTexture(fileTree, fileList, config, fileID):
 	_ = fi.read(84)
 	count = fi.read(4)
 	buffer = fi.read(LE2DEC2(count))
-	
+
 	fi.close()
-	
+
 
 	fi = open(path2, 'wb')
 	fi.write('DDS ')
@@ -55,7 +58,7 @@ def exportTexture(fileTree, fileList, config, fileID):
 		fi.write('\x44\x58\x54\x35') #DXT5
 	elif imgDXT == 8:
 		fi.write('\x44\x58\x31\x30') #DX10
-		
+
 	for index in range(5):
 		fi.write('\x00\x00\x00\x00')
 	fi.write('\x08\x10\x40\x00')
@@ -70,11 +73,11 @@ def exportTexture(fileTree, fileList, config, fileID):
 	fi.write(buffer)
 	fi.close()
 	if imgDXT == 8:
-		texconv = '"' + config['texconv'] + '" '
+		texconv = '"' + CONFIG['texconv'] + '" '
 		# else
 		# {
 			# str4 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_";
 			# path2 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_" + tNode.Text + "." + strArray3[1];
 		# }
-		arguments = "-fl 9.1 -px " + config['dumpFolder'] + os.sep + " -f BC3_UNORM " + path2
+		arguments = "-fl 9.1 -px " + CONFIG['dumpFolder'] + os.sep + " -f BC3_UNORM " + path2
 		os.system(texconv+arguments)
