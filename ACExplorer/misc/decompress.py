@@ -1,11 +1,17 @@
 import binascii
 from ctypes import CDLL, c_byte, c_ushort
-
 from ACExplorer import CONFIG
+import platform
+if platform.architecture()[0] == '64bit':
+	lzoPath = CONFIG['LZO64Path'].encode('utf-8')
+elif platform.architecture()[0] == '32bit':
+	lzoPath = CONFIG['LZO32Path'].encode('utf-8')
+else:
+	raise Exception('Unknown Architecture')
 
 
 def decompress(mode, src, dst_len):
-	lzo = CDLL(CONFIG['LZOPath'])
+	lzo = CDLL(lzoPath)
 	src = [int(binascii.hexlify(x), 16) for x in src]
 	src = (c_byte * len(src))(*src)
 	src_len = (c_ushort*1)(len(src))
