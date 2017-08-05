@@ -79,5 +79,5 @@ def exportTexture(fileTree, fileList, fileID):
 			# str4 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_";
 			# path2 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_" + tNode.Text + "." + strArray3[1];
 		# }
-		arguments = "-fl 9.1 -px " + CONFIG['dumpFolder'] + os.sep + " -f BC3_UNORM " + path2
+		arguments = "-fl 9.1 -y -px " + CONFIG['dumpFolder'] + os.sep + " -f BC3_UNORM " + path2
 		os.system(texconv+arguments)

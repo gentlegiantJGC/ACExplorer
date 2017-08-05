@@ -1,6 +1,7 @@
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BEHEX2, LE2BE2, LE2DEC2, float32
+import json
 
 
 def readModel(fileTree, fileList, fileID):
@@ -132,17 +133,20 @@ def readModel(fileTree, fileList, fileID):
 			_ = fi.read(24)
 			model['length1'] = LE2DEC2(fi.read(4))
 			model['length2'] = LE2DEC2(fi.read(4))
-			model['meshFaceBlocks'] = {}
-			model['shadowFaceBlocks'] = {}
+			model['meshFaceBlocks'] = []
+			model['shadowFaceBlocks'] = []
 			for index in range(model['length1']):
-				model['meshFaceBlocks'][index] = LE2DEC2(fi.read(4))
+				model['meshFaceBlocks'].append(LE2DEC2(fi.read(4)))
 			for index in range(model['length2']):
-				model['shadowFaceBlocks'][index] = LE2DEC2(fi.read(4))
+				model['shadowFaceBlocks'].append(LE2DEC2(fi.read(4)))
 			model['unkLng'] = LE2DEC2(fi.read(4))
 			model['unkByt'] = fi.read(1);
 			num3 = LE2DEC2(fi.read(4))
 			model['vertCount'] = num3 / model['vertTableSize'];
 			model['vertData'] = {}
+			model['vertData']['vertex'] = []
+			model['vertData']['tVert'] = []
+			model['vertData']['normals'] = []
 			# arxForm.acModel.vertData = new arxForm.acVertStruct[arxForm.acModel.vertCount];
 			for index in range(model['vertCount']):
 				if model['vertTableSize'] == 40:
@@ -262,114 +266,110 @@ def readModel(fileTree, fileList, fileID):
 					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
 					# break;
 				elif model['vertTableSize'] == 28:
-					model['vertData'][index] = {}
-					model['vertData'][index]['vertex'] = {}
-					model['vertData'][index]['vertex']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['X'] >= 2**15:
-						model['vertData'][index]['vertex']['X'] -= 2**16
-					model['vertData'][index]['vertex']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['Y'] >= 2**15:
-						model['vertData'][index]['vertex']['Y'] -= 2**16
-					model['vertData'][index]['vertex']['Z'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['Z'] >= 2**15:
-						model['vertData'][index]['vertex']['Z'] -= 2**16
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['X'] >= 2**15:
+						model['vertData']['vertex'][index]['X'] -= 2**16
+					model['vertData']['vertex'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['Y'] >= 2**15:
+						model['vertData']['vertex'][index]['Y'] -= 2**16
+					model['vertData']['vertex'][index]['Z'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['Z'] >= 2**15:
+						model['vertData']['vertex'][index]['Z'] -= 2**16
 					num4 = float(LE2DEC2(fi.read(2)))
 					if num4 >= 2**15:
 						num4 -= 2**16
-					model['vertData'][index]['vertex']['X'] /= num4
-					model['vertData'][index]['vertex']['Y'] /= num4
-					model['vertData'][index]['vertex']['Z'] /= num4
-					model['vertData'][index]['normals'] = {}
-					model['vertData'][index]['normals']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['normals']['X'] >= 2**15:
-						model['vertData'][index]['normals']['X'] -= 2**16
-					model['vertData'][index]['normals']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['normals']['Y'] >= 2**15:
-						model['vertData'][index]['normals']['Y'] -= 2**16
-					model['vertData'][index]['normals']['Z'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['normals']['Z'] >= 2**15:
-						model['vertData'][index]['normals']['Z'] -= 2**16
+					model['vertData']['vertex'][index]['X'] /= num4
+					model['vertData']['vertex'][index]['Y'] /= num4
+					model['vertData']['vertex'][index]['Z'] /= num4
+					model['vertData']['normals'].append({})
+					model['vertData']['normals'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['normals'][index]['X'] >= 2**15:
+						model['vertData']['normals'][index]['X'] -= 2**16
+					model['vertData']['normals'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['normals'][index]['Y'] >= 2**15:
+						model['vertData']['normals'][index]['Y'] -= 2**16
+					model['vertData']['normals'][index]['Z'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['normals'][index]['Z'] >= 2**15:
+						model['vertData']['normals'][index]['Z'] -= 2**16
 					_ = fi.read(6)
-					model['vertData'][index]['tVert'] = {}
-					model['vertData'][index]['tVert']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['tVert']['X'] >= 2**15:
-						model['vertData'][index]['tVert']['X'] -= 2**16
-					model['vertData'][index]['tVert']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['tVert']['Y'] >= 2**15:
-						model['vertData'][index]['tVert']['Y'] -= 2**16
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['tVert'][index]['X'] >= 2**15:
+						model['vertData']['tVert'][index]['X'] -= 2**16
+					model['vertData']['tVert'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['tVert'][index]['Y'] >= 2**15:
+						model['vertData']['tVert'][index]['Y'] -= 2**16
 					_ = fi.read(4)
 				elif model['vertTableSize'] == 16:
-					model['vertData'][index] = {}
-					model['vertData'][index]['vertex'] = {}
-					model['vertData'][index]['vertex']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['X'] >= 2**15:
-						model['vertData'][index]['vertex']['X'] -= 2**16
-					model['vertData'][index]['vertex']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['Y'] >= 2**15:
-						model['vertData'][index]['vertex']['Y'] -= 2**16
-					model['vertData'][index]['vertex']['Z'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['Z'] >= 2**15:
-						model['vertData'][index]['vertex']['Z'] -= 2**16
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['X'] >= 2**15:
+						model['vertData']['vertex'][index]['X'] -= 2**16
+					model['vertData']['vertex'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['Y'] >= 2**15:
+						model['vertData']['vertex'][index]['Y'] -= 2**16
+					model['vertData']['vertex'][index]['Z'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['Z'] >= 2**15:
+						model['vertData']['vertex'][index]['Z'] -= 2**16
 					num5 = float(LE2DEC2(fi.read(2)))
 					if num5 >= 2**15:
 						num5 -= 2**16
-					model['vertData'][index]['vertex']['X'] /= num5
-					model['vertData'][index]['vertex']['Y'] /= num5
-					model['vertData'][index]['vertex']['Z'] /= num5
+					model['vertData']['vertex'][index]['X'] /= num5
+					model['vertData']['vertex'][index]['Y'] /= num5
+					model['vertData']['vertex'][index]['Z'] /= num5
 					_ = fi.read(4)
-					model['vertData'][index]['tVert'] = {}
-					model['vertData'][index]['tVert']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['tVert']['X'] >= 2**15:
-						model['vertData'][index]['tVert']['X'] -= 2**16
-					model['vertData'][index]['tVert']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['tVert']['Y'] >= 2**15:
-						model['vertData'][index]['tVert']['Y'] -= 2**16
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['tVert'][index]['X'] >= 2**15:
+						model['vertData']['tVert'][index]['X'] -= 2**16
+					model['vertData']['tVert'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['tVert'][index]['Y'] >= 2**15:
+						model['vertData']['tVert'][index]['Y'] -= 2**16
 				elif model['vertTableSize'] == 20:
-					model['vertData'][index] = {}
-					model['vertData'][index]['vertex'] = {}
-					model['vertData'][index]['vertex']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['X'] >= 2**15:
-						model['vertData'][index]['vertex']['X'] -= 2**16
-					model['vertData'][index]['vertex']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['Y'] >= 2**15:
-						model['vertData'][index]['vertex']['Y'] -= 2**16
-					model['vertData'][index]['vertex']['Z'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['vertex']['Z'] >= 2**15:
-						model['vertData'][index]['vertex']['Z'] -= 2**16
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['X'] >= 2**15:
+						model['vertData']['vertex'][index]['X'] -= 2**16
+					model['vertData']['vertex'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['Y'] >= 2**15:
+						model['vertData']['vertex'][index]['Y'] -= 2**16
+					model['vertData']['vertex'][index]['Z'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['vertex'][index]['Z'] >= 2**15:
+						model['vertData']['vertex'][index]['Z'] -= 2**16
 					num6 = float(LE2DEC2(fi.read(2)))
 					if num6 >= 2**15:
 						num6 -= 2**16
-					model['vertData'][index]['vertex']['X'] /= num6
-					model['vertData'][index]['vertex']['Y'] /= num6
-					model['vertData'][index]['vertex']['Z'] /= num6
-					model['vertData'][index]['normals'] = {}
-					model['vertData'][index]['normals']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['normals']['X'] >= 2**15:
-						model['vertData'][index]['normals']['X'] -= 2**16
-					model['vertData'][index]['normals']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['normals']['Y'] >= 2**15:
-						model['vertData'][index]['normals']['Y'] -= 2**16
-					model['vertData'][index]['normals']['Z'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['normals']['Z'] >= 2**15:
-						model['vertData'][index]['normals']['Z'] -= 2**16
+					model['vertData']['vertex'][index]['X'] /= num6
+					model['vertData']['vertex'][index]['Y'] /= num6
+					model['vertData']['vertex'][index]['Z'] /= num6
+					model['vertData']['normals'].append({})
+					model['vertData']['normals'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['normals'][index]['X'] >= 2**15:
+						model['vertData']['normals'][index]['X'] -= 2**16
+					model['vertData']['normals'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['normals'][index]['Y'] >= 2**15:
+						model['vertData']['normals'][index]['Y'] -= 2**16
+					model['vertData']['normals'][index]['Z'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['normals'][index]['Z'] >= 2**15:
+						model['vertData']['normals'][index]['Z'] -= 2**16
 					_ = fi.read(2)
-					model['vertData'][index]['tVert'] = {}
-					model['vertData'][index]['tVert']['X'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['tVert']['X'] >= 2**15:
-						model['vertData'][index]['tVert']['X'] -= 2**16
-					model['vertData'][index]['tVert']['Y'] = float(LE2DEC2(fi.read(2)))
-					if model['vertData'][index]['tVert']['Y'] >= 2**15:
-						model['vertData'][index]['tVert']['Y'] -= 2**16
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['tVert'][index]['X'] >= 2**15:
+						model['vertData']['tVert'][index]['X'] -= 2**16
+					model['vertData']['tVert'][index]['Y'] = float(LE2DEC2(fi.read(2)))
+					if model['vertData']['tVert'][index]['Y'] >= 2**15:
+						model['vertData']['tVert'][index]['Y'] -= 2**16
 				else:
 					raise Exception("Not yet implemented!\n\nvertTableSize = " + str(vertTableSize))
 			model['length3'] = LE2DEC2(fi.read(4)) / 6
-			model['faceData'] = {}
+			model['faceData'] = []
 			for index in range(model['length3']):
-				model['faceData'][index] = {}
-				model['faceData'][index]['faceIndex'] = {}
-				model['faceData'][index]['faceIndex']['Y'] = LE2DEC2(fi.read(2))
-				model['faceData'][index]['faceIndex']['X'] = LE2DEC2(fi.read(2))
-				model['faceData'][index]['faceIndex']['Z'] = LE2DEC2(fi.read(2))
+				model['faceData'].append({})
+				model['faceData'][index]['Y'] = LE2DEC2(fi.read(2))
+				model['faceData'][index]['X'] = LE2DEC2(fi.read(2))
+				model['faceData'][index]['Z'] = LE2DEC2(fi.read(2))
 			model['facesUsed'] = model['length3'];
 			# cAry = new int[5];
 			for index in range(5):
@@ -379,30 +379,28 @@ def readModel(fileTree, fileList, fileID):
 				_ = fi.read(model['cAry'])
 			_ = fi.read(7)
 			model['meshCount'] = LE2DEC2(fi.read(4))
-			model['meshData'] = {}
+			model['meshData'] = []
 			model['faceCount'] = 0
 			for index in range(model['meshCount']):
 				_ = fi.read(12)
-				model['meshData'][index] = {}
-				model['meshData'][index]['meshTable'] = {}
-				model['meshData'][index]['meshTable']['X'] = float(LE2DEC2(fi.read(4)))
+				model['meshData'].append({})
+				model['meshData'][index]['X'] = float(LE2DEC2(fi.read(4)))
 				_ = fi.read(4)
-				model['meshData'][index]['meshTable']['materialTempID'] = float(LE2DEC2(fi.read(4)))
-				model['meshData'][index]['meshTable']['vertStart'] = LE2DEC2(fi.read(4)) #verticy start
-				model['meshData'][index]['meshTable']['vertCount'] = LE2DEC2(fi.read(4)) #number of verticies
+				model['meshData'][index]['materialTempID'] = float(LE2DEC2(fi.read(4)))
+				model['meshData'][index]['vertStart'] = LE2DEC2(fi.read(4)) #verticy start
+				model['meshData'][index]['vertCount'] = LE2DEC2(fi.read(4)) #number of verticies
 				_ = fi.read(4)
-				model['faceCount'] += model['meshData'][index]['meshTable']['vertCount']
+				model['faceCount'] += model['meshData'][index]['vertCount']
 			model['shadowCount'] = LE2DEC2(fi.read(4))
-			model['shadowData'] = {}
+			model['shadowData'] = []
 			for index in range(model['shadowCount']):
 				_ = fi.read(12)
-				model['shadowData'][index] = {}
-				model['shadowData'][index]['meshTable'] = {}
-				model['shadowData'][index]['meshTable']['X'] = float(LE2DEC2(fi.read(4)))
+				model['shadowData'].append({})
+				model['shadowData'][index]['X'] = float(LE2DEC2(fi.read(4)))
 				_ = fi.read(4)
-				model['shadowData'][index]['meshTable']['Y'] = float(LE2DEC2(fi.read(4)))
-				model['shadowData'][index]['meshTable']['Z'] = float(LE2DEC2(fi.read(4)))
-				model['shadowData'][index]['meshTable']['W'] = float(LE2DEC2(fi.read(4)))
+				model['shadowData'][index]['Y'] = float(LE2DEC2(fi.read(4)))
+				model['shadowData'][index]['Z'] = float(LE2DEC2(fi.read(4)))
+				model['shadowData'][index]['W'] = float(LE2DEC2(fi.read(4)))
 				_ = fi.read(4)
 			for index in range(2):
 				num4 = LE2DEC2(fi.read(4))
@@ -549,28 +547,28 @@ def readModel(fileTree, fileList, fileID):
 		else:
 			raise Exception("New switchType found")
 		model['length4'] = LE2DEC2(fi.read(4))
-		model['skinData'] = {}
+		model['skinData'] = []
 		for index1 in range(model['length4']):
 			_ = fi.read(17)
-			model['skinData'][index1] = {}
+			model['skinData'].append({})
 			model['skinData'][index1]['boneCount'] = LE2DEC2(fi.read(2))
 			_ = fi.read(11)
-			model['skinData'][index1]['boneNo'] = {}
+			model['skinData'][index1]['boneNo'] = []
 			for index2 in range(model['skinData'][index1]['boneCount']):
-				model['skinData'][index1]['boneNo'][index2] = LE2DEC2(fi.read(2))
+				model['skinData'][index1]['boneNo'].append(LE2DEC2(fi.read(2)))
 			_ = fi.read((256 - model['skinData'][index1]['boneCount'] * 2))
 		_ = fi.read(8)
 		model['modelScale'] = float32(fi.read(4))
 		model['materialCount'] = LE2DEC2(fi.read(4))
-		model['materialId'] = {}
-		model['materials'] = {}
+		model['materialId'] = []
+		# model['materials'] = {}
 		for index in range(model['materialCount']):
-			model['materials'][index] = {}
+			# model['materials'][index] = {}
 			_ = fi.read(2)
-			model['materialId'][index] = BEHEX2(fi.read(8))
+			model['materialId'].append(BEHEX2(fi.read(8)).upper())
 		fi.close()
 	else:
 		raise Exception("Error reading model file!")
-	tmpdict = open(data['dir'].replace('.acu', '.dictionary'), 'w')
-	tmpdict.write(str(model))
+	tmpdict = open(data['dir'].replace('.acu', '.json'), 'w')
+	tmpdict.write(json.dumps(model))
 	tmpdict.close()

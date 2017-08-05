@@ -1,5 +1,5 @@
 import os
-
+import json
 from ACExplorer import CONFIG
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.ACUnity.exportTexture import exportTexture
@@ -15,8 +15,8 @@ def exportOBJ(fileTree, fileList, fileID):
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]
 	fileName = data['fileName']
-	with open(data['dir'].replace('.acu', '.dictionary')) as f:
-		model = eval(f.read())
+	with open(data['dir'].replace('.acu', '.json')) as f:
+		model = json.loads(f.read())
 	savePath = CONFIG['dumpFolder'] + os.sep + fileName
 	# savePath = path[:-4] + ".obj"
 	str1 = os.sep.join(savePath.split(os.sep)[:-1])	#save path folder
@@ -33,19 +33,19 @@ def exportOBJ(fileTree, fileList, fileID):
 	if len(model['materialId']) > 0:
 		fio.write("mtllib " + fileName + ".mtl\n")
 	fio.write('\n')
-	for index in model['vertData']:
-		fio.write("v " + str(round((model['vertData'][index]['vertex']['X'] / num2), 6)) + " " + str(round((model['vertData'][index]['vertex']['Y'] / num2), 6)) + " " + str(round((model['vertData'][index]['vertex']['Z'] / num2), 6)) + '\n')
-	fio.write("# " + str(len(model['vertData'])) + " vertices\n")
+	for vertex in model['vertData']['vertex']:
+		fio.write("v " + str(round((vertex['X'] / num2), 6)) + " " + str(round((vertex['Y'] / num2), 6)) + " " + str(round((vertex['Z'] / num2), 6)) + '\n')
+	fio.write("# " + str(len(model['vertData']['vertex'])) + " vertices\n")
 	fio.write('\n')
 	num3 = 2048.0
-	for index in model['vertData']:
-		fio.write("vt " + str(round((model['vertData'][index]['tVert']['X'] / num3), 6)) + " " + str(round((model['vertData'][index]['tVert']['Y'] / -num3), 6)) + '\n')
-	fio.write("# " + str(len(model['vertData'])) + " texture coordinates\n")
+	for tVert in model['vertData']['tVert']:
+		fio.write("vt " + str(round((tVert['X'] / num3), 6)) + " " + str(round((tVert['Y'] / -num3), 6)) + '\n')
+	fio.write("# " + str(len(model['vertData']['tVert'])) + " texture coordinates\n")
 	fio.write('\n')
 	num4 = 0
-	for index1 in model['meshData']:
-		num5 = model['meshData'][index1]['meshTable']['vertCount']		#vertex number?
-		num6 = model['meshData'][index1]['meshTable']['vertStart'] / 3
+	for index1, meshData in enumerate(model['meshData']):
+		num5 = meshData['vertCount']		#vertex number?
+		num6 = meshData['vertStart'] / 3
 		if model['typeSwitch'] == 0 and model['faceCount'] != model['facesUsed']:
 			if index1 > 0:
 				num6 = num4 * 64
@@ -69,17 +69,17 @@ def exportOBJ(fileTree, fileList, fileID):
 			fio.write("usemtl " + material + '\n')
 		fio.write("s 0\n")
 		if model['typeSwitch'] != 3:
-			num7 = model['meshData'][index1]['meshTable']['X']
+			num7 = meshData['X']
 		else:
 			num7 = 0
 		for index2 in range(num6, num5 + num6):
 			fio.write("f " + 
-				str(int(model['faceData'][index2]['faceIndex']['Y'] + 1.0 + num7)) + "/" + 
-				str(int(model['faceData'][index2]['faceIndex']['Y'] + 1.0 + num7)) + " " + 
-				str(int(model['faceData'][index2]['faceIndex']['X'] + 1.0 + num7)) + "/" + 
-				str(int(model['faceData'][index2]['faceIndex']['X'] + 1.0 + num7)) + " " + 
-				str(int(model['faceData'][index2]['faceIndex']['Z'] + 1.0 + num7)) + "/" + 
-				str(int(model['faceData'][index2]['faceIndex']['Z'] + 1.0 + num7)) + '\n')
+				str(int(model['faceData'][index2]['Y'] + 1.0 + num7)) + "/" + 
+				str(int(model['faceData'][index2]['Y'] + 1.0 + num7)) + " " + 
+				str(int(model['faceData'][index2]['X'] + 1.0 + num7)) + "/" + 
+				str(int(model['faceData'][index2]['X'] + 1.0 + num7)) + " " + 
+				str(int(model['faceData'][index2]['Z'] + 1.0 + num7)) + "/" + 
+				str(int(model['faceData'][index2]['Z'] + 1.0 + num7)) + '\n')
 		fio.write("# " + str(num5) + " triangles\n\n")
 	fio.close()
 		
@@ -89,14 +89,14 @@ def exportOBJ(fileTree, fileList, fileID):
 		fim.write("# Exported by code based on ARchive_neXt\n")
 		fim.write("\n")
 		idsAdded = []
-		for index1 in model['materialId']:
-			if model['materialId'][index1] in idsAdded:
+		for materialId in model['materialId']:
+			if materialId in idsAdded:
 				continue
 			else:
-				idsAdded.append(model['materialId'][index1])
-			material = tempFiles.read(model['materialId'][index1].upper())[0]['fileName']
+				idsAdded.append(materialId)
+			material = tempFiles.read(materialId.upper())[0]['fileName']
 			if material != "NULL":
-				textureIDs = getMaterialIDs(fileTree, fileList, model['materialId'][index1])
+				textureIDs = getMaterialIDs(fileTree, fileList, materialId)
 				if textureIDs == None:
 					fim.write("newmtl missingNo\n")
 				else:
@@ -124,3 +124,5 @@ def exportOBJ(fileTree, fileList, fileID):
 
 				fim.write('\n')
 	fim.close()
+	
+	print 'done'
