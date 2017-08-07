@@ -22,10 +22,10 @@ def exportOBJ(fileTree, fileList, fileID):
 	str1 = os.sep.join(savePath.split(os.sep)[:-1])	#save path folder
 	# while (treeNode1.Parent != null)
 		# treeNode1 = treeNode1.Parent;
-	if model['typeSwitch'] != 3:
-		num2 = 100.0
-	else:
-		num2 = 0.00305
+	# if model['typeSwitch'] != 3:
+		# num2 = 100.0
+	# else:
+		# num2 = 0.00305
 	# string str2 = treeNode1.Tag.ToString().ToLower();					'acu'
 	fio = open(savePath + ".obj", 'w')						# open obj
 	fio.write("#Wavefront Object File\n")														# write text
@@ -34,7 +34,7 @@ def exportOBJ(fileTree, fileList, fileID):
 		fio.write("mtllib " + fileName + ".mtl\n")
 	fio.write('\n')
 	for vertex in model['vertData']['vertex']:
-		fio.write("v " + str(round((vertex['X'] / num2), 6)) + " " + str(round((vertex['Y'] / num2), 6)) + " " + str(round((vertex['Z'] / num2), 6)) + '\n')
+		fio.write("v " + str(round((vertex['X'] * model['modelScale']), 6)) + " " + str(round((vertex['Y'] * model['modelScale']), 6)) + " " + str(round((vertex['Z'] * model['modelScale']), 6)) + '\n')
 	fio.write("# " + str(len(model['vertData']['vertex'])) + " vertices\n")
 	fio.write('\n')
 	num3 = 2048.0

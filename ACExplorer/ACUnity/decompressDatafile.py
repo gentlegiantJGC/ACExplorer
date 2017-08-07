@@ -14,16 +14,6 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 			if fileID in fileList[forgeFile]:
 				break
 		if fileID not in fileList[forgeFile]:
-			# with open(CONFIG["lightDict2"], 'r') as f:
-				# lightDict = eval(f.read())
-			# if fileID in lightDict:
-				# for forgeFile in fileList:
-					# if lightDict[fileID] in fileList[forgeFile]:
-						# fileID = lightDict[fileID]
-						# break
-			# else:
-				# return
-				
 			if fileID in os.listdir(CONFIG["lightDict"]):
 				with open(CONFIG["lightDict"]+os.sep+fileID, 'r') as f:
 					fileID2 = f.read()
@@ -44,7 +34,7 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	f.seek(fileList[forgeFile][fileID]['rawDataOffset'])
 	rawDataChunk = f.read(fileList[forgeFile][fileID]['rawDataSize'])
 	f.close()
-	if LE2BE(rawDataChunk, 0, 8) == '1004fa9957fbaa33': # if compressed
+	if LE2BE(rawDataChunk, 0, 8) == '1004FA9957FBAA33': # if compressed
 		compressionType = LE2DEC(rawDataChunk, 10, 1)
 		compBlockCount = LE2DEC(rawDataChunk, 15, 4)
 		compressedDataStart = 19+compBlockCount*4
@@ -62,7 +52,7 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 			compressedDataStart += compressedSize+4
 			print '\tDecompressing Part 1: Completed Section '+str(m+1)+' of '+str(compBlockCount)
 			
-		if LE2BE(rawDataChunk, compressedDataStart, 8) == '1004fa9957fbaa33':
+		if LE2BE(rawDataChunk, compressedDataStart, 8) == '1004FA9957FBAA33':
 			header2Start = compressedDataStart
 			compressionType = LE2DEC(rawDataChunk, header2Start+10, 1)
 			compBlockCount = LE2DEC(rawDataChunk, header2Start+15, 4)
@@ -90,6 +80,12 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	# outFile.write(uncompressedData)
 	# outFile.close()
 	uncompressedData.close()
+	
+	if compBlockCount > 1000:
+		print 'This seems to be a large file.'
+		print 'Bear with us while we split it into its parts'
+		print 'The program has not crashed it might just take a little while'
+	
 	uncompressedData = open(CONFIG['dumpFolder'] + os.sep +'temp' + os.sep +'raw' + os.sep + 'temp', 'rb')
 	
 	uncompressedData.seek(0)

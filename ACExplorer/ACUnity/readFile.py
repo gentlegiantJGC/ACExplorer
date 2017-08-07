@@ -1,3 +1,4 @@
+import sys
 from ACExplorer.ACUnity import format
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.ACUnity.exportDataBlockModels import exportDataBlockModels
@@ -36,5 +37,6 @@ def readFile(fileTree, fileList, fileID):
 	elif data['resourceType'] =='C69A7F31':	#fakes
 		exportFakes(fileTree, fileList, fileID)
 	else:
-		reload(format)  # for development
+		if 'dev' in sys.argv:
+			reload(format)  # for development
 		format.format(fileTree, fileList, fileID)

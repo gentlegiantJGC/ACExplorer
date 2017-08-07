@@ -10,21 +10,12 @@ def getMaterialIDs(fileTree, fileList, fileID):
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]
-	# id = id.upper()
 	fileDir = data['dir']
-	# workingDir = os.sep.join(tempFiles[fileID]['dir'].split(os.sep)[:-1])
-	# folder = 
-	# materialFileName = lightDict[id]
-	# if materialFileName+'.acu' not in os.listdir(folder):
-		# print 'Material File ('+materialFileName+') not in Folder'
-		# return
 	materialFile = open(fileDir, 'rb')
 	_ = materialFile.read(26)
 	materialTemplateID = BEHEX2(materialFile.read(8)).upper()
 	materialFile.close()
-	# if materialTemplateName+'.acu' not in os.listdir(folder):
-		# print 'Material Template ('+materialTemplateName+') not in Folder'
-		# return
+
 	if not tempFiles.exists(materialTemplateID):
 		decompressDatafile(fileTree, fileList, materialTemplateID)
 

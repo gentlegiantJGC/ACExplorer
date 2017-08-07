@@ -10,11 +10,11 @@ from ACExplorer.misc import tempFiles
 
 def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	#fileIDList format
-	# {
-	# 0:{'id':'0000000000000000', 'x':0, 'y':0, 'z':0},
-	# 1:{'id':'0000000000000000', 'x':0, 'y':0, 'z':0},
-	# 2:{'id':'0000000000000000', 'x':0, 'y':0, 'z':0}
-	# }
+	# [
+	# {'fileID':'0000000000000000', 'coords': {'x':0, 'y':0, 'z':0, ...}},
+	# {'fileID':'0000000000000000', 'coords': {'x':0, 'y':0, 'z':0, ...}},
+	# {'fileID':'0000000000000000', 'coords': {'x':0, 'y':0, 'z':0, ...}}
+	# ]
 	
 	if not tempFiles.exists(rootID):
 		decompressDatafile(fileTree, fileList, rootID)
@@ -25,9 +25,9 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	
 	# remove models that couldn't be read
 	ticker = 0
-	fileIDList2 = {}
-	for index0 in fileIDList:
-		fileID = fileIDList[index0]['id'].upper()
+	fileIDList2 = []
+	for fileContainer in fileIDList:
+		fileID = fileContainer['fileID'].upper()
 		
 		if not tempFiles.exists(fileID):
 			decompressDatafile(fileTree, fileList, fileID)
@@ -42,7 +42,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 			except:
 				print 'Failed reading model '+data['fileName']
 		if os.path.isfile(data['dir'].replace('.acu', '.json')):
-			fileIDList2[ticker] = fileIDList[index0]
+			fileIDList2.append(fileContainer)
 			ticker += 1
 			print 'read model '+str(ticker)+ ' of '+str(len(fileIDList))
 	fileIDList = fileIDList2
@@ -73,8 +73,8 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	idsAdded = []
 	missingNo = False
 	
-	for index0 in fileIDList:
-		fileID = fileIDList[index0]['id'].upper()
+	for index0, fileContainer in enumerate(fileIDList):
+		fileID = fileContainer['fileID'].upper()
 
 		if not tempFiles.exists(fileID):
 			decompressDatafile(fileTree, fileList, fileID)
@@ -95,7 +95,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 			except:
 				print data['fileName']
 				raise Exception()
-			num2 = model['modelScale'] * 0.0002 * 10	# model scale
+			num2 = model['modelScale'] * 0.0002 * 10 * 0.2	# model scale
 			num3 = 2048.0
 			num4 = 0
 			# if model['typeSwitch'] != 3:
@@ -106,17 +106,16 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 			
 			# vertex data
 			for vertex in model['vertData']['vertex']:
-				#+(fileIDList[index0]['x']/100000.0)
 				fio.write("v " +
-				str(round((vertex['X'] * num2)+(fileIDList[index0]['x']), 6))
+				str(round((vertex['X'] * num2)+(fileContainer['coords']['x']), 6))
 				
 				+ " " +
 				
-				str(round((vertex['Y'] * num2)+(fileIDList[index0]['y']), 6))
+				str(round((vertex['Y'] * num2)+(fileContainer['coords']['y']), 6))
 				
 				+ " " +
 				
-				str(round((vertex['Z'] * num2)+(fileIDList[index0]['z']), 6))
+				str(round((vertex['Z'] * num2)+(fileContainer['coords']['z']), 6))
 				
 				+ '\n')
 			print 'written vertex data '+str(index0)+ ' of '+str(len(fileIDList))
