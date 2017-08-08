@@ -7,13 +7,28 @@ from ACExplorer.ACUnity.getMaterialIDs import getMaterialIDs
 from ACExplorer.ACUnity.readModel import readModel
 from ACExplorer.misc import tempFiles
 
+def transform(transformationMtx, vertex):
+	# Transformation Matrix transformationMtx[0-3][0-3]
+	# [M11 M12 M13 M14][x]
+	# |M21 M22 M23 M24||y|
+	# |M31 M32 M33 M34||z|
+	# [M41 M42 M43 M44][1]
+	
+	vertex = [vertex['X'], vertex['Y'], vertex['Z'], 1]
+	newVertex = [0,0,0,0]
+	
+	for m in range(4):
+		for n in range(4):
+			newVertex[m] += transformationMtx[m][n] * vertex[n]
+	return newVertex[0:3]
+
 
 def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	#fileIDList format
 	# [
-	# {'fileID':'0000000000000000', 'coords': {'x':0, 'y':0, 'z':0, ...}},
-	# {'fileID':'0000000000000000', 'coords': {'x':0, 'y':0, 'z':0, ...}},
-	# {'fileID':'0000000000000000', 'coords': {'x':0, 'y':0, 'z':0, ...}}
+	# {'fileID':'0000000000000000', 'transformationMtx': },
+	# {'fileID':'0000000000000000', 'transformationMtx': },
+	# {'fileID':'0000000000000000', 'transformationMtx': }
 	# ]
 	
 	if not tempFiles.exists(rootID):
@@ -95,7 +110,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 			except:
 				print data['fileName']
 				raise Exception()
-			num2 = model['modelScale'] * 0.0002 * 10 * 0.2	# model scale
+			#num2 = model['modelScale']# * 0.0002 * 10 * 0.2	# model scale
 			num3 = 2048.0
 			num4 = 0
 			# if model['typeSwitch'] != 3:
@@ -105,17 +120,28 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 				# num2 = 1
 			
 			# vertex data
+			
+			# Transformation Matrix fileContainer['transformationMtx'][0-3][0-3]
+			# [M11 M12 M13 M14][x]
+			# |M21 M22 M23 M24||y|
+			# |M31 M32 M33 M34||z|
+			# [M41 M42 M43 M44][1]
+			
 			for vertex in model['vertData']['vertex']:
+				vertex['X'] *= model['modelScale'] * 0.0001525
+				vertex['Y'] *= model['modelScale'] * 0.0001525
+				vertex['Z'] *= model['modelScale'] * 0.0001525
+				newVertex = transform(fileContainer['transformationMtx'], vertex)
 				fio.write("v " +
-				str(round((vertex['X'] * num2)+(fileContainer['coords']['x']), 6))
+				str(round(newVertex[0], 6))
 				
 				+ " " +
 				
-				str(round((vertex['Y'] * num2)+(fileContainer['coords']['y']), 6))
+				str(round(newVertex[1], 6))
 				
 				+ " " +
 				
-				str(round((vertex['Z'] * num2)+(fileContainer['coords']['z']), 6))
+				str(round(newVertex[2], 6))
 				
 				+ '\n')
 			print 'written vertex data '+str(index0)+ ' of '+str(len(fileIDList))

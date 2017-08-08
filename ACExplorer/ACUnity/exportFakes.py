@@ -20,18 +20,30 @@ def exportFakes(fileTree, fileList, fileID):
 
 	files = fReadIn.split(binascii.unhexlify('000000000000000024B57FD7'))[1:]
 	
-	ticker = 0
-	fileIDList = {}
+	fileIDList = []
 	for n in files:
 		if binascii.unhexlify('298D65EC') not in n:
 			continue
-		if ticker not in fileIDList:
-			fileIDList[ticker] = {}
-		fileIDList[ticker]['x'] = float32(n[63:67])
-		fileIDList[ticker]['y'] = float32(n[67:71])
-		fileIDList[ticker]['z'] = float32(n[71:75])
+		fileContainer = {}
+		fileContainer['transformationMtx'] = [[],[],[],[]]
+		fileContainer['transformationMtx'][0].append(float32(n[15:19]))
+		fileContainer['transformationMtx'][1].append(float32(n[19:23]))
+		fileContainer['transformationMtx'][2].append(float32(n[23:27]))
+		fileContainer['transformationMtx'][3].append(float32(n[27:31]))
+		fileContainer['transformationMtx'][0].append(float32(n[31:35]))
+		fileContainer['transformationMtx'][1].append(float32(n[35:39]))
+		fileContainer['transformationMtx'][2].append(float32(n[39:43]))
+		fileContainer['transformationMtx'][3].append(float32(n[43:47]))
+		fileContainer['transformationMtx'][0].append(float32(n[47:51]))
+		fileContainer['transformationMtx'][1].append(float32(n[51:55]))
+		fileContainer['transformationMtx'][2].append(float32(n[55:59]))
+		fileContainer['transformationMtx'][3].append(float32(n[59:63]))
+		fileContainer['transformationMtx'][0].append(float32(n[63:67]))
+		fileContainer['transformationMtx'][1].append(float32(n[67:71]))
+		fileContainer['transformationMtx'][2].append(float32(n[71:75]))
+		fileContainer['transformationMtx'][3].append(float32(n[75:79]))
 		visualLoc = n.find(binascii.unhexlify('298D65EC'))
-		fileIDList[ticker]['id'] = BEHEX2(n[visualLoc+8:visualLoc+16]).upper()
-		ticker += 1
+		fileContainer['fileID'] = BEHEX2(n[visualLoc+8:visualLoc+16]).upper()
+		fileIDList.append(fileContainer)
 	
 	exportOBJMulti(fileTree, fileList, fileID, fileIDList)

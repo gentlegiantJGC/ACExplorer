@@ -34,7 +34,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 			raise Exception('file '+fileID2+' is empty')
 		data2 = data2[0]
 		
-		print 'Reading '+data2['fileName']+'. '+str(n+1)+' of '+str(len(dataBlock))
+		print 'Reading '+data2['fileName']+'. '+str(n+1)+' of '+str(len(dataBlock['dataBlock']))
 	
 		dataBlockChild = format.format(fileTree, fileList, fileID2)
 		# fileID2, data2 and dataBlockChild all relate to the files contained in
@@ -50,7 +50,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 					raise Exception('file '+fileID3+' is empty')
 				data3 = data3[0]
 				if data3['resourceType'] == '415D9568':
-					fileIDList.append({'fileID':fileID3, 'coords': dataBlockChild['coords']})
+					fileIDList.append({'fileID':fileID3, 'transformationMtx': dataBlockChild['transformationMtx']})
 				else:
 					raise Exception(fileID3+' is not a 3D model')
 		
@@ -61,8 +61,6 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 			print data2['fileName']
 			print dataBlockChild['fileType']
 			print dataBlockChild['fileID']
-	
-	print fileIDList
 	
 	# fIn = open(data['dir'], 'rb')
 	# fIn.seek(14)

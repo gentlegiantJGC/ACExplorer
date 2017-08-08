@@ -149,35 +149,6 @@ def readModel(fileTree, fileList, fileID):
 			model['vertData']['normals'] = []
 			# arxForm.acModel.vertData = new arxForm.acVertStruct[arxForm.acModel.vertCount];
 			for index in range(model['vertCount']):
-				if model['vertTableSize'] == 40:
-					raise Exception('40')
-					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 2L;
-					# arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 6L;
-					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
-					# break;
 				elif model['vertTableSize'] == 48:
 					raise Exception('48')
 					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
@@ -209,8 +180,8 @@ def readModel(fileTree, fileList, fileID):
 					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
 					# binaryReader.BaseStream.Position += 4L;
 					# break;
-				elif model['vertTableSize'] == 32:
-					raise Exception('32')
+				if model['vertTableSize'] == 40:
+					raise Exception('40')
 					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
@@ -225,10 +196,18 @@ def readModel(fileTree, fileList, fileID):
 					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
 					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
 					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.W = (float) binaryReader.ReadByte();
 					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
 					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
 					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
 					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
 					# break;
 				elif model['vertTableSize'] == 36:
 					raise Exception('36')
@@ -252,8 +231,8 @@ def readModel(fileTree, fileList, fileID):
 					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
 					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
 					# break;
-				elif model['vertTableSize'] == 24:
-					raise Exception('24')
+				elif model['vertTableSize'] == 32:
+					raise Exception('32')
 					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
@@ -264,6 +243,14 @@ def readModel(fileTree, fileList, fileID):
 					# binaryReader.BaseStream.Position += 6L;
 					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
+					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
 					# break;
 				elif model['vertTableSize'] == 28:
 					model['vertData']['vertex'].append({})
@@ -301,6 +288,19 @@ def readModel(fileTree, fileList, fileID):
 					if model['vertData']['tVert'][index]['Y'] >= 2**15:
 						model['vertData']['tVert'][index]['Y'] -= 2**16
 					_ = fi.read(4)
+				elif model['vertTableSize'] == 24:
+					raise Exception('24')
+					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
+					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
+					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
+					# binaryReader.BaseStream.Position += 2L;
+					# arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
+					# arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
+					# arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
+					# binaryReader.BaseStream.Position += 6L;
+					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
+					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
+					# break;
 				elif model['vertTableSize'] == 16:
 					model['vertData']['vertex'].append({})
 					model['vertData']['vertex'][index]['X'] = float(LE2DEC2(fi.read(2)))

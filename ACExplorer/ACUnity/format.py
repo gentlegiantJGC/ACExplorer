@@ -123,25 +123,25 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 	if fileType == "0984415E": #entity
 		# data
 		readStr(fIn, fOut, 1) # possibly a count
-		fileContainer['coords'] = {}
+		fileContainer['transformationMtx'] = [[],[],[],[]]
 		# looks like it could be a matrix
-		fileContainer['coords']['unkfloat1'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat2'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat3'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat4'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat5'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat6'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat7'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat8'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat9'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat10'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat11'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat12'] = readFloat32(fIn, fOut)
-		fOutWrite(fOut, '\nworld coordinates\n')
-		fileContainer['coords']['x'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['y'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['z'] = readFloat32(fIn, fOut)
-		fileContainer['coords']['unkfloat13'] = readFloat32(fIn, fOut)
+		fOutWrite(fOut, '\nTransformation Matrix\n')
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
 		fOutWrite(fOut, '\n')
 		count1 = readInt(fIn, fOut, 4) # possibly a count
 		fileContainer['unknown'] = {}
@@ -163,18 +163,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			
 			
 		# float * 7
-		
-		# readStr(fIn, fOut, 3)
-		# readID(fileTree, fileList, fIn, fOut)
-		# readStr(fIn, fOut, 6)
-		# readID(fileTree, fileList, fIn, fOut)
-		# readType(fIn, fOut)
-		# readStr(fIn, fOut, 4)
-		# readID(fileTree, fileList, fIn, fOut)
-		# readStr(fIn, fOut, 1)
-		# readID(fileTree, fileList, fIn, fOut)
-		# readStr(fIn, fOut, 14)
-		# readID(fileTree, fileList, fIn, fOut)
 		
 		# 110 bytes
 		# 2 bytes
@@ -208,7 +196,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		
 		# 03 end file?
 		readStr(fIn, fOut, 1)
-		print fileContainer
 		return fileContainer
 	
 	elif fileType == "AC2BBF68":	# datablock
