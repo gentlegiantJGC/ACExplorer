@@ -2,6 +2,7 @@ import binascii
 import os
 import sys
 from ACExplorer import CONFIG
+from ACExplorer.misc import log
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import LE2BE2, BEHEX2, LE2DEC2, float32
@@ -79,7 +80,7 @@ def format(fileTree, fileList, fileID):
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]
-	print 'Formatting '+data["fileName"]
+	log.info(__name__, 'Formatting '+fileID+':'+data["fileName"])
 	fIn = open(data["dir"], 'rb')
 	if dev:
 		fOut = open(data["dir"]+'.format', 'w')
@@ -103,7 +104,8 @@ def format(fileTree, fileList, fileID):
 	fIn.close()
 	if dev:
 		fOut.close()
-		os.system(data["dir"]+'.format')
+		print data["dir"]+'.format'
+		os.system('"'+data['dir']+'.format"')
 		
 	return fileContainer
 	
@@ -122,7 +124,7 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 	
 	if fileType == "0984415E": #entity
 		# data
-		readStr(fIn, fOut, 1) # possibly a count
+		readStr(fIn, fOut, 1) # checkbyte 03 to continue (other stuff to not? have seen 00 with data after)
 		fileContainer['transformationMtx'] = [[],[],[],[]]
 		# looks like it could be a matrix
 		fOutWrite(fOut, '\nTransformation Matrix\n')
@@ -144,14 +146,18 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
 		fOutWrite(fOut, '\n')
 		count1 = readInt(fIn, fOut, 4) # possibly a count
-		fileContainer['unknown'] = {}
-		fileContainer['unknown']['0004'] = readStr(fIn, fOut, 2) # unknown
-		fOutWrite(fOut, '\n')
+		if count1 > 20:
+			log.warn(__name__, 'error reading entity file')
+			# convert to an actual logger
+			return fileContainer
+		
+		fileContainer['unknown'] = []
 		
 		subFileContainer = {}
 		
-		# for n in range(10):
-		while type(subFileContainer) == dict:
+		for _ in range(count1):
+			fOutWrite(fOut, '\n')
+			fileContainer['unknown'].append(readStr(fIn, fOut, 2)) # unknown
 			readID(fileTree, fileList, fIn, fOut) # temporary id?
 			fileType2 = readType(fIn, fOut)
 			subFileContainer = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
@@ -198,10 +204,81 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readStr(fIn, fOut, 1)
 		return fileContainer
 	
+	elif fileType == "1CBDE084":
+		readStr(fIn, fOut, 2)
+		readID(fileTree, fileList, fIn, fOut)
+		fOutWrite(fOut, '\n')
+		
+		readID(fileTree, fileList, fIn, fOut)
+		fileType2 = readType(fIn, fOut)
+		recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		
+		readID(fileTree, fileList, fIn, fOut)
+		fileType2 = readType(fIn, fOut)
+		recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		
+		fileContainer['transformationMtx'] = [[],[],[],[]]
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
+		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		fOutWrite(fOut, '\n')
+		
+		count1 = readInt(fIn, fOut, 4)
+		for _ in range(count1):
+			readStr(fIn, fOut, 1)
+			readID(fileTree, fileList, fIn, fOut)
+		
+		return fileContainer
+		
+	
+	elif fileType == "2D675BA2":	# merged shape
+		count1 = readInt(fIn, fOut, 4) # possibly a count
+		if count1 != 0:
+			log.warn(__name__, '"2D675BA2" count1 is not 0')
+			return fileContainer
+		count2 = readInt(fIn, fOut, 4)
+		for _ in range(count2):
+			readStr(fIn, fOut, 2)
+			readID(fileTree, fileList, fIn, fOut)
+		fOutWrite(fOut, '\n')
+		count3 = readInt(fIn, fOut, 4)
+		fOutWrite(fOut, '\n')
+		for _ in range(count3):	# transformation matrix
+			for a in range(16):
+				readFloat32(fIn, fOut)
+			fOutWrite(fOut, '\n')
+			
+		count4 = readInt(fIn, fOut, 4)
+		fOutWrite(fOut, '\n')
+		for _ in range(count4):
+			readID(fileTree, fileList, fIn, fOut)
+			fileType2 = readType(fIn, fOut)
+			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			
+		return fileContainer
+		
+	elif fileType == "43EF99C2":	#Collision Filter Info 
+		readStr(fIn, fOut, 15)
+		fOutWrite(fOut, '\n')
+		return fileContainer
+	
 	elif fileType == "AC2BBF68":	# datablock
 		count1 = readInt(fIn, fOut, 4)
 		fileContainer['dataBlock'] = []
-		for n in range(count1):
+		for _ in range(count1):
 			readStr(fIn, fOut, 2)
 			fileContainer['dataBlock'].append(readID(fileTree, fileList, fIn, fOut))
 		fOutWrite(fOut, '\n')
@@ -212,12 +289,33 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readID(fileTree, fileList, fIn, fOut)
 		readStr(fIn, fOut, 1)
 		fOutWrite(fOut, '\n')
+		
+		subFileContainer = {}
+		ending0 = '00'
+		while ending0 == '00' and type(subFileContainer) == dict:
+			tempID = readID(fileTree, fileList, fIn, fOut) # temporary id?
+			fileType2 = readType(fIn, fOut)
+			subFileContainer = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			for key in subFileContainer:
+				if key in fileContainer:
+					fileContainer[key] += subFileContainer[key]
+				else:
+					fileContainer[key] = subFileContainer[key]
+			ending0 = readStr(fIn, fOut, 1)
+			
+		while ending0 != '00':
+			ending0 = readStr(fIn, fOut, 1)
+		
+		fOutWrite(fOut, '\n')
+		
+		for _ in range(7):
+			readFloat32(fIn, fOut)
+		
 		return fileContainer
 	
 	elif fileType == "01437462":	# LOD selector
 		readStr(fIn, fOut, 1)
 		readID(fileTree, fileList, fIn, fOut)
-		readStr(fIn, fOut, 1)
 		fOutWrite(fOut, '\n')
 		return fileContainer
 	
@@ -227,16 +325,22 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		fileContainer['LOD'].append({'fileID':readID(fileTree, fileList, fIn, fOut)})
 		readStr(fIn, fOut, 40) #contains a compiled mesh instance 4368101B
 		count1 = readInt(fIn, fOut, 4) # number of textures to follow
-		readStr(fIn, fOut, 1)
 		fOutWrite(fOut, '\n')
 		for n in range(count1):
+			readStr(fIn, fOut, 1)
 			readID(fileTree, fileList, fIn, fOut) # temporary id?
 			fileType2 = readType(fIn, fOut)
 			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-			
+		
 		readStr(fIn, fOut, 8)
 		fOutWrite(fOut, '\n')
 		return fileContainer
+		
+	elif fileType == "7270FC9D":
+		count1 = readInt(fIn, fOut, 4)
+		for _ in range(count1):
+			readStr(fIn, fOut, 1)
+			readID(fileTree, fileList, fIn, fOut)
 			
 	elif fileType == "995BFBF5":
 		readStr(fIn, fOut, 1)
@@ -245,7 +349,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readID(fileTree, fileList, fIn, fOut)
 		readStr(fIn, fOut, 2)
 		readID(fileTree, fileList, fIn, fOut)
-		readStr(fIn, fOut, 1)	# check byte?
 		fOutWrite(fOut, '\n')
 		return fileContainer
 		
@@ -302,6 +405,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		
 	else:
 		fOutWrite(fOut, 'not currently supported\n')
-		print fileType+' not currently supported'
+		log.warn(__name__, fileType+' not currently supported')
 		return []
 		# return fileContainer

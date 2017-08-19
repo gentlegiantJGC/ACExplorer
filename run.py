@@ -11,6 +11,7 @@ import ttk
 from Tkinter import *
 
 from ACExplorer import CONFIG
+from ACExplorer.misc import log
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.ACUnity.readFile import readFile
 from ACExplorer.ACUnity.readForge import readForge
@@ -20,6 +21,8 @@ from ACExplorer.misc import tempFiles
 # location in the file, size and file name
 # this is rebuilt each time the program opens
 # fileList = {}
+
+log.info(__name__, 'Building GUI Window')
 
 top = Tk()
 
@@ -47,6 +50,8 @@ def onDoubleClick(event):
 
 fileTree.bind("<Double-1>", onDoubleClick)
 
+log.info(__name__, 'Building File List')
+
 # fileList is a dictionary of each forge file on the first level and
 # each datafile on the second level under each forge file. This is used
 # as a cheap way to find the location a file is stored under.
@@ -56,7 +61,7 @@ fileList = readForge(fileTree, CONFIG["ACUnityFolder"])
 # load all the decompressed files onto the TK Tree
 tempFiles.populateTree(fileTree)
 
-print 'Done'
+log.info(__name__, 'Finished Building File List')
 
 def searchFor():
 	if search.get() != '':

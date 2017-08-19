@@ -149,7 +149,7 @@ def readModel(fileTree, fileList, fileID):
 			model['vertData']['normals'] = []
 			# arxForm.acModel.vertData = new arxForm.acVertStruct[arxForm.acModel.vertCount];
 			for index in range(model['vertCount']):
-				elif model['vertTableSize'] == 48:
+				if model['vertTableSize'] == 48:
 					raise Exception('48')
 					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
@@ -180,7 +180,7 @@ def readModel(fileTree, fileList, fileID):
 					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
 					# binaryReader.BaseStream.Position += 4L;
 					# break;
-				if model['vertTableSize'] == 40:
+				elif model['vertTableSize'] == 40:
 					raise Exception('40')
 					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);

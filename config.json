@@ -5,5 +5,6 @@
 	"missingNo":		"resources\\missingNo.png",
 	"texconv":			"resources\\texconv.exe",
 	"LZO32Path":		"resources\\lzo32.dll",
-	"LZO64Path":		"resources\\lzo64.dll"
+	"LZO64Path":		"resources\\lzo64.dll",
+	"logFile":			"ACExplorer.log"
 }

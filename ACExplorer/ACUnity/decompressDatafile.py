@@ -1,5 +1,4 @@
 import os
-import traceback
 
 from ACExplorer import CONFIG
 from ACExplorer.misc import tempFiles
@@ -9,6 +8,8 @@ from ACExplorer.misc.decompress import decompress
 
 def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	fileID = fileID.upper()
+	if fileID == '00'*8:
+		return
 	if forgeFile == None:
 		for forgeFile in fileList:
 			if fileID in fileList[forgeFile]:
@@ -25,7 +26,6 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 				return
 	if fileID not in fileList[forgeFile]:
 		print fileID +' not found'
-		traceback.print_stack()
 		return
 	if not os.path.isdir(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'raw'):
 		os.makedirs(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'raw')
@@ -100,7 +100,8 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	alphabeticalFiles = {}
 	for m in xrange(fileCount):
 		uncompressedData.seek(2+m*14+extra16)
-		fileID2 = BEHEX2(uncompressedData.read(8)).upper()
+		fileIDBE = uncompressedData.read(8)
+		fileID2 = BEHEX2(fileIDBE).upper()
 		uncompressedData.seek(10+m*14+extra16)
 		fileDataSize = LE2DEC2(uncompressedData.read(4)) #(size of file with header)
 		uncompressedData.seek(14+m*14+extra16)
@@ -113,6 +114,8 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 		fileNameSize = LE2DEC2(uncompressedData.read(4))
 		uncompressedData.seek(fileOffset+12)
 		fileName = uncompressedData.read(fileNameSize)
+		if fileName == '':
+			fileName = LE2BE2(fileIDBE)
 		uncompressedData.seek(fileOffset+12+fileNameSize)
 		tempFile = uncompressedData.read(fileSize)
 		fileType = LE2BE(tempFile, 10, 4).upper()
