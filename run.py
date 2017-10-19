@@ -83,7 +83,7 @@ def runcode():
 	exec search.get()
 
 runCode = Button(top, text = 'Run Code', command=runcode)
-runCode.grid(row=0, column=6)
+runCode.grid(row=0, column=4)
 
 def info(input=None):
 	if search.get() == '' and input == None:
@@ -100,6 +100,6 @@ def info(input=None):
 	print tempFiles.read(fileID)
 		
 infobutton = Button(top, text = 'Info', command=info)
-infobutton.grid(row=0, column=8)
+infobutton.grid(row=0, column=5)
 
 top.mainloop()

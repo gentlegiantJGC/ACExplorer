@@ -5,6 +5,13 @@ from ACExplorer.misc.exportOBJMulti import exportOBJMulti
 from ACExplorer.ACUnity import format
 import sys
 
+def mul4x4(A,B):
+	C = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+	for x in range(4):
+		for y in range(4):
+			for z in range(4):
+				C[x][y] += A[x][z]*B[z][y]
+	return C
 
 def exportDataBlockModels(fileTree, fileList, fileID):
 	if not tempFiles.exists(fileID):
@@ -54,7 +61,35 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 				else:
 					raise Exception(fileID3+' is not a 3D model')
 		
-		
+		elif dataBlockChild['fileType'] == '1CBDE084':
+			if 'files' in dataBlockChild:
+				for fileID3 in dataBlockChild['files']:
+					if not tempFiles.exists(fileID3):
+						decompressDatafile(fileTree, fileList, fileID3)
+					data3 = tempFiles.read(fileID3)
+					if len(data3) == 0:
+						continue
+						raise Exception('file '+fileID3+' is empty')
+					data3 = data3[0]
+					
+					if data3['resourceType'] == '0984415E':
+						dataBlockChild2 = format.format(fileTree, fileList, fileID3)
+						if 'LOD' in dataBlockChild2 and len(dataBlockChild2['LOD']) > 0:
+							fileID4 = dataBlockChild2['LOD'][0]['fileID']
+							if not tempFiles.exists(fileID4):
+								decompressDatafile(fileTree, fileList, fileID4)
+							data4 = tempFiles.read(fileID4)
+							if len(data4) == 0:
+								raise Exception('file '+fileID4+' is empty')
+							data4 = data4[0]
+							if data4['resourceType'] == '415D9568':
+								fileIDList.append({'fileID':fileID4, 'transformationMtx': dataBlockChild2['transformationMtx']})
+							else:
+								raise Exception(fileID4+' is not a 3D model')
+					elif data3['resourceType'] == '3F742D26':
+						print 'Entity Groups not currently supported'
+					else:
+						raise Exception('found file type {}'.format(data3['resourceType']))
 		
 		else:
 			print 'Could not read following file. Unsupported type.'

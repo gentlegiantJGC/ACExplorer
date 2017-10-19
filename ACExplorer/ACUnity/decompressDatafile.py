@@ -8,7 +8,7 @@ from ACExplorer.misc.decompress import decompress
 
 def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	fileID = fileID.upper()
-	if fileID == '00'*8:
+	if fileID == '00'*8 or not fileID.endswith('00'*3):
 		return
 	if forgeFile == None:
 		for forgeFile in fileList:

@@ -110,6 +110,7 @@ def format(fileTree, fileList, fileID):
 	return fileContainer
 	
 def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
+	log.info(__name__, 'Formatting Type: {}'.format(fileType))
 	# if not os.path.isdir(CONFIG['dumpFolder']+os.sep+'fileTypes'):
 		# os.makedirs(CONFIG['dumpFolder']+os.sep+'fileTypes')
 	# typeOut = open(CONFIG['dumpFolder']+os.sep+'fileTypes'+os.sep+fileType, 'a')
@@ -126,24 +127,11 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		# data
 		readStr(fIn, fOut, 1) # checkbyte 03 to continue (other stuff to not? have seen 00 with data after)
 		fileContainer['transformationMtx'] = [[],[],[],[]]
-		# looks like it could be a matrix
+		# 4x4 transformation matrix
 		fOutWrite(fOut, '\nTransformation Matrix\n')
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		for _ in range(4):
+			for m in range(4):
+				fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
 		fOutWrite(fOut, '\n')
 		count1 = readInt(fIn, fOut, 4) # possibly a count
 		if count1 > 20:
@@ -218,29 +206,19 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		
 		fileContainer['transformationMtx'] = [[],[],[],[]]
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][0].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][1].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][2].append(readFloat32(fIn, fOut))
-		fileContainer['transformationMtx'][3].append(readFloat32(fIn, fOut))
+		for _ in range(4):
+			for m in range(4):
+				fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
 		fOutWrite(fOut, '\n')
 		
 		count1 = readInt(fIn, fOut, 4)
+		
+		fileContainer['files'] = []
+		
 		for _ in range(count1):
 			readStr(fIn, fOut, 1)
-			readID(fileTree, fileList, fIn, fOut)
-		
+			# readID(fileTree, fileList, fIn, fOut)
+			fileContainer['files'].append(readID(fileTree, fileList, fIn, fOut))
 		return fileContainer
 		
 	
@@ -357,10 +335,8 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readID(fileTree, fileList, fIn, fOut)
 		readStr(fIn, fOut, 5)
 		readID(fileTree, fileList, fIn, fOut)
-		readStr(fIn, fOut, 1)
-		readID(fileTree, fileList, fIn, fOut)
-		readStr(fIn, fOut, 5)
-		#unfinished
+		for _ in range(9):
+			readFloat32(fIn, fOut)
 		fOutWrite(fOut, '\n')
 		return fileContainer
 		
@@ -402,7 +378,38 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readStr(fIn, fOut, 4)
 		fOutWrite(fOut, '\n')
 		return fileContainer
+	
+	elif fileType == '55AF1C3E':	# unknown
+		readStr(fIn, fOut, 2)
+		count1 = readInt(fIn, fOut, 4)
 		
+		if count1 > 100:
+			log.warn(__name__, 'error reading unknown file type')
+			# convert to an actual logger
+			return fileContainer
+		for _ in range(count1):
+			readID(fileTree, fileList, fIn, fOut) # temporary id?
+			fileType2 = readType(fIn, fOut)
+			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		fOutWrite(fOut, '\n')
+		
+		count2 = readInt(fIn, fOut, 4)
+		if count2 > 100:
+			log.warn(__name__, 'error reading unknown file type')
+			# convert to an actual logger
+			return fileContainer
+		for _ in range(count2):
+			readStr(fIn, fOut, 12)
+		fOutWrite(fOut, '\n')
+			
+			
+		return fileContainer
+		
+	elif fileType == '344FA659':	# unknown
+		readStr(fIn, fOut, 29)
+		fOutWrite(fOut, '\n')
+		return fileContainer
+	
 	else:
 		fOutWrite(fOut, 'not currently supported\n')
 		log.warn(__name__, fileType+' not currently supported')
