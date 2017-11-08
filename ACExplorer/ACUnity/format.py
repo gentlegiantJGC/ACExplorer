@@ -191,6 +191,30 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		# 03 end file?
 		readStr(fIn, fOut, 1)
 		return fileContainer
+		
+	elif fileType == "3F742D26":	# entity group
+		readStr(fIn, fOut, 1)
+		fileContainer['transformationMtx'] = [[],[],[],[]]
+		for _ in range(4):
+			for m in range(4):
+				fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
+		fOutWrite(fOut, '\n')
+		count1 = readInt(fIn, fOut, 4)
+		for _ in range(count1):
+			readStr(fIn, fOut, 2)
+			readID(fileTree, fileList, fIn, fOut)
+			fileType2 = readType(fIn, fOut)
+			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		
+		
+		readStr(fIn, fOut, 43)
+		
+		for _ in range(3):
+			readID(fileTree, fileList, fIn, fOut)
+			fileType2 = readType(fIn, fOut)
+			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		
+		return fileContainer
 	
 	elif fileType == "1CBDE084":
 		readStr(fIn, fOut, 2)
@@ -310,7 +334,23 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			fileType2 = readType(fIn, fOut)
 			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		
-		readStr(fIn, fOut, 8)
+		# readStr(fIn, fOut, 8) # two counts. first count for transformation matrix. second for more things?
+		count2 = readInt(fIn, fOut, 4)
+		if count2 > 20:
+			raise Exception('count2 is too large. Aborting')
+		for _ in range(count2):
+			for _ in range(4):
+				for m in range(4):
+					# fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
+					readFloat32(fIn, fOut)
+			fOutWrite(fOut, '\n')
+		count3 = readInt(fIn, fOut, 4)
+		if count3 > 20:
+			raise Exception('count3 is too large. Aborting')
+		for _ in range(count3):
+			readID(fileTree, fileList, fIn, fOut)
+			fileType2 = readType(fIn, fOut)
+			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		fOutWrite(fOut, '\n')
 		return fileContainer
 		
@@ -375,7 +415,8 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		return fileContainer
 		
 	elif fileType == 'DB1D406E':	# Data Layer Filter 
-		readStr(fIn, fOut, 4)
+		count1 = readInt(fIn, fOut, 4) #count
+		# more data follows this if count != 0
 		fOutWrite(fOut, '\n')
 		return fileContainer
 	

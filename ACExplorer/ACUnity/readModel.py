@@ -139,13 +139,28 @@ def readModel(fileTree, fileList, fileID):
 	# }
 	# }
 	
-	# could be some kind of matrix (all values seem to be float32)
-	readStr(fIn, fOut, 41)
+	# readStr(fIn, fOut, 41)
+	model['boundingBox'] = {}
+	model['boundingBox']['minx'] = readFloat32(fIn, fOut)
+	model['boundingBox']['miny'] = readFloat32(fIn, fOut)
+	model['boundingBox']['minz'] = readFloat32(fIn, fOut)
+	readStr(fIn, fOut, 4)
+	model['boundingBox']['maxx'] = readFloat32(fIn, fOut)
+	model['boundingBox']['maxy'] = readFloat32(fIn, fOut)
+	model['boundingBox']['maxz'] = readFloat32(fIn, fOut)
+	readStr(fIn, fOut, 4)
+	readStr(fIn, fOut, 1)
+	# readStr(fIn, fOut, 33) # this may be a bounding box. (float32)
+	#First three are all negative followed by a set of zeros
+	# Next three three are all positive followed by a set of zeros and a null byte
+	readID(fileTree, fileList, fIn, fOut)
 	if readStr(fIn, fOut, 4).upper() == "FC9E1595":
 		readStr(fIn, fOut, 4)
+		fOutWrite(fOut, 'Typeswitch\n')
 		model['typeSwitch'] = readInt(fIn, fOut, 4)
 		if model['typeSwitch'] == 0:
 			readStr(fIn, fOut, 14)
+			fOutWrite(fOut, 'Vert table length\n')
 			model['vertTableSize'] = readInt(fIn, fOut, 4)
 			model['unkLng2'] = readInt(fIn, fOut, 4)
 			readStr(fIn, fOut, 24)
@@ -153,12 +168,14 @@ def readModel(fileTree, fileList, fileID):
 			model['length2'] = readInt(fIn, fOut, 4)
 			model['meshFaceBlocks'] = []
 			model['shadowFaceBlocks'] = []
+			fOutWrite(fOut, 'Mesh Face Blocks\n')
 			for index in range(model['length1']):
 				model['meshFaceBlocks'].append(readInt(fIn, fOut, 4))
 			for index in range(model['length2']):
 				model['shadowFaceBlocks'].append(readInt(fIn, fOut, 4))
 			model['unkLng'] = readInt(fIn, fOut, 4)
 			model['unkByt'] = readStr(fIn, fOut, 1);
+			fOutWrite(fOut, 'Vert count\n')
 			num3 = readInt(fIn, fOut, 4)
 			model['vertCount'] = num3 / model['vertTableSize'];
 			model['vertData'] = {}
@@ -320,31 +337,6 @@ def readModel(fileTree, fileList, fileID):
 					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
 					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
 					# break;
-				elif model['vertTableSize'] == 16:
-					model['vertData']['vertex'].append({})
-					model['vertData']['vertex'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['X'] >= 2**15:
-						model['vertData']['vertex'][index]['X'] -= 2**16
-					model['vertData']['vertex'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Y'] >= 2**15:
-						model['vertData']['vertex'][index]['Y'] -= 2**16
-					model['vertData']['vertex'][index]['Z'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Z'] >= 2**15:
-						model['vertData']['vertex'][index]['Z'] -= 2**16
-					num5 = float(readInt(fIn, fOut, 2))
-					if num5 >= 2**15:
-						num5 -= 2**16
-					model['vertData']['vertex'][index]['X'] /= num5
-					model['vertData']['vertex'][index]['Y'] /= num5
-					model['vertData']['vertex'][index]['Z'] /= num5
-					readStr(fIn, fOut, 4)
-					model['vertData']['tVert'].append({})
-					model['vertData']['tVert'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['X'] >= 2**15:
-						model['vertData']['tVert'][index]['X'] -= 2**16
-					model['vertData']['tVert'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['Y'] >= 2**15:
-						model['vertData']['tVert'][index]['Y'] -= 2**16
 				elif model['vertTableSize'] == 20:
 					model['vertData']['vertex'].append({})
 					model['vertData']['vertex'][index]['X'] = float(readInt(fIn, fOut, 2))
@@ -380,8 +372,57 @@ def readModel(fileTree, fileList, fileID):
 					model['vertData']['tVert'][index]['Y'] = float(readInt(fIn, fOut, 2))
 					if model['vertData']['tVert'][index]['Y'] >= 2**15:
 						model['vertData']['tVert'][index]['Y'] -= 2**16
+				elif model['vertTableSize'] == 16:
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(readInt(fIn, fOut, 2))
+					if model['vertData']['vertex'][index]['X'] >= 2**15:
+						model['vertData']['vertex'][index]['X'] -= 2**16
+					model['vertData']['vertex'][index]['Y'] = float(readInt(fIn, fOut, 2))
+					if model['vertData']['vertex'][index]['Y'] >= 2**15:
+						model['vertData']['vertex'][index]['Y'] -= 2**16
+					model['vertData']['vertex'][index]['Z'] = float(readInt(fIn, fOut, 2))
+					if model['vertData']['vertex'][index]['Z'] >= 2**15:
+						model['vertData']['vertex'][index]['Z'] -= 2**16
+					num5 = float(readInt(fIn, fOut, 2))
+					if num5 >= 2**15:
+						num5 -= 2**16
+					model['vertData']['vertex'][index]['X'] /= num5
+					model['vertData']['vertex'][index]['Y'] /= num5
+					model['vertData']['vertex'][index]['Z'] /= num5
+					readStr(fIn, fOut, 4)
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(readInt(fIn, fOut, 2))
+					if model['vertData']['tVert'][index]['X'] >= 2**15:
+						model['vertData']['tVert'][index]['X'] -= 2**16
+					model['vertData']['tVert'][index]['Y'] = float(readInt(fIn, fOut, 2))
+					if model['vertData']['tVert'][index]['Y'] >= 2**15:
+						model['vertData']['tVert'][index]['Y'] -= 2**16
 				else:
 					raise Exception("Not yet implemented!\n\nvertTableSize = " + str(vertTableSize))
+			
+			# scale verticies based on bouding box
+			model['modelBoundingBox'] = {}
+			vertTemp = [a['X'] for a in model['vertData']['vertex']]
+			model['modelBoundingBox']['minx'] = min(vertTemp)
+			model['modelBoundingBox']['maxx'] = max(vertTemp)
+			vertTemp = [a['Y'] for a in model['vertData']['vertex']]
+			model['modelBoundingBox']['miny'] = min(vertTemp)
+			model['modelBoundingBox']['maxy'] = max(vertTemp)
+			vertTemp = [a['Z'] for a in model['vertData']['vertex']]
+			model['modelBoundingBox']['minz'] = min(vertTemp)
+			model['modelBoundingBox']['maxz'] = max(vertTemp)
+			
+			if model['boundingBox'] != {"maxz": 0.0,"maxx": 0.0,"maxy": 0.0,"minx": 0.0,"miny": 0.0,"minz": 0.0}:
+				for coord in 'xyz':
+					for index in model['vertData']['vertex']:
+						modelMin = model['modelBoundingBox']['min'+coord]
+						modelMax = model['modelBoundingBox']['max'+coord]
+						worldMin = model['boundingBox']['min'+coord]
+						worldMax = model['boundingBox']['max'+coord]
+						index[coord.upper()] = ((index[coord.upper()] - modelMin) / (modelMax - modelMin)) * (worldMax-worldMin) + worldMin
+			
+			
+			fOutWrite(fOut, 'Face table\n')
 			model['length3'] = readInt(fIn, fOut, 4) / 6
 			model['faceData'] = []
 			for index in range(model['length3']):
@@ -395,11 +436,16 @@ def readModel(fileTree, fileList, fileID):
 				# arxForm.acModel.cAry[index] = fi.read(4);
 				# binaryReader.BaseStream.Position += (long) arxForm.acModel.cAry[index];
 				model['cAry'] = readInt(fIn, fOut, 4)
+				fOutWrite(fOut, '\t')
 				readStr(fIn, fOut, model['cAry'])
-			readStr(fIn, fOut, 7)
+			# the last two iterations of the loop always seem to be 0 and I think go with the type below as an empty id
+			readType(fIn, fOut)
+			readStr(fIn, fOut, 3)
+			fOutWrite(fOut, 'Mesh Count\n')
 			model['meshCount'] = readInt(fIn, fOut, 4)
 			model['meshData'] = []
 			model['faceCount'] = 0
+			fOutWrite(fOut, 'Mesh Table\n')
 			for index in range(model['meshCount']):
 				readStr(fIn, fOut, 12)
 				model['meshData'].append({})
@@ -410,8 +456,10 @@ def readModel(fileTree, fileList, fileID):
 				model['meshData'][index]['vertCount'] = readInt(fIn, fOut, 4) #number of verticies
 				readStr(fIn, fOut, 4)
 				model['faceCount'] += model['meshData'][index]['vertCount']
+			fOutWrite(fOut, 'Shadow Count\n')
 			model['shadowCount'] = readInt(fIn, fOut, 4)
 			model['shadowData'] = []
+			fOutWrite(fOut, 'Shadow Table\n')
 			for index in range(model['shadowCount']):
 				readStr(fIn, fOut, 12)
 				model['shadowData'].append({})
@@ -423,6 +471,7 @@ def readModel(fileTree, fileList, fileID):
 				readStr(fIn, fOut, 4)
 			for index in range(2):
 				num4 = readInt(fIn, fOut, 4)
+				fOutWrite(fOut, '\t')
 				readStr(fIn, fOut, num4)
 		elif model['typeSwitch'] == 3:
 			raise Exception('typeSwitch 3 not implimented')
@@ -565,6 +614,7 @@ def readModel(fileTree, fileList, fileID):
 			# break;
 		else:
 			raise Exception("New switchType found")
+		fOutWrite(fOut, 'Skin Data Table\n')
 		model['length4'] = readInt(fIn, fOut, 4)
 		model['skinData'] = []
 		for index1 in range(model['length4']):
@@ -577,7 +627,9 @@ def readModel(fileTree, fileList, fileID):
 				model['skinData'][index1]['boneNo'].append(readInt(fIn, fOut, 2))
 			readStr(fIn, fOut, (256 - model['skinData'][index1]['boneCount'] * 2))
 		readStr(fIn, fOut, 8)
+		fOutWrite(fOut, 'Model Scale\n')
 		model['modelScale'] = readFloat32(fIn, fOut)
+		fOutWrite(fOut, 'Material Table\n')
 		model['materialCount'] = readInt(fIn, fOut, 4)
 		model['materialId'] = []
 		# model['materials'] = {}

@@ -128,9 +128,9 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 			# [M41 M42 M43 M44][1]
 			
 			for vertex in model['vertData']['vertex']:
-				vertex['X'] *= model['modelScale'] * 0.0001525
-				vertex['Y'] *= model['modelScale'] * 0.0001525
-				vertex['Z'] *= model['modelScale'] * 0.0001525
+				# vertex['X'] *= model['modelScale'] * 0.0001525
+				# vertex['Y'] *= model['modelScale'] * 0.0001525
+				# vertex['Z'] *= model['modelScale'] * 0.0001525
 				newVertex = transform(fileContainer['transformationMtx'], vertex)
 				fio.write("v " +
 				str(round(newVertex[0], 6))
@@ -238,7 +238,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 							fim.write(data3['fileName'] + '.dds\n')
 
 					fim.write('\n')
-			print 'written texture data '+str(index0)+ ' of '+str(len(fileIDList))
+			print 'written material data '+str(index0)+ ' of '+str(len(fileIDList))
 	
 	fio.close()
 		
@@ -253,4 +253,4 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 		fim.write('\n')
 	fim.close()
 	
-	print 'done'
+	print 'Done'

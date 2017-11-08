@@ -47,7 +47,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 		# fileID2, data2 and dataBlockChild all relate to the files contained in
 		# the DataBlock file. The file could be of a number of types including
 		# entities and entity groups
-		if dataBlockChild['fileType'] == '0984415E':
+		if dataBlockChild['fileType'] == '0984415E': # entity
 			if 'LOD' in dataBlockChild and len(dataBlockChild['LOD']) > 0:
 				fileID3 = dataBlockChild['LOD'][0]['fileID']
 				if not tempFiles.exists(fileID3):
@@ -72,7 +72,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 						raise Exception('file '+fileID3+' is empty')
 					data3 = data3[0]
 					
-					if data3['resourceType'] == '0984415E':
+					if data3['resourceType'] == '0984415E': # entity
 						dataBlockChild2 = format.format(fileTree, fileList, fileID3)
 						if 'LOD' in dataBlockChild2 and len(dataBlockChild2['LOD']) > 0:
 							fileID4 = dataBlockChild2['LOD'][0]['fileID']
@@ -147,4 +147,4 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 
 	exportOBJMulti(fileTree, fileList, fileID, fileIDList)
 	
-	print 'Done'
+	# print 'Done'
