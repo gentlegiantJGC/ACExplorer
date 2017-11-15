@@ -147,6 +147,8 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 			print 'error saving temporary file'
 
 		fileOffset += fileDataSize
+		
+	tempFiles.save()
 	
 	for fileName in sorted([m for m in alphabeticalFiles]):
 		for fileID2 in alphabeticalFiles[fileName]:
