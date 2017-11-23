@@ -2,7 +2,7 @@ from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BEHEX2, LE2DEC2, float32
 from ACExplorer.misc.exportOBJMulti import exportOBJMulti
-from ACExplorer.ACUnity import format
+from ACExplorer.ACUnity import formatFile
 import sys
 
 def mul4x4(A,B):
@@ -25,13 +25,13 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 		return
 	
 	if 'dev' in sys.argv:
-		reload(format)  # for development
-	dataBlock = format.format(fileTree, fileList, fileID)
+		reload(formatFile)  # for development
+	dataBlock = formatFile.topLevelFormat(fileTree, fileList, fileID)
 	# fileID, data and dataBlock all relate to the DataBlock file (Type AC2BBF68)
 	# This is a list of every file called by that DataBlock
-	# format.format will return this list of files into dataBlock
+	# formatFile.topLevelFormat will return this list of files into dataBlock
 	
-	fileIDList = []
+	fileIDList = {}
 	
 	for n, fileID2 in enumerate(dataBlock['dataBlock']):
 		if not tempFiles.exists(fileID2):
@@ -43,23 +43,26 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 		
 		print 'Reading '+data2['fileName']+'. '+str(n+1)+' of '+str(len(dataBlock['dataBlock']))
 	
-		dataBlockChild = format.format(fileTree, fileList, fileID2)
+		dataBlockChild = formatFile.topLevelFormat(fileTree, fileList, fileID2)
 		# fileID2, data2 and dataBlockChild all relate to the files contained in
 		# the DataBlock file. The file could be of a number of types including
 		# entities and entity groups
 		if dataBlockChild['fileType'] == '0984415E': # entity
-			if 'LOD' in dataBlockChild and len(dataBlockChild['LOD']) > 0:
-				fileID3 = dataBlockChild['LOD'][0]['fileID']
-				if not tempFiles.exists(fileID3):
-					decompressDatafile(fileTree, fileList, fileID3)
-				data3 = tempFiles.read(fileID3)
-				if len(data3) == 0:
-					raise Exception('file '+fileID3+' is empty')
-				data3 = data3[0]
-				if data3['resourceType'] == '415D9568':
-					fileIDList.append({'fileID':fileID3, 'transformationMtx': dataBlockChild['transformationMtx']})
-				else:
-					raise Exception(fileID3+' is not a 3D model')
+			if 'fileIDList' in dataBlockChild:
+				for fileID3 in dataBlockChild['fileIDList']:
+					if not tempFiles.exists(fileID3):
+						decompressDatafile(fileTree, fileList, fileID3)
+					data3 = tempFiles.read(fileID3)
+					if len(data3) == 0:
+						raise Exception('file '+fileID3+' is empty')
+					data3 = data3[0]
+					if data3['resourceType'] == '415D9568':
+						if fileID3 not in fileIDList:
+							fileIDList[fileID3] = []
+						fileIDList[fileID3] += dataBlockChild['fileIDList'][fileID3]
+						# fileIDList.append({'fileID':fileID3, 'transformationMtx': dataBlockChild['transformationMtx']})
+					else:
+						raise Exception(fileID3+' is not a 3D model')
 		
 		elif dataBlockChild['fileType'] == '1CBDE084':
 			if 'files' in dataBlockChild:
@@ -72,22 +75,24 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 						raise Exception('file '+fileID3+' is empty')
 					data3 = data3[0]
 					
-					if data3['resourceType'] == '0984415E': # entity
-						dataBlockChild2 = format.format(fileTree, fileList, fileID3)
-						if 'LOD' in dataBlockChild2 and len(dataBlockChild2['LOD']) > 0:
-							fileID4 = dataBlockChild2['LOD'][0]['fileID']
-							if not tempFiles.exists(fileID4):
-								decompressDatafile(fileTree, fileList, fileID4)
-							data4 = tempFiles.read(fileID4)
-							if len(data4) == 0:
-								raise Exception('file '+fileID4+' is empty')
-							data4 = data4[0]
-							if data4['resourceType'] == '415D9568':
-								fileIDList.append({'fileID':fileID4, 'transformationMtx': dataBlockChild2['transformationMtx']})
-							else:
-								raise Exception(fileID4+' is not a 3D model')
-					elif data3['resourceType'] == '3F742D26':
-						print 'Entity Groups not currently supported'
+					if data3['resourceType'] in ['0984415E','3F742D26']: # entity
+						dataBlockChild2 = formatFile.topLevelFormat(fileTree, fileList, fileID3)
+						if 'fileIDList' in dataBlockChild2:
+							for fileID4 in dataBlockChild2['fileIDList']:
+								if not tempFiles.exists(fileID4):
+									decompressDatafile(fileTree, fileList, fileID4)
+								data4 = tempFiles.read(fileID4)
+								if len(data4) == 0:
+									raise Exception('file '+fileID4+' is empty')
+								data4 = data4[0]
+								if data4['resourceType'] == '415D9568':
+									
+									# fileIDList.append({'fileID':fileID4, 'transformationMtx': dataBlockChild2['transformationMtx']})
+									if fileID4 not in fileIDList:
+										fileIDList[fileID4] = []
+									fileIDList[fileID4] += dataBlockChild2['fileIDList'][fileID4]
+								else:
+									raise Exception(fileID4+' is not a 3D model')
 					else:
 						raise Exception('found file type {}'.format(data3['resourceType']))
 		

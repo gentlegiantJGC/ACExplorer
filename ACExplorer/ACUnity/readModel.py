@@ -1,7 +1,7 @@
 import sys
 import os
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
-from ACExplorer.ACUnity.format import readID, readStr, readInt, readFloat32, readType, fOutWrite, ReadRest
+from ACExplorer.ACUnity.formatFile import readID, readStr, readInt, readFloat32, readType, fOutWrite, ReadRest
 from ACExplorer.misc import tempFiles
 # from ACExplorer.misc.dataTypes import BEHEX2, LE2BE2, LE2DEC2, float32
 import json
@@ -420,6 +420,10 @@ def readModel(fileTree, fileList, fileID):
 						worldMin = model['boundingBox']['min'+coord]
 						worldMax = model['boundingBox']['max'+coord]
 						index[coord.upper()] = ((index[coord.upper()] - modelMin) / (modelMax - modelMin)) * (worldMax-worldMin) + worldMin
+			else:
+				for index in model['vertData']['vertex']:
+					for coord in 'xyz':
+						index[coord.upper()] /= 200.0
 			
 			
 			fOutWrite(fOut, 'Face table\n')

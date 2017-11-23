@@ -15,7 +15,8 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 			if fileID in fileList[forgeFile]:
 				break
 		if fileID not in fileList[forgeFile]:
-			if fileID in os.listdir(CONFIG["lightDict"]):
+			# if fileID in os.listdir(CONFIG["lightDict"]):
+			if os.path.isfile(CONFIG["lightDict"]+os.sep+fileID):
 				with open(CONFIG["lightDict"]+os.sep+fileID, 'r') as f:
 					fileID2 = f.read()
 				for forgeFile in fileList:

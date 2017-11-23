@@ -13,8 +13,7 @@ def transform(transformationMtx, vertex):
 	# |M21 M22 M23 M24||y|
 	# |M31 M32 M33 M34||z|
 	# [M41 M42 M43 M44][1]
-	
-	vertex = [vertex['X'], vertex['Y'], vertex['Z'], 1]
+	vertex += [1]
 	newVertex = [0,0,0,0]
 	
 	for m in range(4):
@@ -24,12 +23,20 @@ def transform(transformationMtx, vertex):
 
 
 def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
+	print fileIDList
 	#fileIDList format
 	# [
 	# {'fileID':'0000000000000000', 'transformationMtx': },
 	# {'fileID':'0000000000000000', 'transformationMtx': },
 	# {'fileID':'0000000000000000', 'transformationMtx': }
 	# ]
+	
+	# fileIDList format V2
+	# {
+	# '0000000000000000' : [{'tm':[<transformationMtx1.1>, <transformationMtx1.2>, ...],'BB':[]}, {'tm':[<transformationMtx2.1>, <transformationMtx2.2>, ...],'BB':[]}, ...],
+	# '0000000000000000' : [{'tm':[<transformationMtx1.1>, <transformationMtx1.2>, ...],'BB':[]}, {'tm':[<transformationMtx2.1>, <transformationMtx2.2>, ...],'BB':[]}, ...],
+	# ...
+	# }
 	
 	if not tempFiles.exists(rootID):
 		decompressDatafile(fileTree, fileList, rootID)
@@ -39,10 +46,10 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	rootData = rootData[0]
 	
 	# remove models that couldn't be read
+	meshCount = 0
 	ticker = 0
-	fileIDList2 = []
-	for fileContainer in fileIDList:
-		fileID = fileContainer['fileID'].upper()
+	failedModels = []
+	for fileID in fileIDList:
 		
 		if not tempFiles.exists(fileID):
 			decompressDatafile(fileTree, fileList, fileID)
@@ -57,10 +64,13 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 			except:
 				print 'Failed reading model '+data['fileName']
 		if os.path.isfile(data['dir'].replace('.acu', '.json')):
-			fileIDList2.append(fileContainer)
+			meshCount += len(fileIDList[fileID])
 			ticker += 1
 			print 'read model '+str(ticker)+ ' of '+str(len(fileIDList))
-	fileIDList = fileIDList2
+		else:
+			failedModels.append(fileID)
+	for fileID in failedModels:
+		del fileIDList[fileID]
 	
 	rootID = rootID.upper()
 	fileName = rootData['fileName']
@@ -87,9 +97,9 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	fim.write("\n")
 	idsAdded = []
 	missingNo = False
+	meshNo = 0
 	
-	for index0, fileContainer in enumerate(fileIDList):
-		fileID = fileContainer['fileID'].upper()
+	for index0, fileID in enumerate(fileIDList):
 
 		if not tempFiles.exists(fileID):
 			decompressDatafile(fileTree, fileList, fileID)
@@ -121,77 +131,77 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 			
 			# vertex data
 			
-			# Transformation Matrix fileContainer['transformationMtx'][0-3][0-3]
+			# Transformation Matrix fileContainer['tm'][0-3][0-3]
 			# [M11 M12 M13 M14][x]
 			# |M21 M22 M23 M24||y|
 			# |M31 M32 M33 M34||z|
 			# [M41 M42 M43 M44][1]
-			
-			for vertex in model['vertData']['vertex']:
-				# vertex['X'] *= model['modelScale'] * 0.0001525
-				# vertex['Y'] *= model['modelScale'] * 0.0001525
-				# vertex['Z'] *= model['modelScale'] * 0.0001525
-				newVertex = transform(fileContainer['transformationMtx'], vertex)
-				fio.write("v " +
-				str(round(newVertex[0], 6))
+			for fileContainer in fileIDList[fileID]:
+				meshNo += 1
+				for vertex in model['vertData']['vertex']:
+					vertex = [vertex['X'], vertex['Y'], vertex['Z']]
+					for tm in reversed(fileContainer['tm']):
+						vertex = transform(tm, vertex)
+					fio.write("v " +
+					str(round(vertex[0], 6))
+					
+					+ " " +
+					
+					str(round(vertex[1], 6))
+					
+					+ " " +
+					
+					str(round(vertex[2], 6))
+					
+					+ '\n')
+				print 'written vertex data '+str(meshNo)+ ' of '+str(meshCount)
 				
-				+ " " +
+				# texture coordinates
+				for tVert in model['vertData']['tVert']:
+					fio.write("vt " + str(round((tVert['X'] / num3), 6)) + " " + str(round((tVert['Y'] / -num3), 6)) + '\n')
+				print 'written texture coordinates '+str(meshNo)+ ' of '+str(meshCount)
 				
-				str(round(newVertex[1], 6))
-				
-				+ " " +
-				
-				str(round(newVertex[2], 6))
-				
-				+ '\n')
-			print 'written vertex data '+str(index0)+ ' of '+str(len(fileIDList))
-			
-			# texture coordinates
-			for tVert in model['vertData']['tVert']:
-				fio.write("vt " + str(round((tVert['X'] / num3), 6)) + " " + str(round((tVert['Y'] / -num3), 6)) + '\n')
-			print 'written texture coordinates '+str(index0)+ ' of '+str(len(fileIDList))
-			
-			# face mappings
-			for index1, meshData in enumerate(model['meshData']):
-				num5 = meshData['vertCount']		#vertex number?
-				num6 = meshData['vertStart'] / 3
-				if model['typeSwitch'] == 0 and model['faceCount'] != model['facesUsed']:
-					if index1 > 0:
-						num6 = num4 * 64
-						num4 += model['meshFaceBlocks'][index1]
+				# face mappings
+				for index1, meshData in enumerate(model['meshData']):
+					num5 = meshData['vertCount']		#vertex number?
+					num6 = meshData['vertStart'] / 3
+					if model['typeSwitch'] == 0 and model['faceCount'] != model['facesUsed']:
+						if index1 > 0:
+							num6 = num4 * 64
+							num4 += model['meshFaceBlocks'][index1]
+						else:
+							num4 = model['meshFaceBlocks'][index1]
+					fio.write("g " + data['fileName'] + "_" + str(tempFileRepeat[fileID]) + '_' +str(index1) + '\n')
+					
+					textureIDs = getMaterialIDs(fileTree, fileList, model['materialId'][index1])
+					
+					if textureIDs == None:
+						fio.write("usemtl missingNo\n")
 					else:
-						num4 = model['meshFaceBlocks'][index1]
-				fio.write("g " + data['fileName'] + "_" + str(tempFileRepeat[fileID]) + '_' +str(index1) + '\n')
-				
-				textureIDs = getMaterialIDs(fileTree, fileList, model['materialId'][index1])
-				
-				if textureIDs == None:
-					fio.write("usemtl missingNo\n")
-				else:
-					for hexid in textureIDs:
-						exportTexture(fileTree, fileList, textureIDs[hexid])
-					data2 = tempFiles.read(model['materialId'][index1].upper())
-					if len(data2) == 0:
-						raise Exception('file '+model['materialId'][index1].upper()+' is empty')
-					data2 = data2[0]
-					material = data2['fileName']
-					fio.write("usemtl " + material + '\n')
-				fio.write("s 0\n")
-				if model['typeSwitch'] != 3:
-					num7 = meshData['X']
-				else:
-					num7 = 0
-				for index2 in range(num6, num5 + num6):
-					fio.write("f " + 
-						str(int(model['faceData'][index2]['Y'] + 1.0 + num7 + offset)) + "/" + 
-						str(int(model['faceData'][index2]['Y'] + 1.0 + num7 + offset)) + " " + 
-						str(int(model['faceData'][index2]['X'] + 1.0 + num7 + offset)) + "/" + 
-						str(int(model['faceData'][index2]['X'] + 1.0 + num7 + offset)) + " " + 
-						str(int(model['faceData'][index2]['Z'] + 1.0 + num7 + offset)) + "/" + 
-						str(int(model['faceData'][index2]['Z'] + 1.0 + num7 + offset)) + '\n')
-				fio.write("# " + str(num5) + " triangles\n\n")
-			offset += len(model['vertData']['vertex'])
-			print 'written triangle data '+str(index0)+ ' of '+str(len(fileIDList))
+						for hexid in textureIDs:
+							exportTexture(fileTree, fileList, textureIDs[hexid])
+						data2 = tempFiles.read(model['materialId'][index1].upper())
+						if len(data2) == 0:
+							raise Exception('file '+model['materialId'][index1].upper()+' is empty')
+						data2 = data2[0]
+						material = data2['fileName']
+						fio.write("usemtl " + material + '\n')
+					fio.write("s 0\n")
+					if model['typeSwitch'] != 3:
+						num7 = meshData['X']
+					else:
+						num7 = 0
+					for index2 in range(num6, num5 + num6):
+						fio.write("f " + 
+							str(int(model['faceData'][index2]['Y'] + 1.0 + num7 + offset)) + "/" + 
+							str(int(model['faceData'][index2]['Y'] + 1.0 + num7 + offset)) + " " + 
+							str(int(model['faceData'][index2]['X'] + 1.0 + num7 + offset)) + "/" + 
+							str(int(model['faceData'][index2]['X'] + 1.0 + num7 + offset)) + " " + 
+							str(int(model['faceData'][index2]['Z'] + 1.0 + num7 + offset)) + "/" + 
+							str(int(model['faceData'][index2]['Z'] + 1.0 + num7 + offset)) + '\n')
+					fio.write("# " + str(num5) + " triangles\n\n")
+				offset += len(model['vertData']['vertex'])
+				print 'written triangle data '+str(meshNo)+ ' of '+str(meshCount)
 			
 			# material data in mtl
 			for materialId in model['materialId']:

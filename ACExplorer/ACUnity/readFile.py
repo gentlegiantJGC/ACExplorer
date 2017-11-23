@@ -1,5 +1,5 @@
 import sys
-from ACExplorer.ACUnity import format
+from ACExplorer.ACUnity import formatFile
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.ACUnity.exportDataBlockModels import exportDataBlockModels
 from ACExplorer.ACUnity.exportFakes import exportFakes
@@ -38,5 +38,5 @@ def readFile(fileTree, fileList, fileID):
 		exportFakes(fileTree, fileList, fileID)
 	else:
 		if 'dev' in sys.argv:
-			reload(format)  # for development
-		format.format(fileTree, fileList, fileID)
+			reload(formatFile)  # for development
+		formatFile.topLevelFormat(fileTree, fileList, fileID)

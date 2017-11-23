@@ -8,7 +8,7 @@ from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import LE2BE2, BEHEX2, LE2DEC2, float32
 
 '''
-This module works by calling format(fileTree, fileList, fileID)
+This module works by calling topLevelFormat(fileTree, fileList, fileID)
 This in turn calls recursiveFormat(fileTree, fileList, fileType, fIn, fOut)
 which returns the file object (and in dev mode a formatted version of that file)
 NOTE : The code does not read everything perfectly and may not read some files properly. The code can be taken as a basis for the formatting of the file but is far from perfect in many cases
@@ -81,7 +81,7 @@ def ReadRest(fIn, fOut):
 		fOut.write(hexSpaces(val))
 	return BEHEX2(val)
 
-def format(fileTree, fileList, fileID):
+def topLevelFormat(fileTree, fileList, fileID):
 	if not tempFiles.exists(fileID):
 		decompressDatafile(fileTree, fileList, fileID)
 	data = tempFiles.read(fileID)
@@ -158,11 +158,29 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readID(fileTree, fileList, fIn, fOut)
 		fileType2 = readType(fIn, fOut)
 		subFileContainer = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-		for key in subFileContainer:
-			if key in fileContainer:
-				fileContainer[key] += subFileContainer[key]
-			else:
-				fileContainer[key] = subFileContainer[key]
+		if fileType2 == '536E963B':
+			fileContainer['fileIDList'] = {}
+			# fileContainer['fileIDList'].append(subFileContainer['LOD'])
+			# fileContainer['LOD'].append({'fileID':readID(fileTree, fileList, fIn, fOut)})
+			if subFileContainer['meshID'] not in fileContainer['fileIDList']:
+				fileContainer['fileIDList'][subFileContainer['meshID']] = []
+			if len(subFileContainer['tm']) != len(subFileContainer['BB']):
+				raise Exception('should these be the same size?')
+			for a in range(len(subFileContainer['tm'])):
+				fileContainer['fileIDList'][subFileContainer['meshID']].append(
+					{
+					'tm':[fileContainer['transformationMtx']]+[subFileContainer['tm'][a]]
+					}
+				)
+			if len(subFileContainer['tm']) == 0:
+				fileContainer['fileIDList'][subFileContainer['meshID']].append(
+					{
+					'tm':[fileContainer['transformationMtx']]
+					}
+				)
+			# fileContainer['meshID']
+			# fileContainer['tm'].append([])
+			# fileContainer['BB'].append([])
 		
 		filePointer = fIn.tell()
 		rawFile = fIn.read()
@@ -179,117 +197,192 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		for _ in range(3):
 			readID(fileTree, fileList, fIn, fOut)
 			fileType2 = readType(fIn, fOut)
-			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-		
-		# 03 end file?
-		readStr(fIn, fOut, 1)
-		fOutWrite(fOut, '\n')
-		print fileContainer
-		return fileContainer
-		
-		
-		# original full code below
-		
-		
-		# data
-		readStr(fIn, fOut, 1) # checkbyte 03 to continue (other stuff to not? have seen 00 with data after)
-		fileContainer['transformationMtx'] = [[],[],[],[]]
-		# 4x4 transformation matrix
-		fOutWrite(fOut, '\nTransformation Matrix\n')
-		for _ in range(4):
-			for m in range(4):
-				fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
-		fOutWrite(fOut, '\n')
-		count1 = readInt(fIn, fOut, 4) # possibly a count
-		if count1 > 20:
-			log.warn(__name__, 'error reading entity file')
-			# convert to an actual logger
-			return fileContainer
-		
-		fileContainer['unknown'] = []
-		
-		subFileContainer = {}
-		
-		for _ in range(count1):
-			fOutWrite(fOut, '\n')
-			fileContainer['unknown'].append(readStr(fIn, fOut, 2)) # unknown
-			readID(fileTree, fileList, fIn, fOut) # temporary id?
-			fileType2 = readType(fIn, fOut)
-			subFileContainer = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-			for key in subFileContainer:
-				if key in fileContainer:
-					fileContainer[key] += subFileContainer[key]
-				else:
-					fileContainer[key] = subFileContainer[key]
-			
-			
-		# float * 7
-		
-		# 110 bytes
-		# 2 bytes
-		# float
-		
-		# bouding box
-		# id
-		# type
-		# float32 * 6
-		# int32
-		
-		# entity descriptor
-		# 19 bytes
-		
-		filePointer = fIn.tell()
-		rawFile = fIn.read()
-		bbloc = rawFile.find('\x76\x34\xEC\x4A')
-		if bbloc == -1:
-			raise Exception()
-		fIn.seek(filePointer)
-		readStr(fIn, fOut, bbloc-8)
-		
-		fOutWrite(fOut, '\n')
-		
-		# data layer filter
-		# 4 count, more data in here sometimes
-		for _ in range(3):
-			readID(fileTree, fileList, fIn, fOut)
-			fileType2 = readType(fIn, fOut)
-			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			subFileContainer2 = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			if fileType2 == '4AEC3476':
+				BB = subFileContainer2['BB']
+				for a in fileContainer['fileIDList']:
+					for b in fileContainer['fileIDList'][a]:
+						b['BB'] = BB
+				
 		
 		# 03 end file?
 		readStr(fIn, fOut, 1)
 		fOutWrite(fOut, '\n')
 		return fileContainer
+		
+		
+		# # original full code below
+		
+		
+		# # data
+		# readStr(fIn, fOut, 1) # checkbyte 03 to continue (other stuff to not? have seen 00 with data after)
+		# fileContainer['transformationMtx'] = [[],[],[],[]]
+		# # 4x4 transformation matrix
+		# fOutWrite(fOut, '\nTransformation Matrix\n')
+		# for _ in range(4):
+			# for m in range(4):
+				# fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
+		# fOutWrite(fOut, '\n')
+		# count1 = readInt(fIn, fOut, 4) # possibly a count
+		# if count1 > 20:
+			# log.warn(__name__, 'error reading entity file')
+			# # convert to an actual logger
+			# return fileContainer
+		
+		# fileContainer['unknown'] = []
+		
+		# subFileContainer = {}
+		
+		# for _ in range(count1):
+			# fOutWrite(fOut, '\n')
+			# fileContainer['unknown'].append(readStr(fIn, fOut, 2)) # unknown
+			# readID(fileTree, fileList, fIn, fOut) # temporary id?
+			# fileType2 = readType(fIn, fOut)
+			# subFileContainer = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			# for key in subFileContainer:
+				# if key in fileContainer:
+					# fileContainer[key] += subFileContainer[key]
+				# else:
+					# fileContainer[key] = subFileContainer[key]
+			
+			
+		# # float * 7
+		
+		# # 110 bytes
+		# # 2 bytes
+		# # float
+		
+		# # bouding box
+		# # id
+		# # type
+		# # float32 * 6
+		# # int32
+		
+		# # entity descriptor
+		# # 19 bytes
+		
+		# filePointer = fIn.tell()
+		# rawFile = fIn.read()
+		# bbloc = rawFile.find('\x76\x34\xEC\x4A')
+		# if bbloc == -1:
+			# raise Exception()
+		# fIn.seek(filePointer)
+		# readStr(fIn, fOut, bbloc-8)
+		
+		# fOutWrite(fOut, '\n')
+		
+		# # data layer filter
+		# # 4 count, more data in here sometimes
+		# for _ in range(3):
+			# readID(fileTree, fileList, fIn, fOut)
+			# fileType2 = readType(fIn, fOut)
+			# recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		
+		# # 03 end file?
+		# readStr(fIn, fOut, 1)
+		# fOutWrite(fOut, '\n')
+		# return fileContainer
 		
 	elif fileType == "3F742D26":	# entity group
+		# cheap method
+		# read top transformation matrix
+		# jump to next 29 8D 65 EC while in file
+			# jump to next 3B 96 6E 53
+			# read 3B 96 6E 53
 		checkByte1 = readInt(fIn, fOut, 1)
 		if checkByte1 == 0:
-			readID(fileTree, fileList, fIn, fOut)
-			fileType2 = readType(fIn, fOut)
-			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-			readID(fileTree, fileList, fIn, fOut)
-			fileType2 = readType(fIn, fOut)
-			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			print 'checkbyte is not 3'
+			return fileContainer
 		fileContainer['transformationMtx'] = [[],[],[],[]]
 		for _ in range(4):
 			for m in range(4):
 				fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
 		fOutWrite(fOut, '\n')
-		count1 = readInt(fIn, fOut, 4)
-		for _ in range(count1):
-			readStr(fIn, fOut, 2)
+		
+		fileContainer['fileIDList'] = {}
+		
+		filePointer = fIn.tell()
+		rawFile = fIn.read()
+		visualLoc = rawFile.find('\x29\x8D\x65\xEC')
+
+		while visualLoc != -1:
+			fIn.seek(filePointer)
+			readStr(fIn, fOut, visualLoc-8)
+			
+			# jump to mesh
+			filePointer = fIn.tell()
+			rawFile = fIn.read()
+			bbloc = rawFile.find('\x3B\x96\x6E\x53')
+			if bbloc == -1:
+				return fileContainer
+			fIn.seek(filePointer)
+			readStr(fIn, fOut, bbloc-8)
+			
 			readID(fileTree, fileList, fIn, fOut)
 			fileType2 = readType(fIn, fOut)
-			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			subFileContainer = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			if subFileContainer['meshID'] not in fileContainer['fileIDList']:
+				fileContainer['fileIDList'][subFileContainer['meshID']] = []
+			if len(subFileContainer['tm']) != len(subFileContainer['BB']):
+				raise Exception('should these be the same size?')
+			for a in range(len(subFileContainer['tm'])):
+				fileContainer['fileIDList'][subFileContainer['meshID']].append(
+					{
+					'tm':[fileContainer['transformationMtx']]+[subFileContainer['tm'][a]],
+					'BB':subFileContainer['BB']
+					}
+				)
+			if len(subFileContainer['tm']) == 0:
+				fileContainer['fileIDList'][subFileContainer['meshID']].append(
+					{
+					'tm':[fileContainer['transformationMtx']]
+					}
+				)
+			
+			
+			
+					
+			filePointer = fIn.tell()
+			rawFile = fIn.read()
+			visualLoc = rawFile.find('\x29\x8D\x65\xEC')		
+			
+		fIn.seek(filePointer)
+			
+		return fileContainer	
+			
+			
+			
+			
+			
+		# checkByte1 = readInt(fIn, fOut, 1)
+		# if checkByte1 == 0:
+			# readID(fileTree, fileList, fIn, fOut)
+			# fileType2 = readType(fIn, fOut)
+			# recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			# readID(fileTree, fileList, fIn, fOut)
+			# fileType2 = readType(fIn, fOut)
+			# recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		# fileContainer['transformationMtx'] = [[],[],[],[]]
+		# for _ in range(4):
+			# for m in range(4):
+				# fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
+		# fOutWrite(fOut, '\n')
+		# count1 = readInt(fIn, fOut, 4)
+		# for _ in range(count1):
+			# readStr(fIn, fOut, 2)
+			# readID(fileTree, fileList, fIn, fOut)
+			# fileType2 = readType(fIn, fOut)
+			# recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		
 		
-		readStr(fIn, fOut, 43)
+		# readStr(fIn, fOut, 43)
 		
-		for _ in range(3):
-			readID(fileTree, fileList, fIn, fOut)
-			fileType2 = readType(fIn, fOut)
-			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-		fOutWrite(fOut, '\n')
-		return fileContainer
+		# for _ in range(3):
+			# readID(fileTree, fileList, fIn, fOut)
+			# fileType2 = readType(fIn, fOut)
+			# recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		# fOutWrite(fOut, '\n')
+		# return fileContainer
 	
 	elif fileType == "E6545731": # mission root
 		count1 = readInt(fIn, fOut, 4)
@@ -424,9 +517,8 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		return fileContainer
 	
 	elif fileType == "536E963B":	# mesh instance data
-		fileContainer['LOD'] = []
 		readStr(fIn, fOut, 1)
-		fileContainer['LOD'].append({'fileID':readID(fileTree, fileList, fIn, fOut)})
+		fileContainer['meshID'] = readID(fileTree, fileList, fIn, fOut)
 		readStr(fIn, fOut, 40) #contains a compiled mesh instance 4368101B
 		count1 = readInt(fIn, fOut, 4) # number of textures to follow
 		fOutWrite(fOut, '\n')
@@ -438,24 +530,31 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		
 		# readStr(fIn, fOut, 8) # two counts. first count for transformation matrix. second for more things?
 		count2 = readInt(fIn, fOut, 4)
-		if count2 > 20:
-			print 'count2 is too large. Aborting'
+		if count2 > 10000:
+			print 'count2:{} is too large. Aborting'.format(count2)
 			return fileContainer
+		fileContainer['tm'] = []
 		for _ in range(count2):
+			transformationMtx = [[],[],[],[]]
 			for _ in range(4):
 				for m in range(4):
-					# fileContainer['transformationMtx'][m].append(readFloat32(fIn, fOut))
-					readFloat32(fIn, fOut)
+					transformationMtx[m].append(readFloat32(fIn, fOut))
+			fileContainer['tm'].append(transformationMtx)
 			fOutWrite(fOut, '\n')
 		count3 = readInt(fIn, fOut, 4)
-		if count3 > 20:
+		if count3 > 10000:
 			raise Exception('count3 is too large. Aborting')
+		fileContainer['BB'] = []
 		for _ in range(count3):
 			readID(fileTree, fileList, fIn, fOut)
 			fileType2 = readType(fIn, fOut)
-			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			subFileContainer = recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+			if fileType2 == '4AEC3476':
+				fileContainer['BB'].append(subFileContainer['BB'])
 		fOutWrite(fOut, '\n')
 		return fileContainer
+		
+		# needs to return {'fileID':'', 'tm':[], 'BB':[]}
 		
 	elif fileType == "7270FC9D":
 		count1 = readInt(fIn, fOut, 4)
@@ -505,9 +604,14 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		fOutWrite(fOut, '\n')
 		return fileContainer
 		
-	elif fileType == '4AEC3476':	# bounding volume
-		for _ in range(6):
-			readFloat32(fIn, fOut)
+	elif fileType == '4AEC3476':	# bounding volume / bouding box
+		fileContainer['BB'] = {}
+		fileContainer['BB']['minx'] = readFloat32(fIn, fOut)
+		fileContainer['BB']['miny'] = readFloat32(fIn, fOut)
+		fileContainer['BB']['minz'] = readFloat32(fIn, fOut)
+		fileContainer['BB']['maxx'] = readFloat32(fIn, fOut)
+		fileContainer['BB']['maxy'] = readFloat32(fIn, fOut)
+		fileContainer['BB']['maxz'] = readFloat32(fIn, fOut)
 		readInt(fIn, fOut, 4)
 		fOutWrite(fOut, '\n')
 		return fileContainer
@@ -520,6 +624,17 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 	elif fileType == 'DB1D406E':	# Data Layer Filter 
 		count1 = readInt(fIn, fOut, 4) #count
 		# more data follows this if count != 0
+		for _ in range(count1):
+			readID(fileTree, fileList, fIn, fOut) # temporary id?
+			fileType2 = readType(fIn, fOut)
+			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+		fOutWrite(fOut, '\n')
+		return fileContainer
+		
+	elif fileType == 'E31593E1':
+		readStr(fIn, fOut, 1)
+		readID(fileTree, fileList, fIn, fOut)
+		readStr(fIn, fOut, 4)
 		fOutWrite(fOut, '\n')
 		return fileContainer
 	
