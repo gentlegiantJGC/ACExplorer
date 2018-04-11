@@ -1,4 +1,4 @@
-from ctypes import CDLL, c_byte, c_ushort
+from ctypes import CDLL, c_ubyte, c_ushort
 from ACExplorer import CONFIG
 import platform
 if platform.architecture()[0] == '64bit':
@@ -12,11 +12,11 @@ else:
 def decompress(mode, src, dst_len):
 	lzo = CDLL(lzoPath)
 	src = [ord(x) for x in src]
-	src = (c_byte * len(src))(*src)
+	src = (c_ubyte * len(src))(*src)
 	src_len = (c_ushort*1)(len(src))
-	dst = (c_byte * dst_len)()
+	dst = (c_ubyte * dst_len)()
 	dst_len = (c_ushort*1)(dst_len)
-	workMem = (c_byte * 65536)()
+	workMem = (c_ubyte * 65536)()
 	if mode in [0,1]:
 		#lzo1x
 		lzo.lzo1x_decompress(src, src_len, dst, dst_len, workMem)
@@ -26,6 +26,5 @@ def decompress(mode, src, dst_len):
 	elif mode == 5:
 		#lzo1c
 		lzo.lzo1c_decompress(src, src_len, dst, dst_len, workMem)
-	dst = list(dst)
-	dst = ''.join([chr(x) if x>=0 else chr(x+256) for x in dst])
+	dst = ''.join([chr(x) for x in dst])
 	return dst
