@@ -1,4 +1,3 @@
-import binascii
 from ctypes import CDLL, c_byte, c_ushort
 from ACExplorer import CONFIG
 import platform
@@ -12,7 +11,7 @@ else:
 
 def decompress(mode, src, dst_len):
 	lzo = CDLL(lzoPath)
-	src = [int(binascii.hexlify(x), 16) for x in src]
+	src = [ord(x) for x in src]
 	src = (c_byte * len(src))(*src)
 	src_len = (c_ushort*1)(len(src))
 	dst = (c_byte * dst_len)()
@@ -28,9 +27,5 @@ def decompress(mode, src, dst_len):
 		#lzo1c
 		lzo.lzo1c_decompress(src, src_len, dst, dst_len, workMem)
 	dst = list(dst)
-	for c in xrange(len(dst)):
-		if dst[c] < 0:
-			dst[c] += 256
-		dst[c] = chr(dst[c])
-	dst = ''.join(dst)
+	dst = ''.join([chr(x) if x>=0 else chr(x+256) for x in dst])
 	return dst
