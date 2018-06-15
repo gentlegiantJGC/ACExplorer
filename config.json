@@ -1,10 +1,1 @@
-{
-	"ACUnityFolder":	"H:\\Programs\\Ubisoft\\Assassin's Creed Unity",
-	"dumpFolder":		"D:\\Unity_Dump\\ACModels",
-	"lightDict":		"D:\\Unity_Dump\\Dictionary\\lightDict",
-	"missingNo":		"resources\\missingNo.png",
-	"texconv":			"resources\\texconv.exe",
-	"LZO32Path":		"resources\\lzo32.dll",
-	"LZO64Path":		"resources\\lzo64.dll",
-	"logFile":			"ACExplorer.log"
-}
+{"ACUnityFolder": "H:\\Programs\\Ubisoft\\Assassin's Creed Unity", "LZO64Path": "resources\\lzo64.dll", "dumpFolder": "D:\\Unity_Dump\\ACModels", "missingNo": "resources\\missingNo.png", "LZO32Path": "resources\\lzo32.dll", "lightDict": "D:\\Unity_Dump\\Dictionary\\lightDict", "texconv": "resources\\texconv.exe", "logFile": "ACExplorer.log"}

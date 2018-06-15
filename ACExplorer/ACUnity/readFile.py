@@ -6,7 +6,7 @@ from ACExplorer.ACUnity.exportFakes import exportFakes
 from ACExplorer.ACUnity.exportTexture import exportTexture
 from ACExplorer.ACUnity.getMaterialIDs import getMaterialIDs
 from ACExplorer.ACUnity.readModel import readModel
-from ACExplorer.misc import tempFiles
+from ACExplorer.misc import tempFiles, log
 from ACExplorer.misc.exportOBJ import exportOBJ
 
 
@@ -20,7 +20,7 @@ def readFile(fileTree, fileList, fileID):
 	data = data[0]
 	
 	if data['resourceType'] == '415D9568':	#mesh (textures looked up)
-		print 'Exporting '+data['fileName']
+		log.info(__name__, 'Exporting '.format(data['fileName']))
 		readModel(fileTree, fileList, fileID)
 		exportOBJ(fileTree, fileList, fileID)
 	elif data['resourceType'] == 'AC2BBF68': #datablock (includes world data)

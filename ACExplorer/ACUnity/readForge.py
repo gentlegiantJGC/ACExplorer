@@ -1,5 +1,5 @@
 import os
-
+from ACExplorer.misc import log
 from ACExplorer.misc.dataTypes import BE, BEHEX, LE2DEC
 
 
@@ -7,7 +7,7 @@ def readForge(fileTree, folder):
 	fileList = {}
 	for x in os.listdir(folder):
 		if x.endswith('.forge'):
-			print 'Building file tree for '+x
+			log.info(__name__, 'Building file tree for {}'.format(x))
 			fileTree.insert('ACU', 'end', 'ACU|'+x, text=x)
 			f = open(folder+os.sep+x, 'rb')
 			fileLocation = 0

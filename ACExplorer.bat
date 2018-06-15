@@ -1,2 +1,2 @@
-python run.py
+python ACExplorerMain.py
 pause

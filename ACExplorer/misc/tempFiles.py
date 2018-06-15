@@ -24,6 +24,7 @@ import json
 import os
 
 from ACExplorer import CONFIG
+from ACExplorer.misc import log
 
 tempFileContainer = {}
 
@@ -73,7 +74,7 @@ def populateTree(fileTree):
 			tempFileTree[data['game']+'|'+data['forgeFile']+'|'+data['containerFileID']][data['fileName']].append(fileID)
 
 		if ticker % 100 == 0:
-			print "Populating file tree: "+str(ticker)+" of "+str(folderLen)+" completed"
+			log.info(__name__, 'Populating file tree: {} of {} completed'.format(ticker, folderLen))
 		ticker += 1
 	for containerFileID in tempFileTree:
 		for fileName in sorted([m for m in tempFileTree[containerFileID]]):

@@ -8,12 +8,14 @@
 	Contained within the datafiles are a variety of files related to that datafile.
 '''
 
-import json, ttk, Tkinter
+import json, ttk, Tkinter, sys
 from ACExplorer import CONFIG
 from ACExplorer.misc import log, tempFiles
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.ACUnity.readFile import readFile
 from ACExplorer.ACUnity.readForge import readForge
+
+dev = 'dev' in sys.argv
 
 class App:
 	def __init__(self):
