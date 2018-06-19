@@ -11,6 +11,7 @@
 import json, ttk, Tkinter, sys
 from ACExplorer import CONFIG
 from ACExplorer.misc import log, tempFiles
+from ACExplorer.ACUnity import formatFile
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 from ACExplorer.ACUnity.readFile import readFile
 from ACExplorer.ACUnity.readForge import readForge
@@ -27,7 +28,7 @@ class App:
 
 		# set up the file tree
 		self.fileTree = ttk.Treeview(self.mainUI)
-		self.fileTree.grid(row=1, column=1, columnspan=6, ipadx=150, ipady=300)
+		self.fileTree.grid(row=1, column=1, columnspan=4, ipadx=150, ipady=300)
 		self.fileTree.insert('', 'end', 'ACU', text='ACU')
 		fileTreeScroll = ttk.Scrollbar(self.mainUI, orient="vertical", command=self.fileTree.yview)
 		fileTreeScroll.grid(row=1, column=0, ipady=300)
@@ -57,11 +58,17 @@ class App:
 		clear = Tkinter.Button(self.mainUI, text='Clear Search', command=self.clearSearch)
 		clear.grid(row=0, column=3)
 
-		runCode = Tkinter.Button(self.mainUI, text='Run Code', command=self.runcode)
-		runCode.grid(row=0, column=4)
+
 
 		infobutton = Tkinter.Button(self.mainUI, text='Info', command=self.info)
-		infobutton.grid(row=0, column=5)
+		infobutton.grid(row=0, column=4)
+
+		if dev:
+			runCode = Tkinter.Button(self.mainUI, text='Run Code', command=self.runcode)
+			runCode.grid(row=0, column=50)
+
+			testFormatting = Tkinter.Button(self.mainUI, text='Test Formatting', command=self.testFormatting)
+			testFormatting.grid(row=0, column=51)
 
 		self.mainUI.mainloop()
 
@@ -83,9 +90,6 @@ class App:
 	def clearSearch(self):
 		self.search.delete(0, Tkinter.END)
 
-	def runcode(self):
-		exec self.search.get()
-
 	def info(self, input=None):
 		if self.search.get() == '' and input == None:
 			return
@@ -100,6 +104,26 @@ class App:
 		print fileID
 		print tempFiles.read(fileID)
 
+	def runcode(self):
+		exec self.search.get()
+
+	def testFormatting(self):
+		fileType = self.search.get()
+		count = 0
+		if ':' in fileType:
+			fileType, count = fileType.split(':')[:2]
+			try:
+				count = int(count)
+			except:
+				raise Exception('Need numerical value got "{}"'.format(count))
+		fileType = fileType.upper()
+		if len(fileType) == 8:
+			for fileID in tempFiles.tempFileContainer.keys():
+				if tempFiles.tempFileContainer[fileID][0]["resourceType"] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
+					formatFile.topLevelFormat(self.fileTree, self.fileList, fileID)
+					count -= 1
+					if count == 0:
+						break
 
 if __name__ == '__main__':
 	app = App()

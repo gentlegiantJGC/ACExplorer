@@ -20,15 +20,13 @@ fileID2:[
 
 
 '''
-import json
-import os
-
+import json, os
 from ACExplorer import CONFIG
 from ACExplorer.misc import log
 
 tempFileContainer = {}
 
-path = CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'tempFiles' + os.sep + 'ACU'
+path = '{0}{1}temp{1}tempFiles{1}ACU'.format(CONFIG['dumpFolder'],os.sep)
 if os.path.isfile(path):
 	with open(path) as tempFilesFile:
 		tempFileContainer = json.load(tempFilesFile)
@@ -49,10 +47,10 @@ def write(fileID, data):
 # this function is called once a datafile is fully compressed
 def save():
 	# if the folder doesn't exist, make it
-	if not os.path.isdir(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'tempFiles'):
-		os.makedirs(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'tempFiles')
+	if not os.path.isdir('{0}{1}temp{1}tempFiles'.format(CONFIG['dumpFolder'],os.sep)):
+		os.makedirs('{0}{1}temp{1}tempFiles'.format(CONFIG['dumpFolder'],os.sep))
 	# write tempFilesFile
-	tempFilesFile = open(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'tempFiles' + os.sep + 'ACU', 'w')
+	tempFilesFile = open('{0}{1}temp{1}tempFiles{1}ACU'.format(CONFIG['dumpFolder'],os.sep), 'w')
 	tempFilesFile.write(json.dumps(tempFileContainer))
 	tempFilesFile.close()
 	

@@ -24,7 +24,6 @@ move checkbyte, fileID and fileType so it is always called rather than each func
 dev = 'dev' in sys.argv
 if dev:
 	from ACExplorer import formatLog
-success = True
 
 def fOutWrite(fOut, val):
 	if dev:
@@ -108,6 +107,7 @@ def ReadRest(fIn, fOut):
 	return BEHEX2(val)
 
 def topLevelFormat(fileTree, fileList, fileID):
+	global success
 	success = True
 	if not tempFiles.exists(fileID):
 		decompressDatafile(fileTree, fileList, fileID)
@@ -143,7 +143,7 @@ def topLevelFormat(fileTree, fileList, fileID):
 			formatLog[fileContainer['fileType']] = {}
 			formatLog[fileContainer['fileType']]['success'] = 0
 			formatLog[fileContainer['fileType']]['fail'] = 0
-		if fileContainer['readRest'] == '':
+		if fileContainer['readRest'] == '' and success:
 			formatLog[fileContainer['fileType']]['success'] += 1
 		else:
 			formatLog[fileContainer['fileType']]['fail'] += 1
@@ -161,6 +161,7 @@ def topLevelFormat(fileTree, fileList, fileID):
 	return fileContainer
 	
 def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
+	global success
 	log.info(__name__, 'Formatting Type: {}'.format(fileType))
 	if dev:
 		if not os.path.isdir(CONFIG['dumpFolder']+os.sep+'fileTypes'):
@@ -371,7 +372,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		# 03 end file?
 		readStr(fIn, fOut, 1)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == "3F742D26":	# entity group
 		# cheap method
@@ -437,8 +437,7 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			visualLoc = rawFile.find('\x29\x8D\x65\xEC')		
 			
 		fIn.seek(filePointer)
-			
-		return fileContainer	
+
 			
 			
 			
@@ -486,7 +485,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			readID(fileTree, fileList, fIn, fOut)
 			fileType2 = readType(fIn, fOut)
 			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-		return fileContainer
 	
 	elif fileType == "414FF9F7": # mission context
 		readStr(fIn, fOut, 1)
@@ -498,7 +496,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			readStr(fIn, fOut, 4)
 			fOutWrite(fOut, '\n')
 		fOutWrite(fOut, '\n')
-		return fileContainer
 	
 	elif fileType == "1CBDE084":
 		readStr(fIn, fOut, 2)
@@ -528,7 +525,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			# readID(fileTree, fileList, fIn, fOut)
 			fileContainer['files'].append(readID(fileTree, fileList, fIn, fOut))
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == "55AF1C3E":
 		readStr(fIn, fOut, 2)
@@ -542,7 +538,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			fileType2 = readType(fIn, fOut)
 			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	
 	elif fileType == "2D675BA2":	# merged shape
@@ -569,12 +564,10 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			fileType2 = readType(fIn, fOut)
 			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == "43EF99C2":	#Collision Filter Info 
 		readStr(fIn, fOut, 15)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 	
 	elif fileType == "AC2BBF68":	# datablock
 		count1 = readInt(fIn, fOut, 4)
@@ -589,7 +582,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			success = False
 		readInt(fIn, fOut, 4) # this might be a 64 bit int
 		readStr(fIn, fOut, 4)
-		return fileContainer
 	
 	elif fileType == "EC658D29":	# visual
 		readStr(fIn, fOut, 4)
@@ -619,8 +611,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		
 		for _ in range(7):
 			readFloat32(fIn, fOut)
-		
-		return fileContainer
 	
 	elif fileType == "01437462":	# LOD selector
 		readStr(fIn, fOut, 1)
@@ -639,7 +629,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		# 	ending0 = readStr(fIn, fOut, 1)
 		# while ending0 == '03':
 		# 	ending0 = readStr(fIn, fOut, 1)
-		return fileContainer
 	
 	elif fileType == "536E963B":	# mesh instance data
 		readStr(fIn, fOut, 1)
@@ -677,7 +666,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			if fileType2 == '4AEC3476':
 				fileContainer['BB'].append(subFileContainer['BB'])
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 		# needs to return {'fileID':'', 'tm':[], 'BB':[]}
 		
@@ -695,7 +683,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readStr(fIn, fOut, 2)
 		readID(fileTree, fileList, fIn, fOut)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == "132FE22D":
 		# needs more work
@@ -707,29 +694,24 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			readID(fileTree, fileList, fIn, fOut)
 		readStr(fIn, fOut, 4*9)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == "BE711F06":
 		readStr(fIn, fOut, 3)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == "2AA179AB":
 		readStr(fIn, fOut, 3)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == 'B8B08A89':
 		readStr(fIn, fOut, 1)
 		readID(fileTree, fileList, fIn, fOut)
 		readStr(fIn, fOut, 1)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 	
 	elif fileType == "2E8B5553":	# Event Listener 
 		readStr(fIn, fOut, 2)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == '4AEC3476':	# bounding volume / bouding box
 		fileContainer['BB'] = {}
@@ -741,12 +723,10 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		fileContainer['BB']['maxz'] = readFloat32(fIn, fOut)
 		readInt(fIn, fOut, 4)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == '60121A9E':	# Entity Descriptor
 		readStr(fIn, fOut, 19)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == 'DB1D406E':	# Data Layer Filter 
 		count1 = readInt(fIn, fOut, 4) #count
@@ -756,14 +736,12 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			fileType2 = readType(fIn, fOut)
 			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == 'E31593E1':
 		readStr(fIn, fOut, 1)
 		readID(fileTree, fileList, fIn, fOut)
 		readStr(fIn, fOut, 4)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 	
 	elif fileType == '55AF1C3E':	# unknown
 		readStr(fIn, fOut, 2)
@@ -787,9 +765,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		for _ in range(count2):
 			readStr(fIn, fOut, 12)
 		fOutWrite(fOut, '\n')
-			
-			
-		return fileContainer
 		
 	elif fileType == '554C614C':	# unknown
 		readStr(fIn, fOut, 1)
@@ -802,7 +777,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 		
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == 'AA8F96B6':	# unknown
 		readStr(fIn, fOut, 11)
@@ -811,24 +785,20 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readStr(fIn, fOut, 10)
 		# readStr(fIn, fOut, 1)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == '344FA659':	# unknown
 		readStr(fIn, fOut, 29)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == '788BAA0D':	# unknown
 		for _ in range(4):
 			for _ in range(4):
 				readFloat32(fIn, fOut)
 		fOutWrite(fOut, '\n')
-		return fileContainer	
 		
 	elif fileType == '709FB9D4':	# unknown
 		readStr(fIn, fOut, 13)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == '3BBECB2B':	# unknown
 		readStr(fIn, fOut, 11)
@@ -869,20 +839,17 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 				readStr(fIn, fOut, 1)
 				readID(fileTree, fileList, fIn, fOut)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == 'C8C23780':	# unknown
 		readStr(fIn, fOut, 16)
 		# three floats and zeros
 		fOutWrite(fOut, '\n')
-		return fileContainer
 
 	elif fileType == '509C4552':
 		readStr(fIn, fOut, 8)
 		readStr(fIn, fOut, 4*4) #4 floats
 		readStr(fIn, fOut, 4)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 		
 	elif fileType == '4661AAEF':
 		readStr(fIn, fOut, 2)
@@ -891,7 +858,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readStr(fIn, fOut, 4*6) #6 floats
 		readStr(fIn, fOut, 29)
 		fOutWrite(fOut, '\n')
-		return fileContainer
 
 	elif fileType == '2132CC6E':
 		readStr(fIn, fOut, 12)
@@ -899,7 +865,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readID(fileTree, fileList, fIn, fOut)  # temporary id?
 		fileType2 = readType(fIn, fOut)
 		recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-		return fileContainer
 
 	elif fileType == '21795599':
 		for l in [2,2,1,1,4,2,2]:
@@ -933,7 +898,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		readID(fileTree, fileList, fIn, fOut)  # temporary id?
 		fileType2 = readType(fIn, fOut)
 		recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
-		return fileContainer
 
 	elif fileType == '9336FC8B':
 		readStr(fIn, fOut, 8*4)
@@ -953,11 +917,9 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			pass
 		else:
 			raise Exception('Probably an issue here')
-		return fileContainer
 
 	elif fileType == '1FB7CB75':
 		readStr(fIn, fOut, 61)
-		return fileContainer
 
 	elif fileType == 'F49B6117':
 		readStr(fIn, fOut, 1)
@@ -967,7 +929,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		for _ in range(count1):
 			readStr(fIn, fOut, 2)
 			readID(fileTree, fileList, fIn, fOut)
-		return fileContainer
 
 	elif fileType == '0E5A450A':
 		# readStr(fIn, fOut, 184)
@@ -977,8 +938,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			fileType2 = readType(fIn, fOut)
 			recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
 
-		return fileContainer
-
 	elif fileType == '228F402A':
 		readStr(fIn, fOut, 29)
 		readID(fileTree, fileList, fIn, fOut)
@@ -987,7 +946,6 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		for _ in range(4):
 			for _ in range(4):
 				readFloat32(fIn, fOut)
-		return fileContainer
 
 	elif fileType == '1C4B22AA':
 		readStr(fIn, fOut, 6)
@@ -1001,7 +959,16 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 			readID(fileTree, fileList, fIn, fOut)
 		else:
 			log.warn(__name__, 'value is not 3 or 5 I don\'t know how to deal with this')
-		return fileContainer
+
+	elif fileType == 'A2B7E917':
+		readStr(fIn, fOut, 52)
+		readID(fileTree, fileList, fIn, fOut)  # temporary id?
+		fileType2 = readType(fIn, fOut)
+		recursiveFormat(fileTree, fileList, fileType2, fIn, fOut)
+
+	elif fileType == '13237FE9':
+		readStr(fIn, fOut, 48)
+		readStr(fIn, fOut, readInt(fIn, fOut, 4))
 
 	# F9 C2 8F 68
 	# F0 8C 38 D8
@@ -1021,3 +988,4 @@ def recursiveFormat(fileTree, fileList, fileType, fIn, fOut):
 		log.warn(__name__, fileType+' not currently supported')
 		raise Exception()
 		return []
+	return fileContainer
