@@ -1,10 +1,7 @@
-import sys
-import os
+import sys, os, json
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
-from ACExplorer.ACUnity.formatFile import readID, readStr, readInt, readFloat32, readType, fOutWrite, ReadRest
+from ACExplorer.ACUnity.formatFile import readID, readStr, readInt, readInt16, readUInt16, readInt32, readUInt32, readFloat32, readType, fOutWrite, ReadRest
 from ACExplorer.misc import tempFiles
-# from ACExplorer.misc.dataTypes import BEHEX2, LE2BE2, LE2DEC2, float32
-import json
 
 dev = 'dev' in sys.argv
 
@@ -37,7 +34,7 @@ def readModel(fileTree, fileList, fileID):
 	readStr(fIn, fOut, 1)		#skip an empty byte
 	model['modelType'] = readStr(fIn, fOut, 4)	#
 	readStr(fIn, fOut, 1)
-	model['aCount'] = readInt(fIn, fOut, 4)
+	model['aCount'] = readUInt32(fIn, fOut)
 	if model['aCount'] > 0:
 		raise Exception('aCount not accounted for')
 	# {
@@ -108,7 +105,7 @@ def readModel(fileTree, fileList, fileID):
 			# binaryReader.BaseStream.Position += 12L;
 		# }
 	# }
-	model['boneCount'] = readInt(fIn, fOut, 4)
+	model['boneCount'] = readUInt32(fIn, fOut)
 	if model['boneCount'] > 0:
 		raise Exception('boneCount not accounted for')
 	# {
@@ -157,27 +154,27 @@ def readModel(fileTree, fileList, fileID):
 	if readStr(fIn, fOut, 4).upper() == "FC9E1595":
 		readStr(fIn, fOut, 4)
 		fOutWrite(fOut, 'Typeswitch\n')
-		model['typeSwitch'] = readInt(fIn, fOut, 4)
+		model['typeSwitch'] = readUInt32(fIn, fOut)
 		if model['typeSwitch'] == 0:
 			readStr(fIn, fOut, 14)
 			fOutWrite(fOut, 'Vert table length\n')
-			model['vertTableSize'] = readInt(fIn, fOut, 4)
-			model['unkLng2'] = readInt(fIn, fOut, 4)
+			model['vertTableSize'] = readUInt32(fIn, fOut)
+			model['unkLng2'] = readUInt32(fIn, fOut)
 			readStr(fIn, fOut, 24)
-			model['length1'] = readInt(fIn, fOut, 4)
-			model['length2'] = readInt(fIn, fOut, 4)
+			model['length1'] = readUInt32(fIn, fOut)
+			model['length2'] = readUInt32(fIn, fOut)
 			model['meshFaceBlocks'] = []
 			model['shadowFaceBlocks'] = []
 			fOutWrite(fOut, 'Mesh Face Blocks\n')
 			for index in range(model['length1']):
-				model['meshFaceBlocks'].append(readInt(fIn, fOut, 4))
+				model['meshFaceBlocks'].append(readUInt32(fIn, fOut))
 			for index in range(model['length2']):
-				model['shadowFaceBlocks'].append(readInt(fIn, fOut, 4))
-			model['unkLng'] = readInt(fIn, fOut, 4)
-			model['unkByt'] = readStr(fIn, fOut, 1);
+				model['shadowFaceBlocks'].append(readUInt32(fIn, fOut))
+			model['unkLng'] = readUInt32(fIn, fOut)
+			model['unkByt'] = readStr(fIn, fOut, 1)
 			fOutWrite(fOut, 'Vert count\n')
-			num3 = readInt(fIn, fOut, 4)
-			model['vertCount'] = num3 / model['vertTableSize'];
+			num3 = readUInt32(fIn, fOut)
+			model['vertCount'] = num3 / model['vertTableSize']
 			model['vertData'] = {}
 			model['vertData']['vertex'] = []
 			model['vertData']['tVert'] = []
@@ -186,219 +183,203 @@ def readModel(fileTree, fileList, fileID):
 			fOutWrite(fOut, '\nVert Table\n')
 			for index in range(model['vertCount']):
 				if model['vertTableSize'] == 48:
-					raise Exception('48')
-					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 2L;
-					# arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 6L;
-					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 4L;
-					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
-					# binaryReader.BaseStream.Position += 4L;
-					# break;
-				elif model['vertTableSize'] == 40:
-					raise Exception('40')
-					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 2L;
-					# arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 6L;
-					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum2.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
-					# break;
-				elif model['vertTableSize'] == 36:
-					raise Exception('36')
-					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 2L;
-					# arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 6L;
-					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 4L;
-					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
-					# break;
-				elif model['vertTableSize'] == 32:
-					raise Exception('32')
-					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 2L;
-					# arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 6L;
-					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
-					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
-					# break;
-				elif model['vertTableSize'] == 28:
 					model['vertData']['vertex'].append({})
-					model['vertData']['vertex'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['X'] >= 2**15:
-						model['vertData']['vertex'][index]['X'] -= 2**16
-					model['vertData']['vertex'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Y'] >= 2**15:
-						model['vertData']['vertex'][index]['Y'] -= 2**16
-					model['vertData']['vertex'][index]['Z'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Z'] >= 2**15:
-						model['vertData']['vertex'][index]['Z'] -= 2**16
-					num4 = float(readInt(fIn, fOut, 2))
-					if num4 >= 2**15:
-						num4 -= 2**16
-					model['vertData']['vertex'][index]['X'] /= num4
-					model['vertData']['vertex'][index]['Y'] /= num4
-					model['vertData']['vertex'][index]['Z'] /= num4
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
 					model['vertData']['normals'].append({})
-					model['vertData']['normals'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['normals'][index]['X'] >= 2**15:
-						model['vertData']['normals'][index]['X'] -= 2**16
-					model['vertData']['normals'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['normals'][index]['Y'] >= 2**15:
-						model['vertData']['normals'][index]['Y'] -= 2**16
-					model['vertData']['normals'][index]['Z'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['normals'][index]['Z'] >= 2**15:
-						model['vertData']['normals'][index]['Z'] -= 2**16
+					model['vertData']['normals'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Z'] = float(readInt16(fIn, fOut))
 					readStr(fIn, fOut, 6)
 					model['vertData']['tVert'].append({})
-					model['vertData']['tVert'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['X'] >= 2**15:
-						model['vertData']['tVert'][index]['X'] -= 2**16
-					model['vertData']['tVert'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['Y'] >= 2**15:
-						model['vertData']['tVert'][index]['Y'] -= 2**16
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
 					readStr(fIn, fOut, 4)
+					readStr(fIn, fOut, 12)	# bones as below
+					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
+					readStr(fIn, fOut, 4)
+
+				elif model['vertTableSize'] == 40:
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
+					model['vertData']['normals'].append({})
+					model['vertData']['normals'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Z'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 6)
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 12)	# bones as below
+					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum2.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
+
+				elif model['vertTableSize'] == 36:
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
+					model['vertData']['normals'].append({})
+					model['vertData']['normals'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Z'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 6)
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 4)
+					readStr(fIn, fOut, 8)	# bones as below
+					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
+
+				elif model['vertTableSize'] == 32:
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
+					model['vertData']['normals'].append({})
+					model['vertData']['normals'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Z'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 6)
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 8)	# bones as below
+					# arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
+					# arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
+
+				elif model['vertTableSize'] == 28:
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
+					model['vertData']['normals'].append({})
+					model['vertData']['normals'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Z'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 6)
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 4)
+
 				elif model['vertTableSize'] == 24:
-					raise Exception('24')
-					# arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 2L;
-					# arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-					# binaryReader.BaseStream.Position += 6L;
-					# arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-					# arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-					# break;
+					model['vertData']['vertex'].append({})
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
+					model['vertData']['normals'].append({})
+					model['vertData']['normals'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Z'] = float(readInt16(fIn, fOut))
+					readStr(fIn, fOut, 6)
+					model['vertData']['tVert'].append({})
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
+
 				elif model['vertTableSize'] == 20:
 					model['vertData']['vertex'].append({})
-					model['vertData']['vertex'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['X'] >= 2**15:
-						model['vertData']['vertex'][index]['X'] -= 2**16
-					model['vertData']['vertex'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Y'] >= 2**15:
-						model['vertData']['vertex'][index]['Y'] -= 2**16
-					model['vertData']['vertex'][index]['Z'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Z'] >= 2**15:
-						model['vertData']['vertex'][index]['Z'] -= 2**16
-					num6 = float(readInt(fIn, fOut, 2))
-					if num6 >= 2**15:
-						num6 -= 2**16
-					model['vertData']['vertex'][index]['X'] /= num6
-					model['vertData']['vertex'][index]['Y'] /= num6
-					model['vertData']['vertex'][index]['Z'] /= num6
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
 					model['vertData']['normals'].append({})
-					model['vertData']['normals'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['normals'][index]['X'] >= 2**15:
-						model['vertData']['normals'][index]['X'] -= 2**16
-					model['vertData']['normals'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['normals'][index]['Y'] >= 2**15:
-						model['vertData']['normals'][index]['Y'] -= 2**16
-					model['vertData']['normals'][index]['Z'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['normals'][index]['Z'] >= 2**15:
-						model['vertData']['normals'][index]['Z'] -= 2**16
+					model['vertData']['normals'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['normals'][index]['Z'] = float(readInt16(fIn, fOut))
 					readStr(fIn, fOut, 2)
 					model['vertData']['tVert'].append({})
-					model['vertData']['tVert'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['X'] >= 2**15:
-						model['vertData']['tVert'][index]['X'] -= 2**16
-					model['vertData']['tVert'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['Y'] >= 2**15:
-						model['vertData']['tVert'][index]['Y'] -= 2**16
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
+
 				elif model['vertTableSize'] == 16:
 					model['vertData']['vertex'].append({})
-					model['vertData']['vertex'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['X'] >= 2**15:
-						model['vertData']['vertex'][index]['X'] -= 2**16
-					model['vertData']['vertex'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Y'] >= 2**15:
-						model['vertData']['vertex'][index]['Y'] -= 2**16
-					model['vertData']['vertex'][index]['Z'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['vertex'][index]['Z'] >= 2**15:
-						model['vertData']['vertex'][index]['Z'] -= 2**16
-					num5 = float(readInt(fIn, fOut, 2))
-					if num5 >= 2**15:
-						num5 -= 2**16
-					model['vertData']['vertex'][index]['X'] /= num5
-					model['vertData']['vertex'][index]['Y'] /= num5
-					model['vertData']['vertex'][index]['Z'] /= num5
+					model['vertData']['vertex'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Y'] = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['Z'] = float(readInt16(fIn, fOut))
+					vertScale = float(readInt16(fIn, fOut))
+					model['vertData']['vertex'][index]['X'] /= vertScale
+					model['vertData']['vertex'][index]['Y'] /= vertScale
+					model['vertData']['vertex'][index]['Z'] /= vertScale
 					readStr(fIn, fOut, 4)
 					model['vertData']['tVert'].append({})
-					model['vertData']['tVert'][index]['X'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['X'] >= 2**15:
-						model['vertData']['tVert'][index]['X'] -= 2**16
-					model['vertData']['tVert'][index]['Y'] = float(readInt(fIn, fOut, 2))
-					if model['vertData']['tVert'][index]['Y'] >= 2**15:
-						model['vertData']['tVert'][index]['Y'] -= 2**16
+					model['vertData']['tVert'][index]['X'] = float(readInt16(fIn, fOut))
+					model['vertData']['tVert'][index]['Y'] = float(readInt16(fIn, fOut))
+
 				else:
-					raise Exception("Not yet implemented!\n\nvertTableSize = " + str(vertTableSize))
+					raise Exception("Not yet implemented!\n\nvertTableSize = {}".format(model['vertTableSize']))
 			
 			# scale verticies based on bouding box
 			model['modelBoundingBox'] = {}
@@ -427,54 +408,54 @@ def readModel(fileTree, fileList, fileID):
 			
 			
 			fOutWrite(fOut, 'Face table\n')
-			model['length3'] = readInt(fIn, fOut, 4) / 6
+			model['length3'] = readUInt32(fIn, fOut) / 6
 			model['faceData'] = []
 			for index in range(model['length3']):
 				model['faceData'].append({})
 				model['faceData'][index]['Y'] = readInt(fIn, fOut, 2)
 				model['faceData'][index]['X'] = readInt(fIn, fOut, 2)
 				model['faceData'][index]['Z'] = readInt(fIn, fOut, 2)
-			model['facesUsed'] = model['length3'];
+			model['facesUsed'] = model['length3']
 			# cAry = new int[5];
 			for index in range(5):
 				# arxForm.acModel.cAry[index] = fi.read(4);
 				# binaryReader.BaseStream.Position += (long) arxForm.acModel.cAry[index];
-				model['cAry'] = readInt(fIn, fOut, 4)
+				model['cAry'] = readUInt32(fIn, fOut)
 				fOutWrite(fOut, '\t')
 				readStr(fIn, fOut, model['cAry'])
 			# the last two iterations of the loop always seem to be 0 and I think go with the type below as an empty id
 			readType(fIn, fOut)
 			readStr(fIn, fOut, 3)
 			fOutWrite(fOut, 'Mesh Count\n')
-			model['meshCount'] = readInt(fIn, fOut, 4)
+			model['meshCount'] = readUInt32(fIn, fOut)
 			model['meshData'] = []
 			model['faceCount'] = 0
 			fOutWrite(fOut, 'Mesh Table\n')
 			for index in range(model['meshCount']):
 				readStr(fIn, fOut, 12)
 				model['meshData'].append({})
-				model['meshData'][index]['X'] = float(readInt(fIn, fOut, 4))
+				model['meshData'][index]['X'] = float(readUInt32(fIn, fOut))
 				readStr(fIn, fOut, 4)
-				model['meshData'][index]['materialTempID'] = float(readInt(fIn, fOut, 4))
-				model['meshData'][index]['vertStart'] = readInt(fIn, fOut, 4) #verticy start
-				model['meshData'][index]['vertCount'] = readInt(fIn, fOut, 4) #number of verticies
+				model['meshData'][index]['materialTempID'] = float(readUInt32(fIn, fOut))
+				model['meshData'][index]['vertStart'] = readUInt32(fIn, fOut) #verticy start
+				model['meshData'][index]['vertCount'] = readUInt32(fIn, fOut) #number of verticies
 				readStr(fIn, fOut, 4)
 				model['faceCount'] += model['meshData'][index]['vertCount']
 			fOutWrite(fOut, 'Shadow Count\n')
-			model['shadowCount'] = readInt(fIn, fOut, 4)
+			model['shadowCount'] = readUInt32(fIn, fOut)
 			model['shadowData'] = []
 			fOutWrite(fOut, 'Shadow Table\n')
 			for index in range(model['shadowCount']):
 				readStr(fIn, fOut, 12)
 				model['shadowData'].append({})
-				model['shadowData'][index]['X'] = float(readInt(fIn, fOut, 4))
+				model['shadowData'][index]['X'] = float(readUInt32(fIn, fOut))
 				readStr(fIn, fOut, 4)
-				model['shadowData'][index]['Y'] = float(readInt(fIn, fOut, 4))
-				model['shadowData'][index]['Z'] = float(readInt(fIn, fOut, 4))
-				model['shadowData'][index]['W'] = float(readInt(fIn, fOut, 4))
+				model['shadowData'][index]['Y'] = float(readUInt32(fIn, fOut))
+				model['shadowData'][index]['Z'] = float(readUInt32(fIn, fOut))
+				model['shadowData'][index]['W'] = float(readUInt32(fIn, fOut))
 				readStr(fIn, fOut, 4)
 			for index in range(2):
-				num4 = readInt(fIn, fOut, 4)
+				num4 = readUInt32(fIn, fOut)
 				fOutWrite(fOut, '\t')
 				readStr(fIn, fOut, num4)
 		elif model['typeSwitch'] == 3:
@@ -619,7 +600,7 @@ def readModel(fileTree, fileList, fileID):
 		else:
 			raise Exception("New switchType found")
 		fOutWrite(fOut, 'Skin Data Table\n')
-		model['length4'] = readInt(fIn, fOut, 4)
+		model['length4'] = readUInt32(fIn, fOut)
 		model['skinData'] = []
 		for index1 in range(model['length4']):
 			readStr(fIn, fOut, 17)
@@ -634,7 +615,7 @@ def readModel(fileTree, fileList, fileID):
 		fOutWrite(fOut, 'Model Scale\n')
 		model['modelScale'] = readFloat32(fIn, fOut)
 		fOutWrite(fOut, 'Material Table\n')
-		model['materialCount'] = readInt(fIn, fOut, 4)
+		model['materialCount'] = readUInt32(fIn, fOut)
 		model['materialId'] = []
 		# model['materials'] = {}
 		for index in range(model['materialCount']):

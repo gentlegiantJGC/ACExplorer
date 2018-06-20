@@ -1,5 +1,4 @@
-import binascii
-import struct
+import binascii, struct
 
 
 def BEHEX(f, start, length):
@@ -44,7 +43,43 @@ def BE(f, start, length):
 	# used to extract file names
 	be = f[start:start+length]
 	return be
-	
+
+
+'''preferentially use the below functions over the above'''
+
+
+def int16(f):
+	# given a binary string object of length 4
+	# converts from a little endian signed short to base 10
+	if len(f) == 2:
+		return struct.unpack('<h',f)[0]
+	else:
+		raise Exception('int16 can only accept 16 bits (2 bytes)')
+
+def uint16(f):
+	# given a binary string object of length 4
+	# converts from a little endian unsigned short to base 10
+	if len(f) == 2:
+		return struct.unpack('<H',f)[0]
+	else:
+		raise Exception('uint16 can only accept 16 bits (2 bytes)')
+
+def int32(f):
+	# given a binary string object of length 4
+	# converts from a little endian signed int to base 10
+	if len(f) == 4:
+		return struct.unpack('<i',f)[0]
+	else:
+		raise Exception('int32 can only accept 32 bits (4 bytes)')
+
+def uint32(f):
+	# given a binary string object of length 4
+	# converts from a little endian unsigned int to base 10
+	if len(f) == 4:
+		return struct.unpack('<I',f)[0]
+	else:
+		raise Exception('uint32 can only accept 32 bits (4 bytes)')
+
 def float32(f):
 	# given string object
 	# converts from little endian to big endian
