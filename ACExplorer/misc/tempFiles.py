@@ -75,7 +75,7 @@ def populateTree(fileTree):
 			log.info(__name__, 'Populating file tree: {} of {} completed'.format(ticker, folderLen))
 		ticker += 1
 	for containerFileID in tempFileTree:
-		for fileName in sorted([m for m in tempFileTree[containerFileID]]):
+		for fileName in sorted(tempFileTree[containerFileID], key=lambda v: v.lower()):
 			for fileID2 in tempFileTree[containerFileID][fileName]:
 				fileTree.insert(containerFileID, 'end', containerFileID+'|'+fileID2, text=fileName)
 

@@ -56,7 +56,7 @@ def readForge(fileTree, folder):
 				if fileList[x][fileID]['rawDataSize'] != LE2DEC(nameTable, n*192, 4):
 					raise Exception('These should be the same. Is something wrong?')
 			
-			for fileName in sorted([m for m in forgeDatafiles]):
+			for fileName in sorted(forgeDatafiles, key=lambda v: v.lower()):
 				for fileID in forgeDatafiles[fileName]:
 					fileTree.insert('ACU|'+x, 'end', 'ACU|'+x+'|'+fileID, text=fileName)
 			

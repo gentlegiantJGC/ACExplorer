@@ -151,6 +151,6 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 		
 	tempFiles.save()
 	
-	for fileName in sorted([m for m in alphabeticalFiles]):
+	for fileName in sorted(alphabeticalFiles, key=lambda v: v.lower()):
 		for fileID2 in alphabeticalFiles[fileName]:
 			fileTree.insert('ACU|'+forgeFile+'|'+fileID, 'end', 'ACU|'+forgeFile+'|'+fileID+'|'+fileID2.upper(), text=fileName)
