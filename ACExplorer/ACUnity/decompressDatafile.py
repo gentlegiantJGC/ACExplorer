@@ -10,22 +10,17 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	fileID = fileID.upper()
 	if fileID == '00'*8 or not fileID.endswith('00'*3):
 		return
-	if forgeFile == None:
-		for forgeFile in fileList:
-			if fileID in fileList[forgeFile]:
-				break
-		if fileID not in fileList[forgeFile]:
-			# if fileID in os.listdir(CONFIG["lightDict"]):
+	if forgeFile is None:
+		forgeFile = next((fF for fF in fileList if fileID in fileList[fF]), None)
+		if forgeFile is None:
 			if os.path.isfile(CONFIG["lightDict"]+os.sep+fileID):
 				with open(CONFIG["lightDict"]+os.sep+fileID, 'r') as f:
 					fileID2 = f.read()
-				for forgeFile in fileList:
-					if fileID2 in fileList[forgeFile]:
-						fileID = fileID2
-						break
+				forgeFile = next((fF for fF in fileList if fileID2 in fileList[fF]), None)
+				fileID = fileID2
 			else:
 				return
-	if fileID not in fileList[forgeFile]:
+	if forgeFile is None:
 		print fileID +' not found'
 		return
 	if not os.path.isdir(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'raw'):
