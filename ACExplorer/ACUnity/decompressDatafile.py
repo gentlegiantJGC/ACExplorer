@@ -5,6 +5,20 @@ from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BE, BEHEX2, LE2BE, LE2BE2, LE2DEC, LE2DEC2
 from ACExplorer.misc.decompress import decompress
 
+class fileObject:
+	def __init__(self):
+		self.data = ''
+		self.filePointer = 0
+
+	def write(self, s):
+		self.data += s
+		self.filePointer += len(s)
+
+	def read(self, l):
+		return self.data[self.filePointer:self.filePointer+l]
+
+	def seek(self, p):
+		self.filePointer = p
 
 def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	fileID = fileID.upper()
@@ -13,8 +27,8 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	if forgeFile is None:
 		forgeFile = next((fF for fF in fileList if fileID in fileList[fF]), None)
 		if forgeFile is None:
-			if os.path.isfile(CONFIG["lightDict"]+os.sep+fileID):
-				with open(CONFIG["lightDict"]+os.sep+fileID, 'r') as f:
+			if os.path.isfile(os.path.join(CONFIG["lightDict"], fileID)):
+				with open(os.path.join(CONFIG["lightDict"], fileID), 'r') as f:
 					fileID2 = f.read()
 				forgeFile = next((fF for fF in fileList if fileID2 in fileList[fF]), None)
 				fileID = fileID2
@@ -23,10 +37,11 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	if forgeFile is None:
 		print fileID +' not found'
 		return
-	if not os.path.isdir(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'raw'):
-		os.makedirs(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'raw')
-	uncompressedData = open(CONFIG['dumpFolder'] + os.sep + 'temp' + os.sep + 'raw' + os.sep + 'temp', 'wb')
-	f = open(CONFIG['ACUnityFolder']+os.sep+forgeFile, 'rb')
+	if not os.path.isdir(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw')):
+		os.makedirs(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw'))
+	# uncompressedData = open(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw', 'temp'), 'wb')
+	uncompressedData = fileObject()
+	f = open(os.path.join(CONFIG['ACUnityFolder'], forgeFile), 'rb')
 	f.seek(fileList[forgeFile][fileID]['rawDataOffset'])
 	rawDataChunk = f.read(fileList[forgeFile][fileID]['rawDataSize'])
 	f.close()
@@ -70,20 +85,14 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 			raise Exception('Compression Issue')
 		else:
 			uncompressedData.write(rawDataChunk) #if the if statment is not true the file is not compressed
-	
-	# outFile = open(CONFIG['dumpFolder']+os.sep+forgeFile+os.sep+fileList[x][fileID]['fileName']+'.acu', 'wb')
-	# outFile = open(CONFIG['dumpFolder']+os.sep+fileList[x][fileID]['fileName']+'.datafile', 'wb')
-	# outFile.write(uncompressedData)
-	# outFile.close()
-	uncompressedData.close()
-	
+
+	# uncompressedData.close()
 	if compBlockCount > 1000:
 		print 'This seems to be a large file.'
 		print 'Bear with us while we split it into its parts'
 		print 'The program has not crashed it might just take a little while'
 	
-	uncompressedData = open(CONFIG['dumpFolder'] + os.sep +'temp' + os.sep +'raw' + os.sep + 'temp', 'rb')
-	
+	# uncompressedData = open(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw', 'temp'), 'rb')
 	uncompressedData.seek(0)
 	fileCount = LE2DEC2(uncompressedData.read(2))
 	fileOffset = 2+fileCount*14
@@ -115,33 +124,24 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 		uncompressedData.seek(fileOffset+12+fileNameSize)
 		tempFile = uncompressedData.read(fileSize)
 		fileType = LE2BE(tempFile, 10, 4).upper()
-		# if not os.path.exists(CONFIG['dumpFolder']+os.sep+forgeFile+os.sep+fileList[x][fileID]['fileName']):
-			# os.makedirs(CONFIG['dumpFolder']+os.sep+forgeFile+os.sep+fileList[x][fileID]['fileName'])
-		# if not os.path.exists(CONFIG['dumpFolder']+os.sep+forgeFile+os.sep+fileList[x][fileID]['fileName']+os.sep+fileType):
-			# os.makedirs(CONFIG['dumpFolder']+os.sep+forgeFile+os.sep+fileList[x][fileID]['fileName']+os.sep+fileType)
-		if os.path.isfile(CONFIG['dumpFolder']+os.sep+'temp'+os.sep+forgeFile+os.sep+fileList[forgeFile][fileID]['fileName']+os.sep+fileType+os.sep+fileName+'.acu'):
+		folder = os.path.join(CONFIG['dumpFolder'], 'temp', forgeFile, fileList[forgeFile][fileID]['fileName'], fileType)
+		if os.path.isfile(os.path.join(folder, '{}.acu'.format(fileName))):
 			duplicate = 1
-			while os.path.isfile(CONFIG['dumpFolder']+os.sep+'temp'+os.sep+forgeFile+os.sep+fileList[forgeFile][fileID]['fileName']+os.sep+fileType+os.sep+fileName+'_'+str(duplicate)+'.acu'):
+			while os.path.isfile(os.path.join(folder, '{}_{}.acu'.format(fileName, duplicate))):
 				duplicate += 1
-			dir = CONFIG['dumpFolder']+os.sep+'temp'+os.sep+forgeFile+os.sep+fileList[forgeFile][fileID]['fileName']+os.sep+fileType+os.sep+fileName+'_'+str(duplicate)+'.acu'
+			dir = os.path.join(folder, '{}_{}.acu'.format(fileName, duplicate))
 		else:
-			dir = CONFIG['dumpFolder']+os.sep+'temp'+os.sep+forgeFile+os.sep+fileList[forgeFile][fileID]['fileName']+os.sep+fileType+os.sep+fileName+'.acu'
-		if not os.path.isdir(os.sep.join(dir.split(os.sep)[:-1])):
-			os.makedirs(os.sep.join(dir.split(os.sep)[:-1]))
-
+			dir = os.path.join(folder, fileName+'.acu')
+		if not os.path.isdir(folder):
+			os.makedirs(folder)
 		tempFiles.write(fileID2, {'game': 'ACU', 'forgeFile':forgeFile, 'containerFileID':fileID, 'resourceType':fileType, 'fileName': fileName, 'dir':dir})
-		
 		if fileName not in alphabeticalFiles:
 			alphabeticalFiles[fileName] = []
 		alphabeticalFiles[fileName].append(fileID2)
-		
 		try:
-			outFile = open(dir, 'wb')
-			outFile.write(tempFile)
-			outFile.close()
+			open(dir, 'wb').write(tempFile)
 		except:	
-			print 'error saving temporary file'
-
+			print 'error saving temporary file with path "{}"'.format(dir)
 		fileOffset += fileDataSize
 		
 	tempFiles.save()
