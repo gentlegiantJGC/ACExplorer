@@ -8,23 +8,24 @@ elif platform.architecture()[0] == '32bit':
 else:
 	raise Exception('Unknown Architecture')
 
+lzo = CDLL(lzoPath)
 
 def decompress(mode, src, dst_len):
-	lzo = CDLL(lzoPath)
+	if len(src) == dst_len:
+		return src
 	src = [ord(x) for x in src]
 	src = (c_ubyte * len(src))(*src)
 	src_len = (c_ushort*1)(len(src))
 	dst = (c_ubyte * dst_len)()
 	dst_len = (c_ushort*1)(dst_len)
-	workMem = (c_ubyte * 65536)()
 	if mode in [0,1]:
 		#lzo1x
-		lzo.lzo1x_decompress(src, src_len, dst, dst_len, workMem)
+		lzo.lzo1x_decompress(src, src_len, dst, dst_len, None)
 	elif mode == 2:
 		#lzo2a
-		lzo.lzo2a_decompress(src, src_len, dst, dst_len, workMem)
+		lzo.lzo2a_decompress(src, src_len, dst, dst_len, None)
 	elif mode == 5:
 		#lzo1c
-		lzo.lzo1c_decompress(src, src_len, dst, dst_len, workMem)
+		lzo.lzo1c_decompress(src, src_len, dst, dst_len, None)
 	dst = ''.join([chr(x) for x in dst])
 	return dst
