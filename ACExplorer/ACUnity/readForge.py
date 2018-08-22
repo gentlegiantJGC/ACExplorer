@@ -1,10 +1,7 @@
 import os
 import struct
 import binascii
-import time
 from ACExplorer.misc import log
-from ACExplorer.misc.dataTypes import BE, BEHEX, LE2DEC
-from ACExplorer.misc.dataTypes import int32, uint64
 
 def readForge(fileTree, folder):
 	fileList = {}

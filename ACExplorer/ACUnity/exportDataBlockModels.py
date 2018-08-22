@@ -18,7 +18,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 		decompressDatafile(fileTree, fileList, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
-		raise Exception('file '+fileID+' is empty')
+		raise Exception('file {} is empty'.format(fileID))
 	data = data[0]
 
 	if data['resourceType'] != 'AC2BBF68':
