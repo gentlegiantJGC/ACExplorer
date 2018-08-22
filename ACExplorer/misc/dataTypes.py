@@ -51,6 +51,8 @@ def BE(f, start, length):
 def int16(f):
 	# given a binary string object of length 4
 	# converts from a little endian signed short to base 10
+	if type(f) == file:
+		f = f.read(2)
 	if len(f) == 2:
 		return struct.unpack('<h',f)[0]
 	else:
@@ -59,6 +61,8 @@ def int16(f):
 def uint16(f):
 	# given a binary string object of length 4
 	# converts from a little endian unsigned short to base 10
+	if type(f) == file:
+		f = f.read(2)
 	if len(f) == 2:
 		return struct.unpack('<H',f)[0]
 	else:
@@ -67,6 +71,8 @@ def uint16(f):
 def int32(f):
 	# given a binary string object of length 4
 	# converts from a little endian signed int to base 10
+	if type(f) == file:
+		f = f.read(4)
 	if len(f) == 4:
 		return struct.unpack('<i',f)[0]
 	else:
@@ -75,8 +81,30 @@ def int32(f):
 def uint32(f):
 	# given a binary string object of length 4
 	# converts from a little endian unsigned int to base 10
+	if type(f) == file:
+		f = f.read(4)
 	if len(f) == 4:
 		return struct.unpack('<I',f)[0]
+	else:
+		raise Exception('uint32 can only accept 32 bits (4 bytes)')
+
+def int64(f):
+	# given a binary string object of length 8
+	# converts from a little endian signed int to base 10
+	if type(f) == file:
+		f = f.read(8)
+	if len(f) == 8:
+		return struct.unpack('<q',f)[0]
+	else:
+		raise Exception('int32 can only accept 32 bits (4 bytes)')
+
+def uint64(f):
+	# given a binary string object of length 8
+	# converts from a little endian unsigned int to base 10
+	if type(f) == file:
+		f = f.read(8)
+	if len(f) == 8:
+		return struct.unpack('<Q',f)[0]
 	else:
 		raise Exception('uint32 can only accept 32 bits (4 bytes)')
 
@@ -84,6 +112,8 @@ def float32(f):
 	# given string object
 	# converts from little endian to big endian
 	# converts from hex representation of 32 bit signed float to float
+	if type(f) == file:
+		f = f.read(4)
 	if len(f) == 4:
 		return struct.unpack('<f',f)[0]
 	else:
