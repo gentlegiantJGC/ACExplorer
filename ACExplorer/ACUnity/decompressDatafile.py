@@ -1,24 +1,9 @@
 import os
 
 from ACExplorer import CONFIG
-from ACExplorer.misc import tempFiles
+from ACExplorer.misc import tempFiles, fileObject
 from ACExplorer.misc.dataTypes import BE, BEHEX2, LE2BE, LE2BE2, LE2DEC, LE2DEC2
 from ACExplorer.misc.decompress import decompress
-
-class fileObject:
-	def __init__(self):
-		self.data = ''
-		self.filePointer = 0
-
-	def write(self, s):
-		self.data += s
-		self.filePointer += len(s)
-
-	def read(self, l):
-		return self.data[self.filePointer:self.filePointer+l]
-
-	def seek(self, p):
-		self.filePointer = p
 
 def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	fileID = fileID.upper()
@@ -37,9 +22,6 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	if forgeFile is None:
 		print fileID +' not found'
 		return
-	if not os.path.isdir(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw')):
-		os.makedirs(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw'))
-	# uncompressedData = open(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw', 'temp'), 'wb')
 	uncompressedData = fileObject()
 	f = open(os.path.join(CONFIG['ACUnityFolder'], forgeFile), 'rb')
 	f.seek(fileList[forgeFile][fileID]['rawDataOffset'])
@@ -54,14 +36,12 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 			compressedSize = LE2DEC(rawDataChunk, 21+m*4, 2)
 			compressedData = BE(rawDataChunk, compressedDataStart+4, compressedSize)
 			if uncompressedSize == compressedSize:
-				
 				uncompressedData.write(compressedData) #uncompressed
 			else:
-				
 				uncompressedData.write(decompress(compressionType, compressedData, uncompressedSize))
 				
 			compressedDataStart += compressedSize+4
-			print '\tDecompressing Part 1: Completed Section '+str(m+1)+' of '+str(compBlockCount)
+			print '\tDecompressing Part 1: Completed Section {} of {}'.format(m+1, compBlockCount)
 			
 		if LE2BE(rawDataChunk, compressedDataStart, 8) == '1004FA9957FBAA33':
 			header2Start = compressedDataStart
@@ -77,7 +57,7 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 				else:
 					uncompressedData.write(decompress(compressionType, compressedData, uncompressedSize))
 				compressedDataStart += compressedSize+4
-				print '\tDecompressing Part 2: Completed Section '+str(m+1)+' of '+str(compBlockCount)
+				print '\tDecompressing Part 2: Completed Section {} of {}'.format(m+1, compBlockCount)
 		else:
 			raise Exception('Compression Issue')
 	else:
@@ -86,13 +66,11 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 		else:
 			uncompressedData.write(rawDataChunk) #if the if statment is not true the file is not compressed
 
-	# uncompressedData.close()
 	if compBlockCount > 1000:
 		print 'This seems to be a large file.'
 		print 'Bear with us while we split it into its parts'
 		print 'The program has not crashed it might just take a little while'
 	
-	# uncompressedData = open(os.path.join(CONFIG['dumpFolder'], 'temp', 'raw', 'temp'), 'rb')
 	uncompressedData.seek(0)
 	fileCount = LE2DEC2(uncompressedData.read(2))
 	fileOffset = 2+fileCount*14
