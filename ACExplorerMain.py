@@ -83,9 +83,15 @@ class App:
 			readFile(self.fileTree, self.fileList, fileID.split('|')[3])
 
 	def searchFor(self):
-		if self.search.get() != '':
-			fileID = self.search.get().replace(' ', '').upper()
-			readFile(self.fileTree, self.fileList, fileID)
+		search = self.search.get()
+		if search != '':
+			if ',' in search:
+				for fileID in search.split(','):
+					fileID = fileID.replace(' ', '').upper()
+					readFile(self.fileTree, self.fileList, fileID)
+			else:
+				fileID = self.search.get().replace(' ', '').upper()
+				readFile(self.fileTree, self.fileList, fileID)
 
 	def clearSearch(self):
 		self.search.delete(0, Tkinter.END)
