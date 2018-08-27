@@ -1,9 +1,8 @@
 import binascii, os, sys, json
 from ACExplorer import CONFIG
-from ACExplorer.misc import log
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
-from ACExplorer.misc import tempFiles
+from ACExplorer.misc import log, fileObject, tempFiles
 from ACExplorer.misc.dataTypes import LE2BE2, BEHEX2, LE2DEC2, int16, uint16, int32, uint32, float32
+from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
 fileTypes = json.load(open(r"./ACExplorer/ACUnity/fileFormats.json"))
 indentCharacter = '\t'
 
@@ -184,9 +183,9 @@ def topLevelFormat(fileTree, fileList, fileID):
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]
 	log.info(__name__, 'Formatting '+fileID+':'+data["fileName"])
-	fIn = open(data["dir"], 'rb')
+	fIn = fileObject(data["dir"], 'rb')
 	if dev:
-		fOut = open(data["dir"]+'.format', 'w')
+		fOut = fileObject()
 	else:
 		fOut = None
 	
@@ -218,12 +217,11 @@ def topLevelFormat(fileTree, fileList, fileID):
 
 		with open('./formatLog.json', 'w') as f:
 			json.dump(formatLog, f)
-		
-	fIn.close()
+
 	if dev:
-		fOut.close()
-		print data["dir"]+'.format'
+		print '{}.format'.format(data["dir"])
 		if not success and fileContainer['fileType'] not in unsupportedTypes:
+			fOut.save('{}.format'.format(data["dir"]), 'w')
 			os.system('explorer "{}.format"'.format(data['dir']))
 	return fileContainer
 	
@@ -242,7 +240,7 @@ def recursiveFormat(fileTree, fileList, fIn, fOut, indentCount=0):
 	if dev:
 		if not os.path.isdir(CONFIG['dumpFolder']+os.sep+'fileTypes'):
 			os.makedirs(CONFIG['dumpFolder']+os.sep+'fileTypes')
-		typeOut = open(os.sep.join([CONFIG['dumpFolder'], 'fileTypes', fileType]), 'a')
+		typeOut = open(os.path.join(CONFIG['dumpFolder'], 'fileTypes', fileType), 'a')
 		filePointer = fIn.tell()
 		fIn.seek(-12, 1)
 		typeOut.write(hexSpaces(fIn.read()))
@@ -1083,6 +1081,12 @@ def recursiveFormat(fileTree, fileList, fIn, fOut, indentCount=0):
 	elif fileType == 'B0438131':
 		count1 = readUInt32(fIn, fOut)
 		readStr(fIn, fOut, count1)
+
+	elif fileType == 'EE568905':
+		count1 = readUInt32(fIn, fOut, indentCount)
+		for _ in range(count1):
+			readStr(fIn, fOut, count1, indentCount+1)
+			readID(fileTree, fileList, fIn, fOut, indentCount+1)
 
 	# F9 C2 8F 68
 	# F0 8C 38 D8
