@@ -13,10 +13,8 @@ lzo = CDLL(lzoPath)
 def decompress(mode, src, dst_len):
 	if len(src) == dst_len:
 		return src
-	src = [ord(x) for x in src]
-	src = (c_ubyte * len(src))(*src)
 	src_len = (c_ushort*1)(len(src))
-	dst = (c_ubyte * dst_len)()
+	dst = '\x00' * dst_len
 	dst_len = (c_ushort*1)(dst_len)
 	if mode in [0,1]:
 		#lzo1x
@@ -27,5 +25,6 @@ def decompress(mode, src, dst_len):
 	elif mode == 5:
 		#lzo1c
 		lzo.lzo1c_decompress(src, src_len, dst, dst_len, None)
-	dst = ''.join([chr(x) for x in dst])
+	else:
+		raise Exception('Decompression Mode "{}" is not supported'.format(mode))
 	return dst

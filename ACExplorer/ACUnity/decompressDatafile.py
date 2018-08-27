@@ -22,7 +22,7 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 	if forgeFile is None:
 		print fileID +' not found'
 		return
-	uncompressedData = fileObject()
+	uncompressedDataList = []
 	f = open(os.path.join(CONFIG['ACUnityFolder'], forgeFile), 'rb')
 	f.seek(fileList[forgeFile][fileID]['rawDataOffset'])
 	rawDataChunk = f.read(fileList[forgeFile][fileID]['rawDataSize'])
@@ -35,10 +35,7 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 			uncompressedSize = LE2DEC(rawDataChunk, 19+m*4, 2)
 			compressedSize = LE2DEC(rawDataChunk, 21+m*4, 2)
 			compressedData = BE(rawDataChunk, compressedDataStart+4, compressedSize)
-			if uncompressedSize == compressedSize:
-				uncompressedData.write(compressedData) #uncompressed
-			else:
-				uncompressedData.write(decompress(compressionType, compressedData, uncompressedSize))
+			uncompressedDataList.append(decompress(compressionType, compressedData, uncompressedSize))
 				
 			compressedDataStart += compressedSize+4
 			print '\tDecompressing Part 1: Completed Section {} of {}'.format(m+1, compBlockCount)
@@ -52,25 +49,24 @@ def decompressDatafile(fileTree, fileList, fileID, forgeFile=None):
 				uncompressedSize = LE2DEC(rawDataChunk, header2Start+19+m*4, 2)
 				compressedSize = LE2DEC(rawDataChunk, header2Start+21+m*4, 2)
 				compressedData = BE(rawDataChunk, compressedDataStart+4, compressedSize)
-				if uncompressedSize == compressedSize:
-					uncompressedData.write(compressedData) #uncompressed
-				else:
-					uncompressedData.write(decompress(compressionType, compressedData, uncompressedSize))
+				uncompressedDataList.append(decompress(compressionType, compressedData, uncompressedSize))
 				compressedDataStart += compressedSize+4
 				print '\tDecompressing Part 2: Completed Section {} of {}'.format(m+1, compBlockCount)
 		else:
 			raise Exception('Compression Issue')
+	elif '\x33\xAA\xFB\x57\x99\xFA\x04\x10' in rawDataChunk:
+		raise Exception('Compression Issue')
 	else:
-		if binascii.unhexlify('33AAFB5799FA0410') in rawDataChunk:
-			raise Exception('Compression Issue')
-		else:
-			uncompressedData.write(rawDataChunk) #if the if statment is not true the file is not compressed
+		uncompressedDataList.append(rawDataChunk) #if the if statment is not true the file is not compressed
+
+	uncompressedData = fileObject()
+	uncompressedData.write(''.join(uncompressedDataList))
 
 	if compBlockCount > 1000:
 		print 'This seems to be a large file.'
 		print 'Bear with us while we split it into its parts'
 		print 'The program has not crashed it might just take a little while'
-	
+
 	uncompressedData.seek(0)
 	fileCount = LE2DEC2(uncompressedData.read(2))
 	fileOffset = 2+fileCount*14
