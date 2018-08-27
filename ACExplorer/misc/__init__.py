@@ -1,3 +1,5 @@
+from texture import BaseTexture
+
 class fileObject:
 	def __init__(self, path=None, mode='w'):
 		self.path = None
