@@ -1,10 +1,70 @@
 import os
-
+import struct
 from ACExplorer import CONFIG
 from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
-from ACExplorer.misc import tempFiles
+from ACExplorer.misc import tempFiles, BaseTexture
 from ACExplorer.misc.dataTypes import LE2DEC2
+from ACExplorer.ACUnity.formatFile import readStr
 
+class texture(BaseTexture):
+	def __init__(self, fi):
+		BaseTexture.__init__(self)
+		try:
+			with open(os.path.join(CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
+				readStr(fi, f2, 130)
+		except:
+			print 'fail'
+		fi.seek(0)
+		fi.seek(14)
+		self.dwSize = '\x7C\x00\x00\x00' #124
+		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
+		#(probably should be set based on the data)
+		DDSD_PITCH = False
+		DDSD_MIPMAPCOUNT = True
+		DDSD_LINEARSIZE = True
+		DDSD_DEPTH = False
+		self.dwFlags = struct.pack('<i', (0x1*DDSD_CAPS)|(0x2*DDSD_HEIGHT)|(0x4*DDSD_WIDTH)|(0x8*DDSD_PITCH)|(0x1000*DDSD_PIXELFORMAT)|(0x20000*DDSD_MIPMAPCOUNT)|(0x80000*DDSD_LINEARSIZE)|(0x800000*DDSD_DEPTH))
+		self.dwWidth = fi.read(4)
+		self.dwHeight = fi.read(4)
+		self.dwDepth = fi.read(4)
+		self.imgDXT = LE2DEC2(fi.read(4))
+		fi.seek(8, 1)   # could be image format. Volume textures have first 4 \x03\x00\x00\x00 all else have \x01\x00\x00\x00
+						# next 4 are \x01\x00\x00\x00 for diffuse maps and \x00\x00\x00\x00 for other things like volume textures and maps
+		self.dwMipMapCount = fi.read(4)
+		fi.seek(84, 1)  #24 of other data followed by "CompiledTextureMap" which duplicates most of the data
+		self.dwPitchOrLinearSize = fi.read(4)
+		self.buffer = fi.read(LE2DEC2(self.dwPitchOrLinearSize))
+		self.dwReserved = '\x00\x00\x00\x00'*11
+
+		self.ddspf = '' #(pixel format)
+		self.ddspf += '\x20\x00\x00\x00'    #dwSize
+		if self.imgDXT in [0,7]:    #dwFlags
+			self.ddspf += '\x40\x00\x00\x00'
+		else:
+			self.ddspf += '\x04\x00\x00\x00'
+		# if imgDXT in [0, 7]:
+		# 	self.ddspf += 'DXT1'
+		if self.imgDXT in [0, 1, 2, 3, 7]: #dwFourCC
+			self.ddspf += 'DXT1'
+		elif self.imgDXT == 4:
+			self.ddspf += 'DXT3'
+		elif self.imgDXT in [5, 6]:
+			self.ddspf += 'DXT5'
+		elif self.imgDXT in [8, 9, 16]:
+			self.ddspf += 'DX10'
+		else:
+			raise Exception('imgDXT: "{}" is not currently supported'.format(self.imgDXT))
+
+		self.ddspf += '\x00\x00\x00\x00' * 5    #dwRGBBitCount, dwRBitMask, dwGBitMask, dwBBitMask, dwABitMask
+		if self.imgDXT == 8:
+			self.DXT10Header = '\x62\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+		else:
+			self.DXT10Header = ''
+		self.dwCaps = '\x08\x10\x40\x00'
+		self.dwCaps2 = '\x00\x00\x00\x00'
+		self.dwCaps3 = '\x00\x00\x00\x00'
+		self.dwCaps4 = '\x00\x00\x00\x00'
+		self.dwReserved2 = '\x00\x00\x00\x00'
 
 def exportTexture(fileTree, fileList, fileID):
 	if not tempFiles.exists(fileID):
@@ -18,66 +78,6 @@ def exportTexture(fileTree, fileList, fileID):
 	path2 = CONFIG['dumpFolder'] + os.sep + fileName + '.dds'
 	if os.path.isfile(path2):
 		return
-	fi = open(path1, 'rb')
-	_ = fi.read(14)
-	num1 = fi.read(4)
-	num2 = fi.read(4)
-	_ = fi.read(4)
-	imgDXT = LE2DEC2(fi.read(4))
-	_ = fi.read(8)
-	num3 = fi.read(4)
-	_ = fi.read(84)
-	count = fi.read(4)
-	buffer = fi.read(LE2DEC2(count))
-
-	fi.close()
-
-
-	fi = open(path2, 'wb')
-	fi.write('DDS ')
-	fi.write('\x7C\x00\x00\x00\x07\x10\x0A\x00')
-	fi.write(num2)
-	fi.write(num1)
-	fi.write(count)
-	fi.write('\x00\x00\x00\x00')
-	fi.write(num3)
-	for index in range(11):
-		fi.write('\x00\x00\x00\x00')
-	fi.write('\x20\x00\x00\x00')
-	if imgDXT == 0 or imgDXT == 7:
-		fi.write('\x40\x00\x00\x00')
-	else:
-		fi.write('\x04\x00\x00\x00')
-	if imgDXT in [0, 7]:
-		fi.write('\x44\x58\x54\x30') #DXT0
-	elif imgDXT in [1, 2, 3]:
-		fi.write('\x44\x58\x54\x31') #DXT1
-	elif imgDXT == 4:
-		fi.write('\x44\x58\x54\x33') #DXT3
-	elif imgDXT == 5:
-		fi.write('\x44\x58\x54\x35') #DXT5
-	elif imgDXT == 8:
-		fi.write('\x44\x58\x31\x30') #DX10
-
-	for index in range(5):
-		fi.write('\x00\x00\x00\x00')
-	fi.write('\x08\x10\x40\x00')
-	for index in range(4):
-		fi.write('\x00\x00\x00\x00')
-	if imgDXT == 8:
-		fi.write('\x62\x00\x00\x00')
-		fi.write('\x03\x00\x00\x00')
-		fi.write('\x00\x00\x00\x00')
-		fi.write('\x01\x00\x00\x00')
-		fi.write('\x00\x00\x00\x00')
-	fi.write(buffer)
-	fi.close()
-	if imgDXT == 8:
-		texconv = '"' + CONFIG['texconv'] + '" '
-		# else
-		# {
-			# str4 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_";
-			# path2 = arxForm.tempDir + "\\" + tNode.Parent.Parent.Parent.Text + "\\dx9_" + tNode.Text + "." + strArray3[1];
-		# }
-		arguments = "-fl 9.1 -y -px " + CONFIG['dumpFolder'] + os.sep + " -f BC3_UNORM " + path2
-		os.system(texconv+arguments)
+	with open(path1, 'rb') as fi:
+		tex = texture(fi)
+		tex.exportDDS(path2)
