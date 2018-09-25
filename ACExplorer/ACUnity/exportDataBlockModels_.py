@@ -1,4 +1,4 @@
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
 from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BEHEX2, LE2DEC2, float32
 from ACExplorer.misc.exportOBJMulti import exportOBJMulti
@@ -13,9 +13,9 @@ def mul4x4(A,B):
 				C[x][y] += A[x][z]*B[z][y]
 	return C
 
-def exportDataBlockModels(fileTree, fileList, fileID):
+def exportDataBlockModels(app, fileID):
 	if not tempFiles.exists(fileID):
-		decompressDatafile(fileTree, fileList, fileID)
+		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file {} is empty'.format(fileID))
@@ -26,7 +26,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 	
 	if 'dev' in sys.argv:
 		reload(formatFile)  # for development
-	dataBlock = formatFile.topLevelFormat(fileTree, fileList, fileID)
+	dataBlock = formatFile.topLevelFormat(app, fileID)
 	# fileID, data and dataBlock all relate to the DataBlock file (Type AC2BBF68)
 	# This is a list of every file called by that DataBlock
 	# formatFile.topLevelFormat will return this list of files into dataBlock
@@ -35,7 +35,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 	
 	for n, fileID2 in enumerate(dataBlock['dataBlock']):
 		if not tempFiles.exists(fileID2):
-			decompressDatafile(fileTree, fileList, fileID2)
+			decompressDatafile(app, fileID2)
 		data2 = tempFiles.read(fileID2)
 		if len(data2) == 0:
 			raise Exception('file '+fileID2+' is empty')
@@ -43,7 +43,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 		
 		print 'Reading '+data2['fileName']+'. '+str(n+1)+' of '+str(len(dataBlock['dataBlock']))
 	
-		dataBlockChild = formatFile.topLevelFormat(fileTree, fileList, fileID2)
+		dataBlockChild = formatFile.topLevelFormat(app, fileID2)
 		# fileID2, data2 and dataBlockChild all relate to the files contained in
 		# the DataBlock file. The file could be of a number of types including
 		# entities and entity groups
@@ -51,7 +51,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 			if 'fileIDList' in dataBlockChild:
 				for fileID3 in dataBlockChild['fileIDList']:
 					if not tempFiles.exists(fileID3):
-						decompressDatafile(fileTree, fileList, fileID3)
+						decompressDatafile(app, fileID3)
 					data3 = tempFiles.read(fileID3)
 					if len(data3) == 0:
 						raise Exception('file '+fileID3+' is empty')
@@ -68,7 +68,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 			if 'files' in dataBlockChild:
 				for fileID3 in dataBlockChild['files']:
 					if not tempFiles.exists(fileID3):
-						decompressDatafile(fileTree, fileList, fileID3)
+						decompressDatafile(app, fileID3)
 					data3 = tempFiles.read(fileID3)
 					if len(data3) == 0:
 						continue
@@ -76,11 +76,11 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 					data3 = data3[0]
 					
 					if data3['resourceType'] in ['0984415E','3F742D26']: # entity
-						dataBlockChild2 = formatFile.topLevelFormat(fileTree, fileList, fileID3)
+						dataBlockChild2 = formatFile.topLevelFormat(app, fileID3)
 						if 'fileIDList' in dataBlockChild2:
 							for fileID4 in dataBlockChild2['fileIDList']:
 								if not tempFiles.exists(fileID4):
-									decompressDatafile(fileTree, fileList, fileID4)
+									decompressDatafile(app, fileID4)
 								data4 = tempFiles.read(fileID4)
 								if len(data4) == 0:
 									raise Exception('file '+fileID4+' is empty')
@@ -112,7 +112,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 		# fIn.seek(2,1)
 		# fileID2 = BEHEX2(fIn.read(8)).upper()
 		# if not tempFiles.exists(fileID2):
-			# decompressDatafile(fileTree, fileList, fileID2)
+			# decompressDatafile(app, fileID2)
 		# data2 = tempFiles.read(fileID2)
 		# if len(data2) == 0:
 			# raise Exception('file '+fileID2+' is empty')
@@ -136,7 +136,7 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 			# fIn2.seek(meshLoc+5, 1)
 			# fileID3 = BEHEX2(fIn2.read(8)).upper()
 			# if not tempFiles.exists(fileID3):
-				# decompressDatafile(fileTree, fileList, fileID3)
+				# decompressDatafile(app, fileID3)
 			# data3 = tempFiles.read(fileID3)
 			# if len(data3) == 0:
 				# raise Exception('file '+fileID3+' is empty')
@@ -150,6 +150,6 @@ def exportDataBlockModels(fileTree, fileList, fileID):
 	print 'done reading'
 	print 'exporting'
 
-	exportOBJMulti(fileTree, fileList, fileID, fileIDList)
+	exportOBJMulti(app, fileID, fileIDList)
 	
 	# print 'Done'

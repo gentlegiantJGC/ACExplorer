@@ -1,10 +1,9 @@
 import os
 import json
-from ACExplorer import CONFIG
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
-from ACExplorer.ACUnity.exportTexture import exportTexture
-from ACExplorer.ACUnity.getMaterialIDs import getMaterialIDs
-from ACExplorer.ACUnity.readModel import readModel
+# from ACExplorer.ACUnity import decompressDatafile
+from ACExplorer.ACUnity.exportTexture_ import exportTexture
+from ACExplorer.ACUnity.getMaterialIDs_ import getMaterialIDs
+from ACExplorer.ACUnity.readModel_ import readModel
 from ACExplorer.misc import tempFiles
 
 def transform(transformationMtx, vertex):
@@ -22,7 +21,7 @@ def transform(transformationMtx, vertex):
 	return newVertex[0:3]
 
 
-def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
+def exportOBJMulti(app, rootID, fileIDList):
 	print fileIDList
 	#fileIDList format
 	# [
@@ -39,7 +38,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	# }
 	
 	if not tempFiles.exists(rootID):
-		decompressDatafile(fileTree, fileList, rootID)
+		app.gameFunctions.decompressDatafile(app, rootID)
 	rootData = tempFiles.read(rootID)
 	if len(rootData) == 0:
 		raise Exception('file '+rootID+' is empty')
@@ -52,7 +51,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	for fileID in fileIDList:
 		
 		if not tempFiles.exists(fileID):
-			decompressDatafile(fileTree, fileList, fileID)
+			app.gameFunctions.decompressDatafile(app, fileID)
 		data = tempFiles.read(fileID)
 		if len(data) == 0:
 			raise Exception('file '+fileID+' is empty')
@@ -60,7 +59,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 		
 		if not os.path.isfile(data['dir'].replace('.acu', '.json')):
 			try:
-				readModel(fileTree, fileList, fileID)
+				readModel(app, fileID)
 			except:
 				print 'Failed reading model '+data['fileName']
 		if os.path.isfile(data['dir'].replace('.acu', '.json')):
@@ -74,7 +73,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	
 	rootID = rootID.upper()
 	fileName = rootData['fileName']
-	savePath = CONFIG['dumpFolder'] + os.sep + fileName
+	savePath = app.CONFIG['dumpFolder'] + os.sep + fileName
 	# savePath = path[:-4] + ".obj"
 	# str1 = os.sep.join(savePath.split(os.sep)[:-1])	#save path folder
 	# while (treeNode1.Parent != null)
@@ -102,7 +101,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 	for index0, fileID in enumerate(fileIDList):
 
 		if not tempFiles.exists(fileID):
-			decompressDatafile(fileTree, fileList, fileID)
+			app.gameFunctions.decompressDatafile(app, fileID)
 		data = tempFiles.read(fileID)
 		if len(data) == 0:
 			raise Exception('file '+fileID+' is empty')
@@ -173,13 +172,13 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 							num4 = model['meshFaceBlocks'][index1]
 					fio.write("g " + data['fileName'] + "_" + str(tempFileRepeat[fileID]) + '_' +str(index1) + '\n')
 					
-					textureIDs = getMaterialIDs(fileTree, fileList, model['materialId'][index1])
+					textureIDs = getMaterialIDs(app, model['materialId'][index1])
 					
 					if textureIDs == None:
 						fio.write("usemtl missingNo\n")
 					else:
 						for hexid in textureIDs:
-							exportTexture(fileTree, fileList, textureIDs[hexid])
+							exportTexture(app, textureIDs[hexid])
 						data2 = tempFiles.read(model['materialId'][index1].upper())
 						if len(data2) == 0:
 							raise Exception('file '+model['materialId'][index1].upper()+' is empty')
@@ -217,7 +216,7 @@ def exportOBJMulti(fileTree, fileList, rootID, fileIDList):
 				
 				material = data2['fileName']
 				if material != "NULL":
-					textureIDs = getMaterialIDs(fileTree, fileList, materialId)
+					textureIDs = getMaterialIDs(app, materialId)
 					
 					if textureIDs == None:
 						missingNo = True

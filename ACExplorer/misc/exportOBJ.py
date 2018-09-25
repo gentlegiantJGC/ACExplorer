@@ -1,15 +1,15 @@
 import os
 import json
-from ACExplorer import CONFIG
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
-from ACExplorer.ACUnity.exportTexture import exportTexture
-from ACExplorer.ACUnity.getMaterialIDs import getMaterialIDs
+from ACExplorer.ACUnity import decompressDatafile
+from ACExplorer.ACUnity.exportTexture_ import exportTexture
+from ACExplorer.ACUnity.getMaterialIDs_ import getMaterialIDs
 from ACExplorer.misc import tempFiles
 
 
-def exportOBJ(fileTree, fileList, fileID):
+def exportOBJ(app, fileID):
 	if not tempFiles.exists(fileID):
-		decompressDatafile(fileTree, fileList, fileID)
+		# TODO fileID is a int value
+		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
@@ -17,7 +17,7 @@ def exportOBJ(fileTree, fileList, fileID):
 	fileName = data['fileName']
 	with open(data['dir'].replace('.acu', '.json')) as f:
 		model = json.loads(f.read())
-	savePath = CONFIG['dumpFolder'] + os.sep + fileName
+	savePath = app.CONFIG['dumpFolder'] + os.sep + fileName
 	# savePath = path[:-4] + ".obj"
 	str1 = os.sep.join(savePath.split(os.sep)[:-1])	#save path folder
 	# while (treeNode1.Parent != null)
@@ -57,14 +57,14 @@ def exportOBJ(fileTree, fileList, fileID):
 		
 		
 		
-		textureIDs = getMaterialIDs(fileTree, fileList, model['materialId'][index1])
+		textureIDs = getMaterialIDs(app, model['materialId'][index1])
 		if textureIDs == None:
 			fio.write("usemtl missingNo\n")
 		# print textureIDs
 		else:
 			for hexid in textureIDs:
 				# textureFile = getFile(workingDir, textureIDs[hexid])
-				exportTexture(fileTree, fileList, textureIDs[hexid])
+				exportTexture(app, textureIDs[hexid])
 			material = tempFiles.read(model['materialId'][index1].upper())[0]['fileName']
 			fio.write("usemtl " + material + '\n')
 		fio.write("s 0\n")
@@ -96,7 +96,7 @@ def exportOBJ(fileTree, fileList, fileID):
 				idsAdded.append(materialId)
 			material = tempFiles.read(materialId.upper())[0]['fileName']
 			if material != "NULL":
-				textureIDs = getMaterialIDs(fileTree, fileList, materialId)
+				textureIDs = getMaterialIDs(app, materialId)
 				if textureIDs == None:
 					fim.write("newmtl missingNo\n")
 				else:
@@ -106,7 +106,7 @@ def exportOBJ(fileTree, fileList, fileID):
 				fim.write("Ks 0.000 0.000 0.000\n")
 				fim.write("Ns 0.000\n")
 				if textureIDs == None:
-					fim.write("map_Kd " + CONFIG["missingNo"] + "\n")
+					fim.write("map_Kd " + app.CONFIG["missingNo"] + "\n")
 				else:
 					for texType in textureIDs:
 						if texType == 'diffuse':

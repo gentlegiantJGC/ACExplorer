@@ -1,4 +1,7 @@
 from texture import BaseTexture
+from log import logger
+from decompress_ import decompress
+from tempFiles2 import tempFilesContainer
 
 class fileObject:
 	def __init__(self, path=None, mode='w'):

@@ -1,13 +1,13 @@
 import sys, os, json
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
 from ACExplorer.ACUnity.formatFile import readID, readStr, readInt, readInt16, readUInt16, readInt32, readUInt32, readFloat32, readType, fOutWrite, ReadRest
 from ACExplorer.misc import tempFiles
 
 dev = 'dev' in sys.argv
 
-def readModel(fileTree, fileList, fileID):
+def readModel(app, fileID):
 	if not tempFiles.exists(fileID):
-		decompressDatafile(fileTree, fileList, fileID)
+		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
@@ -26,7 +26,7 @@ def readModel(fileTree, fileList, fileID):
 	
 	readStr(fIn, fOut, 2)
 	# file id
-	readID(fileTree, fileList, fIn, fOut)
+	readID(app, fIn, fOut)
 	# file type (should be a model)
 	model['fileType'] = readType(fIn, fOut)
 	fOutWrite(fOut, '\n')
@@ -150,7 +150,7 @@ def readModel(fileTree, fileList, fileID):
 	# readStr(fIn, fOut, 33) # this may be a bounding box. (float32)
 	#First three are all negative followed by a set of zeros
 	# Next three three are all positive followed by a set of zeros and a null byte
-	readID(fileTree, fileList, fIn, fOut)
+	readID(app, fIn, fOut)
 	if readStr(fIn, fOut, 4).upper() == "FC9E1595":
 		readStr(fIn, fOut, 4)
 		fOutWrite(fOut, 'Typeswitch\n')
@@ -621,16 +621,16 @@ def readModel(fileTree, fileList, fileID):
 		for index in range(model['materialCount']):
 			# model['materials'][index] = {}
 			readStr(fIn, fOut, 2)
-			model['materialId'].append(readID(fileTree, fileList, fIn, fOut))
+			model['materialId'].append(readID(app, fIn, fOut))
 			
 			
 		ReadRest(fIn, fOut)
 			
 		fIn.close()
-		if dev:
-			fOut.close()
-			print data["dir"]+'.format'
-			os.system('"'+data['dir']+'.format"')
+		# if dev:
+		# 	fOut.close()
+		# 	print data["dir"]+'.format'
+		# 	os.system('"'+data['dir']+'.format"')
 	else:
 		raise Exception("Error reading model file!")
 	tmpdict = open(data['dir'].replace('.acu', '.json'), 'w')

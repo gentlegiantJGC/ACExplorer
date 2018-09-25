@@ -1,14 +1,14 @@
 import binascii
 
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
 from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BEHEX2, float32
 from ACExplorer.misc.exportOBJMulti import exportOBJMulti
 
 
-def exportFakes(fileTree, fileList, fileID):
+def exportFakes(app, fileID):
 	if not tempFiles.exists(fileID):
-		decompressDatafile(fileTree, fileList, fileID)
+		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
@@ -46,4 +46,4 @@ def exportFakes(fileTree, fileList, fileID):
 		fileContainer['fileID'] = BEHEX2(n[visualLoc+8:visualLoc+16]).upper()
 		fileIDList.append(fileContainer)
 	
-	exportOBJMulti(fileTree, fileList, fileID, fileIDList)
+	exportOBJMulti(app, fileID, fileIDList)

@@ -1,16 +1,15 @@
 import os
 import struct
-from ACExplorer import CONFIG
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.ACUnity import decompressDatafile
 from ACExplorer.misc import tempFiles, BaseTexture
 from ACExplorer.misc.dataTypes import LE2DEC2
 from ACExplorer.ACUnity.formatFile import readStr
 
 class texture(BaseTexture):
-	def __init__(self, fi):
+	def __init__(self, app, fi):
 		BaseTexture.__init__(self)
 		try:
-			with open(os.path.join(CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
+			with open(os.path.join(app.CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
 				readStr(fi, f2, 130)
 		except:
 			print 'fail'
@@ -66,18 +65,18 @@ class texture(BaseTexture):
 		self.dwCaps4 = '\x00\x00\x00\x00'
 		self.dwReserved2 = '\x00\x00\x00\x00'
 
-def exportTexture(fileTree, fileList, fileID):
+def exportTexture(app, fileID):
 	if not tempFiles.exists(fileID):
-		decompressDatafile(fileTree, fileList, fileID)
+		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
 	data = data[0]
 	path1 = data['dir']
 	fileName = data['fileName']
-	path2 = CONFIG['dumpFolder'] + os.sep + fileName + '.dds'
+	path2 = app.CONFIG['dumpFolder'] + os.sep + fileName + '.dds'
 	if os.path.isfile(path2):
 		return
 	with open(path1, 'rb') as fi:
-		tex = texture(fi)
+		tex = texture(app, fi)
 		tex.exportDDS(path2)

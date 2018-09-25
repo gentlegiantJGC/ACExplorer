@@ -1,11 +1,11 @@
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
+from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
 from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BEHEX2
 
 
-def getMaterialIDs(fileTree, fileList, fileID):
+def getMaterialIDs(app, fileID):
 	if not tempFiles.exists(fileID):
-		decompressDatafile(fileTree, fileList, fileID)
+		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file '+fileID+' is empty')
@@ -17,7 +17,7 @@ def getMaterialIDs(fileTree, fileList, fileID):
 	materialFile.close()
 
 	if not tempFiles.exists(materialTemplateID):
-		decompressDatafile(fileTree, fileList, materialTemplateID)
+		decompressDatafile(app, materialTemplateID)
 
 	try:
 		materialTemplate = open(tempFiles.read(materialTemplateID)[0]['dir'], 'rb')

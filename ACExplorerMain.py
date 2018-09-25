@@ -8,19 +8,20 @@
 	Contained within the datafiles are a variety of files related to that datafile.
 '''
 
-import json, ttk, Tkinter, sys
-from ACExplorer import CONFIG
-from ACExplorer.misc import log, tempFiles
-from ACExplorer.ACUnity import formatFile
-from ACExplorer.ACUnity.decompressDatafile import decompressDatafile
-from ACExplorer.ACUnity.readFile import readFile
-from ACExplorer.ACUnity.readForge import readForge
+import json, ttk, Tkinter, sys, os
+from ACExplorer import CONFIG, ACUnity
+from ACExplorer import misc
 
 dev = 'dev' in sys.argv
 
 class App:
 	def __init__(self):
-		log.info(__name__, 'Building GUI Window')
+		self.CONFIG = CONFIG
+		self.misc = misc
+		self.gameFunctions = ACUnity
+		self.log = self.misc.logger(self)
+		self.tempNewFiles = self.misc.tempFilesContainer(self)
+		self.log.info(__name__, 'Building GUI Window')
 		self.mainUI = Tkinter.Tk()
 
 		searchLabel = Tkinter.Label(self.mainUI, text="Find ID:")
@@ -29,7 +30,6 @@ class App:
 		# set up the file tree
 		self.fileTree = ttk.Treeview(self.mainUI)
 		self.fileTree.grid(row=1, column=1, columnspan=4, ipadx=150, ipady=300)
-		self.fileTree.insert('', 'end', 'ACU', text='ACU')
 		fileTreeScroll = ttk.Scrollbar(self.mainUI, orient="vertical", command=self.fileTree.yview)
 		fileTreeScroll.grid(row=1, column=0, ipady=300)
 		self.fileTree.configure(yscrollcommand=fileTreeScroll.set)
@@ -37,18 +37,17 @@ class App:
 		self.fileTree.bind("<<TreeviewSelect>>", self.onClick)
 		self.fileTree.bind("<Double-1>", self.onDoubleClick)
 
-		log.info(__name__, 'Building File List')
+		self.log.info(__name__, 'Building File List')
 
 		# fileList is a dictionary of each forge file on the first level and
 		# each datafile on the second level under each forge file. This is used
 		# as a cheap way to find the location a file is stored under.
 		# this function also loads all the forge files and datafiles onto the TK Tree
-		self.fileList = readForge(self.fileTree, CONFIG["ACUnityFolder"])
+		self.fileList = {}
 
-		# load all the decompressed files onto the TK Tree
-		tempFiles.populateTree(self.fileTree)
+		self.loadGame('ACU')
 
-		log.info(__name__, 'Finished Building File List')
+		self.log.info(__name__, 'Finished Building File List')
 
 		self.search = Tkinter.Entry(self.mainUI)
 		self.search.grid(row=0, column=1)
@@ -58,10 +57,8 @@ class App:
 		clear = Tkinter.Button(self.mainUI, text='Clear Search', command=self.clearSearch)
 		clear.grid(row=0, column=3)
 
-
-
-		infobutton = Tkinter.Button(self.mainUI, text='Info', command=self.info)
-		infobutton.grid(row=0, column=4)
+		# infobutton = Tkinter.Button(self.mainUI, text='Info', command=self.info)
+		# infobutton.grid(row=0, column=4)
 
 		if dev:
 			runCode = Tkinter.Button(self.mainUI, text='Run Code', command=self.runcode)
@@ -72,15 +69,32 @@ class App:
 
 		self.mainUI.mainloop()
 
+	def loadGame(self, gameIdentifier):
+		if self.tempNewFiles.lightDictChanged:
+			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'w') as f:
+				json.dump(self.tempNewFiles.lightDictionary, f)
+		self.tempNewFiles.clear()
+		self.fileTree.delete(*self.fileTree.get_children())
+		if gameIdentifier == 'ACU':
+			self.gameFunctions = ACUnity
+			self.fileTree.insert('', 'end', 'ACU', text='ACU')
+			self.fileList = self.gameFunctions.readForge(self, self.CONFIG["ACUnityFolder"])
+			# load all the decompressed files onto the TK Tree
+
+		if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
+			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'r') as f:
+				self.tempNewFiles.lightDictionary = json.load(f)
+
+
 	def onClick(self, event):
 		fileID = self.fileTree.selection()[0]
 		if len(fileID.split('|')) == 3 and len(self.fileTree.get_children(fileID)) == 0:
-			decompressDatafile(self.fileTree, self.fileList, fileID.split('|')[2], fileID.split('|')[1])
+			self.gameFunctions.decompressDatafile(self, int(fileID.split('|')[2]), fileID.split('|')[1])
 
 	def onDoubleClick(self, event):
 		fileID = self.fileTree.selection()[0]
 		if len(fileID.split('|')) == 4:
-			readFile(self.fileTree, self.fileList, fileID.split('|')[3])
+			self.gameFunctions.readFile(self, int(fileID.split('|')[3]), fileID.split('|')[1], int(fileID.split('|')[2]))
 
 	def searchFor(self):
 		search = self.search.get()
@@ -88,27 +102,27 @@ class App:
 			if ',' in search:
 				for fileID in search.split(','):
 					fileID = fileID.replace(' ', '').upper()
-					readFile(self.fileTree, self.fileList, fileID)
+					self.gameFunctions.readFile(self, fileID)
 			else:
 				fileID = self.search.get().replace(' ', '').upper()
-				readFile(self.fileTree, self.fileList, fileID)
+				self.gameFunctions.readFile(self, fileID)
 
 	def clearSearch(self):
 		self.search.delete(0, Tkinter.END)
 
-	def info(self, input=None):
-		if self.search.get() == '' and input == None:
-			return
-		if self.search.get() != '':
-			fileID = self.search.get().replace(' ', '').upper()
-		if input != None:
-			fileID = input.replace(' ', '').upper()
-		if not tempFiles.exists(fileID):
-			decompressDatafile(self.fileTree, self.fileList, fileID)
-		if not tempFiles.exists(fileID):
-			raise Exception()
-		print fileID
-		print tempFiles.read(fileID)
+	# def info(self, input=None):
+	# 	if self.search.get() == '' and input == None:
+	# 		return
+	# 	if self.search.get() != '':
+	# 		fileID = self.search.get().replace(' ', '').upper()
+	# 	if input != None:
+	# 		fileID = input.replace(' ', '').upper()
+	# 	if not tempFiles.exists(fileID):
+	# 		self.gameFunctions.decompressDatafile(self, fileID)
+	# 	if not tempFiles.exists(fileID):
+	# 		raise Exception()
+	# 	print fileID
+	# 	print tempFiles.read(fileID)
 
 	def runcode(self):
 		exec self.search.get()
@@ -123,15 +137,21 @@ class App:
 			except:
 				raise Exception('Need numerical value got "{}"'.format(count))
 		fileType = fileType.upper()
-		if len(fileType) == 8:
-			for fileID in tempFiles.tempFileContainer.keys():
-				if tempFiles.tempFileContainer[fileID][0]["resourceType"] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
-					formatFile.topLevelFormat(self.fileTree, self.fileList, fileID)
-					count -= 1
-					if count == 0:
-						break
+		# if len(fileType) == 8:
+		# 	for fileID in tempFiles.tempFileContainer.keys():
+		# 		if tempFiles.tempFileContainer[fileID][0]["resourceType"] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
+		# 			self.gameFunctions.formatFile.topLevelFormat(self, fileID)
+		# 			count -= 1
+		# 			if count == 0:
+		# 				break
+		# TODO
 
 if __name__ == '__main__':
 	app = App()
 	with open('./config.json', 'w') as f:
-		json.dump(CONFIG, f)
+		json.dump(app.CONFIG, f)
+	if app.tempNewFiles.lightDictChanged:
+		if not os.path.isdir('./resources/lightDict'):
+			os.makedirs('./resources/lightDict')
+		with open('./resources/lightDict/{}.json'.format(app.gameFunctions.gameIdentifier), 'w') as f:
+			json.dump(app.tempNewFiles.lightDictionary, f)
