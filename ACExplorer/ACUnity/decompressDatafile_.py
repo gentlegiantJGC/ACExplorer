@@ -5,19 +5,6 @@ from ACExplorer.misc.dataTypes import BE, BEHEX2, LE2BE, LE2BE2, LE2DEC, LE2DEC2
 def decompressDatafile(app, fileID, forgeFile=None):
 	if fileID == 0 or fileID > 2**40:
 		return
-	# if forgeFile is None or fileID not in app.fileList[forgeFile]:
-	# 	forgeFile = next((fF for fF in app.fileList if fileID in app.fileList[fF]), None)
-	# 	if forgeFile is None:
-	# 		if os.path.isfile(os.path.join(app.CONFIG["lightDict"], fileID)):
-	# 			with open(os.path.join(app.CONFIG["lightDict"], fileID), 'r') as f:
-	# 				fileID2 = f.read()
-	# 			forgeFile = next((fF for fF in app.fileList if fileID2 in app.fileList[fF]), None)
-	# 			fileID = fileID2
-	# 		else:
-	# 			return
-	# if forgeFile is None:
-	# 	print '{} not found'.format(fileID)
-	# 	return
 	uncompressedDataList = []
 	f = open(os.path.join(app.CONFIG.gameFolder(app.gameFunctions.gameIdentifier), forgeFile), 'rb')
 	f.seek(app.fileList[forgeFile][fileID]['rawDataOffset'])
@@ -88,7 +75,7 @@ def decompressDatafile(app, fileID, forgeFile=None):
 			fileName = LE2BE2(fileID2)
 		uncompressedData.seek(fileOffset+12+fileNameSize)
 		tempFile = uncompressedData.read(fileSize)
-		fileType = struct.unpack('<i', tempFile[10:14])[0]
+		fileType = struct.unpack('<I', tempFile[10:14])[0]
 		fileTypeStr = LE2BE(tempFile, 10, 4).upper()
 		app.tempNewFiles.add(struct.unpack('<Q', fileID2)[0], forgeFile, fileID, fileType, fileName, rawFile=tempFile)
 		if fileName not in alphabeticalFiles:
