@@ -70,13 +70,13 @@ def exportTexture(app, fileID):
 		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
-		raise Exception('file '+fileID+' is empty')
+		raise Exception('file {} is empty'.format(fileID))
 	data = data[0]
 	path1 = data['dir']
 	fileName = data['fileName']
-	path2 = app.CONFIG['dumpFolder'] + os.sep + fileName + '.dds'
+	path2 = os.path.join(app.CONFIG['dumpFolder'], '{}.dds'.format(fileName))
 	if os.path.isfile(path2):
 		return
 	with open(path1, 'rb') as fi:
 		tex = texture(app, fi)
-		tex.exportDDS(path2)
+		tex.exportDDS(path2, app.CONFIG)

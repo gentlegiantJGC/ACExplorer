@@ -21,7 +21,7 @@ def exportDataBlockModels(app, fileID):
 		raise Exception('file {} is empty'.format(fileID))
 	data = data[0]
 
-	if data['resourceType'] != 'AC2BBF68':
+	if data['fileType'] != 'AC2BBF68':
 		return
 	
 	if 'dev' in sys.argv:
@@ -38,10 +38,10 @@ def exportDataBlockModels(app, fileID):
 			decompressDatafile(app, fileID2)
 		data2 = tempFiles.read(fileID2)
 		if len(data2) == 0:
-			raise Exception('file '+fileID2+' is empty')
+			raise Exception('file {} is empty'.format(fileID2))
 		data2 = data2[0]
 		
-		print 'Reading '+data2['fileName']+'. '+str(n+1)+' of '+str(len(dataBlock['dataBlock']))
+		print 'Reading {}. {} of {}'.format(data2['fileName'], str(n+1), len(dataBlock['dataBlock']))
 	
 		dataBlockChild = formatFile.topLevelFormat(app, fileID2)
 		# fileID2, data2 and dataBlockChild all relate to the files contained in
@@ -54,9 +54,9 @@ def exportDataBlockModels(app, fileID):
 						decompressDatafile(app, fileID3)
 					data3 = tempFiles.read(fileID3)
 					if len(data3) == 0:
-						raise Exception('file '+fileID3+' is empty')
+						raise Exception('file {} is empty'.format(fileID3))
 					data3 = data3[0]
-					if data3['resourceType'] == '415D9568':
+					if data3['fileType'] == '415D9568':
 						if fileID3 not in fileIDList:
 							fileIDList[fileID3] = []
 						fileIDList[fileID3] += dataBlockChild['fileIDList'][fileID3]
@@ -75,7 +75,7 @@ def exportDataBlockModels(app, fileID):
 						raise Exception('file '+fileID3+' is empty')
 					data3 = data3[0]
 					
-					if data3['resourceType'] in ['0984415E','3F742D26']: # entity
+					if data3['fileType'] in ['0984415E','3F742D26']: # entity
 						dataBlockChild2 = formatFile.topLevelFormat(app, fileID3)
 						if 'fileIDList' in dataBlockChild2:
 							for fileID4 in dataBlockChild2['fileIDList']:
@@ -83,9 +83,9 @@ def exportDataBlockModels(app, fileID):
 									decompressDatafile(app, fileID4)
 								data4 = tempFiles.read(fileID4)
 								if len(data4) == 0:
-									raise Exception('file '+fileID4+' is empty')
+									raise Exception('file {} is empty'.format(fileID4))
 								data4 = data4[0]
-								if data4['resourceType'] == '415D9568':
+								if data4['fileType'] == '415D9568':
 									
 									# fileIDList.append({'fileID':fileID4, 'transformationMtx': dataBlockChild2['transformationMtx']})
 									if fileID4 not in fileIDList:
@@ -94,7 +94,7 @@ def exportDataBlockModels(app, fileID):
 								else:
 									raise Exception(fileID4+' is not a 3D model')
 					else:
-						raise Exception('found file type {}'.format(data3['resourceType']))
+						raise Exception('found file type {}'.format(data3['fileType']))
 		
 		else:
 			print 'Could not read following file. Unsupported type.'
@@ -120,7 +120,7 @@ def exportDataBlockModels(app, fileID):
 		
 		# print 'Reading '+data2['fileName']+'. '+str(n+1)+' of '+str(count)
 
-		# if data2['resourceType'] == '0984415E':
+		# if data2['fileType'] == '0984415E':
 			# fIn2 = open(data2['dir'], 'rb')
 			# fIn2.seek(14)
 			# fIn2.seek(49, 1)
@@ -141,7 +141,7 @@ def exportDataBlockModels(app, fileID):
 			# if len(data3) == 0:
 				# raise Exception('file '+fileID3+' is empty')
 			# data3 = data3[0]
-			# if data3['resourceType'] == '415D9568':
+			# if data3['fileType'] == '415D9568':
 				# fileIDList[ticker] = {'id':fileID3, 'x':xpos, 'y':ypos, 'z':zpos}
 				# ticker += 1
 			# else:

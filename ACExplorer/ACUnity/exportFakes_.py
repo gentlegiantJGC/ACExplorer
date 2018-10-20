@@ -11,7 +11,7 @@ def exportFakes(app, fileID):
 		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
-		raise Exception('file '+fileID+' is empty')
+		raise Exception('file {} is empty'.format(fileID))
 	data = data[0]
 	
 	fIn = open(data['dir'], 'rb')

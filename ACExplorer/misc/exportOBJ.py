@@ -12,12 +12,12 @@ def exportOBJ(app, fileID):
 		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
-		raise Exception('file '+fileID+' is empty')
+		raise Exception('file {} is empty'.format(fileID))
 	data = data[0]
 	fileName = data['fileName']
 	with open(data['dir'].replace('.acu', '.json')) as f:
 		model = json.loads(f.read())
-	savePath = app.CONFIG['dumpFolder'] + os.sep + fileName
+	savePath = os.path.join(app.CONFIG['dumpFolder'], fileName)
 	# savePath = path[:-4] + ".obj"
 	str1 = os.sep.join(savePath.split(os.sep)[:-1])	#save path folder
 	# while (treeNode1.Parent != null)

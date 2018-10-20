@@ -8,7 +8,7 @@ def getMaterialIDs(app, fileID):
 		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
-		raise Exception('file '+fileID+' is empty')
+		raise Exception('file {} is empty'.format(fileID))
 	data = data[0]
 	fileDir = data['dir']
 	materialFile = open(fileDir, 'rb')
@@ -47,7 +47,7 @@ def getMaterialIDs(app, fileID):
 	_ = materialTemplate.read(2)
 	idtemp = BEHEX2(materialTemplate.read(8)).upper()
 	if idtemp != '0000000000000000':
-		raise Exception(data['dir'] + ' has an id in position 5') 
+		raise Exception('{} has an id in position 5'.format(data['dir']))
 	
 	_ = materialTemplate.read(2)
 	idtemp = BEHEX2(materialTemplate.read(8)).upper()
@@ -57,7 +57,7 @@ def getMaterialIDs(app, fileID):
 	_ = materialTemplate.read(2)
 	idtemp = BEHEX2(materialTemplate.read(8)).upper()
 	if idtemp != '0000000000000000':
-		raise Exception(data['dir'] + ' has an id in position 7') 
+		raise Exception('{} has an id in position 7'.format(data['dir']))
 	
 	_ = materialTemplate.read(2)
 	idtemp = BEHEX2(materialTemplate.read(8)).upper()
@@ -72,17 +72,17 @@ def getMaterialIDs(app, fileID):
 	_ = materialTemplate.read(2)
 	idtemp = BEHEX2(materialTemplate.read(8)).upper()
 	if idtemp != '0000000000000000':
-		raise Exception(data['dir'] + ' has an id in position 10') 
+		raise Exception('{} has an id in position 10'.format(data['dir']))
 	
 	_ = materialTemplate.read(2)
 	idtemp = BEHEX2(materialTemplate.read(8)).upper()
 	if idtemp != '0000000000000000':
-		raise Exception(data['dir'] + ' has an id in position 11') 
+		raise Exception('{} has an id in position 11'.format(data['dir']))
 	
 	_ = materialTemplate.read(2)
 	idtemp = BEHEX2(materialTemplate.read(8)).upper()
 	if idtemp != '0000000000000000':
-		raise Exception(data['dir'] + ' has an id in position 12') 
+		raise Exception('{} has an id in position 12'.format(data['dir']))
 	
 	materialTemplate.close()
 	

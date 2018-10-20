@@ -73,7 +73,7 @@ def readType(fIn, fOut, indentCount = 0, fileType=None):
 		ft = ft.replace(' ','')
 		
 		if ft in fileTypes:
-			fOut.write('\t\t'+fileTypes[ft])
+			fOut.write('\t\t{}'.format(fileTypes[ft]))
 		else:
 			fOut.write('\t\tUndefined')
 		fOut.write('\n')
@@ -185,7 +185,7 @@ def topLevelFormat(app, fileID):
 	data = app.tempNewFiles.getData(fileID)
 	if data is None:
 		raise Exception('Error with file "{}"'.format(fileID))
-	app.log.info(__name__, 'Formatting ' + fileID + ':' + data["fileName"])
+	app.log.info(__name__, 'Formatting {}:{}'.format(fileID, data["fileName"]))
 	fIn = app.misc.fileObject()
 	fIn.write(app.tempNewFiles.getFile(fileID))
 	fIn.seek(0)
@@ -249,8 +249,8 @@ def recursiveFormat(app, fIn, fOut, indentCount=0):
 
 	app.log.info(__name__, 'Formatting Type: {}'.format(fileType))
 	if dev:
-		if not os.path.isdir(app.CONFIG['dumpFolder']+os.sep+'fileTypes'):
-			os.makedirs(app.CONFIG['dumpFolder']+os.sep+'fileTypes')
+		if not os.path.isdir(os.path.join(app.CONFIG['dumpFolder'], 'fileTypes')):
+			os.makedirs(os.path.join(app.CONFIG['dumpFolder'], 'fileTypes'))
 		typeOut = open(os.path.join(app.CONFIG['dumpFolder'], 'fileTypes', fileType), 'a')
 		filePointer = fIn.tell()
 		fIn.seek(-12, 1)
@@ -1116,7 +1116,7 @@ def recursiveFormat(app, fIn, fOut, indentCount=0):
 	else:
 		success = False
 		fOutWrite(fOut, 'not currently supported\n')
-		app.log.warn(__name__, fileType + ' not currently supported')
+		app.log.warn(__name__, '{} not currently supported'.format(fileType))
 		raise Exception()
 		return []
 	return fileContainer

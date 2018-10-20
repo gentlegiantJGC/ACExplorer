@@ -10,7 +10,7 @@ def readModel(app, fileID):
 		decompressDatafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
-		raise Exception('file '+fileID+' is empty')
+		raise Exception('file {} is empty'.format(fileID))
 	data = data[0]
 	# str1 = strArray[1]			#MDL or HDMDL
 	fIn = open(data['dir'], 'rb')				#open parent file

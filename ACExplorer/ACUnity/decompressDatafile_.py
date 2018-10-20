@@ -19,7 +19,7 @@ def decompressDatafile(app, fileID, forgeFile=None):
 	# 	print '{} not found'.format(fileID)
 	# 	return
 	uncompressedDataList = []
-	f = open(os.path.join(app.CONFIG['ACUnityFolder'], forgeFile), 'rb')
+	f = open(os.path.join(app.CONFIG.gameFolder(app.gameFunctions.gameIdentifier), forgeFile), 'rb')
 	f.seek(app.fileList[forgeFile][fileID]['rawDataOffset'])
 	rawDataChunk = f.read(app.fileList[forgeFile][fileID]['rawDataSize'])
 	f.close()

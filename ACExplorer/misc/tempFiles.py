@@ -63,12 +63,12 @@ def populateTree(app):
 	for fileID in tempFileContainer:
 		tempFile = read(fileID)
 		for data in tempFile:
-		
-			if data['game']+'|'+data['forgeFile']+'|'+data['containerFileID'] not in tempFileTree:
-				tempFileTree[data['game']+'|'+data['forgeFile']+'|'+data['containerFileID']] = {}
-			if data['fileName'] not in tempFileTree[data['game']+'|'+data['forgeFile']+'|'+data['containerFileID']]:
-				tempFileTree[data['game']+'|'+data['forgeFile']+'|'+data['containerFileID']][data['fileName']] = []
-			tempFileTree[data['game']+'|'+data['forgeFile']+'|'+data['containerFileID']][data['fileName']].append(fileID)
+			key = '{}|{}|{}'.format(data['game'], data['forgeFile'], data['containerFileID'])
+			if key not in tempFileTree:
+				tempFileTree[key] = {}
+			if data['fileName'] not in tempFileTree[key]:
+				tempFileTree[key][data['fileName']] = []
+			tempFileTree[key][data['fileName']].append(fileID)
 
 		if ticker % 100 == 0:
 			pass
@@ -78,5 +78,5 @@ def populateTree(app):
 	for containerFileID in tempFileTree:
 		for fileName in sorted(tempFileTree[containerFileID], key=lambda v: v.lower()):
 			for fileID2 in tempFileTree[containerFileID][fileName]:
-				app.fileTree.insert(containerFileID, 'end', containerFileID+'|'+fileID2, text=fileName)
+				app.fileTree.insert(containerFileID, 'end', '{}|{}'.format(containerFileID, fileID2), text=fileName)
 

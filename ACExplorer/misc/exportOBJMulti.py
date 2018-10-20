@@ -41,7 +41,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 		app.gameFunctions.decompressDatafile(app, rootID)
 	rootData = tempFiles.read(rootID)
 	if len(rootData) == 0:
-		raise Exception('file '+rootID+' is empty')
+		raise Exception('file {} is empty'.format(rootID))
 	rootData = rootData[0]
 	
 	# remove models that couldn't be read
@@ -54,18 +54,18 @@ def exportOBJMulti(app, rootID, fileIDList):
 			app.gameFunctions.decompressDatafile(app, fileID)
 		data = tempFiles.read(fileID)
 		if len(data) == 0:
-			raise Exception('file '+fileID+' is empty')
+			raise Exception('file {} is empty'.format(fileID))
 		data = data[0]
 		
 		if not os.path.isfile(data['dir'].replace('.acu', '.json')):
 			try:
 				readModel(app, fileID)
 			except:
-				print 'Failed reading model '+data['fileName']
+				print 'Failed reading model {}'.format(data['fileName'])
 		if os.path.isfile(data['dir'].replace('.acu', '.json')):
 			meshCount += len(fileIDList[fileID])
 			ticker += 1
-			print 'read model '+str(ticker)+ ' of '+str(len(fileIDList))
+			print 'read model {} of {}'.format(ticker, len(fileIDList))
 		else:
 			failedModels.append(fileID)
 	for fileID in failedModels:
@@ -73,7 +73,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 	
 	rootID = rootID.upper()
 	fileName = rootData['fileName']
-	savePath = app.CONFIG['dumpFolder'] + os.sep + fileName
+	savePath = os.path.join(app.CONFIG['dumpFolder'], fileName)
 	# savePath = path[:-4] + ".obj"
 	# str1 = os.sep.join(savePath.split(os.sep)[:-1])	#save path folder
 	# while (treeNode1.Parent != null)
@@ -104,7 +104,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 			app.gameFunctions.decompressDatafile(app, fileID)
 		data = tempFiles.read(fileID)
 		if len(data) == 0:
-			raise Exception('file '+fileID+' is empty')
+			raise Exception('file {} is empty'.format(fileID))
 		data = data[0]
 		
 		# used in face data section to define unique names
@@ -153,12 +153,12 @@ def exportOBJMulti(app, rootID, fileIDList):
 					str(round(vertex[2], 6))
 					
 					+ '\n')
-				print 'written vertex data '+str(meshNo)+ ' of '+str(meshCount)
+				print 'written vertex data {} of {}'.format(meshNo, meshCount)
 				
 				# texture coordinates
 				for tVert in model['vertData']['tVert']:
-					fio.write("vt " + str(round((tVert['X'] / num3), 6)) + " " + str(round((tVert['Y'] / -num3), 6)) + '\n')
-				print 'written texture coordinates '+str(meshNo)+ ' of '+str(meshCount)
+					fio.write('vt {} {}\n'.format(round((tVert['X'] / num3), 6), round((tVert['Y'] / -num3), 6)))
+				print 'written texture coordinates {} of {}'.format(meshNo, meshCount)
 				
 				# face mappings
 				for index1, meshData in enumerate(model['meshData']):
@@ -181,7 +181,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 							exportTexture(app, textureIDs[hexid])
 						data2 = tempFiles.read(model['materialId'][index1].upper())
 						if len(data2) == 0:
-							raise Exception('file '+model['materialId'][index1].upper()+' is empty')
+							raise Exception('file {} is empty'.format(model['materialId'][index1].upper()))
 						data2 = data2[0]
 						material = data2['fileName']
 						fio.write("usemtl " + material + '\n')
@@ -200,7 +200,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 							str(int(model['faceData'][index2]['Z'] + 1.0 + num7 + offset)) + '\n')
 					fio.write("# " + str(num5) + " triangles\n\n")
 				offset += len(model['vertData']['vertex'])
-				print 'written triangle data '+str(meshNo)+ ' of '+str(meshCount)
+				print 'written triangle data {} of {}'.format(meshNo, meshCount)
 			
 			# material data in mtl
 			for materialId in model['materialId']:
@@ -211,7 +211,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 					
 				data2 = tempFiles.read(materialId.upper())
 				if len(data2) == 0:
-					raise Exception('file '+materialId.upper()+' is empty')
+					raise Exception('file {} is emtpy'.format(materialId.upper()))
 				data2 = data2[0]
 				
 				material = data2['fileName']
@@ -241,13 +241,12 @@ def exportOBJMulti(app, rootID, fileIDList):
 							raise Exception('file '+textureIDs[texType].upper()+' is empty')
 						data3 = data3[0]
 				
-						fim.write(data3['fileName'] + '.dds\n')
+						fim.write('{}.dds\n'.format(data3['fileName']))
 						if texType == 'diffuse':
-							fim.write("map_d ")
-							fim.write(data3['fileName'] + '.dds\n')
+							fim.write('map_d {}.dds\n'.format(data3['fileName']))
 
 					fim.write('\n')
-			print 'written material data '+str(index0)+ ' of '+str(len(fileIDList))
+			print 'written material data {} of {}'.format(index0, len(fileIDList))
 	
 	fio.close()
 		

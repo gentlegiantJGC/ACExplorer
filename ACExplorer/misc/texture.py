@@ -1,4 +1,3 @@
-from ACExplorer import CONFIG
 import os
 import struct
 
@@ -33,7 +32,7 @@ class BaseTexture:
 		self.dwCaps4 = '\x00\x00\x00\x00'
 		self.dwReserved2 = '\x00\x00\x00\x00'
 
-	def exportDDS(self, path):
+	def exportDDS(self, path, CONFIG):
 		fi = open(path, 'wb')
 		fi.write('DDS ')
 		fi.write(self.dwSize + self.dwFlags + self.dwHeight + self.dwWidth +

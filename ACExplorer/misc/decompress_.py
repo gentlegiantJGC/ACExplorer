@@ -1,10 +1,9 @@
 from ctypes import CDLL, c_ubyte, c_ushort
-from ACExplorer import CONFIG
 import platform
 if platform.architecture()[0] == '64bit':
-	lzoPath = CONFIG['LZO64Path'].encode('utf-8')
+	lzoPath = "resources\\lzo64.dll".encode('utf-8')
 elif platform.architecture()[0] == '32bit':
-	lzoPath = CONFIG['LZO32Path'].encode('utf-8')
+	lzoPath = "resources\\lzo32.dll".encode('utf-8')
 else:
 	raise Exception('Unknown Architecture')
 
