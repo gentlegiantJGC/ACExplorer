@@ -4,7 +4,7 @@ import json
 from ACExplorer.ACUnity.exportTexture_ import exportTexture
 from ACExplorer.ACUnity.getMaterialIDs_ import getMaterialIDs
 from ACExplorer.ACUnity.readModel_ import readModel
-from ACExplorer.misc import tempFiles
+# from ACExplorer.misc import tempFiles
 
 def transform(transformationMtx, vertex):
 	# Transformation Matrix transformationMtx[0-3][0-3]

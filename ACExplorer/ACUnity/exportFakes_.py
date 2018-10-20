@@ -1,7 +1,7 @@
 import binascii
 
 from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
-from ACExplorer.misc import tempFiles
+# from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BEHEX2, float32
 from ACExplorer.misc.exportOBJMulti import exportOBJMulti
 

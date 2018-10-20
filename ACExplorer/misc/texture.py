@@ -2,7 +2,7 @@ import os
 import struct
 
 class BaseTexture:
-	def __init__(self):
+	def __init__(self, app):
 		self.dwSize = '\x7C\x00\x00\x00' #124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
 		#(probably should be set based on the data)
@@ -32,7 +32,7 @@ class BaseTexture:
 		self.dwCaps4 = '\x00\x00\x00\x00'
 		self.dwReserved2 = '\x00\x00\x00\x00'
 
-	def exportDDS(self, path, CONFIG):
+	def exportDDS(self, path):
 		fi = open(path, 'wb')
 		fi.write('DDS ')
 		fi.write(self.dwSize + self.dwFlags + self.dwHeight + self.dwWidth +
@@ -43,5 +43,5 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = '"{}" -fl 9.1 -y -px {}{} -f BC3_UNORM {}'.format(CONFIG['texconv'], CONFIG['dumpFolder'], os.sep, path)
+			texconv = '"{}" -fl 9.1 -y -px {}{} -f BC3_UNORM {}'.format(app.CONFIG['texconv'], app.CONFIG['dumpFolder'], os.sep, path)
 			os.system(texconv)

@@ -1,5 +1,5 @@
 from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
-from ACExplorer.misc import tempFiles
+# from ACExplorer.misc import tempFiles
 from ACExplorer.misc.dataTypes import BEHEX2
 
 

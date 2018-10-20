@@ -205,7 +205,7 @@ def topLevelFormat(app, fileID):
 		for key in subFileContainer:
 			fileContainer[key] = subFileContainer[key]
 	except Exception as e:
-		print e.message, e.args
+		print '{}, {}'.format(e.message, e.args)
 		fileContainer['fileID'] = fileID
 		fileContainer['fileType'] = data["fileType"]
 		success = False

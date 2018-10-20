@@ -33,33 +33,6 @@ Forge2.forge
 '''
 tempFiles
 {
-	fileID:{
-		<forgeFile>:{
-			<datafileID>:{
-				'fileType':fileType,
-				'fileName': fileName,
-				'rawFile':None
-			},
-			<datafileID2>:{
-				'fileType':fileType,
-				'fileName': fileName,
-				'rawFile':None
-			}
-		},
-		<forgeFile2>:{},
-		...
-	},
-	fileID2:{
-		<forgeFile>:{},
-		...
-	},
-	...
-}
-'''
-
-'''
-tempFiles
-{
 	<fileID>:(<forgeFile>, <datafileID>, <fileType>, <fileName>, None),
 	...
 }
@@ -128,12 +101,6 @@ class tempFilesContainer:
 		:return:
 		'''
 
-		'''
-		if file exists in tempfiles and meets the criteria then use that
-		if not search for it in filelist                    (it is either a top level id or sub level id)
-			if it is there decompress it and use that
-		'''
-
 		if forgeFile is not None and datafileID is None:
 			if fileID in self.tempFiles and forgeFile == self.tempFiles[fileID][0]:
 				datafileID = self.tempFiles[fileID][1]
@@ -161,39 +128,12 @@ class tempFilesContainer:
 			return {
 				'forgeFile': forgeFile,
 				'datafileID': datafileID,
-				'fileType': self.tempFiles[fileID][2],
+				'fileType': '{:08x}'.format(self.tempFiles[fileID][2]).upper(),
 				'fileName': self.tempFiles[fileID][3],
 				'rawFile': self.tempFiles[fileID][4]
 			}
 		else:
 			return None
-
-
-
-		#
-		# if forgeFile is not None:
-		# 	if datafileID is not None:
-		# 		if fileID in self.tempFiles and self.tempFiles[fileID][0] == forgeFile and self.tempFiles[fileID][1] == datafileID:
-		# 			return mergeDict(self.tempFiles[fileID][forgeFile][datafileID], {'forgeFile':forgeFile, 'datafileID':datafileID})
-		# 		else:
-		# 			raise Exception('Both forgeFile and datafileID were given ("{}" and "{}" respectively) but the data was not there')
-		# 	if fileID in self.tempFiles and forgeFile in self.tempFiles[fileID]:
-		# 		datafileID = self.tempFiles[fileID][forgeFile].keys()[0]
-		# 		return mergeDict(self.tempFiles[fileID][forgeFile][datafileID], {'forgeFile':forgeFile, 'datafileID':datafileID})
-		# 	if fileID in self.lightDictionary and forgeFile in self.lightDictionary[fileID]:
-		# 		datafileID = self.lightDictionary[fileID][forgeFile][0]
-		# 		self.app.gameFunctions.decompressDatafile(self.app, datafileID, forgeFile)
-		# 		return mergeDict(self.tempFiles[fileID][forgeFile][datafileID], {'forgeFile':forgeFile, 'datafileID':datafileID})
-		# if fileID not in self.tempFiles and fileID in self.lightDictionary:
-		# 	forgeFile = self.lightDictionary[fileID].keys()[0]
-		# 	datafileID = self.lightDictionary[fileID][forgeFile][0]
-		# 	self.app.gameFunctions.decompressDatafile(self.app, datafileID, forgeFile)
-		# 	return mergeDict(self.tempFiles[fileID][forgeFile][datafileID], {'forgeFile':forgeFile, 'datafileID':datafileID})
-		# if fileID in self.tempFiles:
-		# 	forgeFile = self.tempFiles[fileID].keys()[0]
-		# 	datafileID = self.tempFiles[fileID][forgeFile].keys()[0]
-		# 	return mergeDict(self.tempFiles[fileID][forgeFile][datafileID], {'forgeFile':forgeFile, 'datafileID':datafileID})
-		# return None
 
 	def getFile(self, fileID, forgeFile=None, datafileID=None):
 		'''
@@ -221,8 +161,3 @@ class tempFilesContainer:
 		if fileID in self.tempFiles:
 			self.lastUsed.remove(fileID)
 		self.lastUsed.append(fileID)
-
-def mergeDict(a,b):
-	c = a.copy()
-	c.update(b)
-	return c

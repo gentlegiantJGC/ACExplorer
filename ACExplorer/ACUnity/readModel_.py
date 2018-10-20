@@ -1,7 +1,7 @@
 import sys, os, json
 from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
 from ACExplorer.ACUnity.formatFile import readID, readStr, readInt, readInt16, readUInt16, readInt32, readUInt32, readFloat32, readType, fOutWrite, ReadRest
-from ACExplorer.misc import tempFiles
+# from ACExplorer.misc import tempFiles
 
 dev = 'dev' in sys.argv
 
