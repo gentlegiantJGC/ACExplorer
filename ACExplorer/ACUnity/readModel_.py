@@ -6,20 +6,28 @@ from ACExplorer.ACUnity.formatFile import readID, readStr, readInt, readInt16, r
 dev = 'dev' in sys.argv
 
 def readModel(app, fileID):
-	if not tempFiles.exists(fileID):
-		decompressDatafile(app, fileID)
-	data = tempFiles.read(fileID)
-	if len(data) == 0:
-		raise Exception('file {} is empty'.format(fileID))
-	data = data[0]
-	# str1 = strArray[1]			#MDL or HDMDL
-	fIn = open(data['dir'], 'rb')				#open parent file
+	# if not tempFiles.exists(fileID):
+	# 	decompressDatafile(app, fileID)
+	# data = tempFiles.read(fileID)
+	# if len(data) == 0:
+	# 	raise Exception('file {} is empty'.format(fileID))
+	# data = data[0]
+	# # str1 = strArray[1]			#MDL or HDMDL
+	# fIn = open(data['dir'], 'rb')				#open parent file
+
+	data = app.tempNewFiles.getData(fileID)
+	if data is None:
+		app.log.warn(__name__, "Failed to find file {}".format(fileID))
+		return
+	fIn = app.misc.fileObject()
+	fIn.write(data["rawFile"])
+	fIn.seek(0)
 	
-	if dev:
-		fOut = open(data["dir"]+'.format', 'w')
-	else:
-		fOut = None
-	
+	# if dev:
+	# 	fOut = open('{}.format'.format(os.path.join(app.CONFIG["dumpFolder"], )), 'w')
+	# else:
+	# 	fOut = None
+	fOut = app.misc.fileObject()
 	
 	
 	model = {}
@@ -626,13 +634,13 @@ def readModel(app, fileID):
 			
 		ReadRest(fIn, fOut)
 			
-		fIn.close()
+		# fIn.close()
 		# if dev:
 		# 	fOut.close()
 		# 	print data["dir"]+'.format'
 		# 	os.system('"'+data['dir']+'.format"')
 	else:
 		raise Exception("Error reading model file!")
-	tmpdict = open(data['dir'].replace('.acu', '.json'), 'w')
+	tmpdict = open(os.path.join(app.CONFIG["dumpFolder"], "temp", data['fileName']), 'w')
 	tmpdict.write(json.dumps(model))
 	tmpdict.close()

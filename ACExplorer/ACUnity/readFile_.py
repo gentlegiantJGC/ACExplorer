@@ -7,10 +7,9 @@ def readFile(app, fileID, forgeFile=None, datafileID=None):
 		raise Exception('issue getting file "{}"'.format(fileID))
 	
 	if data['fileType'] == '415D9568':	#mesh (textures looked up)
-		return #TODO make this work with the new system
 		app.log.info(__name__, 'Exporting '.format(data['fileName']))
 		app.gameFunctions.readModel(app, fileID)
-		app.gameFunctions.exportOBJ(app, fileID)
+		app.misc.exportOBJ(app, fileID)
 	elif data['fileType'] == 'AC2BBF68': #datablock (includes world data)
 		app.gameFunctions.exportDataBlockModels(app, fileID)
 	elif data['fileType'] == 'A2B7E917': #texture

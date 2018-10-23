@@ -26,7 +26,7 @@ move checkbyte, fileID and fileType so it is always called rather than each func
 dev = 'dev' in sys.argv
 if dev:
 	# TODO
-	from ACExplorer import formatLog
+	formatLog = {}
 
 def fOutWrite(fOut, val, indentCount = 0):
 	if dev:

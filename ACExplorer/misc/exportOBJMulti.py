@@ -1,7 +1,7 @@
 import os
 import json
 # from ACExplorer.ACUnity import decompressDatafile
-from ACExplorer.ACUnity.exportTexture_ import exportTexture
+from ACExplorer.ACUnity.exportTexture_ import export_texture
 from ACExplorer.ACUnity.getMaterialIDs_ import getMaterialIDs
 from ACExplorer.ACUnity.readModel_ import readModel
 # from ACExplorer.misc import tempFiles
@@ -178,7 +178,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 						fio.write("usemtl missingNo\n")
 					else:
 						for hexid in textureIDs:
-							exportTexture(app, textureIDs[hexid])
+							export_texture(app, textureIDs[hexid])
 						data2 = tempFiles.read(model['materialId'][index1].upper())
 						if len(data2) == 0:
 							raise Exception('file {} is empty'.format(model['materialId'][index1].upper()))

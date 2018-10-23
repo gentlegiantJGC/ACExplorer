@@ -100,4 +100,7 @@ def decompressDatafile(app, fileID, forgeFile=None):
 	
 	for fileName in sorted(alphabeticalFiles, key=lambda v: v.lower()):
 		for fileID2 in alphabeticalFiles[fileName]:
-			app.fileTree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFile, fileID), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFile, fileID, fileID2), text=fileName)
+			try:
+				app.fileTree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFile, fileID), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFile, fileID, fileID2), text=fileName)
+			except:
+				continue

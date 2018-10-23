@@ -2,7 +2,7 @@ gameIdentifier = 'ACU'
 from decompressDatafile_ import decompressDatafile
 from exportDataBlockModels_ import exportDataBlockModels
 
-from exportTexture_ import exportTexture
+from exportTexture_ import export_texture
 import formatFile
 from getMaterialIDs_ import getMaterialIDs
 from readFile_ import readFile

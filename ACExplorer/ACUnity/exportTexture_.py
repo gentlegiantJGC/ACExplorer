@@ -64,15 +64,16 @@ class Texture(BaseTexture):
 		self.dwCaps4 = '\x00\x00\x00\x00'
 		self.dwReserved2 = '\x00\x00\x00\x00'
 
-def exportTexture(app, fileID):
+def export_texture(app, fileID):
 	data = app.tempNewFiles.getData(fileID)
 	if data is None:
-		app.log("Failed to find file {}".format(fileID))
+		app.log.warn(__name__, "Failed to find file {}".format(fileID))
 		return
 	fi = app.misc.fileObject()
 	fi.write(data["rawFile"])
 	save_path = os.path.join(app.CONFIG['dumpFolder'], '{}.dds'.format(data['fileName']))
 	if os.path.isfile(save_path):
-		return
+		return save_path
 	tex = Texture(app, fi)
 	tex.exportDDS(save_path)
+	return save_path

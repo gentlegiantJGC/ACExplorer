@@ -117,7 +117,9 @@ class tempFilesContainer:
 			if forgeFile is None:
 				if str(fileID) in self.lightDictionary: # could check the lower down stuff but if this exists there should be data inside
 					forgeFile = self.lightDictionary[str(fileID)].keys()[0]
-					datafileID = self.lightDictionary[str(fileID)][forgeFile].keys()[0]
+					datafileID = self.lightDictionary[str(fileID)][forgeFile][0]
+				else:
+					return
 			else:
 				datafileID = fileID
 
@@ -133,7 +135,7 @@ class tempFilesContainer:
 				'rawFile': self.tempFiles[fileID][4]
 			}
 		else:
-			return None
+			return
 
 	def getFile(self, fileID, forgeFile=None, datafileID=None):
 		'''
