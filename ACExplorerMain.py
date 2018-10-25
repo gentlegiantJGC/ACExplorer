@@ -8,15 +8,18 @@
 	Contained within the datafiles are a variety of files related to that datafile.
 '''
 
-import json, ttk, Tkinter, tkFileDialog, sys, os
-from ACExplorer import CONFIG, ACUnity
-from ACExplorer import misc
-
-dev = 'dev' in sys.argv
+import json
+import ttk
+import Tkinter
+import tkFileDialog
+import sys
+import os
+from ACExplorer import misc, CONFIG, ACUnity
 
 class App:
 	def __init__(self):
 		self.CONFIG = CONFIG
+		self.dev = 'dev' in sys.argv
 		self.misc = misc
 		self.gameFunctions = ACUnity
 		self.log = self.misc.logger(self)
@@ -69,7 +72,7 @@ class App:
 		# infobutton = Tkinter.Button(self.mainUI, text='Info', command=self.info)
 		# infobutton.grid(row=0, column=4)
 
-		if dev:
+		if self.dev:
 			runCode = Tkinter.Button(self.mainUI, text='Run Code', command=self.runcode)
 			runCode.grid(row=0, column=50)
 

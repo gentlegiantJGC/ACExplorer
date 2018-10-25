@@ -24,6 +24,6 @@ def readFile(app, fileID, forgeFile=None, datafileID=None):
 	elif data['fileType'] =='C69A7F31':	#fakes
 		app.gameFunctions.exportFakes(app, fileID)
 	else:
-		if 'dev' in sys.argv:
+		if app.dev:
 			reload(app.gameFunctions.formatFile)  # for development
 		app.gameFunctions.formatFile.topLevelFormat(app, fileID)

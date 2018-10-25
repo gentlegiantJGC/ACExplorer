@@ -24,7 +24,7 @@ def exportDataBlockModels(app, fileID):
 	if data['fileType'] != 'AC2BBF68':
 		return
 	
-	if 'dev' in sys.argv:
+	if app.dev:
 		reload(formatFile)  # for development
 	dataBlock = formatFile.topLevelFormat(app, fileID)
 	# fileID, data and dataBlock all relate to the DataBlock file (Type AC2BBF68)
