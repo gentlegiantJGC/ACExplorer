@@ -43,7 +43,7 @@ def decompressDatafile(app, fileID, forgeFile=None):
 	else:
 		uncompressedDataList.append(rawDataChunk) #if the if statment is not true the file is not compressed
 
-	uncompressedData = app.misc.fileObject()
+	uncompressedData = app.misc.FileObject()
 	uncompressedData.write(''.join(uncompressedDataList))
 
 	uncompressedData.seek(0)

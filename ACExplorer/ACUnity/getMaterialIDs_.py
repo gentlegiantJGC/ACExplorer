@@ -7,7 +7,7 @@ def getMaterialIDs(app, file_id):
 		app.log.warn(__name__, "Failed to find file {}".format(file_id))
 		return Material('{:08x}'.format(file_id).upper(), missing_no=True)
 	name = data["fileName"]
-	material_file = app.misc.fileObject()
+	material_file = app.misc.FileObject()
 	material_file.write(data["rawFile"])
 	material_file.seek(26)
 	material_template_id = uint64(material_file)
@@ -16,7 +16,7 @@ def getMaterialIDs(app, file_id):
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {}".format('{:08x}'.format(material_template_id).upper()))
 		return Material(name, missing_no=True)
-	materialTemplate = app.misc.fileObject()
+	materialTemplate = app.misc.FileObject()
 	materialTemplate.write(data["rawFile"])
 	materialTemplate.seek(0)
 

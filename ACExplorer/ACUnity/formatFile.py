@@ -186,12 +186,12 @@ def topLevelFormat(app, fileID):
 	if data is None:
 		raise Exception('Error with file "{}"'.format(fileID))
 	app.log.info(__name__, 'Formatting {}:{}'.format(fileID, data["fileName"]))
-	fIn = app.misc.fileObject()
+	fIn = app.misc.FileObject()
 	fIn.write(app.tempNewFiles.getFile(fileID))
 	fIn.seek(0)
 
 	if dev:
-		fOut = app.misc.fileObject()
+		fOut = app.misc.FileObject()
 	else:
 		fOut = None
 	

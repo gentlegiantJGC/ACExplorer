@@ -1,11 +1,12 @@
-class fileObject:
+class FileObject:
 	def __init__(self, path=None, mode='w'):
 		self.path = None
 		self.mode = None
 		self.data = ''
 		if path is not None:
 			if 'r' in mode:
-				self.data = open(path, mode).read()
+				with open(path, mode) as f:
+					self.data = f.read()
 			else:
 				self.data = ''
 				self.path = path
@@ -19,17 +20,17 @@ class fileObject:
 		self.data += s
 		self.filePointer += len(s)
 
-	def read(self, l='end'):
-		if l == 'end':
+	def read(self, length='end'):
+		if length == 'end':
 			data = self.data[self.filePointer:]
 			self.filePointer = len(self.data)
 			return data
-		elif type(l) == int:
-			data = self.data[self.filePointer:self.filePointer+l]
-			self.filePointer += l
+		elif isinstance(length, int):
+			data = self.data[self.filePointer:self.filePointer + length]
+			self.filePointer += length
 			return data
 		else:
-			raise Exception('Unsupported type: "{}"'.format(type(l)))
+			raise Exception('Unsupported type: "{}"'.format(type(length)))
 
 	def seek(self, offset, whence=0):
 		if whence == 0:
@@ -44,5 +45,6 @@ class fileObject:
 			self.path = path
 		if mode is not None:
 			self.mode = mode
-		with open(self.path, self.mode) as f:
-			f.write(self.data)
+		if self.mode in 'wa':
+			with open(self.path, self.mode) as f:
+				f.write(self.data)

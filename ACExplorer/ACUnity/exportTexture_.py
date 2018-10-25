@@ -69,7 +69,7 @@ def export_texture(app, fileID):
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {}".format(fileID))
 		return
-	fi = app.misc.fileObject()
+	fi = app.misc.FileObject()
 	fi.write(data["rawFile"])
 	save_path = os.path.join(app.CONFIG['dumpFolder'], '{}.dds'.format(data['fileName']))
 	if os.path.isfile(save_path):
