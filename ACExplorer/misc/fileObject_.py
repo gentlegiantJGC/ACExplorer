@@ -1,3 +1,6 @@
+import os
+
+
 class FileObject:
 	def __init__(self, path=None, mode='w'):
 		self.path = None
@@ -46,5 +49,7 @@ class FileObject:
 		if mode is not None:
 			self.mode = mode
 		if self.mode in 'wa':
+			if not os.path.isdir(self.path):
+				os.makedirs(self.path)
 			with open(self.path, self.mode) as f:
 				f.write(self.data)
