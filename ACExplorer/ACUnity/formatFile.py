@@ -30,7 +30,7 @@ if dev:
 
 def fOutWrite(fOut, val, indentCount = 0):
 	if dev:
-		fOut.write(indentCount*indentCharacter + val)
+		fOut.write('{}{}'.format(indentCount*indentCharacter, val))
 
 def hexSpaces(string):
 	return ' '.join([binascii.hexlify(s).upper() for s in string])
@@ -49,7 +49,7 @@ def readID(app, fIn, fOut, indentCount = 0):
 	if len(val) != 8:
 		raise Exception('Reached End Of File')
 	fileID = struct.unpack('<Q', val)[0]
-	if dev:
+	if dev and fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(val))
 		fOut.write('\t\t')
 		data = app.tempNewFiles.getData(fileID)
