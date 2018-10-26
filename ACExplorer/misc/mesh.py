@@ -36,9 +36,6 @@ class ObjMtl(object):
 		self._obj.write(''.join(['v {} {} {}\n'.format(*vertex) for vertex in model.vertices.round(6)]))
 		self._obj.write('# {} vertices\n\n'.format(len(model.vertices)))
 
-		# vt_temp = self.texture_vertices / 2048.0    # convert from the AC convention of 0 to 2048 to the obj convention of 0 to 1
-		# vt_temp[:,1] *= - 1     # convert from the AC coordinate convention to the obj coordinate convention
-
 		# write texture coords
 		self._obj.write(''.join(['vt {} {}\n'.format(*vertex) for vertex in model.texture_vertices.round(6)]))
 		self._obj.write('# {} texture coordinates\n\n'.format(len(model.texture_vertices)))
@@ -47,8 +44,8 @@ class ObjMtl(object):
 		for mesh_index, mesh in enumerate(model.meshes):
 			self._obj.write('g {}\n'.format(self.group_name(model.name)))
 			self._obj.write('usemtl {}\n'.format(self.mtl_handler.get(model.materials[mesh_index]).name))
-			self._obj.write(''.join(['f {} {} {}\n'.format(*face) for face in model.faces[mesh['face_start']: mesh['face_start'] + mesh['face_count']] + model.vertex_count]))
-			self._obj.write('# {} faces\n\n'.format(len(mesh['face_count'])))
+			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']] + self.vertex_count]))
+			self._obj.write('# {} faces\n\n'.format(mesh['face_count']))
 
 		self.vertex_count += len(model.vertices)
 
@@ -60,7 +57,7 @@ class ObjMtl(object):
 		"""
 		mtl = open('{}{}{}.mtl'.format(self.app.CONFIG['dumpFolder'], os.sep, self.model_name), 'w')
 		mtl.write('# Material Library\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
-		for material in self.mtl_handler.materials:
+		for material in self.mtl_handler.materials.values():
 			mtl.write('newmtl {}\n'.format(material.name))
 			mtl.write('Ka 1.000 1.000 1.000\nKd 1.000 1.000 1.000\nKs 0.000 0.000 0.000\nNs 0.000\n')
 
@@ -77,7 +74,7 @@ class ObjMtl(object):
 										]:
 					if file_id is None:
 						continue
-					image_path = self.app.gameFunctions.export_texture(file_id)
+					image_path = self.app.gameFunctions.export_texture(self.app, file_id)
 					if image_path is None:
 						mtl.write('{} {}\n'.format(map_type, os.path.basename(self.app.CONFIG['missingNo'])))
 						self.export_missing_no()
@@ -105,7 +102,7 @@ class MaterialHandler:
 
 	def get(self, file_id):
 		if file_id not in self.materials:
-			self.materials[file_id] = self.app.gameFunctions.getMaterialIDs(file_id)
+			self.materials[file_id] = self.app.gameFunctions.getMaterialIDs(self.app, file_id)
 		return self.materials[file_id]
 
 class Model:
@@ -117,17 +114,3 @@ class Model:
 		self.faces = None
 		self.meshes = None
 		self.materials = None
-
-	# def purge(self):
-	# 	"""
-	# 	reset all the model specific values
-	# 	:return: None
-	# 	"""
-	# 	self.name = 'Unknown'   # the file name of the mesh loaded
-	# 	self.vertices = numpy.zeros((0, 3))  # the vertex location for each vertex
-	# 	self.texture_vertices = numpy.zeros((0, 2))  # the texture coord for each vertex
-	# 	self.normals = numpy.zeros((0, 3))  # the normal value for each vertex
-	#
-	# 	self.faces = numpy.zeros((0, 3))    # the vertex index for each vertex in the face
-	# 	self.meshes = numpy.zeros((0, 3))   # structured array pointing to which range of faces to use
-	# 	self.materials = numpy.zeros((0, 1))  # list of materials that match up to each mesh in self.meshes. Look in self.mtl for more info on the texture
