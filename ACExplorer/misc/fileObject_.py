@@ -49,7 +49,7 @@ class FileObject:
 		if mode is not None:
 			self.mode = mode
 		if self.mode in 'wa':
-			if not os.path.isdir(self.path):
-				os.makedirs(self.path)
+			if not os.path.isdir(os.path.dirname(self.path)):
+				os.makedirs(os.path.dirname(self.path))
 			with open(self.path, self.mode) as f:
 				f.write(self.data)
