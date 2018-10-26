@@ -130,7 +130,7 @@ class tempFilesContainer:
 			return {
 				'forgeFile': forgeFile,
 				'datafileID': datafileID,
-				'fileType': '{:08x}'.format(self.tempFiles[fileID][2]).upper(),
+				'fileType': '{:08X}'.format(self.tempFiles[fileID][2]),
 				'fileName': self.tempFiles[fileID][3],
 				'rawFile': self.tempFiles[fileID][4]
 			}

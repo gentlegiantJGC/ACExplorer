@@ -17,7 +17,7 @@ def exportOBJ(app, fileID):
 
 	data = app.tempNewFiles.getData(fileID)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {}".format(fileID))
+		app.log.warn(__name__, "Failed to find file {:016X}".format(fileID))
 		return
 
 	fileName = data['fileName']

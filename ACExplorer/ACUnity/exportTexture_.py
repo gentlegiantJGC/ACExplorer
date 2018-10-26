@@ -67,7 +67,7 @@ class Texture(BaseTexture):
 def export_texture(app, fileID):
 	data = app.tempNewFiles.getData(fileID)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {}".format(fileID))
+		app.log.warn(__name__, "Failed to find file {:016X}".format(fileID))
 		return
 	fi = app.misc.FileObject()
 	fi.write(data["rawFile"])

@@ -1,4 +1,5 @@
-import binascii, struct
+import binascii
+import struct
 
 
 def BEHEX(f, start, length):
