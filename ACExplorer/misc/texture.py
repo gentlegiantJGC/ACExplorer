@@ -3,6 +3,7 @@ import struct
 
 class BaseTexture:
 	def __init__(self, app):
+		self.app = app
 		self.dwSize = '\x7C\x00\x00\x00' #124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
 		#(probably should be set based on the data)
@@ -43,5 +44,5 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = '"{}" -fl 9.1 -y -px {}{} -f BC3_UNORM {}'.format(app.CONFIG['texconv'], app.CONFIG['dumpFolder'], os.sep, path)
+			texconv = '"{}" -fl 9.1 -y -px {}{} -f BC3_UNORM {}'.format(self.app.CONFIG['texconv'], self.app.CONFIG['dumpFolder'], os.sep, path)
 			os.system(texconv)
