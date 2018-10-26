@@ -8,8 +8,7 @@ def readFile(app, fileID, forgeFile=None, datafileID=None):
 	
 	if data['fileType'] == '415D9568':	#mesh (textures looked up)
 		app.log.info(__name__, 'Exporting '.format(data['fileName']))
-		app.gameFunctions.readModel(app, fileID)
-		app.misc.exportOBJ(app, fileID)
+		app.gameFunctions.export_obj(app, fileID)
 	elif data['fileType'] == 'AC2BBF68': #datablock (includes world data)
 		app.gameFunctions.exportDataBlockModels(app, fileID)
 	elif data['fileType'] == 'A2B7E917': #texture

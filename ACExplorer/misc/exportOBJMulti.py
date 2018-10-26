@@ -3,7 +3,7 @@ import json
 # from ACExplorer.ACUnity import decompressDatafile
 from ACExplorer.ACUnity.exportTexture_ import export_texture
 from ACExplorer.ACUnity.getMaterialIDs_ import getMaterialIDs
-from ACExplorer.ACUnity.readModel_ import readModel
+from ACExplorer.ACUnity.readModel_ import read_model
 # from ACExplorer.misc import tempFiles
 
 def transform(transformationMtx, vertex):
@@ -59,7 +59,7 @@ def exportOBJMulti(app, rootID, fileIDList):
 		
 		if not os.path.isfile(data['dir'].replace('.acu', '.json')):
 			try:
-				readModel(app, fileID)
+				read_model(app, fileID)
 			except:
 				print 'Failed reading model {}'.format(data['fileName'])
 		if os.path.isfile(data['dir'].replace('.acu', '.json')):
