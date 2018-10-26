@@ -1,85 +1,38 @@
-from ACExplorer.misc.dataTypes import uint64
+from ACExplorer.ACUnity.formatFile import readID
+import numpy
 
 
 def getMaterialIDs(app, file_id):
 	data = app.tempNewFiles.getData(file_id)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {}".format(file_id))
-		return Material('{:08x}'.format(file_id).upper(), missing_no=True)
+		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
+		return Material('{:016X}'.format(file_id), missing_no=True)
 	name = data["fileName"]
 	material_file = app.misc.FileObject()
 	material_file.write(data["rawFile"])
 	material_file.seek(26)
-	material_template_id = uint64(material_file)
+	material_template_id = readID(app, material_file, None)
 
 	data = app.tempNewFiles.getData(material_template_id)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {}".format('{:08x}'.format(material_template_id).upper()))
+		app.log.warn(__name__, "Failed to find file {:016X}".format(material_template_id))
 		return Material(name, missing_no=True)
 	materialTemplate = app.misc.FileObject()
 	materialTemplate.write(data["rawFile"])
 	materialTemplate.seek(0)
 
 	material = Material(name)
-	materialTemplate.seek(16, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		material.diffuse = idtemp
+	materialTemplate.seek(14, 1)
 
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		material.normal = idtemp
+	texture_table = numpy.fromstring(materialTemplate.read(120), dtype=[('', numpy.uint16), ('texture_id', numpy.uint64)])
+	material.diffuse, material.normal, material.specular, \
+		material.height, tex5, material.transmission, tex7, \
+		material.mask1, material.mask2, tex10, tex11, tex12 \
+		= [texture_id if texture_id != 0 else None for texture_id in texture_table['texture_id']]
 
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		material.specular = idtemp
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		material.height = idtemp
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		raise Exception('{} has an id in position 5'.format(data['dir']))
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		material.transmission = idtemp
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		raise Exception('{} has an id in position 7'.format(data['dir']))
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		material.mask1 = idtemp
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		material.mask2 = idtemp
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		raise Exception('{} has an id in position 10'.format(data['dir']))
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		raise Exception('{} has an id in position 11'.format(data['dir']))
-
-	materialTemplate.seek(2, 1)
-	idtemp = uint64(materialTemplate)
-	if idtemp != 0:
-		raise Exception('{} has an id in position 12'.format(data['dir']))
+	for var, pos in [[tex5, 5], [tex7, 7], [tex10, 10], [tex11, 11], [tex12, 12]]:
+		if var is not None:
+			raise Exception('{} has an id in position {}'.format(data, pos))
 	
 	return material
 
