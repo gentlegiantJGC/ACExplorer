@@ -1,49 +1,24 @@
-import binascii
-
-from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
-# from ACExplorer.misc import tempFiles
-from ACExplorer.misc.dataTypes import BEHEX2, float32
-from ACExplorer.misc.exportOBJMulti import exportOBJMulti
+import numpy
+from ACExplorer.misc.dataTypes import uint64
 
 
-def exportFakes(app, fileID):
-	if not tempFiles.exists(fileID):
-		decompressDatafile(app, fileID)
-	data = tempFiles.read(fileID)
-	if len(data) == 0:
-		raise Exception('file {} is empty'.format(fileID))
-	data = data[0]
-	
-	fIn = open(data['dir'], 'rb')
-	fReadIn = fIn.read()
-	fIn.close()
-
-	files = fReadIn.split(binascii.unhexlify('000000000000000024B57FD7'))[1:]
-	
-	fileIDList = []
+def export_fakes(app, file_id):
+	data = app.tempNewFiles.getData(file_id)
+	if data is None:
+		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
+		return
+	model_name = data['fileName']
+	files = data['rawFile'].split('\x00\x00\x00\x00\x00\x00\x00\x00\x24\xB5\x7F\xD7')[1:]
+	obj_handler = app.misc.mesh.ObjMtl(app, model_name)
 	for n in files:
-		if binascii.unhexlify('298D65EC') not in n:
+		if '\x29\x8D\x65\xEC' not in n:
 			continue
-		fileContainer = {}
-		fileContainer['transformationMtx'] = [[],[],[],[]]
-		fileContainer['transformationMtx'][0].append(float32(n[15:19]))
-		fileContainer['transformationMtx'][1].append(float32(n[19:23]))
-		fileContainer['transformationMtx'][2].append(float32(n[23:27]))
-		fileContainer['transformationMtx'][3].append(float32(n[27:31]))
-		fileContainer['transformationMtx'][0].append(float32(n[31:35]))
-		fileContainer['transformationMtx'][1].append(float32(n[35:39]))
-		fileContainer['transformationMtx'][2].append(float32(n[39:43]))
-		fileContainer['transformationMtx'][3].append(float32(n[43:47]))
-		fileContainer['transformationMtx'][0].append(float32(n[47:51]))
-		fileContainer['transformationMtx'][1].append(float32(n[51:55]))
-		fileContainer['transformationMtx'][2].append(float32(n[55:59]))
-		fileContainer['transformationMtx'][3].append(float32(n[59:63]))
-		fileContainer['transformationMtx'][0].append(float32(n[63:67]))
-		fileContainer['transformationMtx'][1].append(float32(n[67:71]))
-		fileContainer['transformationMtx'][2].append(float32(n[71:75]))
-		fileContainer['transformationMtx'][3].append(float32(n[75:79]))
-		visualLoc = n.find(binascii.unhexlify('298D65EC'))
-		fileContainer['fileID'] = BEHEX2(n[visualLoc+8:visualLoc+16]).upper()
-		fileIDList.append(fileContainer)
-	
-	exportOBJMulti(app, fileID, fileIDList)
+		transformation_matrix = numpy.fromstring(n[15:79], numpy.float32).reshape(4, 4)
+		visualLoc = n.find('\x29\x8D\x65\xEC')
+		model_file_id = uint64(n[visualLoc + 8:visualLoc + 16])
+		model = app.gameFunctions.read_model(app, model_file_id)
+		if model is not None:
+			model.vertices = numpy.matmul(numpy.pad(model.vertices, ((0, 0), (0, 1)), 'constant', constant_values=1), transformation_matrix)[:,:3]
+			obj_handler.export(model)
+	obj_handler.save_and_close()
+	app.log.info(__name__, 'Exported {:016X}'.format(file_id))

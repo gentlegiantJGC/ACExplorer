@@ -19,7 +19,7 @@ def read_model(app, file_id):
 	model_file.write(data['rawFile'])
 	model_file.seek(0)
 	
-	if app.dev:
+	if app.dev and app.CONFIG['writeToDisk']:
 		formatted_file = app.misc.FileObject(
 			'{}.format'.format(
 				os.path.join(
@@ -277,9 +277,13 @@ def read_model(app, file_id):
 			fOutWrite(formatted_file, '{}\n'.format(vert_table))
 
 			model.vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)
+			model.vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(model.vertices, 0)
+			# for dim in range(3):
+			# 	model.vertices[:, dim] = numpy.interp(model.vertices[:, dim], (model.vertices[:, dim].min(), model.vertices[:, dim].max()), bounding_box2[:, dim])
 			model.texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
 			model.texture_vertices[:, 1] *= -1
-			model.normals = vert_table['n'].astype(numpy.float)
+			if 'n' in vert_table:
+				model.normals = vert_table['n'].astype(numpy.float)
 			
 			# # scale verticies based on bouding box
 			# model['modelBoundingBox'] = {}
@@ -531,7 +535,7 @@ def read_model(app, file_id):
 	else:
 		raise Exception("Error reading model file!")
 
-	if app.dev:
+	if formatted_file is not None:
 		formatted_file.save()
 		os.startfile(formatted_file.path)
 	return model

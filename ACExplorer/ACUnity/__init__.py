@@ -11,6 +11,6 @@ import formatFile
 from getMaterialIDs_ import getMaterialIDs
 
 from readModel_ import read_model
-from ACExplorer.ACUnity.exportFakes_ import exportFakes
+from ACExplorer.ACUnity.exportFakes_ import export_fakes
 
 gameIdentifier = 'ACU'

@@ -21,7 +21,7 @@ def readFile(app, fileID, forgeFile=None, datafileID=None):
 			for hexid in textureIDs:
 				app.gameFunctions.exportTexture(app, textureIDs[hexid])
 	elif data['fileType'] =='C69A7F31':	#fakes
-		app.gameFunctions.exportFakes(app, fileID)
+		app.gameFunctions.export_fakes(app, fileID)
 	else:
 		if app.dev:
 			reload(app.gameFunctions.formatFile)  # for development
