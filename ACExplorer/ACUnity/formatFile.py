@@ -233,7 +233,7 @@ def topLevelFormat(app, fileID):
 				os.makedirs(os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, data['forgeFile']))
 			outPath = os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, data['forgeFile'], '{}{}.format'.format(data['fileName'], time.time()))
 			fOut.save(outPath, 'w')
-			os.system('explorer "{}"'.format(outPath))
+			os.startfile('explorer "{}"'.format(outPath))
 	return fileContainer
 	
 def recursiveFormat(app, fIn, fOut, indentCount=0):
