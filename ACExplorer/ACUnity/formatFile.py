@@ -29,7 +29,7 @@ if dev:
 	formatLog = {}
 
 def fOutWrite(fOut, val, indentCount = 0):
-	if dev:
+	if fOut is not None:
 		fOut.write('{}{}'.format(indentCount*indentCharacter, val))
 
 def hexSpaces(string):
@@ -39,7 +39,7 @@ def readStr(fIn, fOut, b, indentCount = 0):
 	val = fIn.read(b)
 	if len(val) != b:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(val))
 		fOut.write('\n')
 	return LE2BE2(val)
@@ -49,7 +49,7 @@ def readID(app, fIn, fOut, indentCount = 0):
 	if len(val) != 8:
 		raise Exception('Reached End Of File')
 	fileID = struct.unpack('<Q', val)[0]
-	if dev and fOut is not None:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(val))
 		fOut.write('\t\t')
 		data = app.tempNewFiles.getData(fileID)
@@ -67,7 +67,7 @@ def readType(fIn, fOut, indentCount = 0, fileType=None):
 		fileType = fIn.read(4)
 	if len(fileType) != 4:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		ft = hexSpaces(fileType)
 		fOut.write(indentCount*indentCharacter + ft)
 		ft = ft.replace(' ','')
@@ -84,7 +84,7 @@ def readInt(fIn, fOut, b, indentCount = 0):
 	count = fIn.read(b)
 	if len(count) != b:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(count))
 		fOut.write('\t\t')
 		fOut.write(str(LE2DEC2(count)))
@@ -95,7 +95,7 @@ def readInt16(fIn, fOut, indentCount = 0):
 	count = fIn.read(2)
 	if len(count) != 2:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(count))
 		fOut.write('\t\t')
 		fOut.write(str(int16(count)))
@@ -106,7 +106,7 @@ def readUInt16(fIn, fOut, indentCount = 0):
 	count = fIn.read(2)
 	if len(count) != 2:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(count))
 		fOut.write('\t\t')
 		fOut.write(str(uint16(count)))
@@ -117,7 +117,7 @@ def readInt32(fIn, fOut, indentCount = 0):
 	count = fIn.read(4)
 	if len(count) != 4:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(count))
 		fOut.write('\t\t')
 		fOut.write(str(int32(count)))
@@ -128,7 +128,7 @@ def readUInt32(fIn, fOut, indentCount = 0):
 	count = fIn.read(4)
 	if len(count) != 4:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(count))
 		fOut.write('\t\t')
 		fOut.write(str(uint32(count)))
@@ -139,7 +139,7 @@ def readFloat32(fIn, fOut, indentCount = 0):
 	val = fIn.read(4)
 	if len(val) != 4:
 		raise Exception('Reached End Of File')
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(val))
 		fOut.write('\t\t')
 		fOut.write(str(float32(val)))
@@ -148,13 +148,13 @@ def readFloat32(fIn, fOut, indentCount = 0):
 	
 def ReadRest(fIn, fOut, indentCount = 0):
 	val = fIn.read()
-	if dev:
+	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(val))
 	return BEHEX2(val)
 
 def cleverFormat(fIn, fOut, indentCount = 0):
 	val = fIn.read()
-	if dev:
+	if fOut is not None:
 		pointer1 = 0
 		pointer2 = 0
 		while pointer2 <= len(val)-4:

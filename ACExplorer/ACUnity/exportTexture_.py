@@ -11,7 +11,7 @@ class Texture(BaseTexture):
 			with open(os.path.join(app.CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
 				readStr(fi, f2, 130)
 		except:
-			app.log.warn('Failed to save header to fileTypes folder')
+			app.log.warn(__name__, 'Failed to save header to fileTypes folder')
 		fi.seek(0)
 		fi.seek(14)
 		self.dwSize = '\x7C\x00\x00\x00' #124
