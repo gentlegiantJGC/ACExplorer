@@ -156,16 +156,19 @@ def read_model(app, file_id):
 	readStr(model_file, formatted_file, 1)
 
 	readID(app, model_file, formatted_file)
-	if readStr(model_file, formatted_file, 4).upper() == "FC9E1595":
+	if readType(model_file, formatted_file) == "FC9E1595":
 		readStr(model_file, formatted_file, 4)
 		fOutWrite(formatted_file, 'Typeswitch\n')
-		model.type_switch = readUInt32(model_file, formatted_file)
-		if model.type_switch == 0:
-			readStr(model_file, formatted_file, 14)
+		model.type_switch = readStr(model_file, formatted_file, 1)
+		if model.type_switch == '00':
+			readID(app, model_file, formatted_file)
+			readType(model_file, formatted_file)
+			readStr(model_file, formatted_file, 5)
 			fOutWrite(formatted_file, 'Vert table width\n')
 			vert_table_width = readUInt32(model_file, formatted_file)
 			readUInt32(model_file, formatted_file)
-			readStr(model_file, formatted_file, 24)
+			bounding_box2 = numpy.fromstring(model_file.read(24), numpy.float32).reshape(2, 3)
+			fOutWrite(formatted_file, '{}\n'.format(bounding_box2))
 			mesh_face_block_count = readUInt32(model_file, formatted_file)
 			shadow_face_block_count = readUInt32(model_file, formatted_file)
 			fOutWrite(formatted_file, 'Mesh Face Blocks\n')
@@ -175,10 +178,9 @@ def read_model(app, file_id):
 			fOutWrite(formatted_file, '{}\n'.format(shadow_face_blocks))
 			readUInt32(model_file, formatted_file)
 			readStr(model_file, formatted_file, 1)
-			fOutWrite(formatted_file, 'Vert table\n')
+			fOutWrite(formatted_file, '\nVert table\n')
 			vert_table_length = readUInt32(model_file, formatted_file)
 			model.vert_count = vert_table_length / vert_table_width
-			fOutWrite(formatted_file, '\nVert Table\n')
 
 			vert_table = model_file.read(vert_table_length)
 
@@ -306,8 +308,16 @@ def read_model(app, file_id):
 			
 			fOutWrite(formatted_file, 'Face table\n')
 			face_table_length = readUInt32(model_file, formatted_file)
-			model.faces = [numpy.fromstring(model_file.read(64 * 6 * int(block_count)), numpy.uint16).reshape(-1, 3) + 1 for block_count in mesh_face_blocks]
-			fOutWrite(formatted_file, '{}\n'.format(model.faces))
+			face_table = numpy.fromstring(model_file.read(face_table_length), numpy.uint16).reshape(-1, 3) + 1
+			fOutWrite(formatted_file, '{}\n'.format(face_table))
+			model.faces = numpy.split(face_table, numpy.cumsum(mesh_face_blocks * 64)[:-1])
+			#
+			#
+			# mesh_face_blocks_x64 = numpy.cumsum(mesh_face_blocks * 64)
+			# mesh_face_blocks_x64[-1] =
+			# mesh_face_blocks[-1] =* 64 * 6 == face_table_length:
+			# 	model.faces = [face_table[64*mesh_face_blocks[index-1]:64*block_count] for index, block_count in enumerate(mesh_face_blocks)]
+			# model.faces = [face_table[:64 * block_count] if index==0 else face_table[64*mesh_face_blocks[index-1]:64*block_count] for index, block_count in enumerate(mesh_face_blocks)]
 
 			for _ in range(3):
 				readStr(model_file, formatted_file, readUInt32(model_file, formatted_file), 1)
@@ -349,7 +359,7 @@ def read_model(app, file_id):
 			for index in range(2):
 				readStr(model_file, formatted_file, readUInt32(model_file, formatted_file), 1)
 
-		elif model['typeSwitch'] == 3:
+		elif model.type_switch == '03':
 			raise Exception('typeSwitch 3 not implimented')
 			# binaryReader.BaseStream.Position += 11L;
 			# arxForm.acModel.vertTableSize = (int) binaryReader.ReadByte();
@@ -523,5 +533,5 @@ def read_model(app, file_id):
 
 	if app.dev:
 		formatted_file.save()
-		os.system(formatted_file.path)
+		os.startfile(formatted_file.path)
 	return model
