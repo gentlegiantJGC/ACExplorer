@@ -90,7 +90,7 @@ class App:
 		if gameIdentifier == 'ACU':
 			self.gameFunctions = ACUnity
 			self.fileTree.insert('', 'end', 'ACU', text='ACU')
-			self.fileList = self.gameFunctions.readForge(self, self.CONFIG.gameFolder(gameIdentifier))
+			self.fileList = self.gameFunctions.read_forge(self, self.CONFIG.gameFolder(gameIdentifier))
 			# load all the decompressed files onto the TK Tree
 
 		if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):

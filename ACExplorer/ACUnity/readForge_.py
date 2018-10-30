@@ -1,48 +1,48 @@
 import os
 import struct
 
-def readForge(app, folder):
-	fileList = {}
-	for forgeFileName in os.listdir(folder):
-		if forgeFileName.endswith('.forge'):
-			app.log.info(__name__, 'Building file tree for {}'.format(forgeFileName))
-			f = open(os.path.join(folder, forgeFileName), 'rb')
+def read_forge(app, folder):
+	file_list = {}
+	for forge_file_name in os.listdir(folder):
+		if forge_file_name.endswith('.forge'):
+			app.log.info(__name__, 'Building file tree for {}'.format(forge_file_name))
+			forge_file = open(os.path.join(folder, forge_file_name), 'rb')
 			# header
-			if f.read(8) != 'scimitar':
+			if forge_file.read(8) != 'scimitar':
 				continue
-			app.fileTree.insert('ACU', 'end', 'ACU|{}'.format(forgeFileName), text=forgeFileName)
-			fileList[forgeFileName] = {}
-			f.seek(1, 1)
-			forgeFileVersion, fileDataHeaderOffset = struct.unpack('<iQ', f.read(12))
-			if forgeFileVersion != 27:
-				raise Exception('Unsupported Forge file format : "{}"'.format(forgeFileVersion))
-			f.seek(fileDataHeaderOffset+36)
-			fileDataOffset = struct.unpack('<q', f.read(8))[0]
-			f.seek(fileDataOffset)
+			app.fileTree.insert(app.gameFunctions.gameIdentifier, 'end', '{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), text=forge_file_name)
+			file_list[forge_file_name] = {}
+			forge_file.seek(1, 1)
+			forge_file_version, file_data_header_offset = struct.unpack('<iQ', forge_file.read(12))
+			if forge_file_version != 27:
+				raise Exception('Unsupported Forge file format : "{}"'.format(forge_file_version))
+			forge_file.seek(file_data_header_offset+36)
+			file_data_offset = struct.unpack('<q', forge_file.read(8))[0]
+			forge_file.seek(file_data_offset)
 			# File Data
-			indexCount, indexTableOffset, fileDataOffset2, nameTableOffset, rawDataTableOffset = struct.unpack('<i4x2q8x2q', f.read(48))
-			f.seek(indexTableOffset)
-			indexTable = struct.unpack('<'+'QQI'*indexCount, f.read(20*indexCount))
-			f.seek(nameTableOffset)
-			nameTable = struct.unpack('<'+'i40x128s20x'*indexCount, f.read(192*indexCount))
-			forgeDatafiles = {}
-			for n in xrange(indexCount):
-				fileID = indexTable[n*3+1]
-				fileName = nameTable[n*2+1].replace('\x00', '')
-				if indexTable[n*3+2] != nameTable[n*2]:
+			index_count, index_table_offset, file_data_offset2, name_table_offset, raw_data_table_offset = struct.unpack('<i4x2q8x2q', forge_file.read(48))
+			forge_file.seek(index_table_offset)
+			index_table = struct.unpack('<'+'QQI'*index_count, forge_file.read(20*index_count))
+			forge_file.seek(name_table_offset)
+			name_table = struct.unpack('<'+'i40x128s20x'*index_count, forge_file.read(192*index_count))
+			forge_datafiles = {}
+			for n in xrange(index_count):
+				file_id = index_table[n*3+1]
+				file_name = name_table[n*2+1].replace('\x00', '')
+				if index_table[n*3+2] != name_table[n*2]:
 					raise Exception('These should be the same. Is something wrong?')
-				fileList[forgeFileName][fileID] = {  # file data id (matches the id in the file)
-					'rawDataOffset': indexTable[n*3],
-					'rawDataSize': indexTable[n*3+2],
-					'fileName': fileName
+				file_list[forge_file_name][file_id] = {  # file data id (matches the id in the file)
+					'rawDataOffset': index_table[n*3],
+					'rawDataSize': index_table[n*3+2],
+					'fileName': file_name
 				}
 
-				if fileName not in forgeDatafiles:
-					forgeDatafiles[fileName] = []
-				forgeDatafiles[fileName].append(fileID)
+				if file_name not in forge_datafiles:
+					forge_datafiles[file_name] = []
+				forge_datafiles[file_name].append(file_id)
 
-			for fileName in sorted(forgeDatafiles, key=lambda v: v.lower()):
-				for fileID in forgeDatafiles[fileName]:
-					app.fileTree.insert('{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFileName), 'end', '{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFileName, fileID), text=fileName)
-			f.close()
-	return fileList
+			for file_name in sorted(forge_datafiles, key=lambda v: v.lower()):
+				for file_id in forge_datafiles[file_name]:
+					app.fileTree.insert('{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), 'end', '{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, file_id), text=file_name)
+			forge_file.close()
+	return file_list

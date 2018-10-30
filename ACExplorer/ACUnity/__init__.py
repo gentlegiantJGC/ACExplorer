@@ -1,4 +1,4 @@
-from readForge_ import readForge
+from readForge_ import read_forge
 
 from decompressDatafile_ import decompressDatafile
 from exportDataBlockModels_ import exportDataBlockModels
