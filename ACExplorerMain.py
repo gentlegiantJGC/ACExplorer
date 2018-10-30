@@ -14,14 +14,14 @@ import Tkinter
 import tkFileDialog
 import sys
 import os
-from ACExplorer import misc, CONFIG, ACUnity
+import ACExplorer
 
 class App:
 	def __init__(self):
-		self.CONFIG = CONFIG
+		self.CONFIG = ACExplorer.CONFIG
 		self.dev = 'dev' in sys.argv
-		self.misc = misc
-		self.gameFunctions = ACUnity
+		self.misc = ACExplorer.misc
+		self.gameFunctions = None
 		self.log = self.misc.logger(self)
 		self.tempNewFiles = self.misc.tempFilesContainer(self)
 		self.log.info(__name__, 'Building GUI Window')
@@ -57,7 +57,7 @@ class App:
 		# this function also loads all the forge files and datafiles onto the TK Tree
 		self.fileList = {}
 
-		self.loadGame('ACU')
+		self.load_game('ACU')
 
 		self.log.info(__name__, 'Finished Building File List')
 
@@ -81,27 +81,26 @@ class App:
 
 		self.mainUI.mainloop()
 
-	def loadGame(self, gameIdentifier):
-		if self.tempNewFiles.lightDictChanged:
+	def load_game(self, game_identifier):
+		if self.gameFunctions is not None and self.tempNewFiles.lightDictChanged:
 			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'w') as f:
 				json.dump(self.tempNewFiles.lightDictionary, f)
 		self.tempNewFiles.clear()
 		self.fileTree.delete(*self.fileTree.get_children())
-		if gameIdentifier == 'ACU':
-			self.gameFunctions = ACUnity
-			self.fileTree.insert('', 'end', 'ACU', text='ACU')
-			self.fileList = self.gameFunctions.read_forge(self, self.CONFIG.gameFolder(gameIdentifier))
+		if game_identifier in ACExplorer.games:
+			self.gameFunctions = ACExplorer.games[game_identifier]
+			self.fileList = self.gameFunctions.read_forge(self, self.CONFIG.gameFolder(game_identifier))
 			# load all the decompressed files onto the TK Tree
 
-		if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
-			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'r') as f:
-				self.tempNewFiles.lightDictionary = json.load(f)
+			if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
+				with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'r') as f:
+					self.tempNewFiles.lightDictionary = json.load(f)
 
 	def optionsDialogue(self):
 		dia = OptionsDialogue(self.CONFIG)
 		update = dia.update
 		if update:
-			self.loadGame(self.gameFunctions.gameIdentifier)
+			self.load_game(self.gameFunctions.gameIdentifier)
 
 
 	def onClick(self, event):
@@ -164,6 +163,7 @@ class App:
 		# 				break
 		# TODO
 
+
 class OptionsDialogue:
 	def __init__(self, CONFIG):
 		self.CONFIG = CONFIG
@@ -190,8 +190,6 @@ class OptionsDialogue:
 		for game_identifier, location in self.CONFIG["gameFolders"].iteritems():
 			self.game_paths[game_identifier] = folder_option(self.mainUI, '{} Folder'.format(game_identifier), location, row)
 			row += 1
-
-
 
 		# save and quit buttons
 		self.buttons = Tkinter.Frame(self.mainUI)

@@ -3,6 +3,7 @@ import struct
 
 def read_forge(app, folder):
 	file_list = {}
+	app.fileTree.insert('', 'end', app.gameFunctions.gameIdentifier, text=app.gameFunctions.gameIdentifier)
 	for forge_file_name in os.listdir(folder):
 		if forge_file_name.endswith('.forge'):
 			app.log.info(__name__, 'Building file tree for {}'.format(forge_file_name))
