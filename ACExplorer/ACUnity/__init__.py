@@ -1,3 +1,5 @@
+import json
+
 from readForge_ import read_forge
 
 from decompressDatafile_ import decompressDatafile
@@ -14,3 +16,4 @@ from readModel_ import read_model
 from ACExplorer.ACUnity.exportFakes_ import export_fakes
 
 gameIdentifier = 'ACU'
+file_types = json.load(open(r"./ACExplorer/ACUnity/fileFormats.json"))
