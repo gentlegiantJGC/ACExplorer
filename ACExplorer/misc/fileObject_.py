@@ -4,46 +4,46 @@ import numpy
 
 
 class FileObject:
-	def __init__(self, path=None, mode='w'):
+	def __init__(self, path=None, mode='w', data=''):
 		self.path = None
 		self.mode = None
-		self.data = ''
+		self._data = data
 		if path is not None:
 			if 'r' in mode:
 				with open(path, mode) as f:
-					self.data = f.read()
+					self._data = f.read()
 			else:
-				self.data = ''
+				self._data = ''
 				self.path = path
 				self.mode = mode
-		self.filePointer = 0
+		self._file_pointer = 0
 
 	def tell(self):
-		return self.filePointer
+		return self._file_pointer
 
 	def write(self, s):
-		self.data += s
-		self.filePointer += len(s)
+		self._data += s
+		self._file_pointer += len(s)
 
 	def read(self, length='end'):
 		if length == 'end':
-			data = self.data[self.filePointer:]
-			self.filePointer = len(self.data)
+			data = self._data[self._file_pointer:]
+			self._file_pointer = len(self._data)
 			return data
 		elif isinstance(length, int):
-			data = self.data[self.filePointer:self.filePointer + length]
-			self.filePointer += length
+			data = self._data[self._file_pointer:self._file_pointer + length]
+			self._file_pointer += length
 			return data
 		else:
 			raise Exception('Unsupported type: "{}"'.format(type(length)))
 
 	def seek(self, offset, whence=0):
 		if whence == 0:
-			self.filePointer = offset
+			self._file_pointer = offset
 		elif whence == 1:
-			self.filePointer += offset
+			self._file_pointer += offset
 		elif whence == 2:
-			self.filePointer = len(self.data) - offset
+			self._file_pointer = len(self._data) - offset
 
 	def save(self, path=None, mode=None):
 		if path is not None:
@@ -54,7 +54,7 @@ class FileObject:
 			if not os.path.isdir(os.path.dirname(self.path)):
 				os.makedirs(os.path.dirname(self.path))
 			with open(self.path, self.mode) as f:
-				f.write(self.data)
+				f.write(self._data)
 
 
 class FileObjectDataWrapper:
@@ -63,6 +63,40 @@ class FileObjectDataWrapper:
 		self.file_object = file_object
 		self.endianness = endianness
 		self.indent_chr = '\t'
+
+	@classmethod
+	def from_binary(cls, app, binary, endianness='<'):
+		return cls(app, FileObject(data=binary), endianness)
+
+	def seek(self, offset, whence=0, out_file=None, indent_count=0):
+		if out_file is None:
+			self.file_object.seek(offset, whence)
+		else:
+			if whence == 0:
+				count = offset - self.file_object.tell()
+				if count > 0:
+					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in self.file_object.read(count))))
+				elif count < 0:
+					out_file.write('Skipped back {} bytes\n'.format(abs(count)))
+			elif whence == 1:
+				if offset > 0:
+					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in self.file_object.read(offset))))
+				elif offset < 0:
+					out_file.write('Skipped back {} bytes\n'.format(abs(offset)))
+			elif whence == 2:
+				file_pointer = self.file_object.tell()
+				self.file_object.seek(offset, 2)
+				count = self.file_object.tell() - file_pointer
+				self.file_object.seek(file_pointer)
+				if count > 0:
+					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in self.file_object.read(count))))
+				elif count < 0:
+					out_file.write('Skipped back {} bytes\n'.format(abs(count)))
+
+	@staticmethod
+	def out_file_write(self, val, out_file=None, indent_count=0):
+		if out_file is not None:
+			out_file.write('{}{}'.format(indent_count * self.indent_chr, val))
 
 	def _read_num(self, out_file, indent_count, num_len, data_type, trailing_newline=True):
 		binary = self.file_object.read(num_len)
