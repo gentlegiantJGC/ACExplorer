@@ -1,22 +1,20 @@
 import os
 import struct
 from ACExplorer.misc import BaseTexture
-from ACExplorer.misc.dataTypes import LE2DEC2
-from ACExplorer.ACUnity.formatFile import readStr
 
 class Texture(BaseTexture):
 	def __init__(self, app, fi):
 		BaseTexture.__init__(self, app)
 		try:
 			with open(os.path.join(app.CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
-				readStr(fi, f2, 130)
+				f2.write('{}\n'.format('{:02X}'.format(b) for b in fi.read(130)))
 		except:
 			app.log.warn(__name__, 'Failed to save header to fileTypes folder')
 		fi.seek(0)
 		fi.seek(14)
 		self.dwSize = '\x7C\x00\x00\x00' #124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
-		#(probably should be set based on the data)
+		# (probably should be set based on the data)
 		DDSD_PITCH = False
 		DDSD_MIPMAPCOUNT = True
 		DDSD_LINEARSIZE = True
@@ -25,13 +23,13 @@ class Texture(BaseTexture):
 		self.dwWidth = fi.read(4)
 		self.dwHeight = fi.read(4)
 		self.dwDepth = fi.read(4)
-		self.imgDXT = LE2DEC2(fi.read(4))
+		self.imgDXT = struct.unpack('<I', fi.read(4))
 		fi.seek(8, 1)   # could be image format. Volume textures have first 4 \x03\x00\x00\x00 all else have \x01\x00\x00\x00
 						# next 4 are \x01\x00\x00\x00 for diffuse maps and \x00\x00\x00\x00 for other things like volume textures and maps
 		self.dwMipMapCount = fi.read(4)
 		fi.seek(84, 1)  #24 of other data followed by "CompiledTextureMap" which duplicates most of the data
 		self.dwPitchOrLinearSize = fi.read(4)
-		self.buffer = fi.read(LE2DEC2(self.dwPitchOrLinearSize))
+		self.buffer = fi.read(struct.unpack('<I', self.dwPitchOrLinearSize))
 		self.dwReserved = '\x00\x00\x00\x00'*11
 
 		self.ddspf = '' #(pixel format)
