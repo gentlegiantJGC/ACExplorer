@@ -106,7 +106,7 @@ class App:
 	def onClick(self, event):
 		fileID = self.fileTree.selection()[0]
 		if len(fileID.split('|')) == 3 and len(self.fileTree.get_children(fileID)) == 0:
-			self.gameFunctions.decompressDatafile(self, int(fileID.split('|')[2]), fileID.split('|')[1])
+			self.gameFunctions.decompress_datafile(self, int(fileID.split('|')[2]), fileID.split('|')[1])
 
 	def onDoubleClick(self, event):
 		fileID = self.fileTree.selection()[0]

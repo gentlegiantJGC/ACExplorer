@@ -124,7 +124,7 @@ class tempFilesContainer:
 				datafileID = fileID
 
 		if not (fileID in self.tempFiles and forgeFile == self.tempFiles[fileID][0] and datafileID == self.tempFiles[fileID][1]):
-			self.app.gameFunctions.decompressDatafile(self.app, datafileID, forgeFile)
+			self.app.gameFunctions.decompress_datafile(self.app, datafileID, forgeFile)
 		self.refreshUsage(fileID)
 		if fileID in self.tempFiles and forgeFile == self.tempFiles[fileID][0] and datafileID == self.tempFiles[fileID][1]:
 			return {
@@ -148,7 +148,7 @@ class tempFilesContainer:
 		forgeFile = data['forgeFile']
 		datafileID = data['datafileID']
 		if data['rawFile'] is None:
-			self.app.gameFunctions.decompressDatafile(self.app, datafileID, forgeFile)
+			self.app.gameFunctions.decompress_datafile(self.app, datafileID, forgeFile)
 		self.refreshUsage(fileID)
 		return data['rawFile']
 

@@ -1,106 +1,95 @@
 import os
-import struct
-from ACExplorer.misc.dataTypes import BE, BEHEX2, LE2BE, LE2BE2, LE2DEC, LE2DEC2
 
-def decompressDatafile(app, fileID, forgeFile=None):
-	if fileID == 0 or fileID > 2**40:
+
+def decompress_datafile(app, datafile_id, forge_file_name=None):
+	if datafile_id == 0 or datafile_id > 2**40:
 		return
-	uncompressedDataList = []
-	f = open(os.path.join(app.CONFIG.gameFolder(app.gameFunctions.gameIdentifier), forgeFile), 'rb')
-	f.seek(app.fileList[forgeFile][fileID]['rawDataOffset'])
-	rawDataChunk = f.read(app.fileList[forgeFile][fileID]['rawDataSize'])
-	f.close()
-	compBlockCount = 0
-	if LE2BE(rawDataChunk, 0, 8) == '1004FA9957FBAA33': # if compressed
-		compressionType = LE2DEC(rawDataChunk, 10, 1)
-		compBlockCount = LE2DEC(rawDataChunk, 15, 4)
-		compressedDataStart = 19+compBlockCount*4
-		for m in xrange(compBlockCount):
-			uncompressedSize = LE2DEC(rawDataChunk, 19+m*4, 2)
-			compressedSize = LE2DEC(rawDataChunk, 21+m*4, 2)
-			compressedData = BE(rawDataChunk, compressedDataStart+4, compressedSize)
-			uncompressedDataList.append(app.misc.decompress(compressionType, compressedData, uncompressedSize))
-				
-			compressedDataStart += compressedSize+4
-			# print '\tDecompressing Part 1: Completed Section {} of {}'.format(m+1, compBlockCount)
-			
-		if LE2BE(rawDataChunk, compressedDataStart, 8) == '1004FA9957FBAA33':
-			header2Start = compressedDataStart
-			compressionType = LE2DEC(rawDataChunk, header2Start+10, 1)
-			compBlockCount = LE2DEC(rawDataChunk, header2Start+15, 4)
-			compressedDataStart = header2Start+19+compBlockCount*4
-			for m in xrange(compBlockCount):
-				uncompressedSize = LE2DEC(rawDataChunk, header2Start+19+m*4, 2)
-				compressedSize = LE2DEC(rawDataChunk, header2Start+21+m*4, 2)
-				compressedData = BE(rawDataChunk, compressedDataStart+4, compressedSize)
-				uncompressedDataList.append(app.misc.decompress(compressionType, compressedData, uncompressedSize))
-				compressedDataStart += compressedSize+4
-				# print '\tDecompressing Part 2: Completed Section {} of {}'.format(m+1, compBlockCount)
+	uncompressed_data_list = []
+
+	forge_file = open(os.path.join(app.CONFIG.gameFolder(app.gameFunctions.gameIdentifier), forge_file_name), 'rb')
+	forge_file.seek(app.fileList[forge_file_name][datafile_id]['rawDataOffset'])
+	raw_data_chunk = app.misc.file_object.FileObjectDataWrapper.from_binary(app, forge_file.read(app.fileList[forge_file_name][datafile_id]['rawDataSize']))
+	forge_file.close()
+	if raw_data_chunk.read_str(8) == '\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
+		raw_data_chunk.seek(2, 1)
+		compression_type = raw_data_chunk.read_uint_8()
+		raw_data_chunk.seek(4, 1)
+		comp_block_count = raw_data_chunk.read_uint_32()
+		size_table = raw_data_chunk.read_numpy('<u2', comp_block_count * 4).reshape(-1, 2).astype(int)  # 'uncompressed_size', 'compressed_size'
+		for size in size_table:
+			raw_data_chunk.seek(4, 1)
+			uncompressed_data_list.append(app.misc.decompress(compression_type, raw_data_chunk.read_str(size[1]), size[0]))
+
+		if raw_data_chunk.read_str(8) == '\x33\xAA\xFB\x57\x99\xFA\x04\x10':
+			raw_data_chunk.seek(2, 1)
+			compression_type = raw_data_chunk.read_uint_8()
+			raw_data_chunk.seek(4, 1)
+			comp_block_count = raw_data_chunk.read_uint_32()
+			size_table = raw_data_chunk.read_numpy('<u2', comp_block_count * 4).reshape(-1, 2).astype(int)  # 'uncompressed_size', 'compressed_size'
+			for size in size_table:
+				raw_data_chunk.seek(4, 1)
+				uncompressed_data_list.append(app.misc.decompress(compression_type, raw_data_chunk.read_str(size[1]), size[0]))
 		else:
-			raise Exception('Compression Issue')
-	elif '\x33\xAA\xFB\x57\x99\xFA\x04\x10' in rawDataChunk:
-		raise Exception('Compression Issue')
+			raise Exception('Compression Issue. Second compression block not found')
+		raw_data_chunk_rest = raw_data_chunk.read_rest()
+		if '\x33\xAA\xFB\x57\x99\xFA\x04\x10' in raw_data_chunk_rest:
+			raise Exception('Compression Issue. More compressed blocks found')
 	else:
-		uncompressedDataList.append(rawDataChunk) #if the if statment is not true the file is not compressed
+		raw_data_chunk.seek(0)
+		raw_data_chunk_rest = raw_data_chunk.read_rest()
+		if '\x33\xAA\xFB\x57\x99\xFA\x04\x10' in raw_data_chunk_rest:
+			raise Exception('Compression Issue')
+		else:
+			uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
 
-	uncompressedData = app.misc.FileObject()
-	uncompressedData.write(''.join(uncompressedDataList))
+	uncompressed_data = app.misc.file_object.FileObjectDataWrapper.from_binary(app, ''.join(uncompressed_data_list))
 
-	uncompressedData.seek(0)
-	fileCount = LE2DEC2(uncompressedData.read(2))
-	fileOffset = 2+fileCount*14
-	extra16 = 0
-	for m in xrange(fileCount):
-		uncompressedData.seek(14+m*14+extra16)
-		extra16 += 2*LE2DEC2(uncompressedData.read(2))
-	fileOffset += extra16
-	extra16 = 0
-	alphabeticalFiles = {}
-	for m in xrange(fileCount):
-		uncompressedData.seek(2+m*14+extra16)
-		fileID2 = uncompressedData.read(8)
-		uncompressedData.seek(10+m*14+extra16)
-		fileDataSize = LE2DEC2(uncompressedData.read(4)) #(size of file with header)
-		uncompressedData.seek(14+m*14+extra16)
-		extra16 += 2*LE2DEC2(uncompressedData.read(2))
-		uncompressedData.seek(fileOffset)
-		resourceType = LE2BE2(uncompressedData.read(4))
-		uncompressedData.seek(fileOffset+4)
-		fileSize = LE2DEC2(uncompressedData.read(4))+1 #(size of file without header)
-		uncompressedData.seek(fileOffset+8)
-		fileNameSize = LE2DEC2(uncompressedData.read(4))
-		uncompressedData.seek(fileOffset+12)
-		fileName = uncompressedData.read(fileNameSize)
-		if fileName == '':
-			fileName = LE2BE2(fileID2)
-		uncompressedData.seek(fileOffset+12+fileNameSize)
-		tempFile = uncompressedData.read(fileSize)
-		fileType = struct.unpack('<I', tempFile[10:14])[0]
-		fileTypeStr = LE2BE(tempFile, 10, 4).upper()
-		app.tempNewFiles.add(struct.unpack('<Q', fileID2)[0], forgeFile, fileID, fileType, fileName, rawFile=tempFile)
-		if fileName not in alphabeticalFiles:
-			alphabeticalFiles[fileName] = []
-		alphabeticalFiles[fileName].append(struct.unpack('<Q', fileID2)[0])
+	file_count = uncompressed_data.read_uint_16()
+	index_table = []
+	alphabetical_files = {}
+	for _ in range(file_count):
+		index_table.append(uncompressed_data.read_struct('QIH'))  # file_id, data_size (file_size + header), extra16_count (for next line)
+		uncompressed_data.seek(index_table[-1][2]*2, 1)
+	for index in range(file_count):
+		file_type, file_size, file_name_size = uncompressed_data.read_struct('3I')
+		file_id = index_table[index][0]
+		file_name = uncompressed_data.read_str(file_name_size)
+		check_byte = uncompressed_data.read_uint_8()
+		if check_byte == 1:
+			uncompressed_data.seek(3, 1)
+			unk_count = uncompressed_data.read_uint_32()
+			uncompressed_data.seek(12 * unk_count, 1)
+		elif check_byte != 0:
+			raise Exception('Either something has gone wrong or a new value has been found here')
+
+		raw_file = uncompressed_data.read_str(file_size)
+		uncompressed_data.seek(index_table[index][1] - 13 - file_name_size - file_size, 1)
+
+		if file_name == '':
+			file_name = '{:016X}'.format(file_id)
+		app.tempNewFiles.add(file_id, forge_file_name, datafile_id, file_type, file_name, rawFile=raw_file)
+		if file_name not in alphabetical_files:
+			alphabetical_files[file_name] = []
+		alphabetical_files[file_name].append(file_id)
 		if app.CONFIG['writeToDisk']:
-			folder = os.path.join(app.CONFIG['dumpFolder'], 'temp', forgeFile, app.fileList[forgeFile][fileID]['fileName'], fileTypeStr)
-			if os.path.isfile(os.path.join(folder, '{}.acu'.format(fileName))):
+			folder = os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, forge_file_name, app.fileList[forge_file_name][datafile_id]['fileName'], '{:08X}'.format(file_type))
+			if os.path.isfile(os.path.join(folder, '{}.{}'.format(file_name, app.gameFunctions.gameIdentifier.lower()))):
 				duplicate = 1
-				while os.path.isfile(os.path.join(folder, '{}_{}.acu'.format(fileName, duplicate))):
+				while os.path.isfile(os.path.join(folder, '{}_{}.{}'.format(file_name, duplicate, app.gameFunctions.gameIdentifier.lower()))):
 					duplicate += 1
-				dir = os.path.join(folder, '{}_{}.acu'.format(fileName, duplicate))
+				path = os.path.join(folder, '{}_{}.{}'.format(file_name, duplicate, app.gameFunctions.gameIdentifier.lower()))
 			else:
-				dir = os.path.join(folder, fileName + '.acu')
+				path = os.path.join(folder, '{}.{}'.format(file_name, app.gameFunctions.gameIdentifier.lower()))
 			if not os.path.isdir(folder):
 				os.makedirs(folder)
 			try:
-				open(dir, 'wb').write(tempFile)
-			except:
-				print 'error saving temporary file with path "{}"'.format(dir)
-		fileOffset += fileDataSize
+				open(path, 'wb').write(raw_file)
+			except Exception as e:
+				app.log.warn(__name__, 'Error saving temporary file with path "{}"\n{}'.format(path, e))
 	
-	for fileName in sorted(alphabeticalFiles, key=lambda v: v.lower()):
-		for fileID2 in alphabeticalFiles[fileName]:
+	for file_name in sorted(alphabetical_files, key=lambda v: v.lower()):
+		for file_id in alphabetical_files[file_name]:
 			try:
-				app.fileTree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFile, fileID), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forgeFile, fileID, fileID2), text=fileName)
+				app.fileTree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id), text=file_name)
 			except:
 				continue
