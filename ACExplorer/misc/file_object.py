@@ -145,7 +145,7 @@ class FileObjectDataWrapper:
 		return self._read_num(out_file, indent_count, 8, 'Q')
 
 	def read_str(self, chr_len, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, chr_len, 's')
+		return self._read_num(out_file, indent_count, chr_len, '{}s'.format(chr_len))
 
 	def read_id(self, out_file=None, indent_count=0):
 		file_id = self._read_num(out_file, indent_count, 8, 'Q', True)
