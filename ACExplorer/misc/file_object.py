@@ -45,12 +45,12 @@ class FileObject:
 		elif whence == 2:
 			self._file_pointer = len(self._data) - offset
 
-	def save(self, path=None, mode=None):
+	def close(self, path=None, mode=None):
 		if path is not None:
 			self.path = path
 		if mode is not None:
 			self.mode = mode
-		if self.mode in 'wa':
+		if self.mode in 'wa' and self.path is not None and self.mode is not None:
 			if not os.path.isdir(os.path.dirname(self.path)):
 				os.makedirs(os.path.dirname(self.path))
 			with open(self.path, self.mode) as f:
@@ -66,7 +66,14 @@ class FileObjectDataWrapper:
 
 	@classmethod
 	def from_binary(cls, app, binary, endianness='<'):
-		return cls(app, FileObject(data=binary), endianness)
+		return cls(app, FileObject(data=binary, mode='r'), endianness)
+
+	@classmethod
+	def from_file(cls, app, path, endianness='<'):
+		return cls(app, open(path, 'rb'), endianness)
+
+	def close(self):
+		self.file_object.close()
 
 	def seek(self, offset, whence=0, out_file=None, indent_count=0):
 		if out_file is None:
