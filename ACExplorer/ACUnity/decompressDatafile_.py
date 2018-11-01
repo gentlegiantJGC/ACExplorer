@@ -63,7 +63,6 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 			raise Exception('Either something has gone wrong or a new value has been found here')
 
 		raw_file = uncompressed_data.read_str(file_size)
-		uncompressed_data.seek(index_table[index][1] - 13 - file_name_size - file_size, 1)
 
 		if file_name == '':
 			file_name = '{:016X}'.format(file_id)
@@ -89,7 +88,5 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 	
 	for file_name in sorted(alphabetical_files, key=lambda v: v.lower()):
 		for file_id in alphabetical_files[file_name]:
-			try:
+			if not app.fileTree.exists('{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id)):
 				app.fileTree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id), text=file_name)
-			except:
-				continue
