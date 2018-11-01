@@ -30,7 +30,7 @@ class FileObject:
 			data = self._data[self._file_pointer:]
 			self._file_pointer = len(self._data)
 			return data
-		elif isinstance(length, int):
+		elif isinstance(length, int) or isinstance(length, long):
 			data = self._data[self._file_pointer:self._file_pointer + length]
 			self._file_pointer += length
 			return data
@@ -105,7 +105,7 @@ class FileObjectDataWrapper:
 		if out_file is not None:
 			out_file.write('{}{}'.format(indent_count * self.indent_chr, val))
 
-	def _read_num(self, out_file, indent_count, num_len, data_type, trailing_newline=True):
+	def _read_struct(self, out_file, indent_count, num_len, data_type, trailing_newline=True):
 		binary = self.file_object.read(num_len)
 		if len(binary) != num_len:
 			raise Exception('Reached End Of File')
@@ -117,38 +117,41 @@ class FileObjectDataWrapper:
 			out_file.write(fmt_str.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in binary), val))
 		return val
 
+	def read_bool(self, out_file=None, indent_count=0):
+		return self._read_struct(out_file, indent_count, 1, '?')
+
 	def read_int_8(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 1, 'b')
+		return self._read_struct(out_file, indent_count, 1, 'b')
 
 	def read_uint_8(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 1, 'B')
+		return self._read_struct(out_file, indent_count, 1, 'B')
 
 	def read_int_16(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 2, 'h')
+		return self._read_struct(out_file, indent_count, 2, 'h')
 
 	def read_uint_16(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 2, 'H')
+		return self._read_struct(out_file, indent_count, 2, 'H')
 
 	def read_int_32(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 4, 'i')
+		return self._read_struct(out_file, indent_count, 4, 'i')
 
 	def read_uint_32(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 4, 'I')
+		return self._read_struct(out_file, indent_count, 4, 'I')
 
 	def read_float_32(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 4, 'f')
+		return self._read_struct(out_file, indent_count, 4, 'f')
 
 	def read_int_64(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 8, 'q')
+		return self._read_struct(out_file, indent_count, 8, 'q')
 
 	def read_uint_64(self, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, 8, 'Q')
+		return self._read_struct(out_file, indent_count, 8, 'Q')
 
 	def read_str(self, chr_len, out_file=None, indent_count=0):
-		return self._read_num(out_file, indent_count, chr_len, '{}s'.format(chr_len))
+		return self._read_struct(out_file, indent_count, chr_len, '{}s'.format(chr_len))
 
 	def read_id(self, out_file=None, indent_count=0):
-		file_id = self._read_num(out_file, indent_count, 8, 'Q', True)
+		file_id = self._read_struct(out_file, indent_count, 8, 'Q', True)
 		if out_file is not None:
 			data = self.app.tempNewFiles.getData(file_id)
 			out_file.write('\t')
@@ -190,7 +193,7 @@ class FileObjectDataWrapper:
 		binary = self.file_object.read()
 		if out_file is not None:
 			out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in binary)))
-		return
+		return binary
 
 	def clever_format(self, out_file=None, indent_count=0):
 		if out_file is not None:
