@@ -6,7 +6,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 		return
 	uncompressed_data_list = []
 
-	forge_file = open(os.path.join(app.CONFIG.gameFolder(app.gameFunctions.gameIdentifier), forge_file_name), 'rb')
+	forge_file = open(os.path.join(app.CONFIG.game_folder(app.gameFunctions.gameIdentifier), forge_file_name), 'rb')
 	forge_file.seek(app.fileList[forge_file_name][datafile_id]['rawDataOffset'])
 	raw_data_chunk = app.misc.file_object.FileObjectDataWrapper.from_binary(app, forge_file.read(app.fileList[forge_file_name][datafile_id]['rawDataSize']))
 	forge_file.close()

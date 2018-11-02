@@ -42,5 +42,5 @@ class Config:
 	def __setitem__(self, key, value):
 		self.CONFIG[key] = value
 
-	def gameFolder(self, identifier):
+	def game_folder(self, identifier):
 		return self.CONFIG["gameFolders"].get(identifier, ".")

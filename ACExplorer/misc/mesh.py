@@ -105,6 +105,7 @@ class MaterialHandler:
 			self.materials[file_id] = self.app.gameFunctions.get_material_ids(self.app, file_id)
 		return self.materials[file_id]
 
+
 class Model:
 	def __init__(self):
 		self.name = None

@@ -22,7 +22,7 @@ class App:
 		self.dev = 'dev' in sys.argv
 		self.misc = ACExplorer.misc
 		self.gameFunctions = None
-		self.log = self.misc.logger(self)
+		self.log = self.misc.Logger(self)
 		self.tempNewFiles = self.misc.tempFilesContainer(self)
 		self.log.info(__name__, 'Building GUI Window')
 		self.mainUI = Tkinter.Tk()
@@ -89,7 +89,7 @@ class App:
 		self.fileTree.delete(*self.fileTree.get_children())
 		if game_identifier in ACExplorer.games:
 			self.gameFunctions = ACExplorer.games[game_identifier]
-			self.fileList = self.gameFunctions.read_forge(self, self.CONFIG.gameFolder(game_identifier))
+			self.fileList = self.gameFunctions.read_forge(self, self.CONFIG.game_folder(game_identifier))
 			# load all the decompressed files onto the TK Tree
 
 			if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
