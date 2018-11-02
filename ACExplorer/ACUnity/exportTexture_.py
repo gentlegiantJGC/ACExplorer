@@ -74,6 +74,6 @@ def export_texture(app, file_id):
 		app.log.info(__name__, 'Texture "{}" already exported'.format(data['fileName']))
 		return save_path
 	tex = Texture(app, texture_file)
-	tex.exportDDS(save_path)
+	tex.export_dds(save_path)
 	app.log.info(__name__, 'Texture "{}" exported'.format(data['fileName']))
 	return save_path

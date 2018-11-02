@@ -1,12 +1,13 @@
 import os
 import struct
 
+
 class BaseTexture:
 	def __init__(self, app):
 		self.app = app
-		self.dwSize = '\x7C\x00\x00\x00' #124
+		self.dwSize = '\x7C\x00\x00\x00'  # 124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
-		#(probably should be set based on the data)
+		# (probably should be set based on the data)
 		DDSD_PITCH = False
 		DDSD_MIPMAPCOUNT = True
 		DDSD_LINEARSIZE = True
@@ -21,11 +22,11 @@ class BaseTexture:
 		self.buffer = ''
 		self.dwReserved = '\x00\x00\x00\x00'*11
 
-		self.ddspf = '' #(pixel format)
-		self.ddspf += '\x20\x00\x00\x00'	#dwSize
+		self.ddspf = ''  # (pixel format)
+		self.ddspf += '\x20\x00\x00\x00'  # dwSize
 		self.ddspf += '\x00\x00\x00\x00'
 		self.ddspf += 'DXT1'
-		self.ddspf += '\x00\x00\x00\x00' * 5	#dwRGBBitCount, dwRBitMask, dwGBitMask, dwBBitMask, dwABitMask
+		self.ddspf += '\x00\x00\x00\x00' * 5  # dwRGBBitCount, dwRBitMask, dwGBitMask, dwBBitMask, dwABitMask
 		self.DXT10Header = ''
 		self.dwCaps = '\x08\x10\x40\x00'
 		self.dwCaps2 = '\x00\x00\x00\x00'
@@ -33,7 +34,7 @@ class BaseTexture:
 		self.dwCaps4 = '\x00\x00\x00\x00'
 		self.dwReserved2 = '\x00\x00\x00\x00'
 
-	def exportDDS(self, path):
+	def export_dds(self, path):
 		fi = open(path, 'wb')
 		fi.write('DDS ')
 		fi.write(self.dwSize + self.dwFlags + self.dwHeight + self.dwWidth +
