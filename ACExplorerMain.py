@@ -111,7 +111,7 @@ class App:
 	def onDoubleClick(self, event):
 		fileID = self.fileTree.selection()[0]
 		if len(fileID.split('|')) == 4:
-			self.gameFunctions.readFile(self, int(fileID.split('|')[3]), fileID.split('|')[1], int(fileID.split('|')[2]))
+			self.gameFunctions.read_file(self, int(fileID.split('|')[3]), fileID.split('|')[1], int(fileID.split('|')[2]))
 
 	def searchFor(self):
 		search = self.search.get()
@@ -119,10 +119,10 @@ class App:
 			if ',' in search:
 				for fileID in search.split(','):
 					fileID = fileID.replace(' ', '').upper()
-					self.gameFunctions.readFile(self, fileID)
+					self.gameFunctions.read_file(self, fileID)
 			else:
 				fileID = self.search.get().replace(' ', '').upper()
-				self.gameFunctions.readFile(self, fileID)
+				self.gameFunctions.read_file(self, fileID)
 
 	def clearSearch(self):
 		self.search.delete(0, Tkinter.END)
