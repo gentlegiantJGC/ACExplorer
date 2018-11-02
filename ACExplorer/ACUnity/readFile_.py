@@ -14,7 +14,7 @@ def readFile(app, fileID, forgeFile=None, datafileID=None):
 	elif data['fileType'] == 'A2B7E917': #texture
 		app.gameFunctions.export_texture(app, fileID)
 	elif data['fileType'] == '85C817C3': #material (containing textures)
-		textureIDs = app.gameFunctions.getMaterialIDs(app, fileID)
+		textureIDs = app.gameFunctions.get_material_ids(app, fileID)
 		if textureIDs == None:
 			return
 		else:
