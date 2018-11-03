@@ -1,4 +1,4 @@
-'''
+"""
 	This is an explorer for the forge file format used in Assassin's Creed
 	The format varies slightly between games and the current implementation will only work
 	with Assassin's Creed Unity.
@@ -6,7 +6,7 @@
 	file can be decompressed individually.
 	The 'folders' in the top level of the forge file will from this point on be referred to as datafiles.
 	Contained within the datafiles are a variety of files related to that datafile.
-'''
+"""
 
 import json
 import ttk
@@ -15,6 +15,7 @@ import tkFileDialog
 import sys
 import os
 import ACExplorer
+
 
 class App:
 	def __init__(self):
@@ -25,198 +26,182 @@ class App:
 		self.log = self.misc.Logger(self)
 		self.tempNewFiles = self.misc.tempFilesContainer(self)
 		self.log.info(__name__, 'Building GUI Window')
-		self.mainUI = Tkinter.Tk()
-		self.mainUI.title("ACExplorer")
+		self.main_ui = Tkinter.Tk()
+		self.main_ui.title("ACExplorer")
 
 		# menu
-		self.menu = {}
-		self.menu["main"] = Tkinter.Menu(self.mainUI)
-		self.mainUI.config(menu=self.menu["main"])
-		self.menu["file"] = Tkinter.Menu(self.menu["main"])
+		self.menu = {
+			"main": Tkinter.Menu(self.main_ui),
+			"file": Tkinter.Menu(self.menu["main"])
+		}
+		self.main_ui.config(menu=self.menu["main"])
 		self.menu["main"].add_cascade(label="File", menu=self.menu["file"])
-		self.menu["file"].add_command(label="Options", command=self.optionsDialogue)
+		self.menu["file"].add_command(label="Options", command=self.options_dialogue)
 
-		searchLabel = Tkinter.Label(self.mainUI, text="Find ID:")
-		searchLabel.grid(row=0, column=0)
+		search_label = Tkinter.Label(self.main_ui, text="Find ID:")
+		search_label.grid(row=0, column=0)
 
 		# set up the file tree
-		self.fileTree = ttk.Treeview(self.mainUI)
-		self.fileTree.grid(row=1, column=1, columnspan=4, ipadx=150, ipady=300)
-		fileTreeScroll = ttk.Scrollbar(self.mainUI, orient="vertical", command=self.fileTree.yview)
-		fileTreeScroll.grid(row=1, column=0, ipady=300)
-		self.fileTree.configure(yscrollcommand=fileTreeScroll.set)
+		self.file_tree = ttk.Treeview(self.main_ui)
+		self.file_tree.grid(row=1, column=1, columnspan=4, ipadx=150, ipady=300)
+		file_tree_scroll = ttk.Scrollbar(self.main_ui, orient="vertical", command=self.file_tree.yview)
+		file_tree_scroll.grid(row=1, column=0, ipady=300)
+		self.file_tree.configure(yscrollcommand=file_tree_scroll.set)
 
-		self.fileTree.bind("<<TreeviewSelect>>", self.onClick)
-		self.fileTree.bind("<Double-1>", self.onDoubleClick)
+		self.file_tree.bind("<<TreeviewSelect>>", self.on_click)
+		self.file_tree.bind("<Double-1>", self.on_double_click)
 
 		self.log.info(__name__, 'Building File List')
 
-		# fileList is a dictionary of each forge file on the first level and
+		# file_list is a dictionary of each forge file on the first level and
 		# each datafile on the second level under each forge file. This is used
 		# as a cheap way to find the location a file is stored under.
 		# this function also loads all the forge files and datafiles onto the TK Tree
-		self.fileList = {}
+		self.file_list = {}
 
 		self.load_game('ACU')
 
 		self.log.info(__name__, 'Finished Building File List')
 
-		self.search = Tkinter.Entry(self.mainUI)
+		self.search = Tkinter.Entry(self.main_ui)
 		self.search.grid(row=0, column=1)
-		find = Tkinter.Button(self.mainUI, text='Find', command=self.searchFor)
+		find = Tkinter.Button(self.main_ui, text='Find', command=self.search_for)
 		find.grid(row=0, column=2)
 
-		clear = Tkinter.Button(self.mainUI, text='Clear Search', command=self.clearSearch)
+		clear = Tkinter.Button(self.main_ui, text='Clear Search', command=self.clear_search)
 		clear.grid(row=0, column=3)
 
-		# infobutton = Tkinter.Button(self.mainUI, text='Info', command=self.info)
-		# infobutton.grid(row=0, column=4)
-
 		if self.dev:
-			runCode = Tkinter.Button(self.mainUI, text='Run Code', command=self.runcode)
-			runCode.grid(row=0, column=50)
+			run_code = Tkinter.Button(self.main_ui, text='Run Code', command=self.runcode)
+			run_code.grid(row=0, column=50)
 
-			testFormatting = Tkinter.Button(self.mainUI, text='Test Formatting', command=self.testFormatting)
-			testFormatting.grid(row=0, column=51)
+			# test_formatting = Tkinter.Button(self.main_ui, text='Test Formatting', command=self.test_formatting)
+			# test_formatting.grid(row=0, column=51)
 
-		self.mainUI.mainloop()
+		self.main_ui.mainloop()
 
 	def load_game(self, game_identifier):
 		if self.gameFunctions is not None and self.tempNewFiles.lightDictChanged:
-			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'w') as f:
-				json.dump(self.tempNewFiles.lightDictionary, f)
+			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'w') as light_dict:
+				json.dump(self.tempNewFiles.lightDictionary, light_dict)
 		self.tempNewFiles.clear()
-		self.fileTree.delete(*self.fileTree.get_children())
+		self.file_tree.delete(*self.file_tree.get_children())
 		if game_identifier in ACExplorer.games:
 			self.gameFunctions = ACExplorer.games[game_identifier]
-			self.fileList = self.gameFunctions.framework.read_forge(self, self.CONFIG.game_folder(game_identifier))
+			self.file_list = self.gameFunctions.framework.read_forge(self, self.CONFIG.game_folder(game_identifier))
 			# load all the decompressed files onto the TK Tree
 
 			if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
-				with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'r') as f:
-					self.tempNewFiles.lightDictionary = json.load(f)
+				with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'r') as light_dict:
+					self.tempNewFiles.lightDictionary = json.load(light_dict)
 
-	def optionsDialogue(self):
+	def options_dialogue(self):
 		dia = OptionsDialogue(self.CONFIG)
 		update = dia.update
 		if update:
 			self.load_game(self.gameFunctions.gameIdentifier)
 
+	def on_click(self, _):
+		file_id = self.file_tree.selection()[0]
+		if len(file_id.split('|')) == 3 and len(self.file_tree.get_children(file_id)) == 0:
+			self.gameFunctions.framework.decompress_datafile(self, int(file_id.split('|')[2]), file_id.split('|')[1])
 
-	def onClick(self, event):
-		fileID = self.fileTree.selection()[0]
-		if len(fileID.split('|')) == 3 and len(self.fileTree.get_children(fileID)) == 0:
-			self.gameFunctions.framework.decompress_datafile(self, int(fileID.split('|')[2]), fileID.split('|')[1])
+	def on_double_click(self, _):
+		file_id = self.file_tree.selection()[0]
+		if len(file_id.split('|')) == 4:
+			self.gameFunctions.read_file(self, int(file_id.split('|')[3]), file_id.split('|')[1], int(file_id.split('|')[2]))
 
-	def onDoubleClick(self, event):
-		fileID = self.fileTree.selection()[0]
-		if len(fileID.split('|')) == 4:
-			self.gameFunctions.read_file(self, int(fileID.split('|')[3]), fileID.split('|')[1], int(fileID.split('|')[2]))
-
-	def searchFor(self):
+	def search_for(self):
 		search = self.search.get()
 		if search != '':
 			if ',' in search:
-				for fileID in search.split(','):
-					fileID = fileID.replace(' ', '').upper()
-					self.gameFunctions.read_file(self, fileID)
+				for file_id in search.split(','):
+					file_id = file_id.replace(' ', '').upper()
+					self.gameFunctions.read_file(self, file_id)
 			else:
-				fileID = self.search.get().replace(' ', '').upper()
-				self.gameFunctions.read_file(self, fileID)
+				file_id = self.search.get().replace(' ', '').upper()
+				self.gameFunctions.read_file(self, file_id)
 
-	def clearSearch(self):
+	def clear_search(self):
 		self.search.delete(0, Tkinter.END)
-
-	# def info(self, input=None):
-	# 	if self.search.get() == '' and input == None:
-	# 		return
-	# 	if self.search.get() != '':
-	# 		fileID = self.search.get().replace(' ', '').upper()
-	# 	if input != None:
-	# 		fileID = input.replace(' ', '').upper()
-	# 	if not tempFiles.exists(fileID):
-	# 		self.gameFunctions.decompressDatafile(self, fileID)
-	# 	if not tempFiles.exists(fileID):
-	# 		raise Exception()
-	# 	print fileID
-	# 	print tempFiles.read(fileID)
 
 	def runcode(self):
 		exec self.search.get()
 
-	def testFormatting(self):
-		fileType = self.search.get()
-		count = 0
-		if ':' in fileType:
-			fileType, count = fileType.split(':')[:2]
-			try:
-				count = int(count)
-			except:
-				raise Exception('Need numerical value got "{}"'.format(count))
-		fileType = fileType.upper()
-		# if len(fileType) == 8:
-		# 	for fileID in tempFiles.tempFileContainer.keys():
-		# 		if tempFiles.tempFileContainer[fileID][0]["fileType"] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
-		# 			self.gameFunctions.formatFile.topLevelFormat(self, fileID)
-		# 			count -= 1
-		# 			if count == 0:
-		# 				break
-		# TODO
+	# def test_formatting(self):
+	# 	file_type = self.search.get()
+	# 	count = 0
+	# 	if ':' in file_type:
+	# 		file_type, count = file_type.split(':')[:2]
+	# 		try:
+	# 			count = int(count)
+	# 		except Exception as e:
+	# 			raise Exception('Need numerical value got "{}"\n{}'.format(count, e))
+	# 	file_type = file_type.upper()
+	# 	# if len(fileType) == 8:
+	# 	# 	for fileID in tempFiles.tempFileContainer.keys():
+	# 	# 		if tempFiles.tempFileContainer[fileID][0]["fileType"] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
+	# 	# 			self.gameFunctions.formatFile.topLevelFormat(self, fileID)
+	# 	# 			count -= 1
+	# 	# 			if count == 0:
+	# 	# 				break
+	# 	# TODO
 
 
 class OptionsDialogue:
 	def __init__(self, CONFIG):
 		self.CONFIG = CONFIG
-		self.mainUI = Tkinter.Toplevel()
-		self.mainUI.title("ACExplorer Options")
+		self.main_ui = Tkinter.Toplevel()
+		self.main_ui.title("ACExplorer Options")
 		self._update = False
 
 		# options
 		self.game_paths = {}
 
-		def folder_option(mainUI, desc, val, row):
-			desc_label = Tkinter.Label(mainUI, text=desc)
-			desc_label.grid(row=row, column=0)
-			path_label = Tkinter.Label(mainUI, text=val)
-			path_label.grid(row=row, column=1)
-			browse_button = Tkinter.Button(mainUI, text="Browse", command=lambda: self.browse(path_label))
-			browse_button.grid(row=row, column=2)
-			return path_label
-
 		row = 0
-		self.dump_folder = folder_option(self.mainUI, "Dump Folder", self.CONFIG["dumpFolder"], row)
+		self.dump_folder = self.folder_option("Dump Folder", self.CONFIG["dumpFolder"], row)
 
 		row += 1
 		for game_identifier, location in self.CONFIG["gameFolders"].iteritems():
-			self.game_paths[game_identifier] = folder_option(self.mainUI, '{} Folder'.format(game_identifier), location, row)
+			self.game_paths[game_identifier] = self.folder_option('{} Folder'.format(game_identifier), location, row)
 			row += 1
 
 		# save and quit buttons
-		self.buttons = Tkinter.Frame(self.mainUI)
+		self.buttons = Tkinter.Frame(self.main_ui)
 		self.buttons.grid(row=1000, column=0, columnspan=3)
 		self.save_button = Tkinter.Button(self.buttons, text="OK", command=self.save)
 		self.save_button.grid(row=0, column=0)
 		self.quitButton = Tkinter.Button(self.buttons, text="Quit", command=self.quit)
 		self.quitButton.grid(row=0, column=1)
 
+	def folder_option(self, desc, val, row):
+		desc_label = Tkinter.Label(self.main_ui, text=desc)
+		desc_label.grid(row=row, column=0)
+		path_label = Tkinter.Label(self.main_ui, text=val)
+		path_label.grid(row=row, column=1)
+		browse_button = Tkinter.Button(self.main_ui, text="Browse", command=lambda: self.browse(path_label))
+		browse_button.grid(row=row, column=2)
+		return path_label
+
 	def quit(self):
-		self.mainUI.destroy()
+		self.main_ui.destroy()
 
 	def save(self):
 		for game_identifier, label in self.game_paths.iteritems():
 			self.CONFIG["gameFolders"][game_identifier] = label["text"]
 		self.CONFIG["dumpFolder"] = self.dump_folder["text"]
 		self._update = True
-		self.mainUI.destroy()
+		self.main_ui.destroy()
 
-	def browse(self, value_to_set):
+	@staticmethod
+	def browse(value_to_set):
 		folder_path = tkFileDialog.askdirectory()
 		if folder_path != '':
 			value_to_set.config(text=folder_path)
 
 	@property
 	def update(self):
-		self.mainUI.wait_window()
+		self.main_ui.wait_window()
 		return self._update
 
 

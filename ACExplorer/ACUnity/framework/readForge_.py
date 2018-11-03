@@ -3,7 +3,7 @@ import os
 
 def read_forge(app, folder):
 	file_list = {}
-	app.fileTree.insert('', 'end', app.gameFunctions.gameIdentifier, text=app.gameFunctions.gameIdentifier)
+	app.file_tree.insert('', 'end', app.gameFunctions.gameIdentifier, text=app.gameFunctions.gameIdentifier)
 	for forge_file_name in os.listdir(folder):
 		if forge_file_name.endswith('.forge'):
 			app.log.info(__name__, 'Building file tree for {}'.format(forge_file_name))
@@ -11,7 +11,7 @@ def read_forge(app, folder):
 			# header
 			if forge_file.read_str(8) != 'scimitar':
 				continue
-			app.fileTree.insert(app.gameFunctions.gameIdentifier, 'end', '{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), text=forge_file_name)
+			app.file_tree.insert(app.gameFunctions.gameIdentifier, 'end', '{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), text=forge_file_name)
 			file_list[forge_file_name] = {}
 			forge_file.seek(1, 1)
 			forge_file_version, file_data_header_offset = forge_file.read_struct('iQ')
@@ -44,6 +44,6 @@ def read_forge(app, folder):
 
 			for file_name in sorted(forge_datafiles, key=lambda v: v.lower()):
 				for file_id in forge_datafiles[file_name]:
-					app.fileTree.insert('{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), 'end', '{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, file_id), text=file_name)
+					app.file_tree.insert('{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), 'end', '{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, file_id), text=file_name)
 			forge_file.close()
 	return file_list

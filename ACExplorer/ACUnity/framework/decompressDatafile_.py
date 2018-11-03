@@ -7,8 +7,8 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 	uncompressed_data_list = []
 
 	forge_file = open(os.path.join(app.CONFIG.game_folder(app.gameFunctions.gameIdentifier), forge_file_name), 'rb')
-	forge_file.seek(app.fileList[forge_file_name][datafile_id]['rawDataOffset'])
-	raw_data_chunk = app.misc.file_object.FileObjectDataWrapper.from_binary(app, forge_file.read(app.fileList[forge_file_name][datafile_id]['rawDataSize']))
+	forge_file.seek(app.file_list[forge_file_name][datafile_id]['rawDataOffset'])
+	raw_data_chunk = app.misc.file_object.FileObjectDataWrapper.from_binary(app, forge_file.read(app.file_list[forge_file_name][datafile_id]['rawDataSize']))
 	forge_file.close()
 	if raw_data_chunk.read_str(8) == '\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
 		raw_data_chunk.seek(2, 1)
@@ -71,7 +71,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 			alphabetical_files[file_name] = []
 		alphabetical_files[file_name].append(file_id)
 		if app.CONFIG['writeToDisk']:
-			folder = os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, forge_file_name, app.fileList[forge_file_name][datafile_id]['fileName'], '{:08X}'.format(file_type))
+			folder = os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, forge_file_name, app.file_list[forge_file_name][datafile_id]['fileName'], '{:08X}'.format(file_type))
 			if os.path.isfile(os.path.join(folder, '{}.{}'.format(file_name, app.gameFunctions.gameIdentifier.lower()))):
 				duplicate = 1
 				while os.path.isfile(os.path.join(folder, '{}_{}.{}'.format(file_name, duplicate, app.gameFunctions.gameIdentifier.lower()))):
@@ -88,5 +88,5 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 	
 	for file_name in sorted(alphabetical_files, key=lambda v: v.lower()):
 		for file_id in alphabetical_files[file_name]:
-			if not app.fileTree.exists('{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id)):
-				app.fileTree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id), text=file_name)
+			if not app.file_tree.exists('{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id)):
+				app.file_tree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id), text=file_name)
