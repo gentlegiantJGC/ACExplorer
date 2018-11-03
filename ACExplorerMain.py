@@ -27,29 +27,29 @@ class App:
 		self.tempNewFiles = self.misc.tempFilesContainer(self)
 		self.log.info(__name__, 'Building GUI Window')
 		self.main_ui = Tkinter.Tk()
-		self.main_ui.title("ACExplorer")
+		self.main_ui.title('ACExplorer')
 
 		# menu
 		self.menu = {
-			"main": Tkinter.Menu(self.main_ui),
-			"file": Tkinter.Menu(self.menu["main"])
+			'main': Tkinter.Menu(self.main_ui)
 		}
-		self.main_ui.config(menu=self.menu["main"])
-		self.menu["main"].add_cascade(label="File", menu=self.menu["file"])
-		self.menu["file"].add_command(label="Options", command=self.options_dialogue)
+		self.menu['file'] = Tkinter.Menu(self.menu['main'])
+		self.main_ui.config(menu=self.menu['main'])
+		self.menu['main'].add_cascade(label='File', menu=self.menu['file'])
+		self.menu['file'].add_command(label='Options', command=self.options_dialogue)
 
-		search_label = Tkinter.Label(self.main_ui, text="Find ID:")
+		search_label = Tkinter.Label(self.main_ui, text='Find ID:')
 		search_label.grid(row=0, column=0)
 
 		# set up the file tree
 		self.file_tree = ttk.Treeview(self.main_ui)
 		self.file_tree.grid(row=1, column=1, columnspan=4, ipadx=150, ipady=300)
-		file_tree_scroll = ttk.Scrollbar(self.main_ui, orient="vertical", command=self.file_tree.yview)
+		file_tree_scroll = ttk.Scrollbar(self.main_ui, orient='vertical', command=self.file_tree.yview)
 		file_tree_scroll.grid(row=1, column=0, ipady=300)
 		self.file_tree.configure(yscrollcommand=file_tree_scroll.set)
 
-		self.file_tree.bind("<<TreeviewSelect>>", self.on_click)
-		self.file_tree.bind("<Double-1>", self.on_double_click)
+		self.file_tree.bind('<<TreeviewSelect>>', self.on_click)
+		self.file_tree.bind('<Double-1>', self.on_double_click)
 
 		self.log.info(__name__, 'Building File List')
 
@@ -140,7 +140,7 @@ class App:
 	# 	file_type = file_type.upper()
 	# 	# if len(fileType) == 8:
 	# 	# 	for fileID in tempFiles.tempFileContainer.keys():
-	# 	# 		if tempFiles.tempFileContainer[fileID][0]["fileType"] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
+	# 	# 		if tempFiles.tempFileContainer[fileID][0]['fileType'] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
 	# 	# 			self.gameFunctions.formatFile.topLevelFormat(self, fileID)
 	# 	# 			count -= 1
 	# 	# 			if count == 0:
@@ -152,26 +152,26 @@ class OptionsDialogue:
 	def __init__(self, CONFIG):
 		self.CONFIG = CONFIG
 		self.main_ui = Tkinter.Toplevel()
-		self.main_ui.title("ACExplorer Options")
+		self.main_ui.title('ACExplorer Options')
 		self._update = False
 
 		# options
 		self.game_paths = {}
 
 		row = 0
-		self.dump_folder = self.folder_option("Dump Folder", self.CONFIG["dumpFolder"], row)
+		self.dump_folder = self.folder_option('Dump Folder', self.CONFIG['dumpFolder'], row)
 
 		row += 1
-		for game_identifier, location in self.CONFIG["gameFolders"].iteritems():
+		for game_identifier, location in self.CONFIG['gameFolders'].iteritems():
 			self.game_paths[game_identifier] = self.folder_option('{} Folder'.format(game_identifier), location, row)
 			row += 1
 
 		# save and quit buttons
 		self.buttons = Tkinter.Frame(self.main_ui)
 		self.buttons.grid(row=1000, column=0, columnspan=3)
-		self.save_button = Tkinter.Button(self.buttons, text="OK", command=self.save)
+		self.save_button = Tkinter.Button(self.buttons, text='OK', command=self.save)
 		self.save_button.grid(row=0, column=0)
-		self.quitButton = Tkinter.Button(self.buttons, text="Quit", command=self.quit)
+		self.quitButton = Tkinter.Button(self.buttons, text='Quit', command=self.quit)
 		self.quitButton.grid(row=0, column=1)
 
 	def folder_option(self, desc, val, row):
@@ -179,7 +179,7 @@ class OptionsDialogue:
 		desc_label.grid(row=row, column=0)
 		path_label = Tkinter.Label(self.main_ui, text=val)
 		path_label.grid(row=row, column=1)
-		browse_button = Tkinter.Button(self.main_ui, text="Browse", command=lambda: self.browse(path_label))
+		browse_button = Tkinter.Button(self.main_ui, text='Browse', command=lambda: self.browse(path_label))
 		browse_button.grid(row=row, column=2)
 		return path_label
 
@@ -188,8 +188,8 @@ class OptionsDialogue:
 
 	def save(self):
 		for game_identifier, label in self.game_paths.iteritems():
-			self.CONFIG["gameFolders"][game_identifier] = label["text"]
-		self.CONFIG["dumpFolder"] = self.dump_folder["text"]
+			self.CONFIG['gameFolders'][game_identifier] = label['text']
+		self.CONFIG['dumpFolder'] = self.dump_folder['text']
 		self._update = True
 		self.main_ui.destroy()
 
