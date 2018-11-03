@@ -100,7 +100,6 @@ class FileObjectDataWrapper:
 				elif count < 0:
 					out_file.write('Skipped back {} bytes\n'.format(abs(count)))
 
-	@staticmethod
 	def out_file_write(self, val, out_file=None, indent_count=0):
 		if out_file is not None:
 			out_file.write('{}{}'.format(indent_count * self.indent_chr, val))
