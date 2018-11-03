@@ -89,7 +89,7 @@ class App:
 		self.fileTree.delete(*self.fileTree.get_children())
 		if game_identifier in ACExplorer.games:
 			self.gameFunctions = ACExplorer.games[game_identifier]
-			self.fileList = self.gameFunctions.read_forge(self, self.CONFIG.game_folder(game_identifier))
+			self.fileList = self.gameFunctions.framework.read_forge(self, self.CONFIG.game_folder(game_identifier))
 			# load all the decompressed files onto the TK Tree
 
 			if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
@@ -106,7 +106,7 @@ class App:
 	def onClick(self, event):
 		fileID = self.fileTree.selection()[0]
 		if len(fileID.split('|')) == 3 and len(self.fileTree.get_children(fileID)) == 0:
-			self.gameFunctions.decompress_datafile(self, int(fileID.split('|')[2]), fileID.split('|')[1])
+			self.gameFunctions.framework.decompress_datafile(self, int(fileID.split('|')[2]), fileID.split('|')[1])
 
 	def onDoubleClick(self, event):
 		fileID = self.fileTree.selection()[0]
