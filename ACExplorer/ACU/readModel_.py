@@ -1,6 +1,6 @@
 import os
 import numpy
-from ACExplorer.ACUnity.formatFile import readID, readStr, readUInt32, readFloat32, readType, fOutWrite, ReadRest
+from ACExplorer.ACU.formatFile import readID, readStr, readUInt32, readFloat32, readType, fOutWrite, ReadRest
 
 
 def read_model(app, file_id):

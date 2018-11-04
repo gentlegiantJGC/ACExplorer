@@ -5,7 +5,7 @@ import json
 import time
 import struct
 # from ACExplorer.misc.dataTypes import LE2BE2, BEHEX2, LE2DEC2, int16, uint16, int32, uint32, float32
-fileTypes = json.load(open(r"./ACExplorer/ACUnity/fileFormats.json"))
+fileTypes = json.load(open(r"./ACExplorer/ACU/fileFormats.json"))
 indentCharacter = '\t'
 
 '''

@@ -1,6 +1,6 @@
-from ACExplorer import ACUnity, misc
+from ACExplorer import ACU, misc
 from .misc.config_ import Config
 games = {
-	'ACU': ACUnity
+	'ACU': ACU
 }
 CONFIG = Config()

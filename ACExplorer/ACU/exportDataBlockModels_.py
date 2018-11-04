@@ -1,9 +1,9 @@
-from ACExplorer.ACUnity.decompressDatafile_ import decompressDatafile
+from ACExplorer.ACU.framework.decompressDatafile_ import decompress_datafile
 # from ACExplorer.misc import tempFiles
-from ACExplorer.misc.dataTypes import BEHEX2, LE2DEC2, float32
-from ACExplorer.misc.exportOBJMulti import exportOBJMulti
-from ACExplorer.ACUnity import formatFile
-import sys
+# from ACExplorer.misc.dataTypes import BEHEX2, LE2DEC2, float32
+# from ACExplorer.misc.exportOBJMulti import exportOBJMulti
+from ACExplorer.ACU import formatFile
+
 
 def mul4x4(A,B):
 	C = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
@@ -15,7 +15,7 @@ def mul4x4(A,B):
 
 def exportDataBlockModels(app, fileID):
 	if not tempFiles.exists(fileID):
-		decompressDatafile(app, fileID)
+		decompress_datafile(app, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file {} is empty'.format(fileID))
@@ -35,13 +35,13 @@ def exportDataBlockModels(app, fileID):
 	
 	for n, fileID2 in enumerate(dataBlock['dataBlock']):
 		if not tempFiles.exists(fileID2):
-			decompressDatafile(app, fileID2)
+			decompress_datafile(app, fileID2)
 		data2 = tempFiles.read(fileID2)
 		if len(data2) == 0:
 			raise Exception('file {} is empty'.format(fileID2))
 		data2 = data2[0]
 		
-		print 'Reading {}. {} of {}'.format(data2['fileName'], str(n+1), len(dataBlock['dataBlock']))
+		print('Reading {}. {} of {}'.format(data2['fileName'], str(n+1), len(dataBlock['dataBlock'])))
 	
 		dataBlockChild = formatFile.topLevelFormat(app, fileID2)
 		# fileID2, data2 and dataBlockChild all relate to the files contained in
@@ -51,7 +51,7 @@ def exportDataBlockModels(app, fileID):
 			if 'fileIDList' in dataBlockChild:
 				for fileID3 in dataBlockChild['fileIDList']:
 					if not tempFiles.exists(fileID3):
-						decompressDatafile(app, fileID3)
+						decompress_datafile(app, fileID3)
 					data3 = tempFiles.read(fileID3)
 					if len(data3) == 0:
 						raise Exception('file {} is empty'.format(fileID3))
@@ -68,7 +68,7 @@ def exportDataBlockModels(app, fileID):
 			if 'files' in dataBlockChild:
 				for fileID3 in dataBlockChild['files']:
 					if not tempFiles.exists(fileID3):
-						decompressDatafile(app, fileID3)
+						decompress_datafile(app, fileID3)
 					data3 = tempFiles.read(fileID3)
 					if len(data3) == 0:
 						continue
@@ -80,7 +80,7 @@ def exportDataBlockModels(app, fileID):
 						if 'fileIDList' in dataBlockChild2:
 							for fileID4 in dataBlockChild2['fileIDList']:
 								if not tempFiles.exists(fileID4):
-									decompressDatafile(app, fileID4)
+									decompress_datafile(app, fileID4)
 								data4 = tempFiles.read(fileID4)
 								if len(data4) == 0:
 									raise Exception('file {} is empty'.format(fileID4))
@@ -97,10 +97,10 @@ def exportDataBlockModels(app, fileID):
 						raise Exception('found file type {}'.format(data3['fileType']))
 		
 		else:
-			print 'Could not read following file. Unsupported type.'
-			print data2['fileName']
-			print dataBlockChild['fileType']
-			print dataBlockChild['fileID']
+			print('Could not read following file. Unsupported type.')
+			print(data2['fileName'])
+			print(dataBlockChild['fileType'])
+			print(dataBlockChild['fileID'])
 	
 	# fIn = open(data['dir'], 'rb')
 	# fIn.seek(14)
@@ -147,8 +147,8 @@ def exportDataBlockModels(app, fileID):
 			# else:
 				# raise Exception(fileID3+' is not a 3D model')
 				
-	print 'done reading'
-	print 'exporting'
+	print('done reading')
+	print('exporting')
 
 	exportOBJMulti(app, fileID, fileIDList)
 	
