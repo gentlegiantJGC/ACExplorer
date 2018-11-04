@@ -49,6 +49,7 @@ class App:
 		self.file_tree.configure(yscrollcommand=file_tree_scroll.set)
 
 		self.file_tree.bind('<<TreeviewSelect>>', self.on_click)
+		self.file_tree.bind('<Button-3>', self.right_click)
 		self.file_tree.bind('<Double-1>', self.on_double_click)
 
 		self.log.info(__name__, 'Building File List')
@@ -102,14 +103,24 @@ class App:
 			self.load_game(self.gameFunctions.gameIdentifier)
 
 	def on_click(self, _):
-		file_id = self.file_tree.selection()[0]
-		if len(file_id.split('|')) == 3 and len(self.file_tree.get_children(file_id)) == 0:
-			self.gameFunctions.framework.decompress_datafile(self, int(file_id.split('|')[2]), file_id.split('|')[1])
+		line_unique_identifier = self.file_tree.selection()[0]
+		if len(line_unique_identifier.split('|')) == 3 and len(self.file_tree.get_children(line_unique_identifier)) == 0:
+			self.gameFunctions.framework.decompress_datafile(self, int(line_unique_identifier.split('|')[2]), line_unique_identifier.split('|')[1])
+
+	def right_click(self, event):
+		line_unique_identifier = self.file_tree.identify_row(event.y)
+		if line_unique_identifier:
+			self.file_tree.selection_set(line_unique_identifier)
+			depth = line_unique_identifier.split('|')
+
+			# self.contextMenu.post(event.x_root, event.y_root)
+		else:
+			pass
 
 	def on_double_click(self, _):
-		file_id = self.file_tree.selection()[0]
-		if len(file_id.split('|')) == 4:
-			self.gameFunctions.read_file(self, int(file_id.split('|')[3]), file_id.split('|')[1], int(file_id.split('|')[2]))
+		line_unique_identifier = self.file_tree.selection()[0]
+		if len(line_unique_identifier.split('|')) == 4:
+			self.gameFunctions.read_file(self, int(line_unique_identifier.split('|')[3]), line_unique_identifier.split('|')[1], int(line_unique_identifier.split('|')[2]))
 
 	def search_for(self):
 		search = self.search.get()
