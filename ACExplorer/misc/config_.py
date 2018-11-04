@@ -24,11 +24,11 @@ class Config:
 			"writeToDisk": False
 		}
 
-		for key, val in default_config.iteritems():
+		for key, val in default_config.items():
 			if key not in self.CONFIG:
 				self.CONFIG[key] = val
 
-		for key, val in default_config["gameFolders"].iteritems():
+		for key, val in default_config["gameFolders"].items():
 			if key not in self.CONFIG["gameFolders"]:
 				self.CONFIG["gameFolders"][key] = val
 

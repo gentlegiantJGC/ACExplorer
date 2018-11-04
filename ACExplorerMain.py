@@ -9,9 +9,8 @@
 """
 
 import json
-import ttk
-import Tkinter
-import tkFileDialog
+import tkinter
+from tkinter import ttk
 import sys
 import os
 import ACExplorer
@@ -26,19 +25,19 @@ class App:
 		self.log = self.misc.Logger(self)
 		self.tempNewFiles = self.misc.tempFilesContainer(self)
 		self.log.info(__name__, 'Building GUI Window')
-		self.main_ui = Tkinter.Tk()
+		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
 
 		# menu
 		self.menu = {
-			'main': Tkinter.Menu(self.main_ui)
+			'main': tkinter.Menu(self.main_ui)
 		}
-		self.menu['file'] = Tkinter.Menu(self.menu['main'])
+		self.menu['file'] = tkinter.Menu(self.menu['main'])
 		self.main_ui.config(menu=self.menu['main'])
 		self.menu['main'].add_cascade(label='File', menu=self.menu['file'])
 		self.menu['file'].add_command(label='Options', command=self.options_dialogue)
 
-		search_label = Tkinter.Label(self.main_ui, text='Find ID:')
+		search_label = tkinter.Label(self.main_ui, text='Find ID:')
 		search_label.grid(row=0, column=0)
 
 		# set up the file tree
@@ -64,19 +63,19 @@ class App:
 
 		self.log.info(__name__, 'Finished Building File List')
 
-		self.search = Tkinter.Entry(self.main_ui)
+		self.search = tkinter.Entry(self.main_ui)
 		self.search.grid(row=0, column=1)
-		find = Tkinter.Button(self.main_ui, text='Find', command=self.search_for)
+		find = tkinter.Button(self.main_ui, text='Find', command=self.search_for)
 		find.grid(row=0, column=2)
 
-		clear = Tkinter.Button(self.main_ui, text='Clear Search', command=self.clear_search)
+		clear = tkinter.Button(self.main_ui, text='Clear Search', command=self.clear_search)
 		clear.grid(row=0, column=3)
 
 		if self.dev:
-			run_code = Tkinter.Button(self.main_ui, text='Run Code', command=self.runcode)
+			run_code = tkinter.Button(self.main_ui, text='Run Code', command=self.runcode)
 			run_code.grid(row=0, column=50)
 
-			# test_formatting = Tkinter.Button(self.main_ui, text='Test Formatting', command=self.test_formatting)
+			# test_formatting = tkinter.Button(self.main_ui, text='Test Formatting', command=self.test_formatting)
 			# test_formatting.grid(row=0, column=51)
 
 		self.main_ui.mainloop()
@@ -134,10 +133,10 @@ class App:
 				self.gameFunctions.read_file(self, file_id)
 
 	def clear_search(self):
-		self.search.delete(0, Tkinter.END)
+		self.search.delete(0, tkinter.END)
 
 	def runcode(self):
-		exec self.search.get()
+		exec(self.search.get())
 
 	# def test_formatting(self):
 	# 	file_type = self.search.get()
@@ -162,7 +161,7 @@ class App:
 class OptionsDialogue:
 	def __init__(self, CONFIG):
 		self.CONFIG = CONFIG
-		self.main_ui = Tkinter.Toplevel()
+		self.main_ui = tkinter.Toplevel()
 		self.main_ui.title('ACExplorer Options')
 		self._update = False
 
@@ -173,24 +172,24 @@ class OptionsDialogue:
 		self.dump_folder = self.folder_option('Dump Folder', self.CONFIG['dumpFolder'], row)
 
 		row += 1
-		for game_identifier, location in self.CONFIG['gameFolders'].iteritems():
+		for game_identifier, location in self.CONFIG['gameFolders'].items():
 			self.game_paths[game_identifier] = self.folder_option('{} Folder'.format(game_identifier), location, row)
 			row += 1
 
 		# save and quit buttons
-		self.buttons = Tkinter.Frame(self.main_ui)
+		self.buttons = tkinter.Frame(self.main_ui)
 		self.buttons.grid(row=1000, column=0, columnspan=3)
-		self.save_button = Tkinter.Button(self.buttons, text='OK', command=self.save)
+		self.save_button = tkinter.Button(self.buttons, text='OK', command=self.save)
 		self.save_button.grid(row=0, column=0)
-		self.quitButton = Tkinter.Button(self.buttons, text='Quit', command=self.quit)
+		self.quitButton = tkinter.Button(self.buttons, text='Quit', command=self.quit)
 		self.quitButton.grid(row=0, column=1)
 
 	def folder_option(self, desc, val, row):
-		desc_label = Tkinter.Label(self.main_ui, text=desc)
+		desc_label = tkinter.Label(self.main_ui, text=desc)
 		desc_label.grid(row=row, column=0)
-		path_label = Tkinter.Label(self.main_ui, text=val)
+		path_label = tkinter.Label(self.main_ui, text=val)
 		path_label.grid(row=row, column=1)
-		browse_button = Tkinter.Button(self.main_ui, text='Browse', command=lambda: self.browse(path_label))
+		browse_button = tkinter.Button(self.main_ui, text='Browse', command=lambda: self.browse(path_label))
 		browse_button.grid(row=row, column=2)
 		return path_label
 
@@ -198,7 +197,7 @@ class OptionsDialogue:
 		self.main_ui.destroy()
 
 	def save(self):
-		for game_identifier, label in self.game_paths.iteritems():
+		for game_identifier, label in self.game_paths.items():
 			self.CONFIG['gameFolders'][game_identifier] = label['text']
 		self.CONFIG['dumpFolder'] = self.dump_folder['text']
 		self._update = True
@@ -206,7 +205,7 @@ class OptionsDialogue:
 
 	@staticmethod
 	def browse(value_to_set):
-		folder_path = tkFileDialog.askdirectory()
+		folder_path = tkinter.filedialog.askdirectory()
 		if folder_path != '':
 			value_to_set.config(text=folder_path)
 

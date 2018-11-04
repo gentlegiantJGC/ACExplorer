@@ -9,7 +9,7 @@ def read_forge(app, folder):
 			app.log.info(__name__, 'Building file tree for {}'.format(forge_file_name))
 			forge_file = app.misc.file_object.FileObjectDataWrapper.from_file(app, os.path.join(folder, forge_file_name))
 			# header
-			if forge_file.read_str(8) != 'scimitar':
+			if forge_file.read_str(8) != b'scimitar':
 				continue
 			app.file_tree.insert(app.gameFunctions.gameIdentifier, 'end', '{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), text=forge_file_name)
 			file_list[forge_file_name] = {}
@@ -27,9 +27,9 @@ def read_forge(app, folder):
 			forge_file.seek(name_table_offset)
 			name_table = forge_file.read_struct('i40x128s20x'*index_count)
 			forge_datafiles = {}
-			for n in xrange(index_count):
+			for n in range(index_count):
 				file_id = index_table[n*3+1]
-				file_name = name_table[n*2+1].replace('\x00', '')
+				file_name = name_table[n*2+1].replace(b'\x00', b'')
 				if index_table[n*3+2] != name_table[n*2]:
 					raise Exception('These should be the same. Is something wrong?')
 				file_list[forge_file_name][file_id] = {  # file data id (matches the id in the file)

@@ -12,7 +12,7 @@ class Texture(BaseTexture):
 		except Exception as e:
 			app.log.warn(__name__, 'Failed to save header to fileTypes folder\n{}'.format(e))
 		texture_file.seek(13)
-		self.dwSize = '\x7C\x00\x00\x00'  # 124
+		self.dwSize = b'\x7C\x00\x00\x00'  # 124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
 		# (probably should be set based on the data)
 		DDSD_PITCH = False
@@ -30,14 +30,14 @@ class Texture(BaseTexture):
 		texture_file.seek(84, 1)  # 24 of other data followed by "CompiledTextureMap" which duplicates most of the data
 		self.dwPitchOrLinearSize = texture_file.read_str(4)
 		self.buffer = texture_file.read_str(struct.unpack('<I', self.dwPitchOrLinearSize)[0])
-		self.dwReserved = '\x00\x00\x00\x00'*11
+		self.dwReserved = b'\x00\x00\x00\x00'*11
 
 		self.ddspf = ''  # (pixel format)
-		self.ddspf += '\x20\x00\x00\x00'  # dwSize
+		self.ddspf += b'\x20\x00\x00\x00'  # dwSize
 		if self.imgDXT in [0, 7]:  # dwFlags
-			self.ddspf += '\x40\x00\x00\x00'
+			self.ddspf += b'\x40\x00\x00\x00'
 		else:
-			self.ddspf += '\x04\x00\x00\x00'
+			self.ddspf += b'\x04\x00\x00\x00'
 		# if imgDXT in [0, 7]:
 		# 	self.ddspf += 'DXT1'
 		if self.imgDXT in [0, 1, 2, 3, 7]:  # dwFourCC
@@ -51,16 +51,16 @@ class Texture(BaseTexture):
 		else:
 			raise Exception('imgDXT: "{}" is not currently supported'.format(self.imgDXT))
 
-		self.ddspf += '\x00\x00\x00\x00' * 5  # dwRGBBitCount, dwRBitMask, dwGBitMask, dwBBitMask, dwABitMask
+		self.ddspf += b'\x00\x00\x00\x00' * 5  # dwRGBBitCount, dwRBitMask, dwGBitMask, dwBBitMask, dwABitMask
 		if self.imgDXT == 8:
-			self.DXT10Header = '\x62\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
+			self.DXT10Header = b'\x62\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
 		else:
 			self.DXT10Header = ''
-		self.dwCaps = '\x08\x10\x40\x00'
-		self.dwCaps2 = '\x00\x00\x00\x00'
-		self.dwCaps3 = '\x00\x00\x00\x00'
-		self.dwCaps4 = '\x00\x00\x00\x00'
-		self.dwReserved2 = '\x00\x00\x00\x00'
+		self.dwCaps = b'\x08\x10\x40\x00'
+		self.dwCaps2 = b'\x00\x00\x00\x00'
+		self.dwCaps3 = b'\x00\x00\x00\x00'
+		self.dwCaps4 = b'\x00\x00\x00\x00'
+		self.dwReserved2 = b'\x00\x00\x00\x00'
 
 
 def export_texture(app, file_id):

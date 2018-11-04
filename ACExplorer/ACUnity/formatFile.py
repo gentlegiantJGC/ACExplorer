@@ -205,7 +205,7 @@ def topLevelFormat(app, fileID):
 		for key in subFileContainer:
 			fileContainer[key] = subFileContainer[key]
 	except Exception as e:
-		print '{}, {}'.format(e.message, e.args)
+		print('{}, {}'.format(e.message, e.args))
 		fileContainer['fileID'] = fileID
 		fileContainer['fileType'] = data["fileType"]
 		success = False
@@ -227,7 +227,7 @@ def topLevelFormat(app, fileID):
 			json.dump(formatLog, f)
 
 	if dev:
-		print data['fileName']
+		print(data['fileName'])
 		if not success and fileContainer['fileType'] not in unsupportedTypes:
 			if not os.path.isdir(os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, data['forgeFile'])):
 				os.makedirs(os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, data['forgeFile']))
@@ -1099,7 +1099,7 @@ def recursiveFormat(app, fIn, fOut, indentCount=0):
 			readStr(fIn, fOut, 1, indentCount+1)
 			fileID2 = readID(app, fIn, fOut, indentCount+1)
 			app.gameFunctions.read_file(app, fileID2)
-			print '{} of {}'.format(n, count1)
+			print('{} of {}'.format(n, count1))
 
 	# F9 C2 8F 68
 	# F0 8C 38 D8

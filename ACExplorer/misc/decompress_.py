@@ -1,9 +1,9 @@
 from ctypes import CDLL, c_ushort
 import platform
 if platform.architecture()[0] == '64bit':
-	lzoPath = "resources\\lzo64.dll".encode('utf-8')
+	lzoPath = "resources/lzo64.dll"
 elif platform.architecture()[0] == '32bit':
-	lzoPath = "resources\\lzo32.dll".encode('utf-8')
+	lzoPath = "resources/lzo32.dll"
 else:
 	raise Exception('Unknown Architecture')
 
@@ -14,7 +14,7 @@ def decompress(mode, src, dst_len):
 	if len(src) == dst_len:
 		return src
 	src_len = (c_ushort*1)(len(src))
-	dst = '\x00' * dst_len
+	dst = b'\x00' * dst_len
 	dst_len = (c_ushort*1)(dst_len)
 	if mode in [0, 1]:
 		# lzo1x

@@ -10,7 +10,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 	forge_file.seek(app.file_list[forge_file_name][datafile_id]['rawDataOffset'])
 	raw_data_chunk = app.misc.file_object.FileObjectDataWrapper.from_binary(app, forge_file.read(app.file_list[forge_file_name][datafile_id]['rawDataSize']))
 	forge_file.close()
-	if raw_data_chunk.read_str(8) == '\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
+	if raw_data_chunk.read_str(8) == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
 		raw_data_chunk.seek(2, 1)
 		compression_type = raw_data_chunk.read_uint_8()
 		raw_data_chunk.seek(4, 1)
@@ -20,7 +20,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 			raw_data_chunk.seek(4, 1)
 			uncompressed_data_list.append(app.misc.decompress(compression_type, raw_data_chunk.read_str(size[1]), size[0]))
 
-		if raw_data_chunk.read_str(8) == '\x33\xAA\xFB\x57\x99\xFA\x04\x10':
+		if raw_data_chunk.read_str(8) == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':
 			raw_data_chunk.seek(2, 1)
 			compression_type = raw_data_chunk.read_uint_8()
 			raw_data_chunk.seek(4, 1)
@@ -32,17 +32,17 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 		else:
 			raise Exception('Compression Issue. Second compression block not found')
 		raw_data_chunk_rest = raw_data_chunk.read_rest()
-		if '\x33\xAA\xFB\x57\x99\xFA\x04\x10' in raw_data_chunk_rest:
+		if b'\x33\xAA\xFB\x57\x99\xFA\x04\x10' in raw_data_chunk_rest:
 			raise Exception('Compression Issue. More compressed blocks found')
 	else:
 		raw_data_chunk.seek(0)
 		raw_data_chunk_rest = raw_data_chunk.read_rest()
-		if '\x33\xAA\xFB\x57\x99\xFA\x04\x10' in raw_data_chunk_rest:
+		if b'\x33\xAA\xFB\x57\x99\xFA\x04\x10' in raw_data_chunk_rest:
 			raise Exception('Compression Issue')
 		else:
 			uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
 
-	uncompressed_data = app.misc.file_object.FileObjectDataWrapper.from_binary(app, ''.join(uncompressed_data_list))
+	uncompressed_data = app.misc.file_object.FileObjectDataWrapper.from_binary(app, b''.join(uncompressed_data_list))
 
 	file_count = uncompressed_data.read_uint_16()
 	index_table = []
@@ -64,7 +64,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 
 		raw_file = uncompressed_data.read_str(file_size)
 
-		if file_name == '':
+		if file_name == b'':
 			file_name = '{:016X}'.format(file_id)
 		app.tempNewFiles.add(file_id, forge_file_name, datafile_id, file_type, file_name, rawFile=raw_file)
 		if file_name not in alphabetical_files:

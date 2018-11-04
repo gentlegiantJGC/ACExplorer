@@ -30,12 +30,14 @@ class FileObject:
 			data = self._data[self._file_pointer:]
 			self._file_pointer = len(self._data)
 			return data
-		elif isinstance(length, int) or isinstance(length, long):
-			data = self._data[self._file_pointer:self._file_pointer + length]
-			self._file_pointer += length
-			return data
 		else:
-			raise Exception('Unsupported type: "{}"'.format(type(length)))
+			try:
+				length = int(length)
+				data = self._data[self._file_pointer:self._file_pointer + length]
+				self._file_pointer += length
+				return data
+			except ValueError:
+				raise Exception('Unsupported type: "{}"'.format(type(length)))
 
 	def seek(self, offset, whence=0):
 		if whence == 0:
