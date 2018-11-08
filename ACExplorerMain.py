@@ -51,7 +51,6 @@ class App:
 
 		self.file_tree.bind('<<TreeviewSelect>>', self.on_click)
 		self.file_tree.bind('<Button-3>', self.on_right_click)
-		self.file_tree.bind('<Double-1>', self.on_double_click)
 
 		self.log.info(__name__, 'Building File List')
 
@@ -114,11 +113,6 @@ class App:
 			self.right_click_dialogue.post(event, plugins, file_id)
 		else:
 			pass
-
-	def on_double_click(self, _):
-		line_unique_identifier = self.file_tree.selection()[0]
-		if len(line_unique_identifier.split('|')) == 4:
-			self.gameFunctions.read_file(self, int(line_unique_identifier.split('|')[3]), line_unique_identifier.split('|')[1], int(line_unique_identifier.split('|')[2]))
 
 	def search_for(self):
 		search = self.search.get()
