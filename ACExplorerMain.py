@@ -73,12 +73,9 @@ class App:
 		clear = tkinter.Button(self.main_ui, text='Clear Search', command=self.clear_search)
 		clear.grid(row=0, column=3)
 
-		if self.dev:
-			run_code = tkinter.Button(self.main_ui, text='Run Code', command=self.runcode)
-			run_code.grid(row=0, column=50)
-
-			# test_formatting = tkinter.Button(self.main_ui, text='Test Formatting', command=self.test_formatting)
-			# test_formatting.grid(row=0, column=51)
+		# if self.dev:
+		# 	test_formatting = tkinter.Button(self.main_ui, text='Test Formatting', command=self.test_formatting)
+		# 	test_formatting.grid(row=0, column=51)
 
 		self.main_ui.mainloop()
 
@@ -136,9 +133,6 @@ class App:
 
 	def clear_search(self):
 		self.search.delete(0, tkinter.END)
-
-	def runcode(self):
-		exec(self.search.get())
 
 	# def test_formatting(self):
 	# 	file_type = self.search.get()
