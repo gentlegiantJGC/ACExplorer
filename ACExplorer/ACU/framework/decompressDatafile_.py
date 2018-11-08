@@ -53,7 +53,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 	for index in range(file_count):
 		file_type, file_size, file_name_size = uncompressed_data.read_struct('3I')
 		file_id = index_table[index][0]
-		file_name = str(uncompressed_data.read_str(file_name_size))
+		file_name = uncompressed_data.read_str(file_name_size).decode("utf-8")
 		check_byte = uncompressed_data.read_uint_8()
 		if check_byte == 1:
 			uncompressed_data.seek(3, 1)

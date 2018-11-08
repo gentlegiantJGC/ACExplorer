@@ -29,7 +29,7 @@ def read_forge(app, folder):
 			forge_datafiles = {}
 			for n in range(index_count):
 				file_id = index_table[n*3+1]
-				file_name = name_table[n*2+1].replace(b'\x00', b'')
+				file_name = name_table[n*2+1].replace(b'\x00', b'').decode("utf-8")
 				if index_table[n*3+2] != name_table[n*2]:
 					raise Exception('These should be the same. Is something wrong?')
 				file_list[forge_file_name][file_id] = {  # file data id (matches the id in the file)
