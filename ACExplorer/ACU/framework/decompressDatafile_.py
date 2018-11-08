@@ -53,7 +53,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 	for index in range(file_count):
 		file_type, file_size, file_name_size = uncompressed_data.read_struct('3I')
 		file_id = index_table[index][0]
-		file_name = uncompressed_data.read_str(file_name_size)
+		file_name = str(uncompressed_data.read_str(file_name_size))
 		check_byte = uncompressed_data.read_uint_8()
 		if check_byte == 1:
 			uncompressed_data.seek(3, 1)
@@ -64,7 +64,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 
 		raw_file = uncompressed_data.read_str(file_size)
 
-		if file_name == b'':
+		if file_name == '':
 			file_name = '{:016X}'.format(file_id)
 		app.tempNewFiles.add(file_id, forge_file_name, datafile_id, file_type, file_name, rawFile=raw_file)
 		if file_name not in alphabetical_files:

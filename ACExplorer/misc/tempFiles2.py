@@ -116,7 +116,7 @@ class tempFilesContainer:
 			forgeFile = next((fF for fF in self.app.file_list if fileID in self.app.file_list[fF]), None)
 			if forgeFile is None:
 				if str(fileID) in self.lightDictionary: # could check the lower down stuff but if this exists there should be data inside
-					forgeFile = self.lightDictionary[str(fileID)].keys()[0]
+					forgeFile = next(iter(self.lightDictionary[str(fileID)]))
 					datafileID = self.lightDictionary[str(fileID)][forgeFile][0]
 				else:
 					return
