@@ -32,22 +32,22 @@ class Texture(BaseTexture):
 		self.buffer = texture_file.read_str(struct.unpack('<I', self.dwPitchOrLinearSize)[0])
 		self.dwReserved = b'\x00\x00\x00\x00'*11
 
-		self.ddspf = ''  # (pixel format)
+		self.ddspf = b''  # (pixel format)
 		self.ddspf += b'\x20\x00\x00\x00'  # dwSize
 		if self.imgDXT in [0, 7]:  # dwFlags
 			self.ddspf += b'\x40\x00\x00\x00'
 		else:
 			self.ddspf += b'\x04\x00\x00\x00'
 		# if imgDXT in [0, 7]:
-		# 	self.ddspf += 'DXT1'
+		# 	self.ddspf += b'DXT1'
 		if self.imgDXT in [0, 1, 2, 3, 7]:  # dwFourCC
-			self.ddspf += 'DXT1'
+			self.ddspf += b'DXT1'
 		elif self.imgDXT == 4:
-			self.ddspf += 'DXT3'
+			self.ddspf += b'DXT3'
 		elif self.imgDXT in [5, 6]:
-			self.ddspf += 'DXT5'
+			self.ddspf += b'DXT5'
 		elif self.imgDXT in [8, 9, 16]:
-			self.ddspf += 'DX10'
+			self.ddspf += b'DX10'
 		else:
 			raise Exception('imgDXT: "{}" is not currently supported'.format(self.imgDXT))
 
@@ -55,7 +55,7 @@ class Texture(BaseTexture):
 		if self.imgDXT == 8:
 			self.DXT10Header = b'\x62\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00'
 		else:
-			self.DXT10Header = ''
+			self.DXT10Header = b''
 		self.dwCaps = b'\x08\x10\x40\x00'
 		self.dwCaps2 = b'\x00\x00\x00\x00'
 		self.dwCaps3 = b'\x00\x00\x00\x00'
@@ -63,7 +63,12 @@ class Texture(BaseTexture):
 		self.dwReserved2 = b'\x00\x00\x00\x00'
 
 
-def export_texture(app, file_id):
+plugin_name = 'Export Texture'
+plugin_level = 4
+file_type = 'A2B7E917'
+
+
+def plugin(app, file_id):
 	data = app.tempNewFiles.getData(file_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))

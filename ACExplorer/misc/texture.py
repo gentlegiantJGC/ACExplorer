@@ -19,15 +19,15 @@ class BaseTexture:
 		self.imgDXT = 0
 		self.dwMipMapCount = b'\x00\x00\x00\x00'
 		self.dwPitchOrLinearSize = b'\x00\x00\x00\x00'
-		self.buffer = ''
+		self.buffer = b''
 		self.dwReserved = b'\x00\x00\x00\x00'*11
 
-		self.ddspf = ''  # (pixel format)
+		self.ddspf = b''  # (pixel format)
 		self.ddspf += b'\x20\x00\x00\x00'  # dwSize
 		self.ddspf += b'\x00\x00\x00\x00'
-		self.ddspf += 'DXT1'
+		self.ddspf += b'DXT1'
 		self.ddspf += b'\x00\x00\x00\x00' * 5  # dwRGBBitCount, dwRBitMask, dwGBitMask, dwBBitMask, dwABitMask
-		self.DXT10Header = ''
+		self.DXT10Header = b''
 		self.dwCaps = b'\x08\x10\x40\x00'
 		self.dwCaps2 = b'\x00\x00\x00\x00'
 		self.dwCaps3 = b'\x00\x00\x00\x00'
@@ -36,7 +36,7 @@ class BaseTexture:
 
 	def export_dds(self, path):
 		fi = open(path, 'wb')
-		fi.write('DDS ')
+		fi.write(b'DDS ')
 		fi.write(self.dwSize + self.dwFlags + self.dwHeight + self.dwWidth +
 				 self.dwPitchOrLinearSize + self.dwDepth + self.dwMipMapCount +
 				 self.dwReserved + self.ddspf + self.dwCaps + self.dwCaps2 +

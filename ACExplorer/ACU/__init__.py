@@ -4,7 +4,7 @@ from . exportDataBlockModels_ import exportDataBlockModels
 
 from . readFile_ import read_file
 
-from . exportTexture_ import export_texture
+from . right_click_methods.exportTexture_ import plugin as export_texture
 from . exportModel_ import export_obj
 from ..ACU import formatFile
 from . getMaterialIDs_ import get_material_ids
