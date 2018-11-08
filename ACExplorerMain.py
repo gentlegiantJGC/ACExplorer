@@ -24,6 +24,7 @@ class App:
 		self.gameFunctions = None
 		self.log = self.misc.Logger(self)
 		self.tempNewFiles = self.misc.tempFilesContainer(self)
+		self.right_click_plugins = ACExplorer.misc.file_loaders.RightClickLoader(self)
 		self.log.info(__name__, 'Building GUI Window')
 		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
@@ -32,10 +33,11 @@ class App:
 		self.menu = {
 			'main': tkinter.Menu(self.main_ui)
 		}
-		self.menu['file'] = tkinter.Menu(self.menu['main'])
+		self.menu['file'] = tkinter.Menu(self.menu['main'], tearoff=0)
 		self.main_ui.config(menu=self.menu['main'])
 		self.menu['main'].add_cascade(label='File', menu=self.menu['file'])
 		self.menu['file'].add_command(label='Options', command=self.options_dialogue)
+		self.right_click_dialogue = RightClickDialogue(self)
 
 		search_label = tkinter.Label(self.main_ui, text='Find ID:')
 		search_label.grid(row=0, column=0)
@@ -48,7 +50,7 @@ class App:
 		self.file_tree.configure(yscrollcommand=file_tree_scroll.set)
 
 		self.file_tree.bind('<<TreeviewSelect>>', self.on_click)
-		self.file_tree.bind('<Button-3>', self.right_click)
+		self.file_tree.bind('<Button-3>', self.on_right_click)
 		self.file_tree.bind('<Double-1>', self.on_double_click)
 
 		self.log.info(__name__, 'Building File List')
@@ -106,13 +108,13 @@ class App:
 		if len(line_unique_identifier.split('|')) == 3 and len(self.file_tree.get_children(line_unique_identifier)) == 0:
 			self.gameFunctions.framework.decompress_datafile(self, int(line_unique_identifier.split('|')[2]), line_unique_identifier.split('|')[1])
 
-	def right_click(self, event):
-		line_unique_identifier = self.file_tree.identify_row(event.y)
-		if line_unique_identifier:
-			self.file_tree.selection_set(line_unique_identifier)
-			depth = line_unique_identifier.split('|')
-
-			# self.contextMenu.post(event.x_root, event.y_root)
+	def on_right_click(self, event):
+		unique_identifier = self.file_tree.identify_row(event.y)
+		if unique_identifier:
+			self.file_tree.selection_set(unique_identifier)
+			unique_identifier = unique_identifier.split('|')
+			plugins, file_id = self.right_click_plugins.get(len(unique_identifier), unique_identifier[-1])
+			self.right_click_dialogue.post(event, plugins, file_id)
 		else:
 			pass
 
@@ -213,6 +215,22 @@ class OptionsDialogue:
 	def update(self):
 		self.main_ui.wait_window()
 		return self._update
+
+
+class RightClickDialogue:
+	def __init__(self, app_):
+		self.app = app_
+		self.menu = tkinter.Menu(self.app.main_ui, tearoff=0)
+
+	def post(self, event, plugins, file_id):
+		self.menu.delete(0, tkinter.END)
+		if len(plugins) > 0:
+			for plugin in plugins:
+				self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app, file_id))
+			try:
+				self.menu.tk_popup(event.x_root, event.y_root)
+			finally:
+				self.menu.grab_release()
 
 
 if __name__ == '__main__':

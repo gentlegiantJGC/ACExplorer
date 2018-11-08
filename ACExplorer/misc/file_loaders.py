@@ -1,7 +1,6 @@
 import pkgutil
 import importlib
 import sys
-sys.path.append()
 
 
 class RightClickLoader:
@@ -23,21 +22,22 @@ class RightClickLoader:
 		self.game_identifier = ''
 		self.plugins = {1: [], 2: [], 3: [], 4: {}}
 
-	def from_unique_id(self, unique_identifier):
+	def get(self, depth, file_id):
 		if self.app.gameFunctions.gameIdentifier != self.game_identifier:
 			self.game_identifier = self.app.gameFunctions.gameIdentifier
 			self.plugins = {1: [], 2: [], 3: [], 4: {}}
 			self.load_plugins()
-		split_unique_identifier = unique_identifier.split('|')
-		if len(split_unique_identifier) in [1, 2]:
-			return self.plugins[len(split_unique_identifier)]
-		elif len(split_unique_identifier) == 3:
-			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles.getData(split_unique_identifier[-1])['fileType'], [])))
-		elif len(split_unique_identifier) == 4:
-			return self.plugins[4].get(self.app.tempNewFiles.getData(split_unique_identifier[-1])['fileType'], [])
+		if depth in [1, 2]:
+			return self.plugins[depth], file_id
+		elif depth == 3:
+			file_id = int(file_id)
+			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles.getData(file_id)['fileType'], []))), file_id
+		elif depth == 4:
+			file_id = int(file_id)
+			return self.plugins[4].get(self.app.tempNewFiles.getData(file_id)['fileType'], []), file_id
 
 	def load_plugins(self):
-		for finder, name, _ in pkgutil.iter_modules(f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/right_click_methods'):
+		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/right_click_methods']):
 			module = load_module(name, finder.path)
 			if not hasattr(module, 'plugin_name'):
 				self.app.log.warn(__name__, f'Failed loading {name} because "plugin_name" was not defined')
