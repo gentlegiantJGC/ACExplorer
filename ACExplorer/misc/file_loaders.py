@@ -1,6 +1,5 @@
 import pkgutil
 import importlib
-import sys
 
 
 class RightClickLoader:
@@ -75,7 +74,48 @@ class RightClickLoader:
 
 class DataTypeLoader:
 	def __init__(self, app):
-		pass
+		self.app = app
+		self.game_identifier = ''
+		self.plugins = {}
+
+	def get_data(self, file_object_data_wrapper, out_file=None, indent_count=0):
+		if self.app.gameFunctions.gameIdentifier != self.game_identifier:
+			self.game_identifier = self.app.gameFunctions.gameIdentifier
+			self.plugins = {}
+			self.load_plugins()
+		if not isinstance(file_object_data_wrapper, self.app.misc.file_object.FileObjectDataWrapper):
+			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
+		file_type = self.app.gameFunctions.framework.read_file_header(file_object_data_wrapper, out_file, indent_count)
+		if file_type in self.plugins:
+			return self.plugins[file_type](self.app, file_object_data_wrapper, out_file, indent_count)
+		else:
+			raise Exception(f'File type {file_type:08X} does not have a file reader')
+
+	def load_plugins(self):
+		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/type_readers']):
+			plugin = load_module(name, finder.path)
+
+			if not hasattr(plugin, 'file_type'):
+				self.app.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
+				continue
+			elif not isinstance(plugin.file_type, str):
+				self.app.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
+				continue
+			try:
+				file_type = int(plugin.file_type, 16)
+			except Exception as e:
+				self.app.log.warn(__name__, f'Failed loading {name} because parsing of "file_type" failed\n{e}')
+				continue
+
+			if not hasattr(plugin, 'plugin'):
+				self.app.log.warn(__name__, f'Failed loading {name} because "plugin" was not defined')
+				continue
+
+			if file_type in self.plugins:
+				self.app.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
+				continue
+			else:
+				self.plugins[file_type] = plugin.plugin
 
 
 def load_module(name, path):
