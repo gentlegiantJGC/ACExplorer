@@ -25,6 +25,7 @@ class App:
 		self.log = self.misc.Logger(self)
 		self.tempNewFiles = self.misc.tempFilesContainer(self)
 		self.right_click_plugins = ACExplorer.misc.file_loaders.RightClickLoader(self)
+		self.read_file = ACExplorer.misc.file_loaders.DataTypeLoader(self)
 		self.log.info(__name__, 'Building GUI Window')
 		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
