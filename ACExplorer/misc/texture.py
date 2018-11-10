@@ -60,3 +60,19 @@ class Material:
 		self.transmission = transmission
 		self.mask1 = mask1
 		self.mask2 = mask2
+
+
+def export_dds(app, file_id, save_folder):
+	data = app.tempNewFiles.getData(file_id)
+	if data is None:
+		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
+		return
+	texture_file = app.misc.file_object.FileObjectDataWrapper.from_binary(app, data["rawFile"])
+	save_path = os.path.join(save_folder, '{}.dds'.format(data['fileName']))
+	if os.path.isfile(save_path):
+		app.log.info(__name__, 'Texture "{}" already exported'.format(data['fileName']))
+		return save_path
+	tex = app.read_file.get_data(texture_file)
+	tex.export_dds(save_path)
+	app.log.info(__name__, 'Texture "{}" exported'.format(data['fileName']))
+	return save_path

@@ -6,13 +6,14 @@ class ObjMtl(object):
 	def __init__(self, app, model_name):
 		self.app = app
 		self.model_name = model_name
+		self.save_folder = self.app.CONFIG['dumpFolder']
 		self.vertex_count = 0   # the number of vertices that have been processed. Used to calculate the vertex offset
 		self.mtl_handler = MaterialHandler(self.app)      # used when generating the .mtl file
 		self._group_name = {}   # used for getting a unique name for each model
 		self.missing_no_exported = False
 
 		# the obj file object
-		self._obj = open('{}{}{}.obj'.format(self.app.CONFIG['dumpFolder'], os.sep, self.model_name), 'w')
+		self._obj = open('{}{}{}.obj'.format(self.save_folder, os.sep, self.model_name), 'w')
 		self._obj.write('#Wavefront Object File\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
 		self._obj.write('mtllib ./{}.mtl\n'.format(self.model_name))
 
@@ -55,7 +56,7 @@ class ObjMtl(object):
 		when finished will close both mtl and self._obj
 		:return:
 		"""
-		mtl = open('{}{}{}.mtl'.format(self.app.CONFIG['dumpFolder'], os.sep, self.model_name), 'w')
+		mtl = open('{}{}{}.mtl'.format(self.save_folder, os.sep, self.model_name), 'w')
 		mtl.write('# Material Library\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
 		for material in self.mtl_handler.materials.values():
 			mtl.write('newmtl {}\n'.format(material.name))
@@ -74,7 +75,7 @@ class ObjMtl(object):
 										]:
 					if file_id is None:
 						continue
-					image_path = self.app.gameFunctions.export_texture(self.app, file_id)
+					image_path = self.app.misc.texture.export_dds(self.app, file_id, self.save_folder)
 					if image_path is None:
 						mtl.write('{} {}\n'.format(map_type, os.path.basename(self.app.CONFIG['missingNo'])))
 						self.export_missing_no()
@@ -91,7 +92,7 @@ class ObjMtl(object):
 		"""
 		if not self.missing_no_exported:
 			self.missing_no_exported = True
-			shutil.copy(self.app.CONFIG['missingNo'], self.app.CONFIG['dumpFolder'])
+			shutil.copy(self.app.CONFIG['missingNo'], self.save_folder)
 
 
 class MaterialHandler:
