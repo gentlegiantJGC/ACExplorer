@@ -1,0 +1,29 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+struct FAKES {
+    struct HEADER {
+        char unk[2];
+        uint64 file_id;
+        uint32 file_type;
+    } header;
+    uint32 count;
+    struct FAKE {
+        uint64 file_id;
+        uint32 file_type;
+        char unk[2];
+        uint64 file_id;
+        uint32 file_type;
+        char typeswitch;
+        
+    } fake;
+} fakes;

@@ -1,0 +1,102 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+struct MESH {
+    char unk[2];
+    uint64 fileID;
+    uint32 fileType;
+    byte empty;
+    int32 modelType;
+    byte empty;
+    uint32 aCount;
+    uint32 boneCount;
+    struct BOUNDINGBOX {
+        float coord[8];
+    } boundingBox;
+    byte empty;
+    uint64 fileID;
+    uint32 fileType;
+    byte unk2[4];
+    uint32 typeSwitch;
+    byte unk3[14];
+    uint32 vertTableSize;
+    uint32 unk4;
+    byte unk5[24];
+    uint32 meshFaceBlockCount;
+    uint32 shadowFaceBlockCount;
+    struct MESHFACEBLOCKS {
+        uint32 val;
+    } meshFaceBlocks[meshFaceBlockCount];
+    struct SHADOWFACEBLOCKS {
+        uint32 val;
+    } shadowFaceBlocks[shadowFaceBlockCount];
+    uint32 unk6;
+    byte unk7;
+    uint32 vertTableLength;
+    struct VERTTABLE {
+        struct VERT {
+            char vertData[mesh.vertTableSize];
+        } vert[mesh.vertTableLength/mesh.vertTableSize];
+    } vertTable;
+    uint32 faceTableLength;
+    struct FACETABLE {
+        int16 val[3];
+    } faceTable[faceTableLength/6];
+    uint32 cAry;
+    char unk8[cAry];
+    uint32 cAry2;
+    char unk9[cAry2];
+    uint32 cAry3;
+    char unk10[cAry3];
+    uint64 fileID;
+    uint32 fileType;
+    char unk11[3];
+    uint32 meshCount;
+    struct MESHTABLE {
+        char unk12[12];
+        uint32 X;
+        char unk13[4];
+        uint32 materialTempID;
+        uint32 vertStart;
+        uint32 vertCount;
+        char unk14[4];
+    } meshTable[meshCount];
+    uint32 shadowCount;
+    struct SHADOWTABLE {
+        char unk12[12];
+        uint32 X;
+        char unk15[4];
+        uint32 Y;
+        uint32 Z;
+        uint32 W;
+        char unk16[4];
+    } shadowTable[shadowCount];
+    uint32 skipLength1;
+    char unk17[skipLength1];
+    uint32 skipLength2;
+    char unk17[skipLength2];
+    uint32 skinTableCount;
+    struct SKINTABLE {
+        char unk18[17];
+        uint16 boneCount;
+        char unk19[11];
+        char bones[256];
+    } skinTable[skinTableCount];
+    char unk20[8];
+    float modelScale;
+    uint32 materialCount;
+    struct MATERIALTABLE {
+        char unk21[2];
+        uint64 materialID;
+    } materialTable[materialCount];
+    char unk22[21];
+} mesh;

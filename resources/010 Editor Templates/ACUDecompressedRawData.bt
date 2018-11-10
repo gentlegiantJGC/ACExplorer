@@ -1,0 +1,41 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+local int i=0;
+uint16 file_count;
+struct INDEX_TABLE (int index) {
+    uint64 file_id;
+    uint32 data_size;
+    uint16 unk;
+    byte u[unk*2];
+};
+struct FILE_TABLE (int index) {
+    uint32 resource_type;
+    uint32 file_size;
+    uint32 file_name_size;
+    char file_name[file_name_size];
+    byte extra;
+    if (extra == 1){
+        struct EXTRA {
+            byte u[3];
+            uint32 count;
+            byte u2[count*12];
+        } xtra;
+    }
+    char raw_data[file_size];
+};
+for( i = 0; i < file_count; i++ ){
+    INDEX_TABLE index_table(i);
+};
+for( i = 0; i < file_count; i++ ){
+    FILE_TABLE file_table(i);
+};

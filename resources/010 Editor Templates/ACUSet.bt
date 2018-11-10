@@ -1,0 +1,21 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 70660ED7
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+struct SET {
+    char un[2];
+    uint64 fileID;
+    uint32 fileType;
+    struct IMG {
+        uint16 mark;
+        uint64 image_file_id;
+    } img[12];
+} set;

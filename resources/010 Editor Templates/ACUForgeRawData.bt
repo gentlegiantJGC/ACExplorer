@@ -1,0 +1,55 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+local int i;
+struct {
+    struct {
+        byte compressedChunkMarker[8];
+        int16 unk1;
+        byte compressionType;
+        uint16 minSize;
+        uint16 maxSize;
+        int32 compressedBlockCount;
+    } RawChunkHeader1;
+    struct {
+        uint16 uncompressedSize;
+        uint16 compressedSize;
+    } BlockIndex1[RawChunkHeader1.compressedBlockCount];
+    struct {
+        for ( i = 0; i < RawChunkHeader1.compressedBlockCount; i++ ){
+            struct {
+                int32 checksumPossibly;
+                byte compressedData[BlockIndex1[i].compressedSize];
+            } CompressedDataChunk;
+        }
+    } CompressedDataChunks1;
+    struct {
+        char compressedChunkMarker[8];
+        int16 unk1;
+        byte compressionType;
+        uint16 minSize;
+        uint16 maxSize;
+        int32 compressedBlockCount;
+    } RawChunkHeader2;
+    struct {
+        uint16 uncompressedSize;
+        uint16 compressedSize;
+    } BlockIndex2[RawChunkHeader2.compressedBlockCount];
+    struct {
+        for ( i = 0; i < RawChunkHeader2.compressedBlockCount; i++ ){
+            struct {
+                int32 checksumPossibly;
+                byte compressedData[BlockIndex2[i].compressedSize];
+            } CompressedDataChunk;
+        }
+    } CompressedDataChunks2;
+} ForgeRawData;
