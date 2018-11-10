@@ -81,18 +81,20 @@ class FileObjectDataWrapper:
 		if out_file is None:
 			self.file_object.seek(offset, whence)
 		else:
-			if whence == 0:
+			if whence == 0:  # absolute
 				count = offset - self.file_object.tell()
 				if count > 0:
 					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in self.file_object.read(count))))
 				elif count < 0:
 					out_file.write('Skipped back {} bytes\n'.format(abs(count)))
-			elif whence == 1:
+					self.file_object.seek(offset, whence)
+			elif whence == 1:  # relative
 				if offset > 0:
 					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in self.file_object.read(offset))))
 				elif offset < 0:
 					out_file.write('Skipped back {} bytes\n'.format(abs(offset)))
-			elif whence == 2:
+					self.file_object.seek(offset, whence)
+			elif whence == 2:  # relative to end
 				file_pointer = self.file_object.tell()
 				self.file_object.seek(offset, 2)
 				count = self.file_object.tell() - file_pointer
@@ -101,6 +103,7 @@ class FileObjectDataWrapper:
 					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in self.file_object.read(count))))
 				elif count < 0:
 					out_file.write('Skipped back {} bytes\n'.format(abs(count)))
+					self.file_object.seek(offset, whence)
 
 	def out_file_write(self, val, out_file=None, indent_count=0):
 		if out_file is not None:
