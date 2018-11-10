@@ -1,19 +1,19 @@
 def get_material_ids(app, file_id):
-	data = app.tempNewFiles.getData(file_id)
+	data = app.tempNewFiles.get_data(file_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return app.misc.Material('{:016X}'.format(file_id), missing_no=True)
 	name = data["fileName"]
 
-	material_file = app.misc.file_object.FileObjectDataWrapper.from_binary(app, data["rawFile"])
+	material_file = data["rawFile"]
 	material_file.seek(25)
 	material_template_id = material_file.read_id()
 
-	data = app.tempNewFiles.getData(material_template_id)
+	data = app.tempNewFiles.get_data(material_template_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(material_template_id))
 		return app.misc.Material(name, missing_no=True)
-	material_template = app.misc.file_object.FileObjectDataWrapper.from_binary(app, data["rawFile"])
+	material_template = data["rawFile"]
 
 	material = app.misc.Material(name)
 	material_template.seek(13, 1)

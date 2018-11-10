@@ -63,11 +63,11 @@ class Material:
 
 
 def export_dds(app, file_id, save_folder):
-	data = app.tempNewFiles.getData(file_id)
+	data = app.tempNewFiles.get_data(file_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return
-	texture_file = app.misc.file_object.FileObjectDataWrapper.from_binary(app, data["rawFile"])
+	texture_file = data["rawFile"]
 	save_path = os.path.join(save_folder, '{}.dds'.format(data['fileName']))
 	if os.path.isfile(save_path):
 		app.log.info(__name__, 'Texture "{}" already exported'.format(data['fileName']))

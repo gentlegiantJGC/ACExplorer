@@ -1,4 +1,4 @@
-'''
+"""
 Forge file
 Forge1.forge
 	dataFile1
@@ -28,138 +28,125 @@ Forge2.forge
 		file2
 		...
 	...
-'''
+"""
 
-'''
+"""
 tempFiles
 {
 	<fileID>:(<forgeFile>, <datafileID>, <fileType>, <fileName>, None),
 	...
 }
-'''
+"""
 
-'''
+"""
 lightDictionary
 {
 	fileID:{
 		<forgeFile>:[]
 	}
 }
-'''
+"""
 
-import struct
-import binascii
 
-class tempFilesContainer:
+class TempFilesContainer:
 	def __init__(self, app):
 		self.app = app
 		# dictionary to look up which dataFile a fileID is contained in (if it itself is not the main file in the dataFile)
-		self.lightDictionary = {}
-		self.lightDictChanged = False
+		self.light_dictionary = {}
+		self._light_dict_changed = False
 		# the amount of memory self.rawFiles takes (used to remove files)
-		self.memory = 0
+		self._memory = 0
 		# a dictionary of every file currently loaded into memory
-		self.tempFiles = {}
-		self.lastUsed = []
+		self._temp_files = {}
+		self._last_used = []
 
-	def add(self, fileID, forgeFile, datafileID, fileType, fileName, rawFile=None):
-		'''
-		:param fileID: int
-		:param forgeFile: str
-		:param datafileID: int of containing datafile
-		:param fileType: int
-		:param fileName: str
-		:param rawFile: binary
+	@property
+	def light_dict_changed(self):
+		return self._light_dict_changed
+
+	def add(self, file_id, forge_file_name, datafile_id, file_type, file_name, raw_file=None):
+		"""
+		:param file_id: int
+		:param forge_file_name: str
+		:param datafile_id: int of containing datafile
+		:param file_type: int
+		:param file_name: str
+		:param raw_file: binary
 		:return:
-		'''
-		if fileID in self.tempFiles:
-			self.memory -= len(self.tempFiles[fileID][4])
-		self.refreshUsage(fileID)
-		self.tempFiles[fileID] = (forgeFile, datafileID, fileType, fileName, rawFile)
-		if rawFile is not None:
-			self.memory += len(rawFile)
+		"""
+		if file_id in self._temp_files:
+			self._memory -= len(self._temp_files[file_id][4])
+		self.refresh_usage(file_id)
+		self._temp_files[file_id] = (forge_file_name, datafile_id, file_type, file_name, raw_file)
+		if raw_file is not None:
+			self._memory += len(raw_file)
 
-		while self.memory > self.app.CONFIG['tempFilesMaxMemoryMB']*1000000:
-			removeEntry = self.lastUsed.pop(0)
-			self.memory -= len(self.tempFiles[removeEntry][4])
-			del self.tempFiles[removeEntry]
+		while self._memory > self.app.CONFIG['tempFilesMaxMemoryMB']*1000000:
+			remove_entry = self._last_used.pop(0)
+			self._memory -= len(self._temp_files[remove_entry][4])
+			del self._temp_files[remove_entry]
 
-		if fileID != datafileID:
-			if str(fileID) not in self.lightDictionary:
-				self.lightDictionary[str(fileID)] = {}
-			if forgeFile not in self.lightDictionary[str(fileID)]:
-				self.lightDictionary[str(fileID)][forgeFile] = []
-			if datafileID not in self.lightDictionary[str(fileID)][forgeFile]:
-				self.lightDictionary[str(fileID)][forgeFile].append(datafileID)
-				self.lightDictChanged = True
+		if file_id != datafile_id:
+			if str(file_id) not in self.light_dictionary:
+				self.light_dictionary[str(file_id)] = {}
+			if forge_file_name not in self.light_dictionary[str(file_id)]:
+				self.light_dictionary[str(file_id)][forge_file_name] = []
+			if datafile_id not in self.light_dictionary[str(file_id)][forge_file_name]:
+				self.light_dictionary[str(file_id)][forge_file_name].append(datafile_id)
+				self._light_dict_changed = True
 
-	def getData(self, fileID, forgeFile=None, datafileID=None):
-		'''
-		:param fileID: int
-		:param forgeFile: str
-		:param datafileID: int of the containing datafile
+	def get_data(self, file_id, forge_file_name=None, datafile_id=None):
+		"""
+		:param file_id: int
+		:param forge_file_name: str
+		:param datafile_id: int of the containing datafile
 		:return:
-		'''
+		"""
 
-		if forgeFile is not None and datafileID is None:
-			if fileID in self.tempFiles and forgeFile == self.tempFiles[fileID][0]:
-				datafileID = self.tempFiles[fileID][1]
+		if forge_file_name is not None and datafile_id is None:
+			if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0]:
+				datafile_id = self._temp_files[file_id][1]
 			else:
 				# preferentially use one found in the forgeFile asked but look in others if needed
-				if forgeFile in self.app.file_list and fileID in self.app.file_list[forgeFile]:
-					datafileID = fileID
-				elif str(fileID) in self.lightDictionary and forgeFile in self.lightDictionary[str(fileID)]:
-					datafileID = self.lightDictionary[str(fileID)][0]
+				if forge_file_name in self.app.file_list and file_id in self.app.file_list[forge_file_name]:
+					datafile_id = file_id
+				elif str(file_id) in self.light_dictionary and forge_file_name in self.light_dictionary[str(file_id)]:
+					datafile_id = self.light_dictionary[str(file_id)][0]
 				else:
-					forgeFile = None
-		if forgeFile is None:
-			forgeFile = next((fF for fF in self.app.file_list if fileID in self.app.file_list[fF]), None)
-			if forgeFile is None:
-				if str(fileID) in self.lightDictionary: # could check the lower down stuff but if this exists there should be data inside
-					forgeFile = next(iter(self.lightDictionary[str(fileID)]))
-					datafileID = self.lightDictionary[str(fileID)][forgeFile][0]
+					forge_file_name = None
+		if forge_file_name is None:
+			forge_file_name = next((fF for fF in self.app.file_list if file_id in self.app.file_list[fF]), None)
+			if forge_file_name is None:
+				if str(file_id) in self.light_dictionary:  # could check the lower down stuff but if this exists there should be data inside
+					forge_file_name = next(iter(self.light_dictionary[str(file_id)]))
+					datafile_id = self.light_dictionary[str(file_id)][forge_file_name][0]
 				else:
 					return
 			else:
-				datafileID = fileID
+				datafile_id = file_id
 
-		if not (fileID in self.tempFiles and forgeFile == self.tempFiles[fileID][0] and datafileID == self.tempFiles[fileID][1]):
-			self.app.gameFunctions.framework.decompress_datafile(self.app, datafileID, forgeFile)
-		self.refreshUsage(fileID)
-		if fileID in self.tempFiles and forgeFile == self.tempFiles[fileID][0] and datafileID == self.tempFiles[fileID][1]:
+		if not (file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]):
+			self.app.gameFunctions.framework.decompress_datafile(self.app, datafile_id, forge_file_name)
+		self.refresh_usage(file_id)
+		if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]:
 			return {
-				'forgeFile': forgeFile,
-				'datafileID': datafileID,
-				'fileType': '{:08X}'.format(self.tempFiles[fileID][2]),
-				'fileName': self.tempFiles[fileID][3],
-				'rawFile': self.tempFiles[fileID][4]
+				'forgeFile': forge_file_name,
+				'datafileID': datafile_id,
+				'fileType': '{:08X}'.format(self._temp_files[file_id][2]),
+				'fileName': self._temp_files[file_id][3],
+				'rawFile': self.app.misc.file_object.FileObjectDataWrapper.from_binary(self.app, self._temp_files[file_id][4])
 			}
 		else:
 			return
 
-	def getFile(self, fileID, forgeFile=None, datafileID=None):
-		'''
-		:param fileID: int
-		:param forgeFile: str
-		:param datafileID: int
-		:return:
-		'''
-		data = self.getData(fileID, forgeFile, datafileID)
-		forgeFile = data['forgeFile']
-		datafileID = data['datafileID']
-		if data['rawFile'] is None:
-			self.app.gameFunctions.framework.decompress_datafile(self.app, datafileID, forgeFile)
-		self.refreshUsage(fileID)
-		return data['rawFile']
-
 	def clear(self):
-		self.lightDictionary.clear()
-		self.memory = 0
-		self.tempFiles.clear()
-		self.lastUsed = []
-		self.lightDictChanged = False
+		self.light_dictionary.clear()
+		self._memory = 0
+		self._temp_files.clear()
+		self._last_used = []
+		self._light_dict_changed = False
 
-	def refreshUsage(self, fileID):
-		if fileID in self.tempFiles:
-			self.lastUsed.remove(fileID)
-		self.lastUsed.append(fileID)
+	def refresh_usage(self, file_id):
+		if file_id in self._temp_files:
+			self._last_used.remove(file_id)
+		self._last_used.append(file_id)

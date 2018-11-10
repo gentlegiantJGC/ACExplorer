@@ -23,7 +23,7 @@ class App:
 		self.misc = ACExplorer.misc
 		self.gameFunctions = None
 		self.log = self.misc.Logger(self)
-		self.tempNewFiles = self.misc.tempFilesContainer(self)
+		self.tempNewFiles = self.misc.TempFilesContainer(self)
 		self.right_click_plugins = ACExplorer.misc.file_loaders.RightClickLoader(self)
 		self.read_file = ACExplorer.misc.file_loaders.DataTypeLoader(self)
 		self.log.info(__name__, 'Building GUI Window')
@@ -80,9 +80,9 @@ class App:
 		self.main_ui.mainloop()
 
 	def load_game(self, game_identifier):
-		if self.gameFunctions is not None and self.tempNewFiles.lightDictChanged:
+		if self.gameFunctions is not None and self.tempNewFiles.light_dict_changed:
 			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'w') as light_dict:
-				json.dump(self.tempNewFiles.lightDictionary, light_dict)
+				json.dump(self.tempNewFiles.light_dictionary, light_dict)
 		self.tempNewFiles.clear()
 		self.file_tree.delete(*self.file_tree.get_children())
 		if game_identifier in ACExplorer.games:
@@ -92,7 +92,7 @@ class App:
 
 			if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
 				with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'r') as light_dict:
-					self.tempNewFiles.lightDictionary = json.load(light_dict)
+					self.tempNewFiles.light_dictionary = json.load(light_dict)
 
 	def options_dialogue(self):
 		dia = OptionsDialogue(self.CONFIG)
@@ -226,8 +226,8 @@ if __name__ == '__main__':
 	app = App()
 	with open('./config.json', 'w') as f:
 		json.dump(app.CONFIG.raw, f, indent=4)
-	if app.tempNewFiles.lightDictChanged:
+	if app.tempNewFiles.light_dict_changed:
 		if not os.path.isdir('./resources/lightDict'):
 			os.makedirs('./resources/lightDict')
 		with open('./resources/lightDict/{}.json'.format(app.gameFunctions.gameIdentifier), 'w') as f:
-			json.dump(app.tempNewFiles.lightDictionary, f)
+			json.dump(app.tempNewFiles.light_dictionary, f)

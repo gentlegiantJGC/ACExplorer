@@ -52,7 +52,7 @@ def readID(app, fIn, fOut, indentCount = 0):
 	if fOut is not None:
 		fOut.write(indentCount*indentCharacter + hexSpaces(val))
 		fOut.write('\t\t')
-		data = app.tempNewFiles.getData(fileID)
+		data = app.tempNewFiles.get_data(fileID)
 		if data is None:
 			fOut.write('Unknown File ID')
 		else:
@@ -182,12 +182,12 @@ def topLevelFormat(app, fileID):
 	success = True
 	indentCount = 0
 
-	data = app.tempNewFiles.getData(fileID)
+	data = app.tempNewFiles.get_data(fileID)
 	if data is None:
 		raise Exception('Error with file "{}"'.format(fileID))
 	app.log.info(__name__, 'Formatting {}:{}'.format(fileID, data["fileName"]))
 	fIn = app.misc.FileObject()
-	fIn.write(app.tempNewFiles.getFile(fileID))
+	fIn.write(app.tempNewFiles.get_file(fileID))
 	fIn.seek(0)
 
 	if dev:

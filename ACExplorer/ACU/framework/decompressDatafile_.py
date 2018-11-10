@@ -66,7 +66,7 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 
 		if file_name == '':
 			file_name = '{:016X}'.format(file_id)
-		app.tempNewFiles.add(file_id, forge_file_name, datafile_id, file_type, file_name, rawFile=raw_file)
+		app.tempNewFiles.add(file_id, forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
 		if file_name not in alphabetical_files:
 			alphabetical_files[file_name] = []
 		alphabetical_files[file_name].append(file_id)

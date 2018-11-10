@@ -3,7 +3,7 @@ import numpy
 
 
 def export_fakes(app, file_id):
-	data = app.tempNewFiles.getData(file_id)
+	data = app.tempNewFiles.get_data(file_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return
