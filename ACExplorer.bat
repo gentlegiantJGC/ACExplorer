@@ -1,2 +1,0 @@
-python ACExplorerMain.py
-pause
