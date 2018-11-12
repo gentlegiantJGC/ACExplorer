@@ -63,7 +63,7 @@ class Material:
 
 
 def export_dds(app, file_id, save_folder):
-	data = app.tempNewFiles.get_data(file_id)
+	data = app.tempNewFiles(file_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return

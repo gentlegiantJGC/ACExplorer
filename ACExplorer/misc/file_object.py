@@ -157,7 +157,7 @@ class FileObjectDataWrapper:
 	def read_id(self, out_file=None, indent_count=0):
 		file_id = self._read_struct(out_file, indent_count, 8, 'Q', True)
 		if out_file is not None:
-			data = self.app.tempNewFiles.get_data(file_id)
+			data = self.app.tempNewFiles(file_id)
 			out_file.write('\t')
 			if data is None:
 				out_file.write('Unknown File ID\n')

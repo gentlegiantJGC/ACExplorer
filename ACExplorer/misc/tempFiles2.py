@@ -95,7 +95,7 @@ class TempFilesContainer:
 				self.light_dictionary[str(file_id)][forge_file_name].append(datafile_id)
 				self._light_dict_changed = True
 
-	def get_data(self, file_id, forge_file_name=None, datafile_id=None):
+	def __call__(self, file_id, forge_file_name=None, datafile_id=None):
 		"""
 		:param file_id: int
 		:param forge_file_name: str

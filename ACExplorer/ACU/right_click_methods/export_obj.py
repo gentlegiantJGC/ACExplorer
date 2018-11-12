@@ -7,7 +7,7 @@ def plugin(app, file_id):
 	# TODO add select directory option
 	save_folder = app.CONFIG['dumpFolder']
 
-	data = app.tempNewFiles.get_data(file_id)
+	data = app.tempNewFiles(file_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return
