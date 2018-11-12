@@ -78,7 +78,7 @@ class DataTypeLoader:
 		self.game_identifier = ''
 		self.plugins = {}
 
-	def get_data(self, file_object_data_wrapper, out_file=None, indent_count=0):
+	def __call__(self, file_object_data_wrapper, out_file=None, indent_count=0):
 		"""
 		Call this function in the right click methods as the start point
 		Will call get_data_recursive to get the actual data followed by the clever_format method to read the rest of the file

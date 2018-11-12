@@ -67,12 +67,11 @@ def export_dds(app, file_id, save_folder):
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return
-	texture_file = data["rawFile"]
 	save_path = os.path.join(save_folder, '{}.dds'.format(data['fileName']))
 	if os.path.isfile(save_path):
 		app.log.info(__name__, 'Texture "{}" already exported'.format(data['fileName']))
 		return save_path
-	tex = app.read_file.get_data(texture_file)
+	tex = app.read_file(data["rawFile"])
 	tex.export_dds(save_path)
 	app.log.info(__name__, 'Texture "{}" exported'.format(data['fileName']))
 	return save_path

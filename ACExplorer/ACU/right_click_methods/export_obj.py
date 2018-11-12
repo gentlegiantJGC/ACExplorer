@@ -13,7 +13,7 @@ def plugin(app, file_id):
 		return
 	model_name = data['fileName']
 
-	model = app.read_file.get_data(data["rawFile"])
+	model = app.read_file(data["rawFile"])
 	if model is not None:
 		obj_handler = app.misc.mesh.ObjMtl(app, model_name, save_folder)
 		obj_handler.export(model, model_name)
