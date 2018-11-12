@@ -3,10 +3,10 @@ import shutil
 
 
 class ObjMtl(object):
-	def __init__(self, app, model_name):
+	def __init__(self, app, model_name, save_folder):
 		self.app = app
 		self.model_name = model_name
-		self.save_folder = self.app.CONFIG['dumpFolder']
+		self.save_folder = save_folder
 		self.vertex_count = 0   # the number of vertices that have been processed. Used to calculate the vertex offset
 		self.mtl_handler = MaterialHandler(self.app)      # used when generating the .mtl file
 		self._group_name = {}   # used for getting a unique name for each model
@@ -27,7 +27,7 @@ class ObjMtl(object):
 		self._group_name[name] += 1
 		return '{}_{}'.format(name, self._group_name[name])
 
-	def export(self, model):
+	def export(self, model, model_name):
 		"""
 		when called will export the currently loaded mesh to the obj file
 		when finished will reset all the mesh variables so that things do not persist
@@ -43,7 +43,7 @@ class ObjMtl(object):
 
 		# write faces
 		for mesh_index, mesh in enumerate(model.meshes):
-			self._obj.write('g {}\n'.format(self.group_name(model.name)))
+			self._obj.write('g {}\n'.format(self.group_name(model_name)))
 			self._obj.write('usemtl {}\n'.format(self.mtl_handler.get(model.materials[mesh_index]).name))
 			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']] + self.vertex_count]))
 			self._obj.write('# {} faces\n\n'.format(mesh['face_count']))
@@ -107,7 +107,7 @@ class MaterialHandler:
 		return self.materials[file_id]
 
 
-class Model:
+class BaseModel:
 	def __init__(self):
 		self.name = None
 		self.vertices = None
