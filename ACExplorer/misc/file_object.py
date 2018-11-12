@@ -169,7 +169,7 @@ class FileObjectDataWrapper:
 		binary = self.file_object.read(4)
 		if len(binary) != 4:
 			raise Exception('Reached End Of File')
-		file_type = ''.join('{:02X}'.format(ord(b)) for b in binary[::-1])
+		file_type = ''.join(f'{b:02X}' for b in binary[::-1])
 		if out_file is not None:
 			out_file.write('{}{}\t{}\t{}\n'.format(indent_count * self.indent_chr, ' '.join('{:02X}'.format(ord(b)) for b in binary), file_type, self.app.gameFunctions.file_types.get(file_type, 'Undefined')))
 		return file_type
