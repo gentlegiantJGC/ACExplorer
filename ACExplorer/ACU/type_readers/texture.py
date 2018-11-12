@@ -2,8 +2,6 @@ import os
 import struct
 from ACExplorer.misc import BaseTexture
 
-plugin_name = 'Export Texture'
-plugin_level = 4
 file_type = 'A2B7E917'
 
 

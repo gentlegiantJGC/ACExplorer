@@ -1,5 +1,3 @@
-import os
-
 plugin_name = 'Export DDS'
 plugin_level = 4
 file_type = 'A2B7E917'
