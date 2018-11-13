@@ -19,21 +19,21 @@ class RightClickHandler:
 	def __init__(self, app):
 		self.app = app
 		self.game_identifier = ''
-		self.plugins = {1: [], 2: [], 3: [], 4: {}}
+		self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 
 	def get(self, depth, file_id):
 		if self.app.gameFunctions.gameIdentifier != self.game_identifier:
 			self.game_identifier = self.app.gameFunctions.gameIdentifier
-			self.plugins = {1: [], 2: [], 3: [], 4: {}}
+			self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 			self.load_plugins()
 		if depth in [1, 2]:
 			return self.plugins[depth], file_id
 		elif depth == 3:
 			file_id = int(file_id)
-			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles(file_id)['fileType'], []))), file_id
+			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles(file_id)['fileType'], []) + self.plugins[4]['*'])), file_id
 		elif depth == 4:
 			file_id = int(file_id)
-			return self.plugins[4].get(self.app.tempNewFiles(file_id)['fileType'], []), file_id
+			return self.plugins[4].get(self.app.tempNewFiles(file_id)['fileType'], []) + self.plugins[4]['*'], file_id
 
 	def load_plugins(self):
 		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/right_click_methods']):
@@ -96,12 +96,6 @@ class DataTypeHandler:
 		data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
 		file_object_data_wrapper.clever_format(out_file, indent_count)
 		return data
-
-	def from_id(self, file_id):
-		data = app.tempNewFiles(file_id)
-		if data is None:
-			app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
-			return
 
 	def get_data_recursive(self, file_object_data_wrapper, out_file, indent_count):
 		"""
