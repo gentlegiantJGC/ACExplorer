@@ -2,7 +2,7 @@ import pkgutil
 import importlib
 
 
-class RightClickLoader:
+class RightClickHandler:
 	"""
 	the following are required in a plugin for it to be loaded
 	plugin_name = 'Plugin Name'  # the name shown to the user
@@ -72,7 +72,7 @@ class RightClickLoader:
 			self.app.log.info(__name__, f'Successfully loaded right click plugin: "{module.plugin_name}"')
 
 
-class DataTypeLoader:
+class DataTypeHandler:
 	def __init__(self, app):
 		self.app = app
 		self.game_identifier = ''
