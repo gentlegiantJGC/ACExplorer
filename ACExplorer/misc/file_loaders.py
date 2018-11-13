@@ -109,7 +109,7 @@ class DataTypeHandler:
 		if file_type in self.plugins:
 			return self.plugins[file_type](self.app, file_object_data_wrapper, out_file, indent_count+1)
 		else:
-			raise Exception(f'File type {file_type:08X} does not have a file reader')
+			raise Exception(f'File type {file_type} does not have a file reader')
 
 	def load_plugins(self):
 		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/type_readers']):
@@ -122,7 +122,7 @@ class DataTypeHandler:
 				self.app.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
 				continue
 			try:
-				file_type = int(plugin.file_type, 16)
+				file_type = plugin.file_type
 			except Exception as e:
 				self.app.log.warn(__name__, f'Failed loading {name} because parsing of "file_type" failed\n{e}')
 				continue
