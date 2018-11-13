@@ -97,6 +97,12 @@ class DataTypeLoader:
 		file_object_data_wrapper.clever_format(out_file, indent_count)
 		return data
 
+	def from_id(self, file_id):
+		data = app.tempNewFiles(file_id)
+		if data is None:
+			app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
+			return
+
 	def get_data_recursive(self, file_object_data_wrapper, out_file, indent_count):
 		"""
 		Call this function in file reader methods to access other file types in the same file

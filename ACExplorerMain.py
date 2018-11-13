@@ -24,8 +24,8 @@ class App:
 		self.gameFunctions = None
 		self.log = self.misc.Logger(self)
 		self.tempNewFiles = self.misc.TempFilesContainer(self)
-		self.right_click_plugins = ACExplorer.misc.file_loaders.RightClickLoader(self)
-		self.read_file = ACExplorer.misc.file_loaders.DataTypeLoader(self)
+		self.right_click_plugins = ACExplorer.misc.file_loaders.RightClickHandler(self)
+		self.read_file = ACExplorer.misc.file_loaders.DataTypeHandler(self)
 		self.log.info(__name__, 'Building GUI Window')
 		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
