@@ -13,7 +13,7 @@ def plugin(app, file_id):
 	out_file = open(
 		os.path.join(
 			app.CONFIG['dumpFolder'],
-			f'{app.gameFunctions.gameIdentifier}_{data["fileName"]}_{file_id}.format'
+			f'{app.gameFunctions.gameIdentifier}_{data["fileName"]}_{file_id:016X}.format'
 		), 'w'
 	)
 	app.read_file(data['rawFile'], out_file)
