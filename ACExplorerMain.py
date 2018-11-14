@@ -215,12 +215,14 @@ class RightClickDialogue:
 		self.menu.delete(0, tkinter.END)
 		if len(plugins) > 0:
 			for plugin in plugins:
-				self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app, file_id))
+				self.add_command(plugin, file_id)
 			try:
 				self.menu.tk_popup(event.x_root, event.y_root)
 			finally:
 				self.menu.grab_release()
 
+	def add_command(self, plugin, file_id):
+		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app, file_id))
 
 if __name__ == '__main__':
 	app = App()
