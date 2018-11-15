@@ -7,14 +7,20 @@ def read_compressed_data_section(app, raw_data_chunk):
 	raw_data_chunk.seek(3, 1)
 	format_version = raw_data_chunk.read_uint_8()
 	if format_version == 0:
-		comp_block_count = raw_data_chunk.read_uint_8()
-		if comp_block_count != 1:
-			raise Exception('This file has a count not equal to 1. No example of this has been found yet. Please let the creator know where you found this.')
-		size_table = raw_data_chunk.read_numpy('<u4', comp_block_count * 8).reshape(-1, 2).astype(int)  # 'compressed_size', 'uncompressed_size'
 		uncompressed_data_list = []
-		for size in size_table:  # Could do this using numpy and then vectorise the decompression
-			raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
-			uncompressed_data_list.append(app.misc.decompress(compression_type, raw_data_chunk.read_str(size[0]), size[1]))
+		comp_block_count = 1
+		while comp_block_count == 1:
+			try:
+				comp_block_count = raw_data_chunk.read_uint_8()
+			except:
+				comp_block_count = 0
+				continue
+			if comp_block_count != 1:
+				raise Exception('This file has a count not equal to 1. No example of this has been found yet. Please let the creator know where you found this.')
+			size_table = raw_data_chunk.read_numpy('<u4', comp_block_count * 8).reshape(-1, 2).astype(int)  # 'compressed_size', 'uncompressed_size'
+			for size in size_table:  # Could do this using numpy and then vectorise the decompression
+				raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
+				uncompressed_data_list.append(app.misc.decompress(compression_type, raw_data_chunk.read_str(size[0]), size[1]))
 
 	elif format_version == 128:
 		comp_block_count = raw_data_chunk.read_uint_32()
