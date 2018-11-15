@@ -33,7 +33,7 @@ class RightClickHandler:
 			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'])), file_id
 		elif depth == 4:
 			file_id = int(file_id)
-			return self.plugins[4].get(self.app.tempNewFiles(file_id)['fileType'], []) + self.plugins[4]['*'], file_id
+			return self.plugins[4].get(self.app.tempNewFiles(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'], file_id
 
 	def load_plugins(self):
 		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/right_click_methods']):
