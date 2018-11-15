@@ -21,7 +21,7 @@ class RightClickHandler:
 		self.game_identifier = ''
 		self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 
-	def get(self, depth, file_id):
+	def get(self, depth, file_id, forge_file_name=None, datafile_id=None):
 		if self.app.gameFunctions.gameIdentifier != self.game_identifier:
 			self.game_identifier = self.app.gameFunctions.gameIdentifier
 			self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
@@ -30,7 +30,7 @@ class RightClickHandler:
 			return self.plugins[depth], file_id
 		elif depth == 3:
 			file_id = int(file_id)
-			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles(file_id)['fileType'], []) + self.plugins[4]['*'])), file_id
+			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'])), file_id
 		elif depth == 4:
 			file_id = int(file_id)
 			return self.plugins[4].get(self.app.tempNewFiles(file_id)['fileType'], []) + self.plugins[4]['*'], file_id

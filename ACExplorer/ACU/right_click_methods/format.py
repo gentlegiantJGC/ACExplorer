@@ -5,8 +5,8 @@ plugin_level = 4
 file_type = '*'
 
 
-def plugin(app, file_id):
-	data = app.tempNewFiles(file_id)
+def plugin(app, file_id, forge_file_name, datafile_id):
+	data = app.tempNewFiles(file_id, forge_file_name, datafile_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return

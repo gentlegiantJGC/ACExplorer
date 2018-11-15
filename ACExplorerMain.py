@@ -110,8 +110,13 @@ class App:
 		if unique_identifier:
 			self.file_tree.selection_set(unique_identifier)
 			unique_identifier = unique_identifier.split('|')
-			plugins, file_id = self.right_click_plugins.get(len(unique_identifier), unique_identifier[-1])
-			self.right_click_dialogue.post(event, plugins, file_id)
+			forge_file_name = datafile_id = None
+			if len(unique_identifier) >= 2:
+				forge_file_name = unique_identifier[1]
+			if len(unique_identifier) >= 3:
+				datafile_id = int(unique_identifier[2])
+			plugins, file_id = self.right_click_plugins.get(len(unique_identifier), unique_identifier[-1], forge_file_name, datafile_id)
+			self.right_click_dialogue.post(event, plugins, file_id, forge_file_name, datafile_id)
 		else:
 			pass
 
@@ -211,18 +216,19 @@ class RightClickDialogue:
 		self.app = app_
 		self.menu = tkinter.Menu(self.app.main_ui, tearoff=0)
 
-	def post(self, event, plugins, file_id):
+	def post(self, event, plugins, file_id, forge_file_name=None, datafile_id=None):
 		self.menu.delete(0, tkinter.END)
 		if len(plugins) > 0:
 			for plugin in plugins:
-				self.add_command(plugin, file_id)
+				self.add_command(plugin, file_id, forge_file_name, datafile_id)
 			try:
 				self.menu.tk_popup(event.x_root, event.y_root)
 			finally:
 				self.menu.grab_release()
 
-	def add_command(self, plugin, file_id):
-		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app, file_id))
+	def add_command(self, plugin, file_id, forge_file_name, datafile_id):
+		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app, file_id, forge_file_name, datafile_id))
+
 
 if __name__ == '__main__':
 	app = App()

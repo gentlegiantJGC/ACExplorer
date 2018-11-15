@@ -62,8 +62,8 @@ class Material:
 		self.mask2 = mask2
 
 
-def export_dds(app, file_id, save_folder):
-	data = app.tempNewFiles(file_id)
+def export_dds(app, file_id, forge_file_name, datafile_id, save_folder):
+	data = app.tempNewFiles(file_id, forge_file_name, datafile_id)
 	if data is None:
 		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
 		return
