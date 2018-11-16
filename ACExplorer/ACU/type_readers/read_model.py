@@ -238,7 +238,7 @@ class Model(BaseModel):
 						('', numpy.int16, 2),  # not sure what this is
 					], vert_table_length, out_file, indent_count)
 				else:
-					app.log.warn(__name__, 'Not yet implemented!\n\nvertTableWidth = {}'.format(vert_table_width))
+					app.log.warn(__name__, f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
 					return
 
 				model_file.out_file_write(f'{vert_table}\n', out_file, indent_count)

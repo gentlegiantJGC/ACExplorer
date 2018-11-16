@@ -9,7 +9,7 @@ def plugin(app, file_id, forge_file_name, datafile_id):
 
 	data = app.tempNewFiles(file_id, forge_file_name, datafile_id)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
+		app.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return
 	model_name = data['fileName']
 
@@ -18,6 +18,6 @@ def plugin(app, file_id, forge_file_name, datafile_id):
 		obj_handler = app.misc.mesh.ObjMtl(app, model_name, save_folder)
 		obj_handler.export(model, model_name)
 		obj_handler.save_and_close()
-		app.log.info(__name__, 'Exported {:016X}'.format(file_id))
+		app.log.info(__name__, f'Exported {file_id:016X}')
 	else:
-		app.log.warn(__name__, 'Failed to export {:016X}'.format(file_id))
+		app.log.warn(__name__, f'Failed to export {file_id:016X}')

@@ -26,5 +26,5 @@ def decompress(mode, src, dst_len):
 		# lzo1c
 		lzo.lzo1c_decompress(src, src_len, dst, dst_len, None)
 	else:
-		raise Exception('Decompression Mode "{}" is not supported'.format(mode))
+		raise Exception(f'Decompression Mode "{mode}" is not supported')
 	return dst

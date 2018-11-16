@@ -6,17 +6,17 @@ def read_forge(app, folder):
 	app.file_tree.insert('', 'end', app.gameFunctions.gameIdentifier, text=app.gameFunctions.gameIdentifier)
 	for forge_file_name in os.listdir(folder):
 		if forge_file_name.endswith('.forge'):
-			app.log.info(__name__, 'Building file tree for {}'.format(forge_file_name))
+			app.log.info(__name__, f'Building file tree for {forge_file_name}')
 			forge_file = app.misc.file_object.FileObjectDataWrapper.from_file(app, os.path.join(folder, forge_file_name))
 			# header
 			if forge_file.read_str(8) != b'scimitar':
 				continue
-			app.file_tree.insert(app.gameFunctions.gameIdentifier, 'end', '{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), text=forge_file_name)
+			app.file_tree.insert(app.gameFunctions.gameIdentifier, 'end', f'{app.gameFunctions.gameIdentifier}|{forge_file_name}', text=forge_file_name)
 			file_list[forge_file_name] = {}
 			forge_file.seek(1, 1)
 			forge_file_version, file_data_header_offset = forge_file.read_struct('iQ')
 			if forge_file_version != 27:
-				raise Exception('Unsupported Forge file format : "{}"'.format(forge_file_version))
+				raise Exception(f'Unsupported Forge file format : "{forge_file_version}"')
 			forge_file.seek(file_data_header_offset+36)
 			file_data_offset = forge_file.read_int_64()
 			forge_file.seek(file_data_offset)
@@ -44,6 +44,6 @@ def read_forge(app, folder):
 
 			for file_name in sorted(forge_datafiles, key=lambda v: v.lower()):
 				for file_id in forge_datafiles[file_name]:
-					app.file_tree.insert('{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name), 'end', '{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, file_id), text=file_name)
+					app.file_tree.insert(f'{app.gameFunctions.gameIdentifier}|{forge_file_name}', 'end', f'{app.gameFunctions.gameIdentifier}|{forge_file_name}|{file_id}', text=file_name)
 			forge_file.close()
 	return file_list

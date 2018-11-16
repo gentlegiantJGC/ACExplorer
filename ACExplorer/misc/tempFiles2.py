@@ -132,7 +132,7 @@ class TempFilesContainer:
 			return {
 				'forgeFile': forge_file_name,
 				'datafileID': datafile_id,
-				'fileType': '{:08X}'.format(self._temp_files[file_id][2]),
+				'fileType': f'{self._temp_files[file_id][2]:08X}',
 				'fileName': self._temp_files[file_id][3],
 				'rawFile': self.app.misc.file_object.FileObjectDataWrapper.from_binary(self.app, self._temp_files[file_id][4])
 			}

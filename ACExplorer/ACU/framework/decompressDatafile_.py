@@ -92,31 +92,38 @@ def decompress_datafile(app, datafile_id, forge_file_name=None):
 			raw_file = uncompressed_data.read_str(file_size)
 
 			if file_name == '':
-				file_name = '{:016X}'.format(file_id)
+				file_name = f'{file_id:016X}'
 			app.tempNewFiles.add(file_id, forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
 			if file_name not in alphabetical_files:
 				alphabetical_files[file_name] = []
 			alphabetical_files[file_name].append(file_id)
 			if app.CONFIG['writeToDisk']:
-				folder = os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, forge_file_name, app.file_list[forge_file_name][datafile_id]['fileName'], '{:08X}'.format(file_type))
-				if os.path.isfile(os.path.join(folder, '{}.{}'.format(file_name, app.gameFunctions.gameIdentifier.lower()))):
+				folder = os.path.join(
+					app.CONFIG['dumpFolder'],
+					app.gameFunctions.gameIdentifier,
+					forge_file_name,
+					app.file_list[forge_file_name][datafile_id]['fileName'],
+					f'{file_type:08X}'
+				)
+				if os.path.isfile(os.path.join(folder, f'{file_name}.{app.gameFunctions.gameIdentifier.lower()}')):
 					duplicate = 1
-					while os.path.isfile(os.path.join(folder, '{}_{}.{}'.format(file_name, duplicate, app.gameFunctions.gameIdentifier.lower()))):
+					while os.path.isfile(os.path.join(folder, f'{file_name}_{duplicate}.{app.gameFunctions.gameIdentifier.lower()}')):
 						duplicate += 1
-					path = os.path.join(folder, '{}_{}.{}'.format(file_name, duplicate, app.gameFunctions.gameIdentifier.lower()))
+					path = os.path.join(folder, f'{file_name}_{duplicate}.{app.gameFunctions.gameIdentifier.lower()}')
 				else:
-					path = os.path.join(folder, '{}.{}'.format(file_name, app.gameFunctions.gameIdentifier.lower()))
+					path = os.path.join(folder, f'{file_name}.{app.gameFunctions.gameIdentifier.lower()}')
 				if not os.path.isdir(folder):
 					os.makedirs(folder)
 				try:
 					open(path, 'wb').write(raw_file)
 				except Exception as e:
-					app.log.warn(__name__, 'Error saving temporary file with path "{}"\n{}'.format(path, e))
+					app.log.warn(__name__, f'Error saving temporary file with path "{path}"\n{e}')
 
 	else:
 		raise Exception('Format version not known. Please let the creator know where you found this.')
 	
 	for file_name in sorted(alphabetical_files, key=lambda v: v.lower()):
 		for file_id in alphabetical_files[file_name]:
-			if not app.file_tree.exists('{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id)):
-				app.file_tree.insert('{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id), 'end', '{}|{}|{}|{}'.format(app.gameFunctions.gameIdentifier, forge_file_name, datafile_id, file_id), text=file_name)
+			unique_identifier = f'{app.gameFunctions.gameIdentifier}|{forge_file_name}|{datafile_id}|{file_id}'
+			if not app.file_tree.exists(unique_identifier):
+				app.file_tree.insert(f'{app.gameFunctions.gameIdentifier}|{forge_file_name}|{datafile_id}', 'end', unique_identifier, text=file_name)

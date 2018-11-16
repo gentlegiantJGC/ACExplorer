@@ -55,7 +55,7 @@ class Texture(BaseTexture):
 		elif self.imgDXT in [8, 9, 16]:
 			self.ddspf += b'DX10'
 		else:
-			raise Exception('imgDXT: "{}" is not currently supported'.format(self.imgDXT))
+			raise Exception(f'imgDXT: "{self.imgDXT}" is not currently supported')
 
 		self.ddspf += b'\x00\x00\x00\x00' * 5  # dwRGBBitCount, dwRBitMask, dwGBitMask, dwBBitMask, dwABitMask
 		if self.imgDXT == 8:

@@ -1,8 +1,8 @@
 def get_material_ids(app, file_id):
 	data = app.tempNewFiles(file_id)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
-		return app.misc.Material('{:016X}'.format(file_id), missing_no=True)
+		app.log.warn(__name__, f"Failed to find file {file_id:016X}")
+		return app.misc.Material(f'{file_id:016X}', missing_no=True)
 	name = data["fileName"]
 
 	material_file = data["rawFile"]
@@ -11,7 +11,7 @@ def get_material_ids(app, file_id):
 
 	data = app.tempNewFiles(material_template_id)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {:016X}".format(material_template_id))
+		app.log.warn(__name__, f"Failed to find file {material_template_id:016X}")
 		return app.misc.Material(name, missing_no=True)
 	material_template = data["rawFile"]
 
@@ -26,6 +26,6 @@ def get_material_ids(app, file_id):
 
 	for var, pos in [[tex5, 5], [tex7, 7], [tex10, 10], [tex11, 11], [tex12, 12]]:
 		if var is not None:
-			raise Exception('{} has an id in position {}'.format(data, pos))
+			raise Exception(f'{data} has an id in position {pos}')
 	
 	return material

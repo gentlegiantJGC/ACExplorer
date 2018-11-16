@@ -5,10 +5,8 @@ class Logger:
 
 	def warn(self, name, msg):
 		print(msg)
-		self.logFile.write('[WARNING]:[{}]:'.format(name, msg))
-		self.logFile.write('\n')
+		self.logFile.write(f'[WARNING]:[{name}]:[{msg}]\n')
 
 	def info(self, name, msg):
 		print(msg)
-		self.logFile.write('[INFO]:[{}]:'.format(name, msg))
-		self.logFile.write('\n')
+		self.logFile.write(f'[INFO]:[{name}]:[{msg}]\n')

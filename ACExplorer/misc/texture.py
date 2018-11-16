@@ -45,7 +45,7 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = '"{}" -fl 9.1 -y -px {}{} -f BC3_UNORM {}'.format(self.app.CONFIG['texconv'], self.app.CONFIG['dumpFolder'], os.sep, path)
+			texconv = f'"{self.app.CONFIG["texconv"]}" -fl 9.1 -y -px {self.app.CONFIG["dumpFolder"]}{os.sep} -f BC3_UNORM {path}'
 			os.system(texconv)
 
 
@@ -65,13 +65,13 @@ class Material:
 def export_dds(app, file_id, forge_file_name, datafile_id, save_folder):
 	data = app.tempNewFiles(file_id, forge_file_name, datafile_id)
 	if data is None:
-		app.log.warn(__name__, "Failed to find file {:016X}".format(file_id))
+		app.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return
-	save_path = os.path.join(save_folder, '{}.dds'.format(data['fileName']))
+	save_path = os.path.join(save_folder, f'{data["fileName"]}.dds')
 	if os.path.isfile(save_path):
-		app.log.info(__name__, 'Texture "{}" already exported'.format(data['fileName']))
+		app.log.info(__name__, f'Texture "{data["fileName"]}" already exported')
 		return save_path
 	tex = app.read_file(data["rawFile"])
 	tex.export_dds(save_path)
-	app.log.info(__name__, 'Texture "{}" exported'.format(data['fileName']))
+	app.log.info(__name__, f'Texture "{data["fileName"]}" exported')
 	return save_path

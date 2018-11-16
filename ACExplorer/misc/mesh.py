@@ -13,9 +13,9 @@ class ObjMtl(object):
 		self.missing_no_exported = False
 
 		# the obj file object
-		self._obj = open('{}{}{}.obj'.format(self.save_folder, os.sep, self.model_name), 'w')
+		self._obj = open(f'{self.save_folder}{os.sep}{self.model_name}.obj', 'w')
 		self._obj.write('#Wavefront Object File\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
-		self._obj.write('mtllib ./{}.mtl\n'.format(self.model_name))
+		self._obj.write(f'mtllib ./{self.model_name}.mtl\n')
 
 	def group_name(self, name):
 		"""
@@ -25,7 +25,7 @@ class ObjMtl(object):
 		if name not in self._group_name:
 			self._group_name[name] = -1
 		self._group_name[name] += 1
-		return '{}_{}'.format(name, self._group_name[name])
+		return f'{name}_{self._group_name[name]}'
 
 	def export(self, model, model_name):
 		"""
@@ -35,18 +35,18 @@ class ObjMtl(object):
 		"""
 		# write vertices
 		self._obj.write(''.join(['v {} {} {}\n'.format(*vertex) for vertex in model.vertices.round(6)]))
-		self._obj.write('# {} vertices\n\n'.format(len(model.vertices)))
+		self._obj.write(f'# {len(model.vertices)} vertices\n\n')
 
 		# write texture coords
 		self._obj.write(''.join(['vt {} {}\n'.format(*vertex) for vertex in model.texture_vertices.round(6)]))
-		self._obj.write('# {} texture coordinates\n\n'.format(len(model.texture_vertices)))
+		self._obj.write(f'# {len(model.texture_vertices)} texture coordinates\n\n')
 
 		# write faces
 		for mesh_index, mesh in enumerate(model.meshes):
-			self._obj.write('g {}\n'.format(self.group_name(model_name)))
-			self._obj.write('usemtl {}\n'.format(self.mtl_handler.get(model.materials[mesh_index]).name))
+			self._obj.write(f'g {self.group_name(model_name)}\n')
+			self._obj.write(f'usemtl {self.mtl_handler.get(model.materials[mesh_index]).name}\n')
 			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']] + self.vertex_count]))
-			self._obj.write('# {} faces\n\n'.format(mesh['face_count']))
+			self._obj.write(f'# {mesh["face_count"]} faces\n\n')
 
 		self.vertex_count += len(model.vertices)
 
@@ -56,14 +56,14 @@ class ObjMtl(object):
 		when finished will close both mtl and self._obj
 		:return:
 		"""
-		mtl = open('{}{}{}.mtl'.format(self.save_folder, os.sep, self.model_name), 'w')
+		mtl = open(f'{self.save_folder}{os.sep}{self.model_name}.mtl', 'w')
 		mtl.write('# Material Library\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
 		for material in self.mtl_handler.materials.values():
-			mtl.write('newmtl {}\n'.format(material.name))
+			mtl.write(f'newmtl {material.name}\n')
 			mtl.write('Ka 1.000 1.000 1.000\nKd 1.000 1.000 1.000\nKs 0.000 0.000 0.000\nNs 0.000\n')
 
 			if material.missing_no:
-				mtl.write('map_Kd {}\n'.format(os.path.basename(self.app.CONFIG['missingNo'])))
+				mtl.write(f'map_Kd {os.path.basename(self.app.CONFIG["missingNo"])}\n')
 				self.export_missing_no()
 			else:
 				for map_type, file_id in [
@@ -77,10 +77,10 @@ class ObjMtl(object):
 						continue
 					image_path = self.app.misc.texture.export_dds(self.app, file_id, self.save_folder)
 					if image_path is None:
-						mtl.write('{} {}\n'.format(map_type, os.path.basename(self.app.CONFIG['missingNo'])))
+						mtl.write(f'{map_type} {os.path.basename(self.app.CONFIG["missingNo"])}\n')
 						self.export_missing_no()
 					else:
-						mtl.write('{} {}\n'.format(map_type, os.path.basename(image_path)))
+						mtl.write(f'{map_type} {os.path.basename(image_path)}\n')
 			mtl.write('\n')
 		mtl.close()
 		self._obj.close()

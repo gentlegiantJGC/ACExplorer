@@ -37,7 +37,7 @@ class FileObject:
 				self._file_pointer += length
 				return data
 			except ValueError:
-				raise Exception('Unsupported type: "{}"'.format(type(length)))
+				raise Exception(f'Unsupported type: "{type(length)}"')
 
 	def seek(self, offset, whence=0):
 		if whence == 0:
@@ -84,15 +84,15 @@ class FileObjectDataWrapper:
 			if whence == 0:  # absolute
 				count = offset - self.file_object.tell()
 				if count > 0:
-					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join(f'{b:02X}' for b in self.file_object.read(count))))
+					out_file.write(f'{indent_count * self.indent_chr}{hex_string(self.file_object.read(count))}\n')
 				elif count < 0:
-					out_file.write('Skipped back {} bytes\n'.format(abs(count)))
+					out_file.write(f'Skipped back {abs(count)} bytes\n')
 					self.file_object.seek(offset, whence)
 			elif whence == 1:  # relative
 				if offset > 0:
-					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join(f'{b:02X}' for b in self.file_object.read(offset))))
+					out_file.write(f'{indent_count * self.indent_chr}{hex_string(self.file_object.read(offset))}\n')
 				elif offset < 0:
-					out_file.write('Skipped back {} bytes\n'.format(abs(offset)))
+					out_file.write(f'Skipped back {abs(offset)} bytes\n')
 					self.file_object.seek(offset, whence)
 			elif whence == 2:  # relative to end
 				file_pointer = self.file_object.tell()
@@ -100,14 +100,14 @@ class FileObjectDataWrapper:
 				count = self.file_object.tell() - file_pointer
 				self.file_object.seek(file_pointer)
 				if count > 0:
-					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join(f'{b:02X}' for b in self.file_object.read(count))))
+					out_file.write(f'{indent_count * self.indent_chr}{hex_string(self.file_object.read(count))}\n')
 				elif count < 0:
-					out_file.write('Skipped back {} bytes\n'.format(abs(count)))
+					out_file.write(f'Skipped back {abs(count)} bytes\n')
 					self.file_object.seek(offset, whence)
 
 	def out_file_write(self, val, out_file=None, indent_count=0):
 		if out_file is not None:
-			out_file.write('{}{}'.format(indent_count * self.indent_chr, val))
+			out_file.write(f'{indent_count * self.indent_chr}{val}')
 
 	def _read_struct(self, out_file, indent_count, data_type, trailing_newline=True):
 		fmt = f'{self.endianness}{data_type}'
@@ -119,11 +119,11 @@ class FileObjectDataWrapper:
 		if out_file is not None:
 			if type(val) == bytes and len(val) > 10:
 				out_file.write(
-					f'{indent_count * self.indent_chr}{" ".join(f"{b:02X}" for b in binary)}'
+					f'{indent_count * self.indent_chr}{hex_string(binary)}'
 				)
 			else:
 				out_file.write(
-					f'{indent_count * self.indent_chr}{" ".join(f"{b:02X}" for b in binary)}\t{val}'
+					f'{indent_count * self.indent_chr}{hex_string(binary)}\t{val}'
 				)
 
 			if trailing_newline:
@@ -161,7 +161,7 @@ class FileObjectDataWrapper:
 		return self._read_struct(out_file, indent_count, 'Q')
 
 	def read_str(self, chr_len, out_file=None, indent_count=0):
-		return self._read_struct(out_file, indent_count, '{}s'.format(chr_len))
+		return self._read_struct(out_file, indent_count, f'{chr_len}s')
 
 	def read_id(self, out_file=None, indent_count=0):
 		file_id = self._read_struct(out_file, indent_count, self.app.gameFunctions.file_id_datatype, False)
@@ -179,17 +179,17 @@ class FileObjectDataWrapper:
 			raise Exception('Reached End Of File')
 		file_type = ''.join(f'{b:02X}' for b in binary[::-1])
 		if out_file is not None:
-			out_file.write('{}{}\t{}\t{}\n'.format(indent_count * self.indent_chr, ' '.join(f'{b:02X}' for b in binary), file_type, self.app.gameFunctions.file_types.get(file_type, 'Undefined')))
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{file_type}\t{self.app.gameFunctions.file_types.get(file_type, "Undefined")}\n')
 		return file_type
 
 	def read_struct(self, data_types, out_file=None, indent_count=0):
-		fmt = '{}{}'.format(self.endianness, data_types)
+		fmt = f'{self.endianness}{data_types}'
 		binary = self.file_object.read(struct.calcsize(fmt))
 		if len(binary) != struct.calcsize(fmt):
 			raise Exception('Reached End Of File')
 		val = struct.unpack(fmt, binary)
 		if out_file is not None:
-			out_file.write('{}{}\t{}\n'.format(indent_count * self.indent_chr, ' '.join(f'{b:02X}' for b in binary), val))
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{val}\n')
 		return val
 
 	def read_numpy(self, dtype, binary_size, out_file=None, indent_count=0):
@@ -198,13 +198,13 @@ class FileObjectDataWrapper:
 			raise Exception('Reached End Of File')
 		val = numpy.fromstring(binary, dtype)
 		if out_file is not None:
-			out_file.write('{}{}\t{}\n'.format(indent_count * self.indent_chr, ' '.join(f'{b:02X}' for b in binary), val))
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{val}\n')
 		return val
 
 	def read_rest(self, out_file=None, indent_count=0):
 		binary = self.file_object.read()
 		if out_file is not None:
-			out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join(f'{b:02X}' for b in binary)))
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\n')
 		return binary
 
 	def clever_format(self, out_file=None, indent_count=0):
@@ -213,8 +213,8 @@ class FileObjectDataWrapper:
 			might_be_a_file_type = ''.join(f'{b:02X}' for b in self.file_object.read(4)[::-1])
 			while len(might_be_a_file_type) == 8:
 				if might_be_a_file_type in self.app.gameFunctions.file_types:
-					out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join(hex_str)))
-					out_file.write('{}{}\t{}\n'.format(indent_count * self.indent_chr, might_be_a_file_type, self.app.gameFunctions.file_types.get(might_be_a_file_type)))
+					out_file.write(f'{indent_count * self.indent_chr}{" ".join(hex_str)}\n')
+					out_file.write(f'{indent_count * self.indent_chr}{might_be_a_file_type}\t{self.app.gameFunctions.file_types.get(might_be_a_file_type)}\n')
 					hex_str = []
 					might_be_a_file_type = ''.join(f'{b:02X}' for b in self.file_object.read(4)[::-1])
 				else:
@@ -223,5 +223,9 @@ class FileObjectDataWrapper:
 			while might_be_a_file_type != '':
 				hex_str.append(might_be_a_file_type[-2:])
 				might_be_a_file_type = might_be_a_file_type[:-2]
-			out_file.write('{}{}\n'.format(indent_count * self.indent_chr, ' '.join(hex_str)))
+			out_file.write(f'{indent_count * self.indent_chr}{" ".join(hex_str)}\n')
 		return
+
+
+def hex_string(binary):
+	return ' '.join(f'{b:02X}' for b in binary)

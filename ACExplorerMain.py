@@ -81,7 +81,7 @@ class App:
 
 	def load_game(self, game_identifier):
 		if self.gameFunctions is not None and self.tempNewFiles.light_dict_changed:
-			with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'w') as light_dict:
+			with open(f'./resources/lightDict/{self.gameFunctions.gameIdentifier}.json', 'w') as light_dict:
 				json.dump(self.tempNewFiles.light_dictionary, light_dict)
 		self.tempNewFiles.clear()
 		self.file_tree.delete(*self.file_tree.get_children())
@@ -90,8 +90,8 @@ class App:
 			self.file_list = self.gameFunctions.framework.read_forge(self, self.CONFIG.game_folder(game_identifier))
 			# load all the decompressed files onto the TK Tree
 
-			if os.path.isdir('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier)):
-				with open('./resources/lightDict/{}.json'.format(self.gameFunctions.gameIdentifier), 'r') as light_dict:
+			if os.path.isdir(f'./resources/lightDict/{self.gameFunctions.gameIdentifier}.json'):
+				with open(f'./resources/lightDict/{self.gameFunctions.gameIdentifier}.json', 'r') as light_dict:
 					self.tempNewFiles.light_dictionary = json.load(light_dict)
 
 	def options_dialogue(self):
@@ -169,7 +169,7 @@ class OptionsDialogue:
 
 		row += 1
 		for game_identifier, location in self.CONFIG['gameFolders'].items():
-			self.game_paths[game_identifier] = self.folder_option('{} Folder'.format(game_identifier), location, row)
+			self.game_paths[game_identifier] = self.folder_option(f'{game_identifier} Folder', location, row)
 			row += 1
 
 		# save and quit buttons
@@ -237,5 +237,5 @@ if __name__ == '__main__':
 	if app.tempNewFiles.light_dict_changed:
 		if not os.path.isdir('./resources/lightDict'):
 			os.makedirs('./resources/lightDict')
-		with open('./resources/lightDict/{}.json'.format(app.gameFunctions.gameIdentifier), 'w') as f:
+		with open(f'./resources/lightDict/{app.gameFunctions.gameIdentifier}.json', 'w') as f:
 			json.dump(app.tempNewFiles.light_dictionary, f)
