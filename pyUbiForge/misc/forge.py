@@ -1,4 +1,5 @@
-from typing import Dict, List
+from typing import Dict, List, Union, TextIO
+from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 """
 All the code needed to access the raw files from a .forge file
@@ -30,8 +31,8 @@ class DataFile:
 
 
 class BaseForge:
-	def __init__(self, ac_explorer_main, path: str, forge_file_name: str):
-		self.ACExplorer_main = ac_explorer_main
+	def __init__(self, py_ubi_forge, path: str, forge_file_name: str):
+		self.pyUbiForge = py_ubi_forge
 		self._forge_file_name = forge_file_name
 		self._path = path
 		self._datafiles = {}
@@ -57,5 +58,5 @@ class BaseForge:
 		return self._new_datafiles
 
 
-def read_file_header(file_object_data_wrapper, out_file, indent_count):
+def read_file_header(file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[FileObjectDataWrapper, TextIO], indent_count: int):
 	return

@@ -15,8 +15,8 @@ import pyUbiForge
 
 class App:
 	def __init__(self):
-		self.ACExplorer_main = pyUbiForge.ACExplorerMain()
-		self.log = self.ACExplorer_main.log
+		self.pyUbiForge = pyUbiForge.PyUbiForgeMain()
+		self.log = self.pyUbiForge.log
 		self.log.info(__name__, 'Building GUI Window')
 		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
@@ -65,26 +65,26 @@ class App:
 		self.main_ui.mainloop()
 
 	def load_game(self, game_identifier: str):
-		self.ACExplorer_main.load_game(game_identifier)
+		self.pyUbiForge.load_game(game_identifier)
 		self.file_tree.delete(*self.file_tree.get_children())
 		self.file_tree.insert('', 'end', game_identifier, text=game_identifier)
 
-		for forge_file_name, forge_file in self.ACExplorer_main.forge_files.items():
+		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
 			self.file_tree.insert(game_identifier, 'end', f'{game_identifier}|{forge_file_name}', text=forge_file_name)
 			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
 				self.file_tree.insert(f'{game_identifier}|{forge_file_name}', 'end', f'{game_identifier}|{forge_file_name}|{datafile_id}', text=datafile.file_name)
 
 	def options_dialogue(self):
-		dia = OptionsDialogue(self.ACExplorer_main.CONFIG)
+		dia = OptionsDialogue(self.pyUbiForge.CONFIG)
 		update = dia.update
 		if update:
-			self.load_game(self.ACExplorer_main.game_identifier)
+			self.load_game(self.pyUbiForge.game_identifier)
 
 	def on_click(self, _):
 		line_unique_identifier = self.file_tree.selection()[0]
 		if len(line_unique_identifier.split('|')) == 3 and len(self.file_tree.get_children(line_unique_identifier)) == 0:
 			forge_file, datafile_id = line_unique_identifier.split('|')[1:]
-			self.ACExplorer_main.forge_files[forge_file].decompress_datafile(int(datafile_id))
+			self.pyUbiForge.forge_files[forge_file].decompress_datafile(int(datafile_id))
 			self.populate_tree()
 
 	def on_right_click(self, event):
@@ -97,19 +97,19 @@ class App:
 				forge_file_name = unique_identifier[1]
 			if len(unique_identifier) >= 3:
 				datafile_id = int(unique_identifier[2])
-			plugins, file_id = self.ACExplorer_main.right_click_plugins.get(len(unique_identifier), unique_identifier[-1], forge_file_name, datafile_id)
+			plugins, file_id = self.pyUbiForge.right_click_plugins.get(len(unique_identifier), unique_identifier[-1], forge_file_name, datafile_id)
 			self.right_click_dialogue.post(event, plugins, file_id, forge_file_name, datafile_id)
 		else:
 			pass
 
 	def populate_tree(self):
-		game_identifier = self.ACExplorer_main.game_identifier
-		for forge_file_name, forge_file in self.ACExplorer_main.forge_files.items():
+		game_identifier = self.pyUbiForge.game_identifier
+		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
 			for datafile_id in forge_file.new_datafiles:
 				for file_id, file_name in sorted(forge_file.datafiles[datafile_id].files.items(), key=lambda v: v[1].lower()):
 					self.file_tree.insert(
 						f'{game_identifier}|{forge_file_name}|{datafile_id}', 'end',
-						f'{self.ACExplorer_main.game_identifier}|{forge_file_name}|{datafile_id}|{file_id}',
+						f'{self.pyUbiForge.game_identifier}|{forge_file_name}|{datafile_id}|{file_id}',
 						text=file_name
 					)
 			forge_file.new_datafiles.clear()
@@ -206,9 +206,9 @@ class OptionsDialogue:
 
 
 class RightClickDialogue:
-	def __init__(self, app_):
-		self.app = app_
-		self.menu = tkinter.Menu(self.app.main_ui, tearoff=0)
+	def __init__(self, py_ubi_forge):
+		self.pyUbiForge = py_ubi_forge
+		self.menu = tkinter.Menu(self.pyUbiForge.main_ui, tearoff=0)
 
 	def post(self, event, plugins, file_id, forge_file_name=None, datafile_id=None):
 		self.menu.delete(0, tkinter.END)
@@ -221,10 +221,10 @@ class RightClickDialogue:
 				self.menu.grab_release()
 
 	def add_command(self, plugin, file_id, forge_file_name, datafile_id):
-		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app, file_id, forge_file_name, datafile_id))
+		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.pyUbiForge, file_id, forge_file_name, datafile_id))
 
 
 if __name__ == '__main__':
 	app = App()
-	app.ACExplorer_main.CONFIG.save()
-	app.ACExplorer_main.temp_files.save()
+	app.pyUbiForge.CONFIG.save()
+	app.pyUbiForge.temp_files.save()

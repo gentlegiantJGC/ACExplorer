@@ -5,11 +5,11 @@ from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 
 class Forge(BaseForge):
-	def __init__(self, ac_explorer_main, path: str, forge_file_name: str):
-		BaseForge.__init__(self, ac_explorer_main, path, forge_file_name)
-		ac_explorer_main.log.info(__name__, f'Building file tree for {forge_file_name}')
+	def __init__(self, py_ubi_forge, path: str, forge_file_name: str):
+		BaseForge.__init__(self, py_ubi_forge, path, forge_file_name)
+		self.pyUbiForge.log.info(__name__, f'Building file tree for {forge_file_name}')
 
-		forge_file = FileObjectDataWrapper.from_file(ac_explorer_main, self.path)
+		forge_file = FileObjectDataWrapper.from_file(self.pyUbiForge, self.path)
 		# header
 		if forge_file.read_str(8) != b'scimitar':
 			return
@@ -79,9 +79,9 @@ class Forge(BaseForge):
 			return
 		uncompressed_data_list = []
 
-		forge_file = open(os.path.join(self.ACExplorer_main.CONFIG.game_folder(self.ACExplorer_main.game_identifier), self.forge_file_name), 'rb')
+		forge_file = open(os.path.join(self.pyUbiForge.CONFIG.game_folder(self.pyUbiForge.game_identifier), self.forge_file_name), 'rb')
 		forge_file.seek(self.datafiles[datafile_id].raw_data_offset)
-		raw_data_chunk = FileObjectDataWrapper.from_binary(self.ACExplorer_main, forge_file.read(self.datafiles[datafile_id].raw_data_size))
+		raw_data_chunk = FileObjectDataWrapper.from_binary(self.pyUbiForge, forge_file.read(self.datafiles[datafile_id].raw_data_size))
 		forge_file.close()
 		header = raw_data_chunk.read_str(8)
 		format_version = 128
@@ -105,11 +105,11 @@ class Forge(BaseForge):
 		alphabetical_files = {}
 
 		if format_version == 0:
-			self.ACExplorer_main.temp_files.add(datafile_id, self.forge_file_name, datafile_id, 0, self.datafiles[datafile_id].file_name, raw_file=b''.join(uncompressed_data_list))
+			self.pyUbiForge.temp_files.add(datafile_id, self.forge_file_name, datafile_id, 0, self.datafiles[datafile_id].file_name, raw_file=b''.join(uncompressed_data_list))
 			alphabetical_files[self.datafiles[datafile_id].file_name] = [datafile_id]
 
 		elif format_version == 128:
-			uncompressed_data = FileObjectDataWrapper.from_binary(self.ACExplorer_main, b''.join(uncompressed_data_list))
+			uncompressed_data = FileObjectDataWrapper.from_binary(self.pyUbiForge, b''.join(uncompressed_data_list))
 
 			file_count = uncompressed_data.read_uint_16()
 			index_table = []
@@ -132,29 +132,29 @@ class Forge(BaseForge):
 
 				if file_name == '':
 					file_name = f'{file_id:016X}'
-				self.ACExplorer_main.temp_files.add(file_id, self.forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
+				self.pyUbiForge.temp_files.add(file_id, self.forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
 				self.datafiles[datafile_id].files[file_id] = file_name
-				if self.ACExplorer_main.CONFIG['writeToDisk']:
+				if self.pyUbiForge.CONFIG['writeToDisk']:
 					folder = os.path.join(
-						self.ACExplorer_main.CONFIG['dumpFolder'],
-						self.ACExplorer_main.game_identifier,
+						self.pyUbiForge.CONFIG['dumpFolder'],
+						self.pyUbiForge.game_identifier,
 						self.forge_file_name,
 						self.datafiles[datafile_id].file_name,
 						f'{file_type:08X}'
 					)
-					if os.path.isfile(os.path.join(folder, f'{file_name}.{self.ACExplorer_main.game_identifier.lower()}')):
+					if os.path.isfile(os.path.join(folder, f'{file_name}.{self.pyUbiForge.game_identifier.lower()}')):
 						duplicate = 1
-						while os.path.isfile(os.path.join(folder, f'{file_name}_{duplicate}.{self.ACExplorer_main.game_identifier.lower()}')):
+						while os.path.isfile(os.path.join(folder, f'{file_name}_{duplicate}.{self.pyUbiForge.game_identifier.lower()}')):
 							duplicate += 1
-						path = os.path.join(folder, f'{file_name}_{duplicate}.{self.ACExplorer_main.game_identifier.lower()}')
+						path = os.path.join(folder, f'{file_name}_{duplicate}.{self.pyUbiForge.game_identifier.lower()}')
 					else:
-						path = os.path.join(folder, f'{file_name}.{self.ACExplorer_main.game_identifier.lower()}')
+						path = os.path.join(folder, f'{file_name}.{self.pyUbiForge.game_identifier.lower()}')
 					if not os.path.isdir(folder):
 						os.makedirs(folder)
 					try:
 						open(path, 'wb').write(raw_file)
 					except Exception as e:
-						self.ACExplorer_main.log.warn(__name__, f'Error saving temporary file with path "{path}"\n{e}')
+						self.pyUbiForge.log.warn(__name__, f'Error saving temporary file with path "{path}"\n{e}')
 
 		else:
 			raise Exception('Format version not known. Please let the creator know where you found this.')

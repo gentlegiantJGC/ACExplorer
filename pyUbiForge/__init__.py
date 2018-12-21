@@ -8,7 +8,7 @@ games = {
 }
 
 
-class ACExplorerMain:
+class PyUbiForgeMain:
 	def __init__(self):
 		self._CONFIG = misc.Config()
 		self._game_functions = None

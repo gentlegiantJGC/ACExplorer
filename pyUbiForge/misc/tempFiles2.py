@@ -53,8 +53,8 @@ lightDictionary
 
 
 class TempFilesContainer:
-	def __init__(self, ac_explorer_main):
-		self.ACExplorer_main = ac_explorer_main
+	def __init__(self, py_ubi_forge):
+		self.pyUbiForge = py_ubi_forge
 		# dictionary to look up which dataFile a fileID is contained in (if it itself is not the main file in the dataFile)
 		self._light_dictionary = {}
 		self._light_dict_changed = False
@@ -85,7 +85,7 @@ class TempFilesContainer:
 		if raw_file is not None:
 			self._memory += len(raw_file)
 
-		while self._memory > self.ACExplorer_main.CONFIG['tempFilesMaxMemoryMB']*1000000:
+		while self._memory > self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB']*1000000:
 			remove_entry = self._last_used.pop(0)
 			self._memory -= len(self._temp_files[remove_entry][4])
 			del self._temp_files[remove_entry]
@@ -112,14 +112,14 @@ class TempFilesContainer:
 				datafile_id = self._temp_files[file_id][1]
 			else:
 				# preferentially use one found in the forgeFile asked but look in others if needed
-				if forge_file_name in self.ACExplorer_main.forge_files and file_id in self.ACExplorer_main.forge_files[forge_file_name].datafiles:
+				if forge_file_name in self.pyUbiForge.forge_files and file_id in self.pyUbiForge.forge_files[forge_file_name].datafiles:
 					datafile_id = file_id
 				elif str(file_id) in self._light_dictionary and forge_file_name in self._light_dictionary[str(file_id)]:
 					datafile_id = self._light_dictionary[str(file_id)][0]
 				else:
 					forge_file_name = None
 		if forge_file_name is None:
-			forge_file_name = next((fF for fF in self.ACExplorer_main.file_list if file_id in self.ACExplorer_main.file_list[fF]), None)
+			forge_file_name = next((fF for fF in self.pyUbiForge.file_list if file_id in self.pyUbiForge.file_list[fF]), None)
 			if forge_file_name is None:
 				if str(file_id) in self._light_dictionary:  # could check the lower down stuff but if this exists there should be data inside
 					forge_file_name = next(iter(self._light_dictionary[str(file_id)]))
@@ -130,7 +130,7 @@ class TempFilesContainer:
 				datafile_id = file_id
 
 		if not (file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]):
-			self.ACExplorer_main.forge_files[forge_file_name].decompress_datafile(datafile_id)
+			self.pyUbiForge.forge_files[forge_file_name].decompress_datafile(datafile_id)
 		self.refresh_usage(file_id)
 		if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]:
 			return {
@@ -138,7 +138,7 @@ class TempFilesContainer:
 				'datafileID': datafile_id,
 				'fileType': f'{self._temp_files[file_id][2]:08X}',
 				'fileName': self._temp_files[file_id][3],
-				'rawFile': FileObjectDataWrapper.from_binary(self.ACExplorer_main, self._temp_files[file_id][4])
+				'rawFile': FileObjectDataWrapper.from_binary(self.pyUbiForge, self._temp_files[file_id][4])
 			}
 		else:
 			return
@@ -161,10 +161,10 @@ class TempFilesContainer:
 		if self.light_dict_changed:
 			if not os.path.isdir('./resources/lightDict'):
 				os.makedirs('./resources/lightDict')
-			with open(f'./resources/lightDict/{self.ACExplorer_main.game_functions.game_identifier}.json', 'w') as f:
+			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.json', 'w') as f:
 				json.dump(self._light_dictionary, f)
 
 	def load(self):
-		if os.path.isfile(f'./resources/lightDict/{self.ACExplorer_main.game_functions.game_identifier}.json'):
-			with open(f'./resources/lightDict/{self.ACExplorer_main.game_functions.game_identifier}.json', 'r') as light_dict:
+		if os.path.isfile(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.json'):
+			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.json', 'r') as light_dict:
 				self._light_dictionary = json.load(light_dict)
