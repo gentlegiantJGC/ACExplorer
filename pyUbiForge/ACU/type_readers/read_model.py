@@ -1,4 +1,4 @@
-from ACExplorer.misc.mesh import BaseModel
+from pyUbiForge.misc.mesh import BaseModel
 import numpy
 
 file_type = '415D9568'

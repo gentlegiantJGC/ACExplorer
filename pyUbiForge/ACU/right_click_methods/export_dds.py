@@ -1,4 +1,4 @@
-from ACExplorer.misc import texture
+from pyUbiForge.misc import texture
 
 plugin_name = 'Export DDS'
 plugin_level = 4

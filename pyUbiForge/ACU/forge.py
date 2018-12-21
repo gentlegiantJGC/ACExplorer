@@ -1,7 +1,7 @@
 import os
-from ACExplorer.misc import decompress
-from ACExplorer.misc.forge import BaseForge, DataFile
-from ACExplorer.misc.file_object import FileObjectDataWrapper
+from pyUbiForge.misc import decompress
+from pyUbiForge.misc.forge import BaseForge, DataFile
+from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 
 class Forge(BaseForge):

@@ -10,12 +10,12 @@
 
 import tkinter
 from tkinter import ttk, filedialog
-import ACExplorer
+import pyUbiForge
 
 
 class App:
 	def __init__(self):
-		self.ACExplorer_main = ACExplorer.ACExplorerMain()
+		self.ACExplorer_main = pyUbiForge.ACExplorerMain()
 		self.log = self.ACExplorer_main.log
 		self.log.info(__name__, 'Building GUI Window')
 		self.main_ui = tkinter.Tk()

@@ -1,6 +1,6 @@
 import os
 import struct
-from ACExplorer.misc import BaseTexture
+from pyUbiForge.misc import BaseTexture
 
 file_type = 'A2B7E917'
 

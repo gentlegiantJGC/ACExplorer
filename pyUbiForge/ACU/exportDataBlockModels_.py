@@ -1,8 +1,8 @@
-from ACExplorer.ACU.framework.decompressDatafile_ import decompress_datafile
+from pyUbiForge.ACU.framework.decompressDatafile_ import decompress_datafile
 # from ACExplorer.misc import tempFiles
 # from ACExplorer.misc.dataTypes import BEHEX2, LE2DEC2, float32
 # from ACExplorer.misc.exportOBJMulti import exportOBJMulti
-from ACExplorer.ACU import formatFile
+from pyUbiForge.ACU import formatFile
 
 
 def mul4x4(A,B):

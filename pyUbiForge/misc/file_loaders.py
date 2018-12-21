@@ -1,6 +1,6 @@
 import pkgutil
 import importlib
-from ACExplorer.misc.file_object import FileObjectDataWrapper
+from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 
 class RightClickHandler:

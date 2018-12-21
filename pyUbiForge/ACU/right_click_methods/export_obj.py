@@ -1,4 +1,4 @@
-from ACExplorer.misc import mesh
+from pyUbiForge.misc import mesh
 
 plugin_name = 'Export OBJ'
 plugin_level = 4

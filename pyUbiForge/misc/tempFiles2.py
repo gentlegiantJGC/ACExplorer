@@ -1,6 +1,6 @@
 import os
 import json
-from ACExplorer.misc.file_object import FileObjectDataWrapper
+from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 """
 Forge file

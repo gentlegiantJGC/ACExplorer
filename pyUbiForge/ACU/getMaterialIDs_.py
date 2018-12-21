@@ -1,4 +1,4 @@
-from ACExplorer.misc import Material
+from pyUbiForge.misc import Material
 
 
 def get_material_ids(app, file_id):

@@ -1,6 +1,6 @@
 import os
 import shutil
-from ACExplorer.misc import texture
+from pyUbiForge.misc import texture
 
 
 class ObjMtl(object):
