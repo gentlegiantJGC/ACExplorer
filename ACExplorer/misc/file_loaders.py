@@ -16,51 +16,51 @@ class RightClickHandler:
 	def plugin(app, file_id):
 		# plugin code here
 	"""
-	def __init__(self, app):
-		self.app = app
+	def __init__(self, ac_explorer_main):
+		self.ACExplorer_main = ac_explorer_main
 		self.game_identifier = ''
 		self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 
 	def get(self, depth, file_id, forge_file_name=None, datafile_id=None):
-		if self.app.game_functions.game_identifier != self.game_identifier:
-			self.game_identifier = self.app.game_functions.game_identifier
+		if self.ACExplorer_main.game_functions.game_identifier != self.game_identifier:
+			self.game_identifier = self.ACExplorer_main.game_functions.game_identifier
 			self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 			self.load_plugins()
 		if depth in [1, 2]:
 			return self.plugins[depth], file_id
 		elif depth == 3:
 			file_id = int(file_id)
-			return list(set(self.plugins[3] + self.plugins[4].get(self.app.tempNewFiles(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'])), file_id
+			return list(set(self.plugins[3] + self.plugins[4].get(self.ACExplorer_main.temp_files(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'])), file_id
 		elif depth == 4:
 			file_id = int(file_id)
-			return self.plugins[4].get(self.app.tempNewFiles(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'], file_id
+			return self.plugins[4].get(self.ACExplorer_main.temp_files(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'], file_id
 
 	def load_plugins(self):
-		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.game_functions.game_identifier}/right_click_methods']):
+		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.ACExplorer_main.game_functions.game_identifier}/right_click_methods']):
 			module = load_module(name, finder.path)
 			if not hasattr(module, 'plugin_name'):
-				self.app.log.warn(__name__, f'Failed loading {name} because "plugin_name" was not defined')
+				self.ACExplorer_main.log.warn(__name__, f'Failed loading {name} because "plugin_name" was not defined')
 				continue
 			elif not isinstance(module.plugin_name, str):
-				self.app.log.warn(__name__, f'Failed loading {name} because "plugin_name" was not a string')
+				self.ACExplorer_main.log.warn(__name__, f'Failed loading {name} because "plugin_name" was not a string')
 				continue
 
 			if not hasattr(module, 'plugin_level'):
-				self.app.log.warn(__name__, f'Failed loading {name} because "plugin_level" was not defined')
+				self.ACExplorer_main.log.warn(__name__, f'Failed loading {name} because "plugin_level" was not defined')
 				continue
 			elif not (isinstance(module.plugin_level, int) and module.plugin_level in [1, 2, 3, 4]):
-				self.app.log.warn(__name__, f'Failed loading {name} because "plugin_level" was not an int in [1,2,3,4]')
+				self.ACExplorer_main.log.warn(__name__, f'Failed loading {name} because "plugin_level" was not an int in [1,2,3,4]')
 				continue
 			if module.plugin_level == 4:
 				if not hasattr(module, 'file_type'):
-					self.app.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
+					self.ACExplorer_main.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
 					continue
 				elif not isinstance(module.file_type, str):
-					self.app.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
+					self.ACExplorer_main.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
 					continue
 
 			if not hasattr(module, 'plugin'):
-				self.app.log.warn(__name__, f'Failed loading {name} because "plugin" was not defined')
+				self.ACExplorer_main.log.warn(__name__, f'Failed loading {name} because "plugin" was not defined')
 				continue
 
 			if module.plugin_level in [1, 2, 3]:
@@ -69,7 +69,7 @@ class RightClickHandler:
 				if module.file_type not in self.plugins[module.plugin_level]:
 					self.plugins[module.plugin_level][module.file_type] = []
 				self.plugins[module.plugin_level][module.file_type].append(module)
-			self.app.log.info(__name__, f'Successfully loaded right click plugin: "{module.plugin_name}"')
+			self.ACExplorer_main.log.info(__name__, f'Successfully loaded right click plugin: "{module.plugin_name}"')
 
 
 class DataTypeHandler:

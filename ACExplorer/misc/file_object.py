@@ -166,7 +166,7 @@ class FileObjectDataWrapper:
 	def read_id(self, out_file=None, indent_count=0):
 		file_id = self._read_struct(out_file, indent_count, self.app.gameFunctions.file_id_datatype, False)
 		if out_file is not None:
-			data = self.app.tempNewFiles(file_id)
+			data = self.app.temp_files(file_id)
 			if data is None:
 				out_file.write('\tUnknown File ID\n')
 			else:

@@ -1,5 +1,5 @@
 def get_material_ids(app, file_id):
-	data = app.tempNewFiles(file_id)
+	data = app.temp_files(file_id)
 	if data is None:
 		app.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return app.misc.Material(f'{file_id:016X}', missing_no=True)
@@ -9,7 +9,7 @@ def get_material_ids(app, file_id):
 	material_file.seek(25)
 	material_template_id = material_file.read_id()
 
-	data = app.tempNewFiles(material_template_id)
+	data = app.temp_files(material_template_id)
 	if data is None:
 		app.log.warn(__name__, f"Failed to find file {material_template_id:016X}")
 		return app.misc.Material(name, missing_no=True)
