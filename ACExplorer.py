@@ -8,24 +8,15 @@
 	Contained within the datafiles are a variety of files related to that datafile.
 """
 
-import json
 import tkinter
-from tkinter import ttk
-import sys
-import os
+from tkinter import ttk, filedialog
 import ACExplorer
 
 
 class App:
 	def __init__(self):
-		self.CONFIG = ACExplorer.CONFIG
-		self.dev = 'dev' in sys.argv
-		self.misc = ACExplorer.misc
-		self.gameFunctions = None
-		self.log = self.misc.Logger(self)
-		self.tempNewFiles = self.misc.TempFilesContainer(self)
-		self.right_click_plugins = ACExplorer.misc.file_loaders.RightClickHandler(self)
-		self.read_file = ACExplorer.misc.file_loaders.DataTypeHandler(self)
+		self.ACExplorer_main = ACExplorer.ACExplorerMain()
+		self.log = self.ACExplorer_main.log
 		self.log.info(__name__, 'Building GUI Window')
 		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
@@ -55,23 +46,17 @@ class App:
 
 		self.log.info(__name__, 'Building File List')
 
-		# file_list is a dictionary of each forge file on the first level and
-		# each datafile on the second level under each forge file. This is used
-		# as a cheap way to find the location a file is stored under.
-		# this function also loads all the forge files and datafiles onto the TK Tree
-		self.file_list = {}
-
 		self.load_game('ACU')
 
 		self.log.info(__name__, 'Finished Building File List')
 
 		self.search = tkinter.Entry(self.main_ui)
 		self.search.grid(row=0, column=1)
-		find = tkinter.Button(self.main_ui, text='Find', command=self.search_for)
-		find.grid(row=0, column=2)
+		# find = tkinter.Button(self.main_ui, text='Find', command=self.search_for)
+		# find.grid(row=0, column=2)
 
-		clear = tkinter.Button(self.main_ui, text='Clear Search', command=self.clear_search)
-		clear.grid(row=0, column=3)
+		# clear = tkinter.Button(self.main_ui, text='Clear Search', command=self.clear_search)
+		# clear.grid(row=0, column=3)
 
 		# if self.dev:
 		# 	test_formatting = tkinter.Button(self.main_ui, text='Test Formatting', command=self.test_formatting)
@@ -79,31 +64,28 @@ class App:
 
 		self.main_ui.mainloop()
 
-	def load_game(self, game_identifier):
-		if self.gameFunctions is not None and self.tempNewFiles.light_dict_changed:
-			with open(f'./resources/lightDict/{self.gameFunctions.gameIdentifier}.json', 'w') as light_dict:
-				json.dump(self.tempNewFiles.light_dictionary, light_dict)
-		self.tempNewFiles.clear()
+	def load_game(self, game_identifier: str):
+		self.ACExplorer_main.load_game(game_identifier)
 		self.file_tree.delete(*self.file_tree.get_children())
-		if game_identifier in ACExplorer.games:
-			self.gameFunctions = ACExplorer.games[game_identifier]
-			self.file_list = self.gameFunctions.framework.read_forge(self, self.CONFIG.game_folder(game_identifier))
-			# load all the decompressed files onto the TK Tree
+		self.file_tree.insert('', 'end', game_identifier, text=game_identifier)
 
-			if os.path.isdir(f'./resources/lightDict/{self.gameFunctions.gameIdentifier}.json'):
-				with open(f'./resources/lightDict/{self.gameFunctions.gameIdentifier}.json', 'r') as light_dict:
-					self.tempNewFiles.light_dictionary = json.load(light_dict)
+		for forge_file_name, forge_file in self.ACExplorer_main.forge_files.items():
+			self.file_tree.insert(game_identifier, 'end', f'{game_identifier}|{forge_file_name}', text=forge_file_name)
+			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
+				self.file_tree.insert(f'{game_identifier}|{forge_file_name}', 'end', f'{game_identifier}|{forge_file_name}|{datafile_id}', text=datafile.file_name)
 
 	def options_dialogue(self):
-		dia = OptionsDialogue(self.CONFIG)
+		dia = OptionsDialogue(self.ACExplorer_main.CONFIG)
 		update = dia.update
 		if update:
-			self.load_game(self.gameFunctions.gameIdentifier)
+			self.load_game(self.ACExplorer_main.game_identifier)
 
 	def on_click(self, _):
 		line_unique_identifier = self.file_tree.selection()[0]
 		if len(line_unique_identifier.split('|')) == 3 and len(self.file_tree.get_children(line_unique_identifier)) == 0:
-			self.gameFunctions.framework.decompress_datafile(self, int(line_unique_identifier.split('|')[2]), line_unique_identifier.split('|')[1])
+			forge_file, datafile_id = line_unique_identifier.split('|')[1:]
+			self.ACExplorer_main.forge_files[forge_file].decompress_datafile(int(datafile_id))
+			self.populate_tree()
 
 	def on_right_click(self, event):
 		unique_identifier = self.file_tree.identify_row(event.y)
@@ -115,24 +97,36 @@ class App:
 				forge_file_name = unique_identifier[1]
 			if len(unique_identifier) >= 3:
 				datafile_id = int(unique_identifier[2])
-			plugins, file_id = self.right_click_plugins.get(len(unique_identifier), unique_identifier[-1], forge_file_name, datafile_id)
+			plugins, file_id = self.ACExplorer_main.right_click_plugins.get(len(unique_identifier), unique_identifier[-1], forge_file_name, datafile_id)
 			self.right_click_dialogue.post(event, plugins, file_id, forge_file_name, datafile_id)
 		else:
 			pass
 
-	def search_for(self):
-		search = self.search.get()
-		if search != '':
-			if ',' in search:
-				for file_id in search.split(','):
-					file_id = file_id.replace(' ', '').upper()
-					self.gameFunctions.read_file(self, file_id)
-			else:
-				file_id = self.search.get().replace(' ', '').upper()
-				self.gameFunctions.read_file(self, file_id)
+	def populate_tree(self):
+		game_identifier = self.ACExplorer_main.game_identifier
+		for forge_file_name, forge_file in self.ACExplorer_main.forge_files.items():
+			for datafile_id in forge_file.new_datafiles:
+				for file_id, file_name in sorted(forge_file.datafiles[datafile_id].files.items(), key=lambda v: v[1].lower()):
+					self.file_tree.insert(
+						f'{game_identifier}|{forge_file_name}|{datafile_id}', 'end',
+						f'{self.ACExplorer_main.game_identifier}|{forge_file_name}|{datafile_id}|{file_id}',
+						text=file_name
+					)
+			forge_file.new_datafiles.clear()
 
-	def clear_search(self):
-		self.search.delete(0, tkinter.END)
+	# def search_for(self):
+	# 	search = self.search.get()
+	# 	if search != '':
+	# 		if ',' in search:
+	# 			for file_id in search.split(','):
+	# 				file_id = file_id.replace(' ', '').upper()
+	# 				self.gameFunctions.read_file(self, file_id)
+	# 		else:
+	# 			file_id = self.search.get().replace(' ', '').upper()
+	# 			self.gameFunctions.read_file(self, file_id)
+
+	# def clear_search(self):
+	# 	self.search.delete(0, tkinter.END)
 
 	# def test_formatting(self):
 	# 	file_type = self.search.get()
@@ -201,7 +195,7 @@ class OptionsDialogue:
 
 	@staticmethod
 	def browse(value_to_set):
-		folder_path = tkinter.filedialog.askdirectory()
+		folder_path = filedialog.askdirectory()
 		if folder_path != '':
 			value_to_set.config(text=folder_path)
 
@@ -232,10 +226,5 @@ class RightClickDialogue:
 
 if __name__ == '__main__':
 	app = App()
-	with open('./config.json', 'w') as f:
-		json.dump(app.CONFIG.raw, f, indent=4)
-	if app.tempNewFiles.light_dict_changed:
-		if not os.path.isdir('./resources/lightDict'):
-			os.makedirs('./resources/lightDict')
-		with open(f'./resources/lightDict/{app.gameFunctions.gameIdentifier}.json', 'w') as f:
-			json.dump(app.tempNewFiles.light_dictionary, f)
+	app.ACExplorer_main.CONFIG.save()
+	app.ACExplorer_main.temp_files.save()
