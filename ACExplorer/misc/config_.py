@@ -21,7 +21,8 @@ class Config:
 
 			"logFile": "ACExplorer.log",
 			"tempFilesMaxMemoryMB": 2048,
-			"writeToDisk": False
+			"writeToDisk": False,
+			"dev": False
 		}
 
 		for key, val in default_config.items():
@@ -44,3 +45,7 @@ class Config:
 
 	def game_folder(self, identifier):
 		return self.CONFIG["gameFolders"].get(identifier, ".")
+
+	def save(self):
+		with open('./config.json', 'w') as f:
+			json.dump(self.raw, f, indent=4)
