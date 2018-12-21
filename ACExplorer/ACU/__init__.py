@@ -1,6 +1,6 @@
 import json
 
-from . getMaterialIDs_ import get_material_ids
+from .getMaterialIDs_ import get_material_ids
 from . import forge
 
 game_identifier = 'ACU'
