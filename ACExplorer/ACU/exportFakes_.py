@@ -1,4 +1,5 @@
 import numpy
+from ACExplorer.misc import mesh
 # from ACExplorer.misc.dataTypes import uint64
 
 
@@ -9,7 +10,7 @@ def export_fakes(app, file_id):
 		return
 	model_name = data['fileName']
 	files = data['rawFile'].split(b'\x00\x00\x00\x00\x00\x00\x00\x00\x24\xB5\x7F\xD7')[1:]
-	obj_handler = app.misc.mesh.ObjMtl(app, model_name)
+	obj_handler = mesh.ObjMtl(app, model_name)
 	for n in files:
 		if b'\x29\x8D\x65\xEC' not in n:
 			continue

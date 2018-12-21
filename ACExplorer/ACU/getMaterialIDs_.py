@@ -1,8 +1,11 @@
+from ACExplorer.misc import Material
+
+
 def get_material_ids(app, file_id):
 	data = app.temp_files(file_id)
 	if data is None:
 		app.log.warn(__name__, f"Failed to find file {file_id:016X}")
-		return app.misc.Material(f'{file_id:016X}', missing_no=True)
+		return Material(f'{file_id:016X}', missing_no=True)
 	name = data["fileName"]
 
 	material_file = data["rawFile"]
@@ -12,10 +15,10 @@ def get_material_ids(app, file_id):
 	data = app.temp_files(material_template_id)
 	if data is None:
 		app.log.warn(__name__, f"Failed to find file {material_template_id:016X}")
-		return app.misc.Material(name, missing_no=True)
+		return Material(name, missing_no=True)
 	material_template = data["rawFile"]
 
-	material = app.misc.Material(name)
+	material = Material(name)
 	material_template.seek(13, 1)
 
 	texture_table = material_template.read_numpy([('', '<u2'), ('texture_id', '<u8')], 120)

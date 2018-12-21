@@ -1,3 +1,5 @@
+from ACExplorer.misc import mesh
+
 plugin_name = 'Export OBJ'
 plugin_level = 4
 file_type = '415D9568'
@@ -15,7 +17,7 @@ def plugin(app, file_id, forge_file_name, datafile_id):
 
 	model = app.read_file(data["rawFile"])
 	if model is not None:
-		obj_handler = app.misc.mesh.ObjMtl(app, model_name, save_folder)
+		obj_handler = mesh.ObjMtl(app, model_name, save_folder)
 		obj_handler.export(model, model_name)
 		obj_handler.save_and_close()
 		app.log.info(__name__, f'Exported {file_id:016X}')

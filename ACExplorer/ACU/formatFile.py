@@ -4,6 +4,7 @@ import sys
 import json
 import time
 import struct
+from ACExplorer.misc.file_object import FileObject
 # from ACExplorer.misc.dataTypes import LE2BE2, BEHEX2, LE2DEC2, int16, uint16, int32, uint32, float32
 fileTypes = json.load(open(r"./ACExplorer/ACU/fileFormats.json"))
 indentCharacter = '\t'
@@ -186,12 +187,12 @@ def topLevelFormat(app, fileID):
 	if data is None:
 		raise Exception('Error with file "{}"'.format(fileID))
 	app.log.info(__name__, 'Formatting {}:{}'.format(fileID, data["fileName"]))
-	fIn = app.misc.FileObject()
+	fIn = FileObject()
 	fIn.write(app.temp_files.get_file(fileID))
 	fIn.seek(0)
 
 	if dev:
-		fOut = app.misc.FileObject()
+		fOut = FileObject()
 	else:
 		fOut = None
 	

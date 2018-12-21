@@ -1,5 +1,6 @@
 import os
 import shutil
+from ACExplorer.misc import texture
 
 
 class ObjMtl(object):
@@ -75,7 +76,7 @@ class ObjMtl(object):
 										]:
 					if file_id is None:
 						continue
-					image_path = self.app.misc.texture.export_dds(self.app, file_id, self.save_folder)
+					image_path = texture.export_dds(self.app, file_id, self.save_folder)
 					if image_path is None:
 						mtl.write(f'{map_type} {os.path.basename(self.app.CONFIG["missingNo"])}\n')
 						self.export_missing_no()

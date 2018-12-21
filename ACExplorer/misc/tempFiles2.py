@@ -1,5 +1,6 @@
 import os
 import json
+from ACExplorer.misc.file_object import FileObjectDataWrapper
 
 """
 Forge file
@@ -129,7 +130,7 @@ class TempFilesContainer:
 				datafile_id = file_id
 
 		if not (file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]):
-			self.ACExplorer_main.game_functions.framework.decompress_datafile(self.ACExplorer_main, datafile_id, forge_file_name)
+			self.ACExplorer_main.forge_files[forge_file_name].decompress_datafile(datafile_id)
 		self.refresh_usage(file_id)
 		if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]:
 			return {
@@ -137,7 +138,7 @@ class TempFilesContainer:
 				'datafileID': datafile_id,
 				'fileType': f'{self._temp_files[file_id][2]:08X}',
 				'fileName': self._temp_files[file_id][3],
-				'rawFile': self.ACExplorer_main.misc.file_object.FileObjectDataWrapper.from_binary(self.ACExplorer_main, self._temp_files[file_id][4])
+				'rawFile': FileObjectDataWrapper.from_binary(self.ACExplorer_main, self._temp_files[file_id][4])
 			}
 		else:
 			return

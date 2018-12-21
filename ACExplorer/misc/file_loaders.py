@@ -1,5 +1,6 @@
 import pkgutil
 import importlib
+from ACExplorer.misc.file_object import FileObjectDataWrapper
 
 
 class RightClickHandler:
@@ -91,7 +92,7 @@ class DataTypeHandler:
 			self.game_identifier = self.app.game_functions.game_identifier
 			self.plugins = {}
 			self.load_plugins()
-		if not isinstance(file_object_data_wrapper, self.app.misc.file_object.FileObjectDataWrapper):
+		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
 			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
 		data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
 		file_object_data_wrapper.clever_format(out_file, indent_count)
@@ -105,7 +106,7 @@ class DataTypeHandler:
 		:param indent_count:
 		:return:
 		"""
-		file_type = self.app.game_functions.framework.read_file_header(file_object_data_wrapper, out_file, indent_count)
+		file_type = self.app.game_functions.forge.read_file_header(file_object_data_wrapper, out_file, indent_count)
 		if file_type in self.plugins:
 			return self.plugins[file_type](self.app, file_object_data_wrapper, out_file, indent_count+1)
 		else:

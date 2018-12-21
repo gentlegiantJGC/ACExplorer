@@ -1,5 +1,5 @@
 import os
-from ACExplorer import misc
+from ACExplorer.misc import decompress
 from ACExplorer.misc.forge import BaseForge, DataFile
 from ACExplorer.misc.file_object import FileObjectDataWrapper
 
@@ -59,7 +59,7 @@ class Forge(BaseForge):
 				size_table = raw_data_chunk.read_numpy('<u4', comp_block_count * 8).reshape(-1, 2).astype(int)  # 'compressed_size', 'uncompressed_size'
 				for size in size_table:  # Could do this using numpy and then vectorise the decompression
 					raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
-					uncompressed_data_list.append(misc.decompress(compression_type, raw_data_chunk.read_str(size[0]), size[1]))
+					uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read_str(size[0]), size[1]))
 
 		elif format_version == 128:
 			comp_block_count = raw_data_chunk.read_uint_32()
@@ -67,7 +67,7 @@ class Forge(BaseForge):
 			uncompressed_data_list = []
 			for size in size_table:  # Could do this using numpy and then vectorise the decompression
 				raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
-				uncompressed_data_list.append(misc.decompress(compression_type, raw_data_chunk.read_str(size[1]), size[0]))
+				uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read_str(size[1]), size[0]))
 		else:
 			raise Exception('Format version not known. Please let the creator know where you found this.')
 
