@@ -22,8 +22,8 @@ class RightClickHandler:
 		self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 
 	def get(self, depth, file_id, forge_file_name=None, datafile_id=None):
-		if self.app.gameFunctions.gameIdentifier != self.game_identifier:
-			self.game_identifier = self.app.gameFunctions.gameIdentifier
+		if self.app.game_functions.game_identifier != self.game_identifier:
+			self.game_identifier = self.app.game_functions.game_identifier
 			self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 			self.load_plugins()
 		if depth in [1, 2]:
@@ -36,7 +36,7 @@ class RightClickHandler:
 			return self.plugins[4].get(self.app.tempNewFiles(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'], file_id
 
 	def load_plugins(self):
-		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/right_click_methods']):
+		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.game_functions.game_identifier}/right_click_methods']):
 			module = load_module(name, finder.path)
 			if not hasattr(module, 'plugin_name'):
 				self.app.log.warn(__name__, f'Failed loading {name} because "plugin_name" was not defined')
@@ -87,8 +87,8 @@ class DataTypeHandler:
 		:param indent_count:
 		:return: objects defined in the plugins
 		"""
-		if self.app.gameFunctions.gameIdentifier != self.game_identifier:
-			self.game_identifier = self.app.gameFunctions.gameIdentifier
+		if self.app.game_functions.game_identifier != self.game_identifier:
+			self.game_identifier = self.app.game_functions.game_identifier
 			self.plugins = {}
 			self.load_plugins()
 		if not isinstance(file_object_data_wrapper, self.app.misc.file_object.FileObjectDataWrapper):
@@ -112,7 +112,7 @@ class DataTypeHandler:
 			raise Exception(f'File type {file_type} does not have a file reader')
 
 	def load_plugins(self):
-		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.gameFunctions.gameIdentifier}/type_readers']):
+		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.game_functions.game_identifier}/type_readers']):
 			plugin = load_module(name, finder.path)
 
 			if not hasattr(plugin, 'file_type'):

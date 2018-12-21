@@ -229,9 +229,9 @@ def topLevelFormat(app, fileID):
 	if dev:
 		print(data['fileName'])
 		if not success and fileContainer['fileType'] not in unsupportedTypes:
-			if not os.path.isdir(os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, data['forgeFile'])):
-				os.makedirs(os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, data['forgeFile']))
-			outPath = os.path.join(app.CONFIG['dumpFolder'], app.gameFunctions.gameIdentifier, data['forgeFile'], '{}{}.format'.format(data['fileName'], time.time()))
+			if not os.path.isdir(os.path.join(app.CONFIG['dumpFolder'], app.game_functions.game_identifier, data['forgeFile'])):
+				os.makedirs(os.path.join(app.CONFIG['dumpFolder'], app.game_functions.game_identifier, data['forgeFile']))
+			outPath = os.path.join(app.CONFIG['dumpFolder'], app.game_functions.game_identifier, data['forgeFile'], '{}{}.format'.format(data['fileName'], time.time()))
 			fOut.save(outPath, 'w')
 			os.startfile('explorer "{}"'.format(outPath))
 	return fileContainer
