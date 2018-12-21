@@ -129,7 +129,7 @@ class TempFilesContainer:
 				datafile_id = file_id
 
 		if not (file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]):
-			self.ACExplorer_main.gameFunctions.framework.decompress_datafile(self.ACExplorer_main, datafile_id, forge_file_name)
+			self.ACExplorer_main.game_functions.framework.decompress_datafile(self.ACExplorer_main, datafile_id, forge_file_name)
 		self.refresh_usage(file_id)
 		if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]:
 			return {

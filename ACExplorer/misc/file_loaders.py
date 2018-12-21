@@ -105,7 +105,7 @@ class DataTypeHandler:
 		:param indent_count:
 		:return:
 		"""
-		file_type = self.app.gameFunctions.framework.read_file_header(file_object_data_wrapper, out_file, indent_count)
+		file_type = self.app.game_functions.framework.read_file_header(file_object_data_wrapper, out_file, indent_count)
 		if file_type in self.plugins:
 			return self.plugins[file_type](self.app, file_object_data_wrapper, out_file, indent_count+1)
 		else:

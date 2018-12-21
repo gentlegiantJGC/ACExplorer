@@ -164,7 +164,7 @@ class FileObjectDataWrapper:
 		return self._read_struct(out_file, indent_count, f'{chr_len}s')
 
 	def read_id(self, out_file=None, indent_count=0):
-		file_id = self._read_struct(out_file, indent_count, self.app.gameFunctions.file_id_datatype, False)
+		file_id = self._read_struct(out_file, indent_count, self.app.game_functions.file_id_datatype, False)
 		if out_file is not None:
 			data = self.app.temp_files(file_id)
 			if data is None:
@@ -174,12 +174,12 @@ class FileObjectDataWrapper:
 		return file_id
 
 	def read_type(self, out_file=None, indent_count=0):
-		binary = self.file_object.read(self.app.gameFunctions.file_type_length)
-		if len(binary) != self.app.gameFunctions.file_type_length:
+		binary = self.file_object.read(self.app.game_functions.file_type_length)
+		if len(binary) != self.app.game_functions.file_type_length:
 			raise Exception('Reached End Of File')
 		file_type = ''.join(f'{b:02X}' for b in binary[::-1])
 		if out_file is not None:
-			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{file_type}\t{self.app.gameFunctions.file_types.get(file_type, "Undefined")}\n')
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{file_type}\t{self.app.game_functions.file_types.get(file_type, "Undefined")}\n')
 		return file_type
 
 	def read_struct(self, data_types, out_file=None, indent_count=0):
@@ -212,9 +212,9 @@ class FileObjectDataWrapper:
 			hex_str = []
 			might_be_a_file_type = ''.join(f'{b:02X}' for b in self.file_object.read(4)[::-1])
 			while len(might_be_a_file_type) == 8:
-				if might_be_a_file_type in self.app.gameFunctions.file_types:
+				if might_be_a_file_type in self.app.game_functions.file_types:
 					out_file.write(f'{indent_count * self.indent_chr}{" ".join(hex_str)}\n')
-					out_file.write(f'{indent_count * self.indent_chr}{might_be_a_file_type}\t{self.app.gameFunctions.file_types.get(might_be_a_file_type)}\n')
+					out_file.write(f'{indent_count * self.indent_chr}{might_be_a_file_type}\t{self.app.game_functions.file_types.get(might_be_a_file_type)}\n')
 					hex_str = []
 					might_be_a_file_type = ''.join(f'{b:02X}' for b in self.file_object.read(4)[::-1])
 				else:

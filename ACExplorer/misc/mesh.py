@@ -103,7 +103,7 @@ class MaterialHandler:
 
 	def get(self, file_id):
 		if file_id not in self.materials:
-			self.materials[file_id] = self.app.gameFunctions.get_material_ids(self.app, file_id)
+			self.materials[file_id] = self.app.game_functions.get_material_ids(self.app, file_id)
 		return self.materials[file_id]
 
 

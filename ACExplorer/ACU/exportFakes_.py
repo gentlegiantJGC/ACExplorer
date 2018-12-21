@@ -16,7 +16,7 @@ def export_fakes(app, file_id):
 		transformation_matrix = numpy.fromstring(n[15:79], numpy.float32).reshape(4, 4)
 		visualLoc = n.find(b'\x29\x8D\x65\xEC')
 		model_file_id = uint64(n[visualLoc + 8:visualLoc + 16])
-		model = app.gameFunctions.read_model(app, model_file_id)
+		model = app.game_functions.read_model(app, model_file_id)
 		if model is not None:
 			model.vertices = numpy.matmul(numpy.pad(model.vertices, ((0, 0), (0, 1)), 'constant', constant_values=1), transformation_matrix)[:,:3]
 			obj_handler.export(model)

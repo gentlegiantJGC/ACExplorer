@@ -1098,7 +1098,7 @@ def recursiveFormat(app, fIn, fOut, indentCount=0):
 		for n in range(count1):
 			readStr(fIn, fOut, 1, indentCount+1)
 			fileID2 = readID(app, fIn, fOut, indentCount+1)
-			app.gameFunctions.read_file(app, fileID2)
+			app.game_functions.read_file(app, fileID2)
 			print('{} of {}'.format(n, count1))
 
 	# F9 C2 8F 68

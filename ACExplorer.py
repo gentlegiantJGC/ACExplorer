@@ -120,10 +120,10 @@ class App:
 	# 		if ',' in search:
 	# 			for file_id in search.split(','):
 	# 				file_id = file_id.replace(' ', '').upper()
-	# 				self.gameFunctions.read_file(self, file_id)
+	# 				self.game_functions.read_file(self, file_id)
 	# 		else:
 	# 			file_id = self.search.get().replace(' ', '').upper()
-	# 			self.gameFunctions.read_file(self, file_id)
+	# 			self.game_functions.read_file(self, file_id)
 
 	# def clear_search(self):
 	# 	self.search.delete(0, tkinter.END)
@@ -141,7 +141,7 @@ class App:
 	# 	# if len(fileType) == 8:
 	# 	# 	for fileID in tempFiles.tempFileContainer.keys():
 	# 	# 		if tempFiles.tempFileContainer[fileID][0]['fileType'] in [fileType, ''.join([fileType[a:a+2] for a in [6,4,2,0]])]:
-	# 	# 			self.gameFunctions.formatFile.topLevelFormat(self, fileID)
+	# 	# 			self.game_functions.formatFile.topLevelFormat(self, fileID)
 	# 	# 			count -= 1
 	# 	# 			if count == 0:
 	# 	# 				break
