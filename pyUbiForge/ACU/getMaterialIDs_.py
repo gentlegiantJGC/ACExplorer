@@ -1,10 +1,10 @@
 from pyUbiForge.misc import Material
 
 
-def get_material_ids(app, file_id):
-	data = app.temp_files(file_id)
+def get_material_ids(py_ubi_forge, file_id):
+	data = py_ubi_forge.temp_files(file_id)
 	if data is None:
-		app.log.warn(__name__, f"Failed to find file {file_id:016X}")
+		py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return Material(f'{file_id:016X}', missing_no=True)
 	name = data["fileName"]
 
@@ -12,9 +12,9 @@ def get_material_ids(app, file_id):
 	material_file.seek(25)
 	material_template_id = material_file.read_id()
 
-	data = app.temp_files(material_template_id)
+	data = py_ubi_forge.temp_files(material_template_id)
 	if data is None:
-		app.log.warn(__name__, f"Failed to find file {material_template_id:016X}")
+		py_ubi_forge.log.warn(__name__, f"Failed to find file {material_template_id:016X}")
 		return Material(name, missing_no=True)
 	material_template = data["rawFile"]
 

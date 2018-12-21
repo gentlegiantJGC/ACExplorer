@@ -3,13 +3,13 @@ import shutil
 from pyUbiForge.misc import texture
 
 
-class ObjMtl(object):
-	def __init__(self, app, model_name, save_folder):
-		self.app = app
+class ObjMtl:
+	def __init__(self, py_ubi_forge, model_name: str, save_folder: str):
+		self.pyUbiForge = py_ubi_forge
 		self.model_name = model_name
 		self.save_folder = save_folder
 		self.vertex_count = 0   # the number of vertices that have been processed. Used to calculate the vertex offset
-		self.mtl_handler = MaterialHandler(self.app)      # used when generating the .mtl file
+		self.mtl_handler = MaterialHandler(self.pyUbiForge)      # used when generating the .mtl file
 		self._group_name = {}   # used for getting a unique name for each model
 		self.missing_no_exported = False
 
@@ -64,7 +64,7 @@ class ObjMtl(object):
 			mtl.write('Ka 1.000 1.000 1.000\nKd 1.000 1.000 1.000\nKs 0.000 0.000 0.000\nNs 0.000\n')
 
 			if material.missing_no:
-				mtl.write(f'map_Kd {os.path.basename(self.app.CONFIG["missingNo"])}\n')
+				mtl.write(f'map_Kd {os.path.basename(self.pyUbiForge.CONFIG["missingNo"])}\n')
 				self.export_missing_no()
 			else:
 				for map_type, file_id in [
@@ -76,9 +76,9 @@ class ObjMtl(object):
 										]:
 					if file_id is None:
 						continue
-					image_path = texture.export_dds(self.app, file_id, self.save_folder)
+					image_path = texture.export_dds(self.pyUbiForge, file_id, self.save_folder)
 					if image_path is None:
-						mtl.write(f'{map_type} {os.path.basename(self.app.CONFIG["missingNo"])}\n')
+						mtl.write(f'{map_type} {os.path.basename(self.pyUbiForge.CONFIG["missingNo"])}\n')
 						self.export_missing_no()
 					else:
 						mtl.write(f'{map_type} {os.path.basename(image_path)}\n')
@@ -93,18 +93,18 @@ class ObjMtl(object):
 		"""
 		if not self.missing_no_exported:
 			self.missing_no_exported = True
-			shutil.copy(self.app.CONFIG['missingNo'], self.save_folder)
+			shutil.copy(self.pyUbiForge.CONFIG['missingNo'], self.save_folder)
 
 
 class MaterialHandler:
-	def __init__(self, app):
-		self.app = app
+	def __init__(self, py_ubi_forge):
+		self.pyUbiForge = py_ubi_forge
 		self.materials = {}
 		self.name = 'Unknown'
 
-	def get(self, file_id):
+	def get(self, file_id: int):
 		if file_id not in self.materials:
-			self.materials[file_id] = self.app.game_functions.get_material_ids(self.app, file_id)
+			self.materials[file_id] = self.pyUbiForge.game_functions.get_material_ids(self.pyUbiForge, file_id)
 		return self.materials[file_id]
 
 

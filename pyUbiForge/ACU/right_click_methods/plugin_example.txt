@@ -5,5 +5,5 @@ plugin_level = integer 1, 2 or 4  # this is the level in the file tree this plug
 #   3 - the datafile (for plugins specific to a certain file type use 4, those will appear here as well)
 #   4 - the specific file in the datafile and the parent datafile with the same id
 file_type = '415D9568'  # if plugin_level == 4 then the big endian hex string representation of the file type must be given
-def plugin(app, unique_id):
+def plugin(py_ubi_forge, unique_id):
     # plugin code here

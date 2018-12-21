@@ -1,7 +1,7 @@
 class Logger:
-	def __init__(self, app):
-		self.app = app
-		self.logFile = open(app.CONFIG['logFile'], 'w')
+	def __init__(self, py_ubi_forge):
+		self.pyUbiForge = py_ubi_forge
+		self.logFile = open(py_ubi_forge.CONFIG['logFile'], 'w')
 
 	def warn(self, name, msg):
 		print(msg)

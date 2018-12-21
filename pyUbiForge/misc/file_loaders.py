@@ -14,7 +14,7 @@ class RightClickHandler:
 		4 - the specific file in the datafile and the parent datafile with the same id
 			if plugin_level == 4 then the big endian hex string representation of the file type must be given
 			file_type = '415D9568'
-	def plugin(app, file_id):
+	def plugin(py_ubi_forge, file_id):
 		# plugin code here
 	"""
 	def __init__(self, py_ubi_forge):
@@ -74,8 +74,8 @@ class RightClickHandler:
 
 
 class DataTypeHandler:
-	def __init__(self, app):
-		self.app = app
+	def __init__(self, py_ubi_forge):
+		self.pyUbiForge = py_ubi_forge
 		self.game_identifier = ''
 		self.plugins = {}
 
@@ -88,8 +88,8 @@ class DataTypeHandler:
 		:param indent_count:
 		:return: objects defined in the plugins
 		"""
-		if self.app.game_functions.game_identifier != self.game_identifier:
-			self.game_identifier = self.app.game_functions.game_identifier
+		if self.pyUbiForge.game_functions.game_identifier != self.game_identifier:
+			self.game_identifier = self.pyUbiForge.game_functions.game_identifier
 			self.plugins = {}
 			self.load_plugins()
 		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
@@ -106,34 +106,34 @@ class DataTypeHandler:
 		:param indent_count:
 		:return:
 		"""
-		file_type = self.app.game_functions.forge.read_file_header(file_object_data_wrapper, out_file, indent_count)
+		file_type = self.pyUbiForge.game_functions.forge.read_file_header(file_object_data_wrapper, out_file, indent_count)
 		if file_type in self.plugins:
-			return self.plugins[file_type](self.app, file_object_data_wrapper, out_file, indent_count+1)
+			return self.plugins[file_type](self.pyUbiForge, file_object_data_wrapper, out_file, indent_count+1)
 		else:
 			raise Exception(f'File type {file_type} does not have a file reader')
 
 	def load_plugins(self):
-		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.app.game_functions.game_identifier}/type_readers']):
+		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.pyUbiForge.game_functions.game_identifier}/type_readers']):
 			plugin = load_module(name, finder.path)
 
 			if not hasattr(plugin, 'file_type'):
-				self.app.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
+				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
 				continue
 			elif not isinstance(plugin.file_type, str):
-				self.app.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
+				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
 				continue
 			try:
 				file_type = plugin.file_type
 			except Exception as e:
-				self.app.log.warn(__name__, f'Failed loading {name} because parsing of "file_type" failed\n{e}')
+				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because parsing of "file_type" failed\n{e}')
 				continue
 
 			if not hasattr(plugin, 'plugin'):
-				self.app.log.warn(__name__, f'Failed loading {name} because "plugin" was not defined')
+				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "plugin" was not defined')
 				continue
 
 			if file_type in self.plugins:
-				self.app.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
+				self.pyUbiForge.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
 				continue
 			else:
 				self.plugins[file_type] = plugin.plugin

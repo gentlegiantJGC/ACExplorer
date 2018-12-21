@@ -5,7 +5,7 @@ plugin_level = 4
 file_type = 'A2B7E917'
 
 
-def plugin(app, file_id, forge_file_name, datafile_id):
+def plugin(py_ubi_forge, file_id, forge_file_name, datafile_id):
 	# TODO add select directory option
-	save_folder = app.CONFIG['dumpFolder']
-	texture.export_dds(app, file_id, forge_file_name, datafile_id, save_folder)
+	save_folder = py_ubi_forge.CONFIG['dumpFolder']
+	texture.export_dds(py_ubi_forge, file_id, forge_file_name, datafile_id, save_folder)

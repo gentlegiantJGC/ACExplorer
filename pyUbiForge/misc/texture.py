@@ -1,10 +1,11 @@
 import os
 import struct
+from typing import Union
 
 
 class BaseTexture:
-	def __init__(self, app):
-		self.app = app
+	def __init__(self, py_ubi_forge):
+		self.pyUbiForge = py_ubi_forge
 		self.dwSize = b'\x7C\x00\x00\x00'  # 124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
 		# (probably should be set based on the data)
@@ -45,7 +46,7 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = f'"{self.app.CONFIG["texconv"]}" -fl 9.1 -y -px {self.app.CONFIG["dumpFolder"]}{os.sep} -f BC3_UNORM {path}'
+			texconv = f'"{self.pyUbiForge.CONFIG["texconv"]}" -fl 9.1 -y -px {self.pyUbiForge.CONFIG["dumpFolder"]}{os.sep} -f BC3_UNORM {path}'
 			os.system(texconv)
 
 
@@ -62,16 +63,16 @@ class Material:
 		self.mask2 = mask2
 
 
-def export_dds(app, file_id, forge_file_name, datafile_id, save_folder):
-	data = app.temp_files(file_id, forge_file_name, datafile_id)
+def export_dds(py_ubi_forge, file_id: str, save_folder: str, forge_file_name: Union[None, str]=None, datafile_id: Union[None, int]=None):
+	data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
 	if data is None:
-		app.log.warn(__name__, f"Failed to find file {file_id:016X}")
+		py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return
 	save_path = os.path.join(save_folder, f'{data["fileName"]}.dds')
 	if os.path.isfile(save_path):
-		app.log.info(__name__, f'Texture "{data["fileName"]}" already exported')
+		py_ubi_forge.log.info(__name__, f'Texture "{data["fileName"]}" already exported')
 		return save_path
-	tex = app.read_file(data["rawFile"])
+	tex = py_ubi_forge.read_file(data["rawFile"])
 	tex.export_dds(save_path)
-	app.log.info(__name__, f'Texture "{data["fileName"]}" exported')
+	py_ubi_forge.log.info(__name__, f'Texture "{data["fileName"]}" exported')
 	return save_path

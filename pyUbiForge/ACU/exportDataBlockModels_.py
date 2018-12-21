@@ -13,9 +13,9 @@ def mul4x4(A,B):
 				C[x][y] += A[x][z]*B[z][y]
 	return C
 
-def exportDataBlockModels(app, fileID):
+def exportDataBlockModels(py_ubi_forge, fileID):
 	if not tempFiles.exists(fileID):
-		decompress_datafile(app, fileID)
+		decompress_datafile(py_ubi_forge, fileID)
 	data = tempFiles.read(fileID)
 	if len(data) == 0:
 		raise Exception('file {} is empty'.format(fileID))
@@ -24,9 +24,9 @@ def exportDataBlockModels(app, fileID):
 	if data['fileType'] != 'AC2BBF68':
 		return
 	
-	if app.dev:
+	if py_ubi_forge.dev:
 		reload(formatFile)  # for development
-	dataBlock = formatFile.topLevelFormat(app, fileID)
+	dataBlock = formatFile.topLevelFormat(py_ubi_forge, fileID)
 	# fileID, data and dataBlock all relate to the DataBlock file (Type AC2BBF68)
 	# This is a list of every file called by that DataBlock
 	# formatFile.topLevelFormat will return this list of files into dataBlock
@@ -35,7 +35,7 @@ def exportDataBlockModels(app, fileID):
 	
 	for n, fileID2 in enumerate(dataBlock['dataBlock']):
 		if not tempFiles.exists(fileID2):
-			decompress_datafile(app, fileID2)
+			decompress_datafile(py_ubi_forge, fileID2)
 		data2 = tempFiles.read(fileID2)
 		if len(data2) == 0:
 			raise Exception('file {} is empty'.format(fileID2))
@@ -43,7 +43,7 @@ def exportDataBlockModels(app, fileID):
 		
 		print('Reading {}. {} of {}'.format(data2['fileName'], str(n+1), len(dataBlock['dataBlock'])))
 	
-		dataBlockChild = formatFile.topLevelFormat(app, fileID2)
+		dataBlockChild = formatFile.topLevelFormat(py_ubi_forge, fileID2)
 		# fileID2, data2 and dataBlockChild all relate to the files contained in
 		# the DataBlock file. The file could be of a number of types including
 		# entities and entity groups
@@ -51,7 +51,7 @@ def exportDataBlockModels(app, fileID):
 			if 'fileIDList' in dataBlockChild:
 				for fileID3 in dataBlockChild['fileIDList']:
 					if not tempFiles.exists(fileID3):
-						decompress_datafile(app, fileID3)
+						decompress_datafile(py_ubi_forge, fileID3)
 					data3 = tempFiles.read(fileID3)
 					if len(data3) == 0:
 						raise Exception('file {} is empty'.format(fileID3))
@@ -68,7 +68,7 @@ def exportDataBlockModels(app, fileID):
 			if 'files' in dataBlockChild:
 				for fileID3 in dataBlockChild['files']:
 					if not tempFiles.exists(fileID3):
-						decompress_datafile(app, fileID3)
+						decompress_datafile(py_ubi_forge, fileID3)
 					data3 = tempFiles.read(fileID3)
 					if len(data3) == 0:
 						continue
@@ -76,11 +76,11 @@ def exportDataBlockModels(app, fileID):
 					data3 = data3[0]
 					
 					if data3['fileType'] in ['0984415E','3F742D26']: # entity
-						dataBlockChild2 = formatFile.topLevelFormat(app, fileID3)
+						dataBlockChild2 = formatFile.topLevelFormat(py_ubi_forge, fileID3)
 						if 'fileIDList' in dataBlockChild2:
 							for fileID4 in dataBlockChild2['fileIDList']:
 								if not tempFiles.exists(fileID4):
-									decompress_datafile(app, fileID4)
+									decompress_datafile(py_ubi_forge, fileID4)
 								data4 = tempFiles.read(fileID4)
 								if len(data4) == 0:
 									raise Exception('file {} is empty'.format(fileID4))
@@ -112,7 +112,7 @@ def exportDataBlockModels(app, fileID):
 		# fIn.seek(2,1)
 		# fileID2 = BEHEX2(fIn.read(8)).upper()
 		# if not tempFiles.exists(fileID2):
-			# decompressDatafile(app, fileID2)
+			# decompressDatafile(py_ubi_forge, fileID2)
 		# data2 = tempFiles.read(fileID2)
 		# if len(data2) == 0:
 			# raise Exception('file '+fileID2+' is empty')
@@ -136,7 +136,7 @@ def exportDataBlockModels(app, fileID):
 			# fIn2.seek(meshLoc+5, 1)
 			# fileID3 = BEHEX2(fIn2.read(8)).upper()
 			# if not tempFiles.exists(fileID3):
-				# decompressDatafile(app, fileID3)
+				# decompressDatafile(py_ubi_forge, fileID3)
 			# data3 = tempFiles.read(fileID3)
 			# if len(data3) == 0:
 				# raise Exception('file '+fileID3+' is empty')
@@ -150,6 +150,6 @@ def exportDataBlockModels(app, fileID):
 	print('done reading')
 	print('exporting')
 
-	exportOBJMulti(app, fileID, fileIDList)
+	exportOBJMulti(py_ubi_forge, fileID, fileIDList)
 	
 	# print 'Done'

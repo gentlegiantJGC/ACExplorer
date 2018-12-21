@@ -4,12 +4,12 @@ import numpy
 file_type = '415D9568'
 
 
-def plugin(app, file_object_data_wrapper, out_file, indent_count):
-	return Model(app, file_object_data_wrapper, out_file, indent_count)
+def plugin(py_ubi_forge, file_object_data_wrapper, out_file, indent_count):
+	return Model(py_ubi_forge, file_object_data_wrapper, out_file, indent_count)
 
 
 class Model(BaseModel):
-	def __init__(self, app, model_file, out_file, indent_count):
+	def __init__(self, py_ubi_forge, model_file, out_file, indent_count):
 		BaseModel.__init__(self)
 
 		model_file.out_file_write('\n', out_file, indent_count)
@@ -238,7 +238,7 @@ class Model(BaseModel):
 						('', numpy.int16, 2),  # not sure what this is
 					], vert_table_length, out_file, indent_count)
 				else:
-					app.log.warn(__name__, f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
+					py_ubi_forge.log.warn(__name__, f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
 					return
 
 				model_file.out_file_write(f'{vert_table}\n', out_file, indent_count)

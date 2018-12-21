@@ -5,15 +5,15 @@ from pyUbiForge.misc import BaseTexture
 file_type = 'A2B7E917'
 
 
-def plugin(app, file_object_data_wrapper, out_file, indent_count):
-	return Texture(app, file_object_data_wrapper, out_file, indent_count)
+def plugin(py_ubi_forge, file_object_data_wrapper, out_file, indent_count):
+	return Texture(py_ubi_forge, file_object_data_wrapper, out_file, indent_count)
 
 
 class Texture(BaseTexture):
-	def __init__(self, app, texture_file, out_file, indent_count):
-		BaseTexture.__init__(self, app)
-		if app.dev:
-			with open(os.path.join(app.CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
+	def __init__(self, py_ubi_forge, texture_file, out_file, indent_count):
+		BaseTexture.__init__(self, py_ubi_forge)
+		if py_ubi_forge.dev:
+			with open(os.path.join(py_ubi_forge.CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
 				f2.write('{}\n'.format(' '.join(f'{b:02X}' for b in texture_file.read_str(116))))
 				texture_file.seek(-116, 1)
 		# header has already been read

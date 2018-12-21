@@ -60,19 +60,19 @@ class FileObject:
 
 
 class FileObjectDataWrapper:
-	def __init__(self, app, file_object, endianness='<'):
-		self.app = app
+	def __init__(self, py_ubi_forge, file_object, endianness='<'):
+		self.pyUbiForge = py_ubi_forge
 		self.file_object = file_object
 		self.endianness = endianness
 		self.indent_chr = '\t'
 
 	@classmethod
-	def from_binary(cls, app, binary, endianness='<'):
-		return cls(app, FileObject(data=binary, mode='r'), endianness)
+	def from_binary(cls, py_ubi_forge, binary, endianness='<'):
+		return cls(py_ubi_forge, FileObject(data=binary, mode='r'), endianness)
 
 	@classmethod
-	def from_file(cls, app, path, endianness='<'):
-		return cls(app, open(path, 'rb'), endianness)
+	def from_file(cls, py_ubi_forge, path, endianness='<'):
+		return cls(py_ubi_forge, open(path, 'rb'), endianness)
 
 	def close(self):
 		self.file_object.close()
@@ -164,9 +164,9 @@ class FileObjectDataWrapper:
 		return self._read_struct(out_file, indent_count, f'{chr_len}s')
 
 	def read_id(self, out_file=None, indent_count=0):
-		file_id = self._read_struct(out_file, indent_count, self.app.game_functions.file_id_datatype, False)
+		file_id = self._read_struct(out_file, indent_count, self.pyUbiForge.game_functions.file_id_datatype, False)
 		if out_file is not None:
-			data = self.app.temp_files(file_id)
+			data = self.pyUbiForge.temp_files(file_id)
 			if data is None:
 				out_file.write('\tUnknown File ID\n')
 			else:
@@ -174,12 +174,12 @@ class FileObjectDataWrapper:
 		return file_id
 
 	def read_type(self, out_file=None, indent_count=0):
-		binary = self.file_object.read(self.app.game_functions.file_type_length)
-		if len(binary) != self.app.game_functions.file_type_length:
+		binary = self.file_object.read(self.pyUbiForge.game_functions.file_type_length)
+		if len(binary) != self.pyUbiForge.game_functions.file_type_length:
 			raise Exception('Reached End Of File')
 		file_type = ''.join(f'{b:02X}' for b in binary[::-1])
 		if out_file is not None:
-			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{file_type}\t{self.app.game_functions.file_types.get(file_type, "Undefined")}\n')
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{file_type}\t{self.pyUbiForge.game_functions.file_types.get(file_type, "Undefined")}\n')
 		return file_type
 
 	def read_struct(self, data_types, out_file=None, indent_count=0):
@@ -212,9 +212,9 @@ class FileObjectDataWrapper:
 			hex_str = []
 			might_be_a_file_type = ''.join(f'{b:02X}' for b in self.file_object.read(4)[::-1])
 			while len(might_be_a_file_type) == 8:
-				if might_be_a_file_type in self.app.game_functions.file_types:
+				if might_be_a_file_type in self.pyUbiForge.game_functions.file_types:
 					out_file.write(f'{indent_count * self.indent_chr}{" ".join(hex_str)}\n')
-					out_file.write(f'{indent_count * self.indent_chr}{might_be_a_file_type}\t{self.app.game_functions.file_types.get(might_be_a_file_type)}\n')
+					out_file.write(f'{indent_count * self.indent_chr}{might_be_a_file_type}\t{self.pyUbiForge.game_functions.file_types.get(might_be_a_file_type)}\n')
 					hex_str = []
 					might_be_a_file_type = ''.join(f'{b:02X}' for b in self.file_object.read(4)[::-1])
 				else:
