@@ -6,7 +6,7 @@ import time
 import struct
 from pyUbiForge.misc.file_object import FileObject
 # from ACExplorer.misc.dataTypes import LE2BE2, BEHEX2, LE2DEC2, int16, uint16, int32, uint32, float32
-fileTypes = json.load(open(r"./ACExplorer/ACU/fileFormats.json"))
+fileTypes = json.load(open(r"./pyUbiForge/ACU/fileFormats.json"))
 indentCharacter = '\t'
 
 '''

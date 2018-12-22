@@ -37,7 +37,7 @@ class RightClickHandler:
 			return self.plugins[4].get(self.pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'], file_id
 
 	def load_plugins(self):
-		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.pyUbiForge.game_functions.game_identifier}/right_click_methods']):
+		for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_functions.game_identifier}/right_click_methods']):
 			module = load_module(name, finder.path)
 			if not hasattr(module, 'plugin_name'):
 				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "plugin_name" was not defined')
@@ -113,7 +113,7 @@ class DataTypeHandler:
 			raise Exception(f'File type {file_type} does not have a file reader')
 
 	def load_plugins(self):
-		for finder, name, _ in pkgutil.iter_modules([f'./ACExplorer/{self.pyUbiForge.game_functions.game_identifier}/type_readers']):
+		for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_functions.game_identifier}/type_readers']):
 			plugin = load_module(name, finder.path)
 
 			if not hasattr(plugin, 'file_type'):
