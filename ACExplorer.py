@@ -226,5 +226,4 @@ class RightClickDialogue:
 
 if __name__ == '__main__':
 	app = App()
-	app.pyUbiForge.CONFIG.save()
-	app.pyUbiForge.temp_files.save()
+	app.pyUbiForge.save()

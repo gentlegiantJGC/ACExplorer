@@ -23,7 +23,7 @@ class PyUbiForgeMain:
 		self._forge_files = {}
 
 	@property
-	def CONFIG(self):
+	def CONFIG(self) -> misc.Config:
 		return self._CONFIG
 
 	@property
@@ -35,7 +35,7 @@ class PyUbiForgeMain:
 		return self._log
 
 	@property
-	def temp_files(self):
+	def temp_files(self) -> misc.TempFilesContainer:
 		return self._temp_files
 
 	@property
@@ -78,3 +78,7 @@ class PyUbiForgeMain:
 				self._forge_files = {}
 
 			self.temp_files.load()
+
+	def save(self):
+		self.CONFIG.save()
+		self.temp_files.save()
