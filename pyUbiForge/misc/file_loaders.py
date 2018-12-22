@@ -1,5 +1,6 @@
 import pkgutil
 import importlib
+from typing import Tuple, Union, TextIO
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 
@@ -22,7 +23,7 @@ class RightClickHandler:
 		self.game_identifier = ''
 		self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 
-	def get(self, depth, file_id, forge_file_name=None, datafile_id=None):
+	def get(self, depth: int, file_id: int, forge_file_name: str = None, datafile_id: int = None) -> Tuple[list, int]:
 		if self.pyUbiForge.game_functions.game_identifier != self.game_identifier:
 			self.game_identifier = self.pyUbiForge.game_functions.game_identifier
 			self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
@@ -79,7 +80,7 @@ class DataTypeHandler:
 		self.game_identifier = ''
 		self.plugins = {}
 
-	def __call__(self, file_object_data_wrapper, out_file=None, indent_count=0):
+	def __call__(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO] = None, indent_count: int = 0):
 		"""
 		Call this function in the right click methods as the start point
 		Will call get_data_recursive to get the actual data followed by the clever_format method to read the rest of the file
@@ -98,7 +99,7 @@ class DataTypeHandler:
 		file_object_data_wrapper.clever_format(out_file, indent_count)
 		return data
 
-	def get_data_recursive(self, file_object_data_wrapper, out_file, indent_count):
+	def get_data_recursive(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO], indent_count: int):
 		"""
 		Call this function in file reader methods to access other file types in the same file
 		:param file_object_data_wrapper:
