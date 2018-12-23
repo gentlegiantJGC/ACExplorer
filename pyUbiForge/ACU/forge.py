@@ -1,11 +1,18 @@
 import os
+from typing import Tuple, List, Union, TextIO
 from pyUbiForge.misc import decompress
 from pyUbiForge.misc.forge import BaseForge, DataFile
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 
 class Forge(BaseForge):
+	"""This is a container which houses pointers to the data for each forge file and methods to decompress it."""
 	def __init__(self, py_ubi_forge, path: str, forge_file_name: str):
+		"""Initiate the class and read the header tables to get the locations of the files.
+
+		The forge file has a couple of data tables before the actual data that points to where the actual data is stored.
+		These tables are parsed and the data from them stored for each datafile in self.datafiles for use later
+		"""
 		BaseForge.__init__(self, py_ubi_forge, path, forge_file_name)
 		self.pyUbiForge.log.info(__name__, f'Building file tree for {forge_file_name}')
 
@@ -40,7 +47,8 @@ class Forge(BaseForge):
 		forge_file.close()
 
 	@staticmethod
-	def read_compressed_data_section(raw_data_chunk: FileObjectDataWrapper):
+	def _read_compressed_data_section(raw_data_chunk: FileObjectDataWrapper) -> Tuple[int, List[bytes]]:
+		"""This is a helper function used in decompression"""
 		raw_data_chunk.seek(2, 1)
 		compression_type = raw_data_chunk.read_uint_8()
 		raw_data_chunk.seek(3, 1)
@@ -74,6 +82,14 @@ class Forge(BaseForge):
 		return format_version, uncompressed_data_list
 
 	def decompress_datafile(self, datafile_id: int):
+		"""This is the decompression method
+
+		Given a numerical id of a datafile that is present in the forge file, this method will decompress that datafile, storing
+		the data in the pyUbiForgeMain instance which was given to this class. It will populate self.datafiles[datafile_id].files
+		with mappings from numerical id to file_name for each file within the datafile. It will also add the datafile id to
+		self.new_datafiles so that external applications (such as the UI wrapper ACExplorer) will know which datafiles have been
+		decompressed and have data to be added to the UI.
+		"""
 		repoulate_tree = self.datafiles[datafile_id].files == {}
 		if datafile_id == 0 or datafile_id > 2 ** 40:
 			return
@@ -86,10 +102,10 @@ class Forge(BaseForge):
 		header = raw_data_chunk.read_str(8)
 		format_version = 128
 		if header == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
-			format_version, uncompressed_data_list = self.read_compressed_data_section(raw_data_chunk)
+			format_version, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
 			if format_version == 128:
 				if raw_data_chunk.read_str(8) == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':
-					_, uncompressed_data_list_ = self.read_compressed_data_section(raw_data_chunk)
+					_, uncompressed_data_list_ = self._read_compressed_data_section(raw_data_chunk)
 					uncompressed_data_list += uncompressed_data_list_
 				else:
 					raise Exception('Compression Issue. Second compression block not found')
@@ -102,11 +118,9 @@ class Forge(BaseForge):
 			else:
 				uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
 
-		alphabetical_files = {}
-
 		if format_version == 0:
 			self.pyUbiForge.temp_files.add(datafile_id, self.forge_file_name, datafile_id, 0, self.datafiles[datafile_id].file_name, raw_file=b''.join(uncompressed_data_list))
-			alphabetical_files[self.datafiles[datafile_id].file_name] = [datafile_id]
+			self.datafiles[datafile_id].files[datafile_id] = self.datafiles[datafile_id].file_name
 
 		elif format_version == 128:
 			uncompressed_data = FileObjectDataWrapper.from_binary(self.pyUbiForge, b''.join(uncompressed_data_list))
@@ -163,7 +177,8 @@ class Forge(BaseForge):
 			self.new_datafiles.append(datafile_id)
 
 
-def read_file_header(file_object_data_wrapper, out_file, indent_count):
+def read_file_header(file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[FileObjectDataWrapper, TextIO], indent_count: int) -> str:
+	"""This is a helper function for reading the header of each file"""
 	file_object_data_wrapper.read_str(1, out_file, indent_count)
 	file_object_data_wrapper.read_id(out_file, indent_count)
 	return file_object_data_wrapper.read_type(out_file, indent_count)
