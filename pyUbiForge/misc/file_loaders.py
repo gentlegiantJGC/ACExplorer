@@ -6,9 +6,9 @@ from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 class RightClickHandler:
 	"""
-	the following are required in a plugin for it to be loaded
+	The following are required in a plugin for it to be loaded.
 	plugin_name = 'Plugin Name'  # the name shown to the user
-	plugin_level = integer 1, 2 or 4  # this is the level in the file tree this plugin applies to.
+	plugin_level = integer 1, 2, 3 or 4  # this is the level in the file tree this plugin applies to.
 		1 - the top entry
 		2 - the forge file
 		3 - the datafile (for plugins specific to a certain file type use 4, those will appear here as well)
@@ -23,21 +23,30 @@ class RightClickHandler:
 		self.game_identifier = ''
 		self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 
-	def get(self, depth: int, file_id: int, forge_file_name: str = None, datafile_id: int = None) -> Tuple[list, int]:
+	def get(self, plugin_level: int, file_id: str, forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None) -> Tuple[list, Union[str, int]]:
+		"""Returns a list of all the modules valid for the inputs.
+
+		:param plugin_level: See plugin_level
+		:param file_id: The furthest down id in the list. (eg game identifier, forge file name, datafile id or actual file id)
+		:param forge_file_name: The name of the forge file
+		:param datafile_id: The integer value of the datafile
+		:return:
+		"""
 		if self.pyUbiForge.game_functions.game_identifier != self.game_identifier:
 			self.game_identifier = self.pyUbiForge.game_functions.game_identifier
 			self.plugins = {1: [], 2: [], 3: [], 4: {'*': []}}
 			self.load_plugins()
-		if depth in [1, 2]:
-			return self.plugins[depth], file_id
-		elif depth == 3:
+		if plugin_level in [1, 2]:
+			return self.plugins[plugin_level], file_id
+		elif plugin_level == 3:
 			file_id = int(file_id)
 			return list(set(self.plugins[3] + self.plugins[4].get(self.pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'])), file_id
-		elif depth == 4:
+		elif plugin_level == 4:
 			file_id = int(file_id)
 			return self.plugins[4].get(self.pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)['fileType'], []) + self.plugins[4]['*'], file_id
 
 	def load_plugins(self):
+		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
 		for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_functions.game_identifier}/right_click_methods']):
 			module = load_module(name, finder.path)
 			if not hasattr(module, 'plugin_name'):
@@ -84,9 +93,9 @@ class DataTypeHandler:
 		"""
 		Call this function in the right click methods as the start point
 		Will call get_data_recursive to get the actual data followed by the clever_format method to read the rest of the file
-		:param file_object_data_wrapper:
-		:param out_file:
-		:param indent_count:
+		:param file_object_data_wrapper: The input raw data
+		:param out_file: A file object to output the formatted data to
+		:param indent_count: The number of indents in out_file
 		:return: objects defined in the plugins
 		"""
 		if self.pyUbiForge.game_functions.game_identifier != self.game_identifier:
@@ -99,13 +108,13 @@ class DataTypeHandler:
 		file_object_data_wrapper.clever_format(out_file, indent_count)
 		return data
 
-	def get_data_recursive(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO], indent_count: int):
+	def get_data_recursive(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO], indent_count: int = 0):
 		"""
 		Call this function in file reader methods to access other file types in the same file
-		:param file_object_data_wrapper:
-		:param out_file:
-		:param indent_count:
-		:return:
+		:param file_object_data_wrapper: The input raw data
+		:param out_file: A file object to output the formatted data to
+		:param indent_count: The number of indents in out_file
+		:return: objects defined in the plugins
 		"""
 		file_type = self.pyUbiForge.game_functions.forge.read_file_header(file_object_data_wrapper, out_file, indent_count)
 		if file_type in self.plugins:
@@ -114,6 +123,7 @@ class DataTypeHandler:
 			raise Exception(f'File type {file_type} does not have a file reader')
 
 	def load_plugins(self):
+		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
 		for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_functions.game_identifier}/type_readers']):
 			plugin = load_module(name, finder.path)
 
@@ -140,7 +150,8 @@ class DataTypeHandler:
 				self.plugins[file_type] = plugin.plugin
 
 
-def load_module(name, path):
+def load_module(name: str, path: str):
+	"""Helper function to load a module"""
 	module_spec = importlib.util.spec_from_file_location(name, f'{path}/{name}.py')
 	module = importlib.util.module_from_spec(module_spec)
 	module_spec.loader.exec_module(module)
