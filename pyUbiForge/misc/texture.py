@@ -63,7 +63,7 @@ class Material:
 		self.mask2 = mask2
 
 
-def export_dds(py_ubi_forge, file_id: str, save_folder: str, forge_file_name: Union[None, str]=None, datafile_id: Union[None, int]=None):
+def export_dds(py_ubi_forge, file_id: int, save_folder: str, forge_file_name: Union[None, str]=None, datafile_id: Union[None, int]=None):
 	data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
 	if data is None:
 		py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")

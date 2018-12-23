@@ -119,7 +119,7 @@ class TempFilesContainer:
 				else:
 					forge_file_name = None
 		if forge_file_name is None:
-			forge_file_name = next((fF for fF in self.pyUbiForge.file_list if file_id in self.pyUbiForge.file_list[fF]), None)
+			forge_file_name = next((fF for fF in self.pyUbiForge.forge_files.keys() if file_id in self.pyUbiForge.forge_files[fF].datafiles), None)
 			if forge_file_name is None:
 				if str(file_id) in self._light_dictionary:  # could check the lower down stuff but if this exists there should be data inside
 					forge_file_name = next(iter(self._light_dictionary[str(file_id)]))
