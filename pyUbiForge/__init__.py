@@ -12,8 +12,8 @@
 
 import os
 from typing import Union, Dict
-from . import ACU, misc
-from .misc.forge import BaseForge
+from pyUbiForge import ACU, misc
+from pyUbiForge.misc.forge import BaseForge
 
 games = {
 	'ACU': ACU
@@ -33,7 +33,7 @@ class PyUbiForgeMain:
 		self._temp_files = misc.TempFilesContainer(self)
 		self._right_click_plugins = misc.file_loaders.RightClickHandler(self)
 		self._read_file = misc.file_loaders.DataTypeHandler(self)
-		self._forge_files = {} # _forge_files is a dictionary mapping from str name of the forge file to a Forge class.
+		self._forge_files = {}  # _forge_files is a dictionary mapping from str name of the forge file to a Forge class.
 
 	@property
 	def CONFIG(self) -> misc.Config:
@@ -41,7 +41,7 @@ class PyUbiForgeMain:
 		return self._CONFIG
 
 	@property
-	def game_functions(self) -> Union[None, ACU]:
+	def game_functions(self):
 		"""Returns the package for the loaded game or None if load_game has not been called."""
 		return self._game_functions
 
