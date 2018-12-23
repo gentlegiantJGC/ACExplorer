@@ -10,7 +10,8 @@ else:
 lzo = CDLL(lzoPath)
 
 
-def decompress(mode, src, dst_len):
+def decompress(mode: int, src: bytes, dst_len: int) -> bytes:
+	"""This is the function that does the actual decompression of the data"""
 	if len(src) == dst_len:
 		return src
 	src_len = (c_ushort*1)(len(src))
