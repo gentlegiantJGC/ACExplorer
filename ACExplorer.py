@@ -206,9 +206,9 @@ class OptionsDialogue:
 
 
 class RightClickDialogue:
-	def __init__(self, py_ubi_forge):
-		self.pyUbiForge = py_ubi_forge
-		self.menu = tkinter.Menu(self.pyUbiForge.main_ui, tearoff=0)
+	def __init__(self, app_):
+		self.app = app_
+		self.menu = tkinter.Menu(self.app.main_ui, tearoff=0)
 
 	def post(self, event, plugins, file_id, forge_file_name=None, datafile_id=None):
 		self.menu.delete(0, tkinter.END)
@@ -221,7 +221,7 @@ class RightClickDialogue:
 				self.menu.grab_release()
 
 	def add_command(self, plugin, file_id, forge_file_name, datafile_id):
-		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.pyUbiForge, file_id, forge_file_name, datafile_id))
+		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app.pyUbiForge, file_id, forge_file_name, datafile_id))
 
 
 if __name__ == '__main__':
