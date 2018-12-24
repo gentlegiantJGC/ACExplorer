@@ -1,15 +1,11 @@
 """
-	This is an explorer for the forge file format used in Assassin's Creed
-	The format varies slightly between games and the current implementation will only work
-	with Assassin's Creed Unity.
-	The forge file format is similar to a zip file in concept however each individual containing
-	file can be decompressed individually.
-	The 'folders' in the top level of the forge file will from this point on be referred to as datafiles.
-	Contained within the datafiles are a variety of files related to that datafile.
+	This is an explorer for the forge file format used in a number of Ubisoft games mainly consisting
+	of the Assassin's Creed franchise. 	This is just a UI wrapper for pyUbiForge where the heavy lifting is done.
 """
 
 import tkinter
 from tkinter import ttk, filedialog
+from typing import Union
 import pyUbiForge
 
 
@@ -47,7 +43,6 @@ class App:
 		self.file_tree.bind('<Button-3>', self.on_right_click)
 
 		# Load the game. This should ultimately be based on an entry in CONFIG
-
 		self.load_game('ACU')
 
 		# search functionality is currently commented out. Need to work out a better way to enable searching
@@ -67,6 +62,7 @@ class App:
 		self.main_ui.mainloop()
 
 	def load_game(self, game_identifier: str):
+		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
 		self.pyUbiForge.load_game(game_identifier)
 		self.file_tree.delete(*self.file_tree.get_children())
 		self.file_tree.insert('', 'end', game_identifier, text=game_identifier)
@@ -83,6 +79,7 @@ class App:
 			self.load_game(self.pyUbiForge.game_identifier)
 
 	def on_click(self, _):
+		"""When an entry in the treeview is clicked decompress it and populate the tree"""
 		line_unique_identifier = self.file_tree.selection()[0]
 		if len(line_unique_identifier.split('|')) == 3 and len(self.file_tree.get_children(line_unique_identifier)) == 0:
 			forge_file, datafile_id = line_unique_identifier.split('|')[1:]
@@ -90,6 +87,10 @@ class App:
 			self.populate_tree()
 
 	def on_right_click(self, event):
+		"""Create a context menu with the possible export methods.
+
+		When an entry in the treeview is right clicked, ask pyUbiForge.right_click_plugins for the valid plugins
+		and create a context menu for the user to select from."""
 		unique_identifier = self.file_tree.identify_row(event.y)
 		if unique_identifier:
 			self.file_tree.selection_set(unique_identifier)
@@ -105,6 +106,7 @@ class App:
 			pass
 
 	def populate_tree(self):
+		"""A helper function to populate files in the treeview."""
 		game_identifier = self.pyUbiForge.game_identifier
 		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
 			for datafile_id in forge_file.new_datafiles:
@@ -151,7 +153,9 @@ class App:
 
 
 class OptionsDialogue:
-	def __init__(self, CONFIG):
+	"""A separate UI where the CONFIG options can be changed."""
+	# TODO make it so that the main program pauses when this is open and multiple can't be opened.
+	def __init__(self, CONFIG: pyUbiForge.misc.Config):
 		self.CONFIG = CONFIG
 		self.main_ui = tkinter.Toplevel()
 		self.main_ui.title('ACExplorer Options')
@@ -160,10 +164,9 @@ class OptionsDialogue:
 		# options
 		self.game_paths = {}
 
-		row = 0
-		self.dump_folder = self.folder_option('Dump Folder', self.CONFIG['dumpFolder'], row)
+		self.dump_folder = self.folder_option('Dump Folder', self.CONFIG['dumpFolder'], 0)
 
-		row += 1
+		row = 1
 		for game_identifier, location in self.CONFIG['gameFolders'].items():
 			self.game_paths[game_identifier] = self.folder_option(f'{game_identifier} Folder', location, row)
 			row += 1
@@ -176,7 +179,8 @@ class OptionsDialogue:
 		self.quitButton = tkinter.Button(self.buttons, text='Quit', command=self.quit)
 		self.quitButton.grid(row=0, column=1)
 
-	def folder_option(self, desc, val, row):
+	def folder_option(self, desc: str, val: str, row: int) -> tkinter.Label:
+		"""A helper function to add folder selectors for each game."""
 		desc_label = tkinter.Label(self.main_ui, text=desc)
 		desc_label.grid(row=row, column=0)
 		path_label = tkinter.Label(self.main_ui, text=val)
@@ -186,9 +190,11 @@ class OptionsDialogue:
 		return path_label
 
 	def quit(self):
+		"""Quit without saving."""
 		self.main_ui.destroy()
 
 	def save(self):
+		"""Save the inputs back to CONFIG and close."""
 		for game_identifier, label in self.game_paths.items():
 			self.CONFIG['gameFolders'][game_identifier] = label['text']
 		self.CONFIG['dumpFolder'] = self.dump_folder['text']
@@ -196,23 +202,30 @@ class OptionsDialogue:
 		self.main_ui.destroy()
 
 	@staticmethod
-	def browse(value_to_set):
+	def browse(value_to_set: tkinter.Label):
+		"""When a folder is selected update the text next to it to reflect the folder chosen."""
 		folder_path = filedialog.askdirectory()
 		if folder_path != '':
 			value_to_set.config(text=folder_path)
 
 	@property
 	def update(self):
+		"""After initiating this class call this method.
+
+		This method will wait until the window has been destroyed and then
+		return True if the save method was called or False otherwise."""
 		self.main_ui.wait_window()
 		return self._update
 
 
 class RightClickDialogue:
-	def __init__(self, app_):
+	"""The right click context menu UI that shows which export methods can be used."""
+	def __init__(self, app_: App):
 		self.app = app_
 		self.menu = tkinter.Menu(self.app.main_ui, tearoff=0)
 
-	def post(self, event, plugins, file_id, forge_file_name=None, datafile_id=None):
+	def post(self, event, plugins: list, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
+		"""Call to populate and show the context menu"""
 		self.menu.delete(0, tkinter.END)
 		if len(plugins) > 0:
 			for plugin in plugins:
@@ -222,8 +235,14 @@ class RightClickDialogue:
 			finally:
 				self.menu.grab_release()
 
-	def add_command(self, plugin, file_id, forge_file_name, datafile_id):
-		self.menu.add_command(label=plugin.plugin_name, command=lambda: plugin.plugin(self.app.pyUbiForge, file_id, forge_file_name, datafile_id))
+	def add_command(self, plugin, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
+		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
+		self.menu.add_command(
+			label=plugin.plugin_name,
+			command=lambda: plugin.plugin(
+				self.app.pyUbiForge, file_id, forge_file_name, datafile_id
+			)
+		)
 
 
 if __name__ == '__main__':
