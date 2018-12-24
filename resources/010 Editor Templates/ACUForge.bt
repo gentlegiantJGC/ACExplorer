@@ -1,0 +1,83 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: ForgeTemplate.bt
+//   Authors: gentlegiantJGC
+//   Version: 1.0
+//   Purpose: Parse Anvil Forge files
+//  Category: Game archive
+// File Mask: *.forge
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+struct {
+    struct {
+        char scimitar[8];
+        byte unk1;
+        int32 fileVersion;
+        uint64 fileDataHeaderOffset;
+        int64 unk2;
+        byte unk3;
+        char unused[fileDataHeaderOffset-FTell()];
+    } Header;
+    struct {
+        int32 fileCount;
+        int32 unk1[4];
+        int64 unk2;
+        int32 maxFiles;
+        int32 unk3;
+        int64 fileDataOffset;
+        if (fileDataOffset-FTell() > 0){
+            char offset[fileDataOffset-FTell()];
+        }
+    } FileDataHeader1;
+    struct {
+        struct {
+            int32 indexCount;
+            int32 unk1;
+            int64 indexTableOffset;
+            int64 fileDataOffset;
+            int32 indexStart;
+            int32 indexEnd;
+            int64 nameTableOffset;
+            int64 rawDataTableOffset;
+        } FileData2;
+        if (FileData2.indexTableOffset-FTell() > 0){
+            byte indexTableOffset[FileData2.indexTableOffset-FTell()];
+        }
+        struct {
+            int64 rawDataTableOffset;
+            int64 fileID;
+            int32 rawDataSize;
+        } IndexTable[FileData2.indexCount];
+        byte nameTableOffset[FileData2.nameTableOffset-FTell()];
+        struct {
+            int32 rawDataSize;
+            int64 fileIDUnk;
+            int32 unk1[4];
+            int32 nextFileCount;
+            int32 previousFileCount;
+            int32 unk2;
+            int32 timestamp;
+            byte fileString[128];
+            int32 unk3[5];
+        } NameTable[FileData2.indexCount];
+        byte rawDataTableOffset[FileData2.rawDataTableOffset-FTell()];
+        struct {
+            local int i;
+            for (i=0; i<FileData2.indexCount; i++){
+                if (IndexTable[i].rawDataTableOffset - FTell() > 0){
+                    struct {
+                        byte rawDataOffset[IndexTable[i].rawDataTableOffset - FTell()];
+                    } RawDataOffset;
+                }
+                struct {
+                    byte rawData[IndexTable[i].rawDataSize];
+                } RawData;
+            }
+        } RawDataTable;
+    } FileData;
+    struct {
+        byte EOF[FileSize()-FTell()];
+    } end;
+} Forge;
