@@ -244,7 +244,7 @@ class Model(BaseModel):
 				model_file.out_file_write(f'{vert_table}\n', out_file, indent_count)
 
 				self.vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)
-				self.vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
+				# self.vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
 				# for dim in range(3):
 				# 	self.vertices[:, dim] = numpy.interp(self.vertices[:, dim], (self.vertices[:, dim].min(), self.vertices[:, dim].max()), bounding_box2[:, dim])
 				self.texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
