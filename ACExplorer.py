@@ -14,25 +14,28 @@ import pyUbiForge
 
 
 class App:
+	"""This is the class that contains all the UI features for ACExplorer.
+
+	This class also sets up pyUbiForge.
+	"""
 	def __init__(self):
 		self.pyUbiForge = pyUbiForge.PyUbiForgeMain()
 		self.log = self.pyUbiForge.log
 		self.log.info(__name__, 'Building GUI Window')
+
+		# main UI window
 		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
 
+		# set up the right click class
+		self.right_click_dialogue = RightClickDialogue(self)
+
 		# menu
-		self.menu = {
-			'main': tkinter.Menu(self.main_ui)
-		}
+		self.menu = {'main': tkinter.Menu(self.main_ui)}
 		self.menu['file'] = tkinter.Menu(self.menu['main'], tearoff=0)
 		self.main_ui.config(menu=self.menu['main'])
 		self.menu['main'].add_cascade(label='File', menu=self.menu['file'])
 		self.menu['file'].add_command(label='Options', command=self.options_dialogue)
-		self.right_click_dialogue = RightClickDialogue(self)
-
-		search_label = tkinter.Label(self.main_ui, text='Find ID:')
-		search_label.grid(row=0, column=0)
 
 		# set up the file tree
 		self.file_tree = ttk.Treeview(self.main_ui)
@@ -40,21 +43,20 @@ class App:
 		file_tree_scroll = ttk.Scrollbar(self.main_ui, orient='vertical', command=self.file_tree.yview)
 		file_tree_scroll.grid(row=1, column=0, ipady=300)
 		self.file_tree.configure(yscrollcommand=file_tree_scroll.set)
-
 		self.file_tree.bind('<<TreeviewSelect>>', self.on_click)
 		self.file_tree.bind('<Button-3>', self.on_right_click)
 
-		self.log.info(__name__, 'Building File List')
+		# Load the game. This should ultimately be based on an entry in CONFIG
 
 		self.load_game('ACU')
 
-		self.log.info(__name__, 'Finished Building File List')
-
-		self.search = tkinter.Entry(self.main_ui)
-		self.search.grid(row=0, column=1)
+		# search functionality is currently commented out. Need to work out a better way to enable searching
+		# search_label = tkinter.Label(self.main_ui, text='Find ID:')
+		# search_label.grid(row=0, column=0)
+		# self.search = tkinter.Entry(self.main_ui)
+		# self.search.grid(row=0, column=1)
 		# find = tkinter.Button(self.main_ui, text='Find', command=self.search_for)
 		# find.grid(row=0, column=2)
-
 		# clear = tkinter.Button(self.main_ui, text='Clear Search', command=self.clear_search)
 		# clear.grid(row=0, column=3)
 

@@ -95,6 +95,7 @@ class PyUbiForgeMain:
 		This is also what you should call if you want to switch between games.
 		Valid identifiers are defined in games at the top of this file.
 		"""
+		self.log.info(__name__, 'Loading Game Files.')
 		self.temp_files.clear()
 		if game_identifier in games:
 			self._game_functions = games.get(game_identifier)
@@ -112,6 +113,7 @@ class PyUbiForgeMain:
 				self._forge_files = {}
 
 			self.temp_files.load()
+		self.log.info(__name__, 'Finished Loading Game Files.')
 
 	def save(self):
 		"""Call this method to save the config file and light dictioary back to disk."""
