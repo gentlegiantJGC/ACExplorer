@@ -1,5 +1,5 @@
 # AC-Explorer
-A file explorer and exporter for the Assassin's Creed Unity's forge file format. Written in python 2.7
+A file explorer and exporter for the Assassin's Creed Unity's forge file format. Written in python 3.7
 
 A lot of the code is based on a program called ARchive_neXt which can be found here : http://www.tbotr.net.
 The code was ported to python at which point further features were added.
@@ -9,9 +9,8 @@ The main aim of this project is to be able to export whole sections of the world
 The long term goal is to include other games that use the forge file storage system but currently the goal is to be able to export the world models from AC Unity.
 
 # Prerequisites
-- Python 2.7
-
-In theory that should be all.
+- Python 3.7
+- Numpy (any recent version should do)
 
 # A summary of the forge file system
 a forge file is a file that sits in a folder on your computer. It is similar in a way to a zip archive in the sense that it contains more files and is compressed.
