@@ -46,7 +46,7 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = f'"{self.pyUbiForge.CONFIG["texconv"]}" -fl 9.1 -y -px {self.pyUbiForge.CONFIG["dumpFolder"]}{os.sep} -f BC3_UNORM {path}'
+			texconv = f'".\\resources\\texconv.exe" -fl 9.1 -y -px {self.pyUbiForge.CONFIG["dumpFolder"]}{os.sep} -f BC3_UNORM {path}'
 			os.system(texconv)
 
 

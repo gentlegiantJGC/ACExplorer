@@ -10,7 +10,6 @@ class Config:
 			self.CONFIG = {}
 
 		default_config = {
-			"texconv": "resources/texconv.exe",
 			"missingNo": "resources/missingNo.png",
 
 			"gameFolders": {
