@@ -1,9 +1,10 @@
-plugin_name = 'Plugin Name'  # the name shown to the user
-plugin_level = integer 1, 2 or 4  # this is the level in the file tree this plugin applies to.
-#   1 - the top entry
-#   2 - the forge file
-#   3 - the datafile (for plugins specific to a certain file type use 4, those will appear here as well)
-#   4 - the specific file in the datafile and the parent datafile with the same id
+plugin_name = 'Plugin Name'  # the name shown to the user and used as a UUID so it must be unique
+plugin_level = integer 1, 2, 3 or 4  # this is the level in the file tree this plugin applies to.
+    #   1 - the top entry
+    #   2 - the forge file
+    #   3 - the datafile (for plugins specific to a certain file type use 4, those will appear here as well)
+    #   4 - the specific file in the datafile and the parent datafile with the same id
 file_type = '415D9568'  # if plugin_level == 4 then the big endian hex string representation of the file type must be given
+options = {}  # The specifics of options are yet to be sorted out.
 def plugin(py_ubi_forge, unique_id):
     # plugin code here

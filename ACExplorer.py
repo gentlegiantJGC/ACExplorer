@@ -100,8 +100,8 @@ class App:
 				forge_file_name = unique_identifier[1]
 			if len(unique_identifier) >= 3:
 				datafile_id = int(unique_identifier[2])
-			plugins, file_id = self.pyUbiForge.right_click_plugins.get(len(unique_identifier), unique_identifier[-1], forge_file_name, datafile_id)
-			self.right_click_dialogue.post(event, plugins, file_id, forge_file_name, datafile_id)
+			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(len(unique_identifier), unique_identifier[-1], forge_file_name, datafile_id)
+			self.right_click_dialogue.post(event, plugin_names, file_id, forge_file_name, datafile_id)
 		else:
 			pass
 
@@ -224,24 +224,23 @@ class RightClickDialogue:
 		self.app = app_
 		self.menu = tkinter.Menu(self.app.main_ui, tearoff=0)
 
-	def post(self, event, plugins: list, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
+	def post(self, event, plugin_names: list, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
 		"""Call to populate and show the context menu"""
 		self.menu.delete(0, tkinter.END)
-		if len(plugins) > 0:
-			for plugin in plugins:
-				self.add_command(plugin, file_id, forge_file_name, datafile_id)
+		if len(plugin_names) > 0:
+			for plugin_name in plugin_names:
+				self.add_command(plugin_name, file_id, forge_file_name, datafile_id)
+
 			try:
 				self.menu.tk_popup(event.x_root, event.y_root)
 			finally:
 				self.menu.grab_release()
 
-	def add_command(self, plugin, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
+	def add_command(self, plugin_name, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
 		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
 		self.menu.add_command(
-			label=plugin.plugin_name,
-			command=lambda: plugin.plugin(
-				self.app.pyUbiForge, file_id, forge_file_name, datafile_id
-			)
+			label=plugin_name,
+			command=lambda: self.app.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id)
 		)
 
 

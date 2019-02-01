@@ -5,7 +5,7 @@ plugin_level = 4
 file_type = '*'
 
 
-def plugin(py_ubi_forge, file_id, forge_file_name, datafile_id):
+def plugin(py_ubi_forge, file_id, forge_file_name, datafile_id, options):
 	data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
 	if data is None:
 		py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
