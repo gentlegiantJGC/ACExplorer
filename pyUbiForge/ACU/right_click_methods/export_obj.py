@@ -13,9 +13,9 @@ def plugin(py_ubi_forge, file_id, forge_file_name, datafile_id, options):
 	if data is None:
 		py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return
-	model_name = data['fileName']
+	model_name = data.file_name
 
-	model = py_ubi_forge.read_file(data["rawFile"])
+	model = py_ubi_forge.read_file(data.file_object_data_wrapper)
 	if model is not None:
 		obj_handler = mesh.ObjMtl(py_ubi_forge, model_name, save_folder)
 		obj_handler.export(model, model_name)

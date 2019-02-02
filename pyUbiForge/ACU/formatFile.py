@@ -57,9 +57,9 @@ def readID(py_ubi_forge, fIn, fOut, indentCount = 0):
 		if data is None:
 			fOut.write('Unknown File ID')
 		else:
-			fOut.write(data["fileName"])
+			fOut.write(data.file_name)
 			fOut.write('\t\t')
-			fOut.write(data["fileType"])
+			fOut.write(data.file_type)
 		fOut.write('\n')
 	return fileID
 
@@ -187,7 +187,7 @@ def topLevelFormat(py_ubi_forge, fileID):
 	data = py_ubi_forge.temp_files(fileID)
 	if data is None:
 		raise Exception('Error with file "{}"'.format(fileID))
-	py_ubi_forge.log.info(__name__, 'Formatting {}:{}'.format(fileID, data["fileName"]))
+	py_ubi_forge.log.info(__name__, 'Formatting {}:{}'.format(fileID, data.file_name))
 	fIn = FileObject()
 	fIn.write(py_ubi_forge.temp_files.get_file(fileID))
 	fIn.seek(0)
@@ -209,7 +209,7 @@ def topLevelFormat(py_ubi_forge, fileID):
 	except Exception as e:
 		print('{}, {}'.format(e.message, e.args))
 		fileContainer['fileID'] = fileID
-		fileContainer['fileType'] = data["fileType"]
+		fileContainer['fileType'] = data.file_type
 		success = False
 	
 	# fileContainer['readRest'] = ReadRest(fIn, fOut)

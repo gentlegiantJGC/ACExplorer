@@ -13,7 +13,7 @@ def plugin(py_ubi_forge, file_id, forge_file_name, datafile_id, options):
 	out_file = open(
 		os.path.join(
 			py_ubi_forge.CONFIG['dumpFolder'],
-			f'{py_ubi_forge.game_functions.game_identifier}_{data["fileName"]}_{file_id:016X}.bin'
+			f'{py_ubi_forge.game_functions.game_identifier}_{data.file_name}_{file_id:016X}.bin'
 		), 'wb'
 	)
-	out_file.write(data['rawFile'].read_rest())
+	out_file.write(data.file_object_data_wrapper.read_rest())

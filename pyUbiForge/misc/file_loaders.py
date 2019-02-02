@@ -60,7 +60,7 @@ class RightClickHandler:
 
 		elif plugin_level in (3, 4):
 			file_id = int(file_id)
-			file_type = self.pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)['fileType']
+			file_type = self.pyUbiForge.temp_files(file_id, forge_file_name, datafile_id).file_type
 
 			if plugin_level == 3:
 				return list(set(
@@ -174,10 +174,7 @@ class DataTypeHandler:
 		:param indent_count: The number of indents in out_file
 		:return: objects defined in the plugins
 		"""
-		if self.pyUbiForge.game_identifier != self.game_identifier:
-			self.game_identifier = self.pyUbiForge.game_identifier
-			self.plugins = {}
-			self._load_plugins()
+		self._load_plugins()
 		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
 			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
 		data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
@@ -200,30 +197,33 @@ class DataTypeHandler:
 
 	def _load_plugins(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/type_readers']):
-			plugin = load_module(name, finder.path)
+		if self.pyUbiForge.game_identifier != self.game_identifier:
+			self.game_identifier = self.pyUbiForge.game_identifier
+			self.plugins = {}
+			for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/type_readers']):
+				plugin = load_module(name, finder.path)
 
-			if not hasattr(plugin, 'file_type'):
-				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
-				continue
-			elif not isinstance(plugin.file_type, str):
-				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
-				continue
-			try:
-				file_type = plugin.file_type
-			except Exception as e:
-				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because parsing of "file_type" failed\n{e}')
-				continue
+				if not hasattr(plugin, 'file_type'):
+					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
+					continue
+				elif not isinstance(plugin.file_type, str):
+					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
+					continue
+				try:
+					file_type = plugin.file_type
+				except Exception as e:
+					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because parsing of "file_type" failed\n{e}')
+					continue
 
-			if not hasattr(plugin, 'plugin'):
-				self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "plugin" was not defined')
-				continue
+				if not hasattr(plugin, 'plugin'):
+					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "plugin" was not defined')
+					continue
 
-			if file_type in self.plugins:
-				self.pyUbiForge.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
-				continue
-			else:
-				self.plugins[file_type] = plugin.plugin
+				if file_type in self.plugins:
+					self.pyUbiForge.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
+					continue
+				else:
+					self.plugins[file_type] = plugin.plugin
 
 
 def load_module(name: str, path: str):

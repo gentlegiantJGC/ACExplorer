@@ -170,7 +170,7 @@ class FileObjectDataWrapper:
 			if data is None:
 				out_file.write('\tUnknown File ID\n')
 			else:
-				out_file.write('\t{data[fileName]}\t{data[fileType]}\n'.format(data=data))
+				out_file.write('\t{data.file_name}\t{data.file_type}\n'.format(data=data))
 		return file_id
 
 	def read_type(self, out_file=None, indent_count=0):

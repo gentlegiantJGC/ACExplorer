@@ -6,9 +6,9 @@ def get_material_ids(py_ubi_forge, file_id):
 	if data is None:
 		py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return Material(f'{file_id:016X}', missing_no=True)
-	name = data["fileName"]
+	name = data.file_name
 
-	material_file = data["rawFile"]
+	material_file = data.file_object_data_wrapper
 	material_file.seek(25)
 	material_template_id = material_file.read_id()
 
@@ -16,7 +16,7 @@ def get_material_ids(py_ubi_forge, file_id):
 	if data is None:
 		py_ubi_forge.log.warn(__name__, f"Failed to find file {material_template_id:016X}")
 		return Material(name, missing_no=True)
-	material_template = data["rawFile"]
+	material_template = data.file_object_data_wrapper
 
 	material = Material(name)
 	material_template.seek(13, 1)

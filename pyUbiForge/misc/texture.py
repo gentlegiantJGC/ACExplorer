@@ -68,11 +68,11 @@ def export_dds(py_ubi_forge, file_id: int, save_folder: str, forge_file_name: Un
 	if data is None:
 		py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
 		return
-	save_path = os.path.join(save_folder, f'{data["fileName"]}.dds')
+	save_path = os.path.join(save_folder, f'{data.file_name}.dds')
 	if os.path.isfile(save_path):
-		py_ubi_forge.log.info(__name__, f'Texture "{data["fileName"]}" already exported')
+		py_ubi_forge.log.info(__name__, f'Texture "{data.file_name}" already exported')
 		return save_path
-	tex = py_ubi_forge.read_file(data["rawFile"])
+	tex = py_ubi_forge.read_file(data.file_object_data_wrapper)
 	tex.export_dds(save_path)
-	py_ubi_forge.log.info(__name__, f'Texture "{data["fileName"]}" exported')
+	py_ubi_forge.log.info(__name__, f'Texture "{data.file_name}" exported')
 	return save_path
