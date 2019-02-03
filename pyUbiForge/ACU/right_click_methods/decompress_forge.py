@@ -1,4 +1,4 @@
-plugin_name = 'Decompress All'
+plugin_name = 'Decompress Forge'
 plugin_level = 2
 
 
