@@ -22,6 +22,7 @@ class App:
 		# main UI window
 		self.main_ui = tkinter.Tk()
 		self.main_ui.title('ACExplorer')
+		self.main_ui.iconbitmap('icon.ico')
 
 		# set up the right click class
 		self.right_click_dialogue = RightClickDialogue(self)
