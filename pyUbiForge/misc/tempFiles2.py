@@ -104,6 +104,42 @@ class TempFile:
 		return FileObjectDataWrapper.from_binary(self._pyUbiForge, self._raw_file)
 
 
+class LastUsed:
+	def __init__(self):
+		self._position_to_data = {}
+		self._data_to_position = {}
+		self._min = 0
+		self._max = 0
+
+	def remove(self, data: int):
+		if data in self._data_to_position:
+			position = self._data_to_position[data]
+			del self._data_to_position[data]
+			del self._position_to_data[position]
+
+	def pop(self):
+		while self._min not in self._position_to_data and self._min < self._max:
+			self._min += 1
+		if self._min == self._max:
+			return
+		else:
+			data = self._position_to_data[self._min]
+			del self._position_to_data[self._min]
+			del self._data_to_position[data]
+			return data
+
+	def append(self, data: int):
+		self._position_to_data[self._max] = data
+		self._data_to_position[data] = self._max
+		self._max += 1
+
+	def clear(self):
+		self._position_to_data.clear()
+		self._data_to_position.clear()
+		self._min = 0
+		self._max = 0
+
+
 class TempFilesContainer:
 	"""Class to hold all the files and the methods to access them and pull them from the original files."""
 	def __init__(self, py_ubi_forge):
@@ -115,7 +151,7 @@ class TempFilesContainer:
 		self._memory = 0
 		# a dictionary of every file currently loaded into memory
 		self._temp_files = {}
-		self._last_used = []
+		self._last_used = LastUsed()
 
 	@property
 	def light_dict_changed(self) -> bool:
@@ -138,7 +174,7 @@ class TempFilesContainer:
 			self._memory += len(raw_file)
 
 		while self._memory > self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB']*1000000:
-			remove_entry = self._last_used.pop(0)
+			remove_entry = self._last_used.pop()
 			self._memory -= len(self._temp_files[remove_entry][4])
 			del self._temp_files[remove_entry]
 
@@ -207,10 +243,10 @@ class TempFilesContainer:
 		self._light_dictionary.clear()
 		self._memory = 0
 		self._temp_files.clear()
-		self._last_used = []
+		self._last_used.clear()
 		self._light_dict_changed = False
 
-	def refresh_usage(self, file_id):
+	def refresh_usage(self, file_id: int):
 		"""Mark file_id as recently used so that it is not unloaded if the memory limit is reached."""
 		if file_id in self._temp_files:
 			self._last_used.remove(file_id)
