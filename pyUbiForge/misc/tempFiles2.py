@@ -194,6 +194,10 @@ class LightDictionary:
 		else:
 			return None
 
+	@property
+	def list(self) -> list:
+		return [self.base64_to_int(file_id) for file_id in self._light_dictionary.keys()]
+
 	def add(self, file_id: int, forge_file_name: str, datafile_id: int):
 		file_id = self.int_to_base64(file_id)
 		datafile_id = self.int_to_base64(datafile_id)
@@ -246,6 +250,10 @@ class TempFilesContainer:
 	@property
 	def light_dict_changed(self) -> bool:
 		return self._light_dictionary.changed
+
+	@property
+	def list_light_dictionary(self) -> list:
+		return self._light_dictionary.list
 
 	def add(self, file_id: int, forge_file_name: str, datafile_id: int, file_type: int, file_name: str, raw_file: bytes = None):
 		"""
