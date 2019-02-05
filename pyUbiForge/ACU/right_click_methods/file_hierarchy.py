@@ -1,6 +1,7 @@
 import struct
 import binascii
 import json
+import re
 
 plugin_name = 'Generate Full Hierarchy (Dev)'
 plugin_level = 1
@@ -53,11 +54,7 @@ def plugin(py_ubi_forge, *_):
 					dict_doc[file_id_hex][0] = temp_file.file_name
 					dict_doc[file_id_hex][1] = file_type
 				dict_doc[file_id_hex][2].append([forge_file_name, datafile_id_hex, []])
-				buffer = file_wrapper.read_rest()
-				for index in range(len(buffer) - 7):
-					potential_file_id = buffer[index:index+8]
-					if not potential_file_id.endswith(b'\x00\x00\x00') or potential_file_id.endswith(b'\x00\x00\x00\x00'):
-						continue
+				for potential_file_id in re.findall(b'(?=(.{4}[^\x00]\x00{3}))', file_wrapper.read_rest(), flags=re.DOTALL):
 					potential_file_id_hex = binascii.hexlify(potential_file_id).decode("utf-8").upper()
 					if potential_file_id_hex in file_list:
 						# we have found a valid file reference
