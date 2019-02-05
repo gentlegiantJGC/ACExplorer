@@ -15,7 +15,7 @@ def plugin(py_ubi_forge, file_id, forge_file_name, datafile_id, options):
 		return
 	model_name = data.file_name
 
-	model = py_ubi_forge.read_file(data.file_object_data_wrapper)
+	model = py_ubi_forge.read_file(data.file)
 	if model is not None:
 		obj_handler = mesh.ObjMtl(py_ubi_forge, model_name, save_folder)
 		obj_handler.export(model, model_name)

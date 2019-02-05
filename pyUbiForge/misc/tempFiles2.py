@@ -97,7 +97,7 @@ class TempFile:
 		return self._file_name
 
 	@property
-	def file_object_data_wrapper(self) -> FileObjectDataWrapper:
+	def file(self) -> FileObjectDataWrapper:
 		"""The raw data wrapped up in a custom data wrapper.
 		See FileObjectDataWrapper for more information.
 		"""

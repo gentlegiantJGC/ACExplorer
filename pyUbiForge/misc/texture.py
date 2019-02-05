@@ -72,7 +72,7 @@ def export_dds(py_ubi_forge, file_id: int, save_folder: str, forge_file_name: Un
 	if os.path.isfile(save_path):
 		py_ubi_forge.log.info(__name__, f'Texture "{data.file_name}" already exported')
 		return save_path
-	tex = py_ubi_forge.read_file(data.file_object_data_wrapper)
+	tex = py_ubi_forge.read_file(data.file)
 	tex.export_dds(save_path)
 	py_ubi_forge.log.info(__name__, f'Texture "{data.file_name}" exported')
 	return save_path

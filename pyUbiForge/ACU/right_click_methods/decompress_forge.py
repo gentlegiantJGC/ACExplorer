@@ -11,6 +11,6 @@ def plugin(py_ubi_forge, forge_file_name, *_):
 		except:
 			continue
 		count += 1
-		if count % 1000:
+		if count % 10000:
 			py_ubi_forge.log.info(__name__, f"Decompressed {round(100*count/datafile_count, 2)}% of {datafile_count} datafiles")
 	py_ubi_forge.log.info(__name__, "Decompressed all files")
