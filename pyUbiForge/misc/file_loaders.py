@@ -85,21 +85,14 @@ class RightClickHandler:
 		self._load_plugins()
 
 		plugin = self._get_plugin(plugin_name)
-		if options is None:
-			options = self.get_default_options(plugin_name)
-		plugin.plugin(self.pyUbiForge, file_id, forge_file_name, datafile_id, options)
-
-	def get_options(self, plugin_name: str):
-		plugin = self._get_plugin(plugin_name)
-		if hasattr(plugin, 'options'):
-			return plugin.options
+		output = plugin.plugin(self.pyUbiForge, file_id, forge_file_name, datafile_id, options)
+		# the plugin should return a tuple with the first argument being the specification for the next screen (or None if not applicable)
+		# and the second being any optional return data. If only one thing is returned it will be assumed this is the output data
+		# (eg the implied `return None` at the end of any function)
+		if isinstance(output, tuple) and len(output) == 2:
+			return output
 		else:
-			return {}
-
-	def get_default_options(self, plugin_name: str):
-		options = self.get_options(plugin_name)
-		return {}
-		# TODO: sort out option format and extracting default options
+			return None, output
 
 	def _get_plugin(self, plugin_name: str):
 		plugin = self.plugin_names.get(plugin_name, None)

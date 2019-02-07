@@ -241,8 +241,14 @@ class RightClickDialogue:
 		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
 		self.menu.add_command(
 			label=plugin_name,
-			command=lambda: self.app.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id)
+			command=lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
 		)
+
+	def run_plugin(self, plugin_name, file_id, forge_file_name, datafile_id):
+		options = {}
+		while options is not None:
+			options, output = self.app.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id, options)
+			# TODO: show options screen, wait for response from option screen
 
 
 if __name__ == '__main__':

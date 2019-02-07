@@ -66,7 +66,6 @@ def plugin(py_ubi_forge, *_):
 						if file_id_hex not in dict_doc[potential_file_id_hex][3]:
 							dict_doc[potential_file_id_hex][3].append(file_id_hex)
 			datafile_completed_count += 1
-			# if datafile_completed_count % 100 == 99:
 			py_ubi_forge.log.info(__name__, f"Processed {round(100*datafile_completed_count/datafile_count, 2)}% of {datafile_count} datafiles")
 	py_ubi_forge.log.info(__name__, "Processed all files")
 	with open(f'{py_ubi_forge.CONFIG["dumpFolder"]}/ACU_hierarchy.json', 'w') as f:
