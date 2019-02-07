@@ -17,3 +17,4 @@ def plugin(py_ubi_forge, file_id, forge_file_name, datafile_id, options):
 		), 'w'
 	)
 	py_ubi_forge.read_file(data.file, out_file)
+	py_ubi_forge.log.info(__name__, "Finished Formatting")
