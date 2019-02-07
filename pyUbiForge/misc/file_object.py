@@ -109,7 +109,7 @@ class FileObjectDataWrapper:
 		if out_file is not None:
 			out_file.write(f'{indent_count * self.indent_chr}{val}')
 
-	def _read_struct(self, out_file, indent_count, data_type, trailing_newline=True):
+	def _read_struct(self, out_file, indent_count, data_type, trailing_newline=True, extra_info=True):
 		fmt = f'{self.endianness}{data_type}'
 		num_len = struct.calcsize(fmt)
 		binary = self.file_object.read(num_len)
@@ -117,13 +117,13 @@ class FileObjectDataWrapper:
 			raise Exception('Reached End Of File')
 		val = struct.unpack(data_type, binary)[0]
 		if out_file is not None:
-			if type(val) == bytes and len(val) > 10:
+			if (isinstance(val, bytes) and len(val) > 10) or not extra_info:
 				out_file.write(
 					f'{indent_count * self.indent_chr}{hex_string(binary)}'
 				)
 			else:
 				out_file.write(
-					f'{indent_count * self.indent_chr}{hex_string(binary)}\t{val}'
+					f'{indent_count * self.indent_chr}{hex_string(binary)}\t\t{val}'
 				)
 
 			if trailing_newline:
@@ -164,13 +164,13 @@ class FileObjectDataWrapper:
 		return self._read_struct(out_file, indent_count, f'{chr_len}s')
 
 	def read_id(self, out_file=None, indent_count=0):
-		file_id = self._read_struct(out_file, indent_count, self.pyUbiForge.game_functions.file_id_datatype, False)
+		file_id = self._read_struct(out_file, indent_count, self.pyUbiForge.game_functions.file_id_datatype, False, False)
 		if out_file is not None:
 			data = self.pyUbiForge.temp_files(file_id)
 			if data is None:
-				out_file.write('\tUnknown File ID\n')
+				out_file.write('\t\tUnknown File ID\n')
 			else:
-				out_file.write('\t{data.file_name}\t{data.file_type}\n'.format(data=data))
+				out_file.write('\t\t{data.file_name}\t{data.file_type}\n'.format(data=data))
 		return file_id
 
 	def read_type(self, out_file=None, indent_count=0):
@@ -179,7 +179,7 @@ class FileObjectDataWrapper:
 			raise Exception('Reached End Of File')
 		file_type = ''.join(f'{b:02X}' for b in binary[::-1])
 		if out_file is not None:
-			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{file_type}\t{self.pyUbiForge.game_functions.file_types.get(file_type, "Undefined")}\n')
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t\t{file_type}\t{self.pyUbiForge.game_functions.file_types.get(file_type, "Undefined")}\n')
 		return file_type
 
 	def read_struct(self, data_types, out_file=None, indent_count=0):
@@ -189,7 +189,7 @@ class FileObjectDataWrapper:
 			raise Exception('Reached End Of File')
 		val = struct.unpack(fmt, binary)
 		if out_file is not None:
-			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{val}\n')
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t\t{val}\n')
 		return val
 
 	def read_numpy(self, dtype, binary_size, out_file=None, indent_count=0):
@@ -198,7 +198,7 @@ class FileObjectDataWrapper:
 			raise Exception('Reached End Of File')
 		val = numpy.fromstring(binary, dtype)
 		if out_file is not None:
-			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t{val}\n')
+			out_file.write(f'{indent_count * self.indent_chr}{hex_string(binary)}\t\t{val}\n')
 		return val
 
 	def read_rest(self, out_file=None, indent_count=0):
@@ -214,12 +214,17 @@ class FileObjectDataWrapper:
 			while len(might_be_a_file_type) == 8:
 				if might_be_a_file_type in self.pyUbiForge.game_functions.file_types:
 					out_file.write(f'{indent_count * self.indent_chr}{" ".join(hex_str)}\n')
-					out_file.write(f'{indent_count * self.indent_chr}{might_be_a_file_type}\t{self.pyUbiForge.game_functions.file_types.get(might_be_a_file_type)}\n')
+					out_file.write(f'{indent_count * self.indent_chr}{might_be_a_file_type}\t\t{self.pyUbiForge.game_functions.file_types.get(might_be_a_file_type)}\n')
 					hex_str = []
 					might_be_a_file_type = ''.join(f'{b:02X}' for b in self.file_object.read(4)[::-1])
 				else:
 					hex_str.append(might_be_a_file_type[6:])
-					might_be_a_file_type = '{:02X}'.format(ord(self.file_object.read(1))) + might_be_a_file_type[:6]
+					next_chr = self.file_object.read(1)
+					if next_chr == b'':
+						might_be_a_file_type = might_be_a_file_type[:6]
+					else:
+						might_be_a_file_type = f'{next_chr[0]:02X}{might_be_a_file_type[:6]}'
+
 			while might_be_a_file_type != '':
 				hex_str.append(might_be_a_file_type[-2:])
 				might_be_a_file_type = might_be_a_file_type[:-2]
