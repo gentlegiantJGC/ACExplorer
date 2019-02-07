@@ -175,10 +175,3 @@ class Forge(BaseForge):
 
 		if repoulate_tree:
 			self.new_datafiles.append(datafile_id)
-
-
-def read_file_header(file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[FileObjectDataWrapper, TextIO], indent_count: int) -> str:
-	"""This is a helper function for reading the header of each file"""
-	file_object_data_wrapper.read_str(1, out_file, indent_count)
-	file_object_data_wrapper.read_id(out_file, indent_count)
-	return file_object_data_wrapper.read_type(out_file, indent_count)

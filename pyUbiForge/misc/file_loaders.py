@@ -170,7 +170,11 @@ class DataTypeHandler:
 		self._load_plugins()
 		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
 			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
-		data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
+		file_object_data_wrapper.read_str(self.pyUbiForge.game_functions.pre_header_length, out_file, indent_count)
+		try:
+			data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
+		except:
+			data = None
 		file_object_data_wrapper.clever_format(out_file, indent_count)
 		return data
 
@@ -182,7 +186,9 @@ class DataTypeHandler:
 		:param indent_count: The number of indents in out_file
 		:return: objects defined in the plugins
 		"""
-		file_type = self.pyUbiForge.game_functions.forge.read_file_header(file_object_data_wrapper, out_file, indent_count)
+
+		file_object_data_wrapper.read_id(out_file, indent_count)
+		file_type = file_object_data_wrapper.read_type(out_file, indent_count)
 		if file_type in self.plugins:
 			return self.plugins[file_type](self.pyUbiForge, file_object_data_wrapper, out_file, indent_count+1)
 		else:
