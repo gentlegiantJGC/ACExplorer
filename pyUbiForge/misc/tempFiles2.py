@@ -1,6 +1,6 @@
 import os
 import json
-from typing import Union
+from typing import Union, Tuple
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 """
@@ -181,18 +181,19 @@ class LightDictionary:
 		self._index_to_forge.clear()
 		self._max_forge_index = 0
 
-	def get(self, file_id: int, forge_file_name: str = None) -> Union[int, None]:
+	def get(self, file_id: int, forge_file_name: str = None) -> Union[Tuple[str, int], Tuple[None, None]]:
 		file_id = self.int_to_base64(file_id)
+		forge_file_index = None
 		if forge_file_name is not None:
-			forge_file_name = self._forge_to_index[forge_file_name]
+			forge_file_index = self._forge_to_index[forge_file_name]
 		if file_id in self._light_dictionary:
-			if forge_file_name is not None and forge_file_name in self._light_dictionary[file_id]:
-				return self._light_dictionary[file_id][0]
+			if forge_file_index is not None and forge_file_index in self._light_dictionary[file_id]:
+				return forge_file_name, self.base64_to_int(self._light_dictionary[file_id][0])
 			else:
-				forge_file_name = list(self._light_dictionary[file_id].keys())[0]
-				return self._light_dictionary[file_id][forge_file_name][0]
+				forge_file_index = list(self._light_dictionary[file_id].keys())[0]
+				return self._index_to_forge[forge_file_index], self.base64_to_int(self._light_dictionary[file_id][forge_file_index][0])
 		else:
-			return None
+			return None, None
 
 	@property
 	def list(self) -> list:
@@ -288,6 +289,9 @@ class TempFilesContainer:
 		:return: TempFile, None
 		"""
 
+		if file_id == 0:
+			return
+
 		if forge_file_name is not None and datafile_id is None:
 			if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0]:
 				datafile_id = self._temp_files[file_id][1]
@@ -296,14 +300,12 @@ class TempFilesContainer:
 				if forge_file_name in self.pyUbiForge.forge_files and file_id in self.pyUbiForge.forge_files[forge_file_name].datafiles:
 					datafile_id = file_id
 				else:
-					datafile_id = self._light_dictionary.get(file_id, forge_file_name)
-					if datafile_id is None:
-						forge_file_name = None
+					forge_file_name, datafile_id = self._light_dictionary.get(file_id, forge_file_name)
 
 		if forge_file_name is None:
 			forge_file_name = next((fF for fF in self.pyUbiForge.forge_files.keys() if file_id in self.pyUbiForge.forge_files[fF].datafiles), None)
 			if forge_file_name is None:
-				datafile_id = self._light_dictionary.get(file_id)
+				forge_file_name, datafile_id = self._light_dictionary.get(file_id)
 				if datafile_id is None:
 					return
 			else:
