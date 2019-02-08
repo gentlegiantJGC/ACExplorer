@@ -139,7 +139,7 @@ class PluginHandler:
 			self.plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self.plugin_names = {}
 			# iterate through every plugin
-			for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/right_click_methods']):
+			for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/plugins']):
 				# load module and confirm that all required attributes are defined
 				module = load_module(name, finder.path)
 
