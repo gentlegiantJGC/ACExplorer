@@ -236,7 +236,7 @@ class Reader(BaseModel, BaseReader):
 					], vert_table_length, out_file, indent_count)
 				else:
 					py_ubi_forge.log.warn(__name__, f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
-					return
+					raise Exception()
 
 				model_file.out_file_write(f'{vert_table}\n', out_file, indent_count)
 
