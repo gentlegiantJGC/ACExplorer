@@ -29,7 +29,8 @@ class FileReaderHandler:
 		file_object_data_wrapper.read_str(self.pyUbiForge.game_functions.pre_header_length, out_file, indent_count)
 		try:
 			data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
-		except:
+		except Exception as e:
+			self.pyUbiForge.log.warn(__name__, e)
 			data = None
 		file_object_data_wrapper.clever_format(out_file, indent_count)
 		return data

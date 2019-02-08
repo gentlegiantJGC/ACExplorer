@@ -184,8 +184,6 @@ class PluginHandler:
 						self.plugins[plugin.plugin_level][plugin.file_type] = {}
 					self.plugins[plugin.plugin_level][plugin.file_type][plugin.plugin_name] = plugin_instance
 
-				self.pyUbiForge.log.info(__name__, f'Successfully loaded right click plugin: "{plugin.plugin_name}"')
-
 
 def load_module(name: str, path: str):
 	"""Helper function to load a module"""
