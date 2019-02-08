@@ -245,7 +245,7 @@ class RightClickDialogue:
 		)
 
 	def run_plugin(self, plugin_name, file_id, forge_file_name, datafile_id):
-		options = {}
+		options = []
 		while options is not None:
 			options, output = self.app.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id, options)
 			# TODO: show options screen, wait for response from option screen
