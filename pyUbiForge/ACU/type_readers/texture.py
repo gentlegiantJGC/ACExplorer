@@ -2,16 +2,13 @@ import os
 import struct
 from typing import Union, TextIO
 from pyUbiForge.misc import BaseTexture
+from pyUbiForge.misc.file_readers import BaseReader
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
-file_type = 'A2B7E917'
 
+class Reader(BaseTexture, BaseReader):
+	file_type = 'A2B7E917'
 
-def plugin(py_ubi_forge, file_object_data_wrapper, out_file, indent_count):
-	return Texture(py_ubi_forge, file_object_data_wrapper, out_file, indent_count)
-
-
-class Texture(BaseTexture):
 	def __init__(self, py_ubi_forge, texture_file: FileObjectDataWrapper, out_file: Union[FileObjectDataWrapper, TextIO], indent_count: int):
 		BaseTexture.__init__(self, py_ubi_forge)
 		if py_ubi_forge.CONFIG['dev']:

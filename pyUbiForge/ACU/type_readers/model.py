@@ -1,14 +1,11 @@
 from pyUbiForge.misc.mesh import BaseModel
+from pyUbiForge.misc.file_readers import BaseReader
 import numpy
 
-file_type = '415D9568'
 
+class Reader(BaseModel, BaseReader):
+	file_type = '415D9568'
 
-def plugin(py_ubi_forge, file_object_data_wrapper, out_file, indent_count):
-	return Model(py_ubi_forge, file_object_data_wrapper, out_file, indent_count)
-
-
-class Model(BaseModel):
 	def __init__(self, py_ubi_forge, model_file, out_file, indent_count):
 		BaseModel.__init__(self)
 
