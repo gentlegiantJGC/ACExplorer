@@ -7,6 +7,7 @@ class BasePlugin:
 	plugin_name = None
 	plugin_level = None
 	file_type = None
+	dev = False
 
 	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list):
 		pass
@@ -133,7 +134,7 @@ class PluginHandler:
 
 	def _load_plugins(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if self.pyUbiForge.game_identifier != self.game_identifier:
+		if self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG['dev']:
 			self.game_identifier = self.pyUbiForge.game_identifier
 			self.plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self.plugin_names = {}
@@ -147,6 +148,13 @@ class PluginHandler:
 					continue
 
 				plugin = module.Plugin
+
+				if not isinstance(plugin.dev, bool):
+					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin.dev" was not a bool')
+					continue
+				else:
+					if plugin.dev and not self.pyUbiForge.CONFIG['dev']:
+						continue
 
 				if not isinstance(plugin.plugin_name, str):
 					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin.plugin_name" was not a string')

@@ -6,8 +6,9 @@ from pyUbiForge.misc.plugins import BasePlugin
 
 
 class Plugin(BasePlugin):
-	plugin_name = 'Generate Full Hierarchy (Dev)'
+	plugin_name = 'Generate Full Hierarchy'
 	plugin_level = 1
+	dev = True
 
 	"""This requires temp files to be fully populated so decompress everything first if it isn't already"""
 
