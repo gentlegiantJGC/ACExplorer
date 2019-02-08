@@ -31,8 +31,8 @@ class PyUbiForgeMain:
 		self._game_functions = None
 		self._log = misc.Logger(self)
 		self._temp_files = misc.TempFilesContainer(self)
-		self._right_click_plugins = misc.file_loaders.RightClickHandler(self)
-		self._read_file = misc.file_loaders.DataTypeHandler(self)
+		self._right_click_plugins = misc.plugins.PluginHandler(self)
+		self._read_file = misc.file_readers.FileReaderHandler(self)
 		self._forge_files = {}  # _forge_files is a dictionary mapping from str name of the forge file to a Forge class.
 
 	@property
@@ -60,12 +60,12 @@ class PyUbiForgeMain:
 		return self._temp_files
 
 	@property
-	def right_click_plugins(self) -> misc.file_loaders.RightClickHandler:
+	def right_click_plugins(self) -> misc.plugins.PluginHandler:
 		"""Returns a class that stores right click methods."""
 		return self._right_click_plugins
 
 	@property
-	def read_file(self) -> misc.file_loaders.DataTypeHandler:
+	def read_file(self) -> misc.file_readers.FileReaderHandler:
 		"""Returns a class containing the code to read data from the files."""
 		return self._read_file
 
