@@ -139,9 +139,10 @@ class PluginHandler:
 			self.plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self.plugin_names = {}
 			# iterate through every plugin
-			for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/plugins']):
+			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/plugins']):
 				# load module and confirm that all required attributes are defined
-				module = load_module(name, finder.path)
+				module = importlib.import_module(f'pyUbiForge.{self.pyUbiForge.game_identifier}.plugins.{name}')
+				importlib.reload(module)
 
 				if not hasattr(module, 'Plugin') and issubclass(module.Plugin, BasePlugin):
 					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin" was either not defined, not a class or not a subclass of BasePlugin')
@@ -183,11 +184,3 @@ class PluginHandler:
 					if plugin.file_type not in self.plugins[plugin.plugin_level]:
 						self.plugins[plugin.plugin_level][plugin.file_type] = {}
 					self.plugins[plugin.plugin_level][plugin.file_type][plugin.plugin_name] = plugin_instance
-
-
-def load_module(name: str, path: str):
-	"""Helper function to load a module"""
-	module_spec = importlib.util.spec_from_file_location(name, f'{path}/{name}.py')
-	module = importlib.util.module_from_spec(module_spec)
-	module_spec.loader.exec_module(module)
-	return module

@@ -53,11 +53,12 @@ class FileReaderHandler:
 
 	def _load_readers(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if self.pyUbiForge.game_identifier != self.game_identifier:
+		if self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG['dev']:
 			self.game_identifier = self.pyUbiForge.game_identifier
 			self.readers = {}
-			for finder, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/type_readers']):
-				module = load_module(name, finder.path)
+			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/type_readers']):
+				module = importlib.import_module(f'pyUbiForge.{self.pyUbiForge.game_identifier}.type_readers.{name}')
+				importlib.reload(module)
 
 				if not hasattr(module, 'Reader') and issubclass(module.Reader, BaseReader):
 					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Reader" was either not defined, not a class or not a subclass of BaseReader')
@@ -79,11 +80,3 @@ class FileReaderHandler:
 					continue
 				else:
 					self.readers[file_type] = reader
-
-
-def load_module(name: str, path: str):
-	"""Helper function to load a module"""
-	module_spec = importlib.util.spec_from_file_location(name, f'{path}/{name}.py')
-	module = importlib.util.module_from_spec(module_spec)
-	module_spec.loader.exec_module(module)
-	return module
