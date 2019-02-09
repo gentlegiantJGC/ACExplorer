@@ -12,7 +12,7 @@ class Reader(BaseReader):
 			py_ubi_forge.log.warn(__name__, '"2D675BA2" count1 is not 0')
 		count2 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 		for _ in range(count2):
-			file_object_data_wrapper.read_str(2, out_file)
+			file_object_data_wrapper.read_str(2, out_file, indent_count)
 			file_object_data_wrapper.read_id(out_file, indent_count)
 		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 		count3 = file_object_data_wrapper.read_uint_32(out_file, indent_count)

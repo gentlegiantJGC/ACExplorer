@@ -10,5 +10,5 @@ class Reader(BaseReader):
 		for _ in range(5):
 			file_object_data_wrapper.read_float_32(out_file, indent_count)
 		file_object_data_wrapper.read_str(10, out_file, indent_count)
-		# file_object_data_wrapper.read_str(1, out_file)
+		# file_object_data_wrapper.read_str(1, out_file, indent_count)
 		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
