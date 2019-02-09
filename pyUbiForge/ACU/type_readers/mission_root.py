@@ -14,4 +14,4 @@ class Reader(BaseReader):
 		count2 = file_object_data_wrapper.read_int_32(out_file, indent_count)
 		for _ in range(count2):
 			file_object_data_wrapper.read_str(2, out_file, indent_count)
-			py_ubi_forge.read_file(file_object_data_wrapper, out_file, indent_count)
+			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count)

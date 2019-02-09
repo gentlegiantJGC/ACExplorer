@@ -14,18 +14,18 @@ class Reader(BaseReader):
 		count4 = 0
 		# probably not right but this seems to work
 		while count2 < count or count3 != count4:
-			checkByte = file_object_data_wrapper.read_str(1, out_file, indent_count)
+			checkByte = file_object_data_wrapper.read_uint_8(out_file, indent_count)
 			count4 += 1
-			if checkByte == '00':
+			if checkByte == 0:
 				sub_file_container = py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
 				count2 += sub_file_container.count
 				count3 += 2
-			elif checkByte == '03':
+			elif checkByte == 3:
 				continue
 			else:
 				raise Exception()
-		checkByte = file_object_data_wrapper.read_str(1, out_file, indent_count)
-		if checkByte != '03':
+		checkByte = file_object_data_wrapper.read_uint_8(out_file, indent_count)
+		if checkByte != 0:
 			raise Exception()
 		file_object_data_wrapper.read_str(8, out_file, indent_count)
 		count = file_object_data_wrapper.read_uint_32(out_file, indent_count)

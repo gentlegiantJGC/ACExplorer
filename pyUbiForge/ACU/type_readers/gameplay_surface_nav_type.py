@@ -7,7 +7,7 @@ class Reader(BaseReader):
 
 	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
 		file_object_data_wrapper.read_str(6, out_file, indent_count)
-		b = file_object_data_wrapper.read_str(1, out_file, indent_count)
+		b = file_object_data_wrapper.read_uint_8(out_file, indent_count)
 		if b == 3:
 			file_object_data_wrapper.read_str(5, out_file, indent_count)
 			file_object_data_wrapper.read_id(out_file, indent_count)

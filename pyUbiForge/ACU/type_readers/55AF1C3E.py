@@ -13,7 +13,7 @@ class Reader(BaseReader):
 		count2 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 		file_object_data_wrapper.read_str(12 * count2, out_file, indent_count)
 		for _ in range(2):
-			py_ubi_forge.read_file(file_object_data_wrapper, out_file, indent_count)
+			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
 		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 
 		"""

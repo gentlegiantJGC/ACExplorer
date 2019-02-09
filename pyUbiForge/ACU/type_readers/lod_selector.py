@@ -9,14 +9,12 @@ class Reader(BaseReader):
 		file_object_data_wrapper.read_str(1, out_file, indent_count)
 		file_object_data_wrapper.read_id(out_file, indent_count)
 		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
+		self.lod = []
 		for _ in range(5):
-			ending0 = file_object_data_wrapper.read_str(1, out_file, indent_count)
-			if ending0 == '00':
-				py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
-			elif ending0 != '03':
+			ending0 = file_object_data_wrapper.read_uint_8(out_file, indent_count)
+			if ending0 == 0:
+				self.lod.append(py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count))
+			elif ending0 == 3:
+				self.lod.append(None)
+			else:
 				raise Exception()
-	# while ending0 == '00':
-	#
-	# 	ending0 = file_object_data_wrapper.read_str(1, out_file, indent_count)
-	# while ending0 == '03':
-	# 	ending0 = file_object_data_wrapper.read_str(1, out_file, indent_count)
