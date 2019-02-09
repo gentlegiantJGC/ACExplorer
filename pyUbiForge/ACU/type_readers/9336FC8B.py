@@ -12,13 +12,14 @@ class Reader(BaseReader):
 		if count1 == 0:
 			pass
 		elif 0 < count1 < 100000:
-			file_object_data_wrapper.read_str(count1 * 4, indent_count + 1)
+			file_object_data_wrapper.read_str(count1 * 4, out_file, indent_count + 1)
 		else:
 			raise Exception('Probably an issue here')
 		count2 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 		if count2 == 0:
 			pass
 		elif 0 < count2 < 100000:
-			file_object_data_wrapper.read_str(count2, indent_count + 1)
+			file_object_data_wrapper.read_str(count2, out_file, indent_count + 1)
+			file_object_data_wrapper.read_str(2, out_file, indent_count)    # \x03\x03
 		else:
 			raise Exception('Probably an issue here')

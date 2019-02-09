@@ -6,4 +6,5 @@ class Reader(BaseReader):
 	file_type = '89288371'
 
 	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
-		pass
+		for _ in range(2):
+			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
