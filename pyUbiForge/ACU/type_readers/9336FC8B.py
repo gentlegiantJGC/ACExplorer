@@ -6,7 +6,7 @@ class Reader(BaseReader):
 	file_type = '9336FC8B'
 
 	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
-		file_object_data_wrapper.read_str(8 * 4, out_file, indent_count)
+		file_object_data_wrapper.read_str(8 * 4, out_file, indent_count)  # FFF0FFF0
 		count1 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 		self.count = count1
 		if count1 == 0:
