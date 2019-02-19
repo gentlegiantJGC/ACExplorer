@@ -1,5 +1,6 @@
 import os
 import json
+import numpy
 from typing import Union, Tuple
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
@@ -288,7 +289,11 @@ class TempFilesContainer:
 		:param datafile_id: int of the containing datafile
 		:return: TempFile, None
 		"""
-
+		if not isinstance(file_id, int):
+			if isinstance(file_id, numpy.integer):
+				file_id = int(file_id)
+			else:
+				raise Exception(f'Expected an integer type but got {type(file_id)}')
 		if file_id == 0:
 			return
 
