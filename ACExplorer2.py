@@ -18,63 +18,71 @@ class App:
 		self.log = self.pyUbiForge.log
 		self.log.info(__name__, 'Building GUI Window')
 
+		# set up main window
 		qt = QtWidgets.QApplication(sys.argv)
 		self.main_window = QtWidgets.QMainWindow()
-
 		self.main_window.setObjectName("MainWindow")
 		self.main_window.resize(809, 698)
-		self.centralwidget = QtWidgets.QWidget(self.main_window)
-		self.centralwidget.setObjectName("centralwidget")
-		self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
-		self.verticalLayout.setObjectName("verticalLayout")
-		self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-		self.comboBox = QtWidgets.QComboBox(self.centralwidget)
-		self.comboBox.setObjectName("comboBox")
-		self.comboBox.addItem("")
-		self.horizontalLayout_2.addWidget(self.comboBox)
-		self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-		self.lineEdit.setObjectName("lineEdit")
-		self.horizontalLayout_2.addWidget(self.lineEdit)
-		self.verticalLayout.addLayout(self.horizontalLayout_2)
-		self.horizontalLayout = QtWidgets.QHBoxLayout()
-		self.horizontalLayout.setObjectName("horizontalLayout")
-		self.treeWidget = QtWidgets.QTreeWidget(self.centralwidget)
-		self.treeWidget.setObjectName("treeWidget")
-		item_0 = QtWidgets.QTreeWidgetItem(self.treeWidget)
-		self.horizontalLayout.addWidget(self.treeWidget)
-		self.verticalLayout.addLayout(self.horizontalLayout)
-		self.main_window.setCentralWidget(self.centralwidget)
+		self.central_widget = QtWidgets.QWidget(self.main_window)
+		self.central_widget.setObjectName("centralwidget")
+		self.vertical_layout = QtWidgets.QVBoxLayout(self.central_widget)
+		self.vertical_layout.setObjectName("verticalLayout")
+		self.horizontal_layout = QtWidgets.QHBoxLayout()
+		self.horizontal_layout.setObjectName("horizontal_layout")
+
+		# drop down box to select the game
+		self.game_select = QtWidgets.QComboBox(self.central_widget)
+		self.game_select.setObjectName("game_select")
+		for game_identifier in self.pyUbiForge.game_identifiers:
+			self.game_select.addItem(game_identifier)
+		self.horizontal_layout.addWidget(self.game_select)
+
+		# search box
+		self.search_box = QtWidgets.QLineEdit(self.central_widget)
+		self.search_box.setObjectName("search_box")
+		self.horizontal_layout.addWidget(self.search_box)
+		self.vertical_layout.addLayout(self.horizontal_layout)
+
+		# file tree view
+		self.file_view = QtWidgets.QTreeWidget(self.central_widget)
+		self.file_view.setObjectName("file_view")
+		item_0 = QtWidgets.QTreeWidgetItem(self.file_view)
+		self.vertical_layout.addWidget(self.file_view)
+
+		# add the central widget
+		self.main_window.setCentralWidget(self.central_widget)
+
+		# menu options
 		self.menubar = QtWidgets.QMenuBar(self.main_window)
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 809, 26))
 		self.menubar.setObjectName("menubar")
-		self.menuFile = QtWidgets.QMenu(self.menubar)
-		self.menuFile.setObjectName("menuFile")
+		self.file_menu = QtWidgets.QMenu(self.menubar)
+		self.file_menu.setObjectName("file_menu")
 		self.main_window.setMenuBar(self.menubar)
 		self.statusbar = QtWidgets.QStatusBar(self.main_window)
 		self.statusbar.setObjectName("statusbar")
 		self.main_window.setStatusBar(self.statusbar)
-		self.actionOptions = QtWidgets.QAction(self.main_window)
-		self.actionOptions.setObjectName("actionOptions")
-		self.menuFile.addAction(self.actionOptions)
-		self.menubar.addAction(self.menuFile.menuAction())
+		# self.statusbar.showMessage('hi')
+		self.options_button = QtWidgets.QAction(self.main_window)
+		self.options_button.setObjectName("actionOptions")
+		self.file_menu.addAction(self.options_button)
+		self.menubar.addAction(self.file_menu.menuAction())
 
-		self.retranslateUi(self.main_window)
+		self.translate()
 		QtCore.QMetaObject.connectSlotsByName(self.main_window)
 
 		self.main_window.show()
 		sys.exit(qt.exec_())
 
-	def retranslateUi(self, MainWindow):
-		MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "ACExplorer", None, -1))
-		self.comboBox.setItemText(0, QtWidgets.QApplication.translate("MainWindow", "ACU", None, -1))
-		self.treeWidget.headerItem().setText(0, QtWidgets.QApplication.translate("MainWindow", "1", None, -1))
-		__sortingEnabled = self.treeWidget.isSortingEnabled()
-		self.treeWidget.setSortingEnabled(False)
-		self.treeWidget.topLevelItem(0).setText(0, QtWidgets.QApplication.translate("MainWindow", "ACU", None, -1))
-		self.treeWidget.setSortingEnabled(__sortingEnabled)
-		self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
-		self.actionOptions.setText(QtWidgets.QApplication.translate("MainWindow", "Options", None, -1))
+	def translate(self):
+		self.main_window.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "ACExplorer"))
+		self.game_select.setItemText(0, QtWidgets.QApplication.translate("MainWindow", "ACU"))
+		self.file_view.headerItem().setText(0, QtWidgets.QApplication.translate("MainWindow", "1"))
+		__sortingEnabled = self.file_view.isSortingEnabled()
+		self.file_view.setSortingEnabled(False)
+		self.file_view.setSortingEnabled(__sortingEnabled)
+		self.file_menu.setTitle(QtWidgets.QApplication.translate("MainWindow", "File"))
+		self.options_button.setText(QtWidgets.QApplication.translate("MainWindow", "Options"))
 
 
 if __name__ == "__main__":
