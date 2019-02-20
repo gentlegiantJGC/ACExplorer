@@ -11,11 +11,11 @@
 """
 
 import os
-from typing import Union, Dict
+from typing import Union, Dict, List
 from pyUbiForge import ACU, misc
 from pyUbiForge.misc.forge import BaseForge
 
-games = {
+_games = {
 	'ACU': ACU
 }
 
@@ -88,6 +88,10 @@ class PyUbiForgeMain:
 		"""Returns the dictionary mapping file name string to Forge class."""
 		return self._forge_files
 
+	@property
+	def game_identifiers(self) -> List[str]:
+		return list(_games.keys())
+
 	def load_game(self, game_identifier: str):
 		"""Call this with the identifier of the game you want to load.
 
@@ -97,8 +101,8 @@ class PyUbiForgeMain:
 		"""
 		self.log.info(__name__, 'Loading Game Files.')
 		self.temp_files.clear()
-		if game_identifier in games:
-			self._game_functions = games.get(game_identifier)
+		if game_identifier in _games:
+			self._game_functions = _games.get(game_identifier)
 			if os.path.isdir(self.CONFIG.game_folder(game_identifier)):
 				self._forge_files = {
 					forge_file_name: self.game_functions.forge.Forge(
