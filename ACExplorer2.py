@@ -136,22 +136,8 @@ class TreeView(QtWidgets.QTreeWidget):
 	def open_context_menu(self, position):
 		entry: TreeViewEntry = self.itemAt(position)
 		if entry is not None:
-			if entry.forge_file_name is not None:
-				if entry.datafile_id is not None:
-					if entry.file_id is not None:
-						tree_depth = 4
-						unique_identifier = entry.file_id
-					else:
-						tree_depth = 3
-						unique_identifier = entry.datafile_id
-				else:
-					tree_depth = 2
-					unique_identifier = entry.forge_file_name
-			else:
-				tree_depth = 1
-				unique_identifier = None
-
-			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(tree_depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
+			unique_identifier = (None, entry.forge_file_name, entry.datafile_id, entry.file_id)[entry.depth]
+			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(entry.depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
 
 			menu = ContextMenu(self.pyUbiForge, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
 			menu.exec_(self.viewport().mapToGlobal(position))
@@ -168,8 +154,8 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 		self._forge_file_name = forge_file_name
 		self._datafile_id = datafile_id
 		self._file_id = file_id
-		self._dev_search = [f'{attr:016X}' for attr in [datafile_id, file_id] if attr is not None]
-		self._dev_search += [''.join(attr[n:n+2] for n in reversed(range(0, 16, 2))) for attr in self._dev_search]
+		self._dev_search = None
+		self._depth = None
 
 	@property
 	def entry_name(self):
@@ -187,12 +173,34 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 	def file_id(self):
 		return self._file_id
 
+	@property
+	def dev_search(self):
+		if self._dev_search is None:
+			self._dev_search = [f'{attr:016X}' for attr in [self.datafile_id, self.file_id] if attr is not None]
+			self._dev_search += [''.join(attr[n:n + 2] for n in reversed(range(0, 16, 2))) for attr in self._dev_search]
+		return self._dev_search
+
+	@property
+	def depth(self):
+		if self._depth is None:
+			if self.forge_file_name is not None:
+				if self.datafile_id is not None:
+					if self.file_id is not None:
+						self._depth = 4
+					else:
+						self._depth = 3
+				else:
+					self._depth = 2
+			else:
+				self._depth = 1
+		return self._depth
+
 	def search(self, search_string: str) -> bool:
 		if search_string == '' or any(search_string in attr for attr in [self._entry_name, self._forge_file_name] if attr is not None):
 			# if the string is empty or matches one of the parameters unhide self and children.
 			self.recursively_unhide_children()
 			return True
-		elif self.pyUbiForge.CONFIG['dev'] and any(search_string in attr for attr in self._dev_search):
+		elif self.pyUbiForge.CONFIG['dev'] and any(search_string in attr for attr in self.dev_search):
 			# if in dev mode and matches one of the file ids unhide self and children
 			self.recursively_unhide_children()
 			return True
@@ -215,14 +223,15 @@ class ContextMenu(QtWidgets.QMenu):
 		for plugin_name in plugin_names:
 			self.add_command(plugin_name, file_id, forge_file_name, datafile_id)
 
-	def add_command(self, plugin_name, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
+	def add_command(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
 		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
 		self.addAction(
 			plugin_name,
 			lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
 		)
 
-	def run_plugin(self, plugin_name, file_id, forge_file_name, datafile_id):
+	def run_plugin(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None) -> None:
+		"""Method to run and handle plugin options."""
 		options = []
 		while options is not None:
 			options, output = self.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id, options)
