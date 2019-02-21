@@ -3,7 +3,6 @@
 	of the Assassin's Creed franchise. 	This is just a UI wrapper for pyUbiForge where the heavy lifting is done.
 """
 
-from typing import Union
 import pyUbiForge
 from PySide2 import QtCore, QtGui, QtWidgets
 import sys
@@ -21,30 +20,31 @@ class TreeView(QtWidgets.QTreeWidget):
 		# TODO: check that this removes entries from the tree
 		self._game_identifier = game_identifier
 		self.insert(game_identifier)
-		# TODO: populate the forge files and datafiles
 
 	def search(self, search_string: str) -> None:
 		self._entries[(None, None, None)].search(search_string)
 
-	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None):
-		entry = TreeViewEntry(self.pyUbiForge, self, entry_name, forge_file_name, datafile_id, file_id)
-		self._entries[(forge_file_name, datafile_id, file_id)] = entry
+	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None) -> None:
 		if forge_file_name is not None:
 			if datafile_id is not None:
 				if file_id is not None:  # the fact that the ends of these align makes me very happy
-					self._entries[(forge_file_name, datafile_id, None)].addChild(entry)
+					parent = self._entries[(forge_file_name, datafile_id, None)]
 				else:
-					self._entries[(forge_file_name, None, None)].addChild(entry)
+					parent = self._entries[(forge_file_name, None, None)]
 			else:
-				self._entries[(None, None, None)].addChild(entry)
+				parent = self._entries[(None, None, None)]
+			entry = TreeViewEntry(self.pyUbiForge, parent, entry_name, forge_file_name, datafile_id, file_id)
+		else:
+			entry = TreeViewEntry(self.pyUbiForge, self, entry_name)
+
+		self._entries[(forge_file_name, datafile_id, file_id)] = entry
 
 
 class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 	def __init__(self, py_ubi_forge, tree_view, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None):
-		QtWidgets.QTreeWidgetItem.__init__(self, tree_view)
+		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
 		self.pyUbiForge = py_ubi_forge
 		self._entry_name = entry_name
-		self.setText(0, entry_name)
 		self._forge_file_name = forge_file_name
 		self._datafile_id = datafile_id
 		self._file_id = file_id
@@ -69,7 +69,6 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 		self.setHidden(False)
 		for index in range(self.childCount()):
 			self.child(index).recursively_unhide_children()
-
 
 
 class App(QtWidgets.QApplication):
@@ -111,7 +110,6 @@ class App(QtWidgets.QApplication):
 		# file tree view
 		self.file_view = TreeView(self.pyUbiForge, self.central_widget)
 		self.file_view.setObjectName("file_view")
-		self.file_view.load_game(self.game_select.currentText())
 		self.vertical_layout.addWidget(self.file_view)
 
 		# add the central widget
@@ -134,18 +132,31 @@ class App(QtWidgets.QApplication):
 		self.menubar.addAction(self.file_menu.menuAction())
 
 		self.translate_()
-		QtCore.QMetaObject.connectSlotsByName(self.main_window)
+		# QtCore.QMetaObject.connectSlotsByName(self.main_window)
 
 		self.main_window.show()
+		self.load_game(self.game_select.currentText())
 		sys.exit(self.exec_())
 
 	def translate_(self):
 		self.main_window.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "ACExplorer"))
-		__sortingEnabled = self.file_view.isSortingEnabled()
-		self.file_view.setSortingEnabled(False)
-		self.file_view.setSortingEnabled(__sortingEnabled)
 		self.file_menu.setTitle(QtWidgets.QApplication.translate("MainWindow", "File"))
 		self.options_button.setText(QtWidgets.QApplication.translate("MainWindow", "Options"))
+		self.file_view.headerItem().setText(0, QtWidgets.QApplication.translate("MainWindow", "Name"))
+
+	def load_game(self, game_identifier: str):
+		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
+
+		self.pyUbiForge.load_game(game_identifier)
+		self.file_view.setUpdatesEnabled(False)
+		self.file_view.load_game(game_identifier)
+
+		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
+			self.file_view.insert(forge_file_name, forge_file_name)
+			for datafile_id, datafile in forge_file.datafiles.items():
+				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id)
+
+		self.file_view.setUpdatesEnabled(True)
 
 
 if __name__ == "__main__":
