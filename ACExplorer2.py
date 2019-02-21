@@ -88,7 +88,7 @@ class App(QtWidgets.QApplication):
 
 		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
 			self.file_view.insert(forge_file_name, forge_file_name)
-			for datafile_id, datafile in forge_file.datafiles.items():
+			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
 				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id)
 
 		self.file_view.setUpdatesEnabled(True)
@@ -128,19 +128,37 @@ class TreeView(QtWidgets.QTreeWidget):
 			else:
 				parent = self._entries[(None, None, None)]
 			entry = TreeViewEntry(self.pyUbiForge, parent, entry_name, forge_file_name, datafile_id, file_id)
+			parent.addChild(entry)
 		else:
 			entry = TreeViewEntry(self.pyUbiForge, self, entry_name)
 
 		self._entries[(forge_file_name, datafile_id, file_id)] = entry
 
-	def open_context_menu(self, position):
+	def populate_tree(self):
+		"""A helper function to populate files in the file view."""
+		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
+			for datafile_id in forge_file.new_datafiles:
+				for file_id, file_name in sorted(forge_file.datafiles[datafile_id].files.items(), key=lambda v: v[1].lower()):
+					self.insert(file_name, forge_file_name, datafile_id, file_id)
+			forge_file.new_datafiles.clear()
+
+	def mousePressEvent(self, event: QtGui.QMouseEvent):
+		entry: TreeViewEntry = self.itemAt(event.pos())
+		if entry is not None and entry.depth == 3 and entry.childCount() == 0:
+			forge_file_name, datafile_id = entry.forge_file_name, entry.datafile_id
+			self.pyUbiForge.forge_files[forge_file_name].decompress_datafile(datafile_id)
+			self.populate_tree()
+		QtWidgets.QTreeWidget.mousePressEvent(self, event)
+
+	def open_context_menu(self, position: QtCore.QPoint):
 		entry: TreeViewEntry = self.itemAt(position)
 		if entry is not None:
-			unique_identifier = (None, entry.forge_file_name, entry.datafile_id, entry.file_id)[entry.depth]
+			unique_identifier = (None, entry.forge_file_name, entry.datafile_id, entry.file_id)[entry.depth-1]
 			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(entry.depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
 
 			menu = ContextMenu(self.pyUbiForge, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
 			menu.exec_(self.viewport().mapToGlobal(position))
+			self.populate_tree()
 
 
 class TreeViewEntry(QtWidgets.QTreeWidgetItem):
