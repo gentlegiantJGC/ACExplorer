@@ -8,134 +8,8 @@ from typing import Union
 from PySide2 import QtCore, QtGui, QtWidgets
 
 
-class TreeView(QtWidgets.QTreeWidget):
-	def __init__(self, py_ubi_forge, parent):
-		QtWidgets.QTreeWidget.__init__(self, parent)
-		self.pyUbiForge = py_ubi_forge
-		self._entries = {}
-		self._game_identifier = None
-		self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-		self.customContextMenuRequested.connect(self.open_context_menu)
-
-	def load_game(self, game_identifier: str):
-		self._entries.clear()
-		# TODO: check that this removes entries from the tree
-		self._game_identifier = game_identifier
-		self.insert(game_identifier)
-
-	def search(self, search_string: str) -> None:
-		self._entries[(None, None, None)].search(search_string)
-
-	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None) -> None:
-		if forge_file_name is not None:
-			if datafile_id is not None:
-				if file_id is not None:  # the fact that the ends of these align makes me very happy
-					parent = self._entries[(forge_file_name, datafile_id, None)]
-				else:
-					parent = self._entries[(forge_file_name, None, None)]
-			else:
-				parent = self._entries[(None, None, None)]
-			entry = TreeViewEntry(self.pyUbiForge, parent, entry_name, forge_file_name, datafile_id, file_id)
-		else:
-			entry = TreeViewEntry(self.pyUbiForge, self, entry_name)
-
-		self._entries[(forge_file_name, datafile_id, file_id)] = entry
-
-	def open_context_menu(self, position):
-		entry: TreeViewEntry = self.itemAt(position)
-		if entry is not None:
-			if entry.forge_file_name is not None:
-				if entry.datafile_id is not None:
-					if entry.file_id is not None:
-						tree_depth = 4
-						unique_identifier = entry.file_id
-					else:
-						tree_depth = 3
-						unique_identifier = entry.datafile_id
-				else:
-					tree_depth = 2
-					unique_identifier = entry.forge_file_name
-			else:
-				tree_depth = 1
-				unique_identifier = None
-
-			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(tree_depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
-
-			menu = ContextMenu(self.pyUbiForge, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
-			menu.exec_(self.viewport().mapToGlobal(position))
-
-
-class ContextMenu(QtWidgets.QMenu):
-	def __init__(self, py_ubi_forge, plugin_names, file_id, forge_file_name, datafile_id):
-		QtWidgets.QMenu.__init__(self)
-		self.pyUbiForge = py_ubi_forge
-		for plugin_name in plugin_names:
-			self.add_command(plugin_name, file_id, forge_file_name, datafile_id)
-
-	def add_command(self, plugin_name, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
-		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
-		self.addAction(
-			plugin_name,
-			lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
-		)
-
-	def run_plugin(self, plugin_name, file_id, forge_file_name, datafile_id):
-		options = []
-		while options is not None:
-			options, output = self.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id, options)
-			# TODO: show options screen, wait for response from option screen
-
-
-class TreeViewEntry(QtWidgets.QTreeWidgetItem):
-	def __init__(self, py_ubi_forge, tree_view, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None):
-		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
-		self.pyUbiForge = py_ubi_forge
-		self._entry_name = entry_name
-		self._forge_file_name = forge_file_name
-		self._datafile_id = datafile_id
-		self._file_id = file_id
-		self._dev_search = [f'{attr:016X}' for attr in [datafile_id, file_id] if attr is not None]
-		self._dev_search += [''.join(attr[n:n+2] for n in reversed(range(0, 16, 2))) for attr in self._dev_search]
-
-	@property
-	def entry_name(self):
-		return self._entry_name
-
-	@property
-	def forge_file_name(self):
-		return self._forge_file_name
-
-	@property
-	def datafile_id(self):
-		return self._datafile_id
-
-	@property
-	def file_id(self):
-		return self._file_id
-
-	def search(self, search_string: str) -> bool:
-		if search_string == '' or any(search_string in attr for attr in [self._entry_name, self._forge_file_name] if attr is not None):
-			# if the string is empty or matches one of the parameters unhide self and children.
-			self.recursively_unhide_children()
-			return True
-		elif self.pyUbiForge.CONFIG['dev'] and any(search_string in attr for attr in self._dev_search):
-			# if in dev mode and matches one of the file ids unhide self and children
-			self.recursively_unhide_children()
-			return True
-		else:
-			shown = any([self.child(index).search(search_string) for index in range(self.childCount())])
-			self.setHidden(not shown)
-			return shown
-
-	def recursively_unhide_children(self):
-		self.setHidden(False)
-		for index in range(self.childCount()):
-			self.child(index).recursively_unhide_children()
-
-
 class App(QtWidgets.QApplication):
-	"""This is the class that contains all the UI features for ACExplorer.
-
+	"""This is the main application that contains the file tree.
 	This class also sets up pyUbiForge.
 	"""
 	def __init__(self):
@@ -221,6 +95,138 @@ class App(QtWidgets.QApplication):
 
 	def search(self):
 		self.file_view.search(self.search_box.text())
+
+
+class TreeView(QtWidgets.QTreeWidget):
+	"""This is the file tree used in the main application.
+	Wraps QTreeWidget and adds search functionality and a context menu
+	"""
+	def __init__(self, py_ubi_forge, parent):
+		QtWidgets.QTreeWidget.__init__(self, parent)
+		self.pyUbiForge = py_ubi_forge
+		self._entries = {}
+		self._game_identifier = None
+		self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+		self.customContextMenuRequested.connect(self.open_context_menu)
+
+	def load_game(self, game_identifier: str):
+		self._entries.clear()
+		# TODO: check that this removes entries from the tree
+		self._game_identifier = game_identifier
+		self.insert(game_identifier)
+
+	def search(self, search_string: str) -> None:
+		self._entries[(None, None, None)].search(search_string)
+
+	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None) -> None:
+		if forge_file_name is not None:
+			if datafile_id is not None:
+				if file_id is not None:  # the fact that the ends of these align makes me very happy
+					parent = self._entries[(forge_file_name, datafile_id, None)]
+				else:
+					parent = self._entries[(forge_file_name, None, None)]
+			else:
+				parent = self._entries[(None, None, None)]
+			entry = TreeViewEntry(self.pyUbiForge, parent, entry_name, forge_file_name, datafile_id, file_id)
+		else:
+			entry = TreeViewEntry(self.pyUbiForge, self, entry_name)
+
+		self._entries[(forge_file_name, datafile_id, file_id)] = entry
+
+	def open_context_menu(self, position):
+		entry: TreeViewEntry = self.itemAt(position)
+		if entry is not None:
+			if entry.forge_file_name is not None:
+				if entry.datafile_id is not None:
+					if entry.file_id is not None:
+						tree_depth = 4
+						unique_identifier = entry.file_id
+					else:
+						tree_depth = 3
+						unique_identifier = entry.datafile_id
+				else:
+					tree_depth = 2
+					unique_identifier = entry.forge_file_name
+			else:
+				tree_depth = 1
+				unique_identifier = None
+
+			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(tree_depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
+
+			menu = ContextMenu(self.pyUbiForge, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
+			menu.exec_(self.viewport().mapToGlobal(position))
+
+
+class TreeViewEntry(QtWidgets.QTreeWidgetItem):
+	"""Individual entries in the file tree.
+	Wraps QTreeWidgetItem and saves more data related to each entry
+	"""
+	def __init__(self, py_ubi_forge, tree_view, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None):
+		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
+		self.pyUbiForge = py_ubi_forge
+		self._entry_name = entry_name
+		self._forge_file_name = forge_file_name
+		self._datafile_id = datafile_id
+		self._file_id = file_id
+		self._dev_search = [f'{attr:016X}' for attr in [datafile_id, file_id] if attr is not None]
+		self._dev_search += [''.join(attr[n:n+2] for n in reversed(range(0, 16, 2))) for attr in self._dev_search]
+
+	@property
+	def entry_name(self):
+		return self._entry_name
+
+	@property
+	def forge_file_name(self):
+		return self._forge_file_name
+
+	@property
+	def datafile_id(self):
+		return self._datafile_id
+
+	@property
+	def file_id(self):
+		return self._file_id
+
+	def search(self, search_string: str) -> bool:
+		if search_string == '' or any(search_string in attr for attr in [self._entry_name, self._forge_file_name] if attr is not None):
+			# if the string is empty or matches one of the parameters unhide self and children.
+			self.recursively_unhide_children()
+			return True
+		elif self.pyUbiForge.CONFIG['dev'] and any(search_string in attr for attr in self._dev_search):
+			# if in dev mode and matches one of the file ids unhide self and children
+			self.recursively_unhide_children()
+			return True
+		else:
+			shown = any([self.child(index).search(search_string) for index in range(self.childCount())])
+			self.setHidden(not shown)
+			return shown
+
+	def recursively_unhide_children(self):
+		self.setHidden(False)
+		for index in range(self.childCount()):
+			self.child(index).recursively_unhide_children()
+
+
+class ContextMenu(QtWidgets.QMenu):
+	"""Context menu for use upon right click of an item in the file tree to access the plugin system."""
+	def __init__(self, py_ubi_forge, plugin_names, file_id, forge_file_name, datafile_id):
+		QtWidgets.QMenu.__init__(self)
+		self.pyUbiForge = py_ubi_forge
+		for plugin_name in plugin_names:
+			self.add_command(plugin_name, file_id, forge_file_name, datafile_id)
+
+	def add_command(self, plugin_name, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
+		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
+		self.addAction(
+			plugin_name,
+			lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
+		)
+
+	def run_plugin(self, plugin_name, file_id, forge_file_name, datafile_id):
+		options = []
+		while options is not None:
+			options, output = self.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id, options)
+			# TODO: show options screen, wait for response from option screen
 
 
 if __name__ == "__main__":
