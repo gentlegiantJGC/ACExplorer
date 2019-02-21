@@ -52,7 +52,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 		self._dev_search += [''.join(attr[n:n+2] for n in reversed(range(0, 16, 2))) for attr in self._dev_search]
 
 	def search(self, search_string: str) -> bool:
-		if search_string == '' or any(search_string in attr for attr in [self._entry_name, self._forge_file_name]):
+		if search_string == '' or any(search_string in attr for attr in [self._entry_name, self._forge_file_name] if attr is not None):
 			# if the string is empty or matches one of the parameters unhide self and children.
 			self.recursively_unhide_children()
 			return True
@@ -61,7 +61,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 			self.recursively_unhide_children()
 			return True
 		else:
-			shown = any([child.search(search_string) for child in self._children])
+			shown = any([self.child(index).search(search_string) for index in range(self.childCount())])
 			self.setHidden(not shown)
 			return shown
 
@@ -89,10 +89,12 @@ class App(QtWidgets.QApplication):
 		self.main_window.resize(809, 698)
 		self.central_widget = QtWidgets.QWidget(self.main_window)
 		self.central_widget.setObjectName("centralwidget")
+		self.main_window.setCentralWidget(self.central_widget)
 		self.vertical_layout = QtWidgets.QVBoxLayout(self.central_widget)
 		self.vertical_layout.setObjectName("verticalLayout")
 		self.horizontal_layout = QtWidgets.QHBoxLayout()
 		self.horizontal_layout.setObjectName("horizontal_layout")
+		self.vertical_layout.addLayout(self.horizontal_layout)
 
 		# drop down box to select the game
 		self.game_select = QtWidgets.QComboBox(self.central_widget)
@@ -104,16 +106,13 @@ class App(QtWidgets.QApplication):
 		# search box
 		self.search_box = QtWidgets.QLineEdit(self.central_widget)
 		self.search_box.setObjectName("search_box")
+		self.search_box.editingFinished.connect(self.search)
 		self.horizontal_layout.addWidget(self.search_box)
-		self.vertical_layout.addLayout(self.horizontal_layout)
 
 		# file tree view
 		self.file_view = TreeView(self.pyUbiForge, self.central_widget)
 		self.file_view.setObjectName("file_view")
 		self.vertical_layout.addWidget(self.file_view)
-
-		# add the central widget
-		self.main_window.setCentralWidget(self.central_widget)
 
 		# menu options
 		self.menubar = QtWidgets.QMenuBar(self.main_window)
@@ -157,6 +156,9 @@ class App(QtWidgets.QApplication):
 				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id)
 
 		self.file_view.setUpdatesEnabled(True)
+
+	def search(self):
+		self.file_view.search(self.search_box.text())
 
 
 if __name__ == "__main__":
