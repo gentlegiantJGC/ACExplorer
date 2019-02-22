@@ -81,17 +81,18 @@ class App(QtWidgets.QApplication):
 
 	def load_game(self, game_identifier: str):
 		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
-
+		self.processEvents()
 		self.pyUbiForge.load_game(game_identifier)
-		self.file_view.setUpdatesEnabled(False)
+
 		self.file_view.load_game(game_identifier)
 
 		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
+			self.pyUbiForge.log.info(__name__, f'Populating File Tree For {forge_file_name}')
 			self.file_view.insert(forge_file_name, forge_file_name)
 			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
 				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id)
-
-		self.file_view.setUpdatesEnabled(True)
+			self.processEvents()
+		self.pyUbiForge.log.info(__name__, 'Finished Populating File Tree')
 
 	def search(self):
 		self.file_view.search(self.search_box.text())
