@@ -6,6 +6,7 @@
 import pyUbiForge
 from typing import Union
 from PySide2 import QtCore, QtGui, QtWidgets
+import time
 
 
 class App(QtWidgets.QApplication):
@@ -57,9 +58,10 @@ class App(QtWidgets.QApplication):
 		self.file_menu = QtWidgets.QMenu(self.menubar)
 		self.file_menu.setObjectName("file_menu")
 		self.main_window.setMenuBar(self.menubar)
-		self.statusbar = QtWidgets.QStatusBar(self.main_window)
+		self.statusbar = StatusBar(self.main_window, self.log)
 		self.statusbar.setObjectName("statusbar")
 		self.main_window.setStatusBar(self.statusbar)
+		self.statusbar.start()
 		# self.statusbar.showMessage('hi')
 		self.options_button = QtWidgets.QAction(self.main_window)
 		self.options_button.setObjectName("actionOptions")
@@ -82,7 +84,12 @@ class App(QtWidgets.QApplication):
 	def load_game(self, game_identifier: str):
 		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
 		self.processEvents()
-		self.pyUbiForge.load_game(game_identifier)
+
+		load_game = LoadGame(self.pyUbiForge.load_game, game_identifier)
+		load_game.start()
+		while not load_game.isFinished():
+			self.processEvents()
+			time.sleep(0.05)
 
 		self.file_view.load_game(game_identifier)
 
@@ -96,6 +103,30 @@ class App(QtWidgets.QApplication):
 
 	def search(self):
 		self.file_view.search(self.search_box.text())
+
+
+class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):
+	def __init__(self, parent: QtWidgets.QMainWindow, log: pyUbiForge.misc.log.Logger):
+		QtWidgets.QStatusBar.__init__(self, parent)
+		QtCore.QThread.__init__(self)
+		self.log = log
+
+	def run(self):
+		while True:
+			if self.log.buffer is not None:
+				self.showMessage(self.log.buffer)
+				self.log.buffer = None
+			time.sleep(0.02)
+
+
+class LoadGame(QtCore.QThread):
+	def __init__(self, load_game, game_identifier):
+		QtCore.QThread.__init__(self)
+		self.load_game = load_game
+		self.game_identifier = game_identifier
+
+	def run(self):
+		self.load_game(self.game_identifier)
 
 
 class TreeView(QtWidgets.QTreeWidget):
