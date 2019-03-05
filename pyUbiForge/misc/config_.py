@@ -36,8 +36,8 @@ class Config:
 	def raw(self):
 		return self.CONFIG
 
-	def __getitem__(self, item):
-		return self.CONFIG.get(item, None)
+	def get(self, item, default=None):
+		return self.CONFIG.get(item, default)
 
 	def __setitem__(self, key, value):
 		self.CONFIG[key] = value
