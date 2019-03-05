@@ -165,10 +165,10 @@ class OptionsDialogue:
 		# options
 		self.game_paths = {}
 
-		self.dump_folder = self.folder_option('Dump Folder', self.CONFIG['dumpFolder'], 0)
+		self.dump_folder = self.folder_option('Dump Folder', self.CONFIG.get('dumpFolder', 'output'), 0)
 
 		row = 1
-		for game_identifier, location in self.CONFIG['gameFolders'].items():
+		for game_identifier, location in self.CONFIG.get('gameFolders', {}).items():
 			self.game_paths[game_identifier] = self.folder_option(f'{game_identifier} Folder', location, row)
 			row += 1
 
@@ -197,7 +197,7 @@ class OptionsDialogue:
 	def save(self):
 		"""Save the inputs back to CONFIG and close."""
 		for game_identifier, label in self.game_paths.items():
-			self.CONFIG['gameFolders'][game_identifier] = label['text']
+			self.CONFIG.get('gameFolders', {})[game_identifier] = label['text']
 		self.CONFIG['dumpFolder'] = self.dump_folder['text']
 		self._update = True
 		self.main_ui.destroy()

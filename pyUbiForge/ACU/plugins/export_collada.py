@@ -9,7 +9,7 @@ class Plugin(BasePlugin):
 
 	def run(self, py_ubi_forge, file_id, forge_file_name, datafile_id, options):
 		# TODO add select directory option
-		save_folder = py_ubi_forge.CONFIG['dumpFolder']
+		save_folder = py_ubi_forge.CONFIG.get('dumpFolder', 'output')
 
 		data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
 		if data is None:

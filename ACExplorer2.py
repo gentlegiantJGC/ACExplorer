@@ -238,7 +238,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 			# if the string is empty or matches one of the parameters unhide self and children.
 			self.recursively_unhide_children()
 			return True
-		elif self.pyUbiForge.CONFIG['dev'] and any(search_string in attr for attr in self.dev_search):
+		elif self.pyUbiForge.CONFIG.get('dev', False) and any(search_string.upper() in attr for attr in self.dev_search):
 			# if in dev mode and matches one of the file ids unhide self and children
 			self.recursively_unhide_children()
 			return True

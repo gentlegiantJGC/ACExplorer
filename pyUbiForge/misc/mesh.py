@@ -83,7 +83,7 @@ class ObjMtl:
 			mtl.write('Ka 1.000 1.000 1.000\nKd 1.000 1.000 1.000\nKs 0.000 0.000 0.000\nNs 0.000\n')
 
 			if material.missing_no:
-				mtl.write(f'map_Kd {os.path.basename(self.pyUbiForge.CONFIG["missingNo"])}\n')
+				mtl.write(f"map_Kd {os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
 				self.export_missing_no()
 			else:
 				for map_type, file_id in [
@@ -97,7 +97,7 @@ class ObjMtl:
 						continue
 					image_path = texture.export_dds(self.pyUbiForge, file_id, self.save_folder)
 					if image_path is None:
-						mtl.write(f'{map_type} {os.path.basename(self.pyUbiForge.CONFIG["missingNo"])}\n')
+						mtl.write(f"{map_type} {os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
 						self.export_missing_no()
 					else:
 						mtl.write(f'{map_type} {os.path.basename(image_path)}\n')
@@ -112,7 +112,7 @@ class ObjMtl:
 		"""
 		if not self.missing_no_exported:
 			self.missing_no_exported = True
-			shutil.copy(self.pyUbiForge.CONFIG['missingNo'], self.save_folder)
+			shutil.copy(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'), self.save_folder)
 
 
 def plaintext_array(array):
@@ -278,7 +278,7 @@ class Collada:
 			image_path = None
 			material_name = material.name
 			if material.missing_no:
-				image_path = os.path.basename(self.pyUbiForge.CONFIG["missingNo"])
+				image_path = os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))
 				self.export_missing_no()
 			else:
 				for map_type, file_id in [
@@ -292,7 +292,7 @@ class Collada:
 						continue
 					image_path = os.path.basename(texture.export_dds(self.pyUbiForge, file_id, self.save_folder))
 					if image_path is None:
-						image_path = os.path.basename(self.pyUbiForge.CONFIG["missingNo"])
+						image_path = os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))
 						self.export_missing_no()
 					library_images.append(f'''		<image id="{material_name}-{map_type}" name="{material_name}">
 			<init_from>{urllib.parse.quote(image_path)}</init_from>
@@ -369,7 +369,7 @@ class Collada:
 		"""
 		if not self.missing_no_exported:
 			self.missing_no_exported = True
-			shutil.copy(self.pyUbiForge.CONFIG['missingNo'], self.save_folder)
+			shutil.copy(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'), self.save_folder)
 
 
 class MaterialHandler:

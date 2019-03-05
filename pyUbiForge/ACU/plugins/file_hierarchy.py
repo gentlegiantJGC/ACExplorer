@@ -71,5 +71,5 @@ class Plugin(BasePlugin):
 				datafile_completed_count += 1
 				py_ubi_forge.log.info(__name__, f"Processed {round(100*datafile_completed_count/datafile_count, 2)}% of {datafile_count} datafiles")
 		py_ubi_forge.log.info(__name__, "Processed all files")
-		with open(f'{py_ubi_forge.CONFIG["dumpFolder"]}/ACU_hierarchy.json', 'w') as f:
+		with open(f'{py_ubi_forge.CONFIG.get('dumpFolder', 'output')}/ACU_hierarchy.json', 'w') as f:
 			json.dump(dict_doc, f, indent=4)

@@ -53,7 +53,7 @@ class FileReaderHandler:
 
 	def _load_readers(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG['dev']:
+		if self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG.get('dev', False):
 			self.game_identifier = self.pyUbiForge.game_identifier
 			self.readers = {}
 			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/type_readers']):

@@ -148,9 +148,9 @@ class Forge(BaseForge):
 					file_name = f'{file_id:016X}'
 				self.pyUbiForge.temp_files.add(file_id, self.forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
 				self.datafiles[datafile_id].files[file_id] = file_name
-				if self.pyUbiForge.CONFIG['writeToDisk']:
+				if self.pyUbiForge.CONFIG.get('writeToDisk', False):
 					folder = os.path.join(
-						self.pyUbiForge.CONFIG['dumpFolder'],
+						self.pyUbiForge.CONFIG.get('dumpFolder', 'output'),
 						self.pyUbiForge.game_identifier,
 						self.forge_file_name,
 						self.datafiles[datafile_id].file_name,

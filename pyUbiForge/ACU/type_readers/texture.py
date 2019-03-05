@@ -11,10 +11,10 @@ class Reader(BaseTexture, BaseReader):
 
 	def __init__(self, py_ubi_forge, texture_file: FileObjectDataWrapper, out_file: Union[FileObjectDataWrapper, TextIO], indent_count: int):
 		BaseTexture.__init__(self, py_ubi_forge)
-		if py_ubi_forge.CONFIG['dev']:
-			if not os.path.isdir(os.path.join(py_ubi_forge.CONFIG['dumpFolder'], 'fileTypes')):
-				os.makedirs(os.path.join(py_ubi_forge.CONFIG['dumpFolder'], 'fileTypes'))
-			with open(os.path.join(py_ubi_forge.CONFIG['dumpFolder'], 'fileTypes', 'A2B7E917'), 'a') as f2:
+		if py_ubi_forge.CONFIG.get('dev', False):
+			if not os.path.isdir(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes')):
+				os.makedirs(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes'))
+			with open(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes', 'A2B7E917'), 'a') as f2:
 				f2.write('{}\n'.format(' '.join(f'{b:02X}' for b in texture_file.read_str(116))))
 				texture_file.seek(-116, 1)
 		# header has already been read

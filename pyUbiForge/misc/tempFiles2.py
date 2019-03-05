@@ -273,7 +273,7 @@ class TempFilesContainer:
 		if raw_file is not None:
 			self._memory += len(raw_file)
 
-		while self._memory > self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB']*1000000:
+		while self._memory > self.pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048)*1000000:
 			remove_entry = self._last_used.pop()
 			self._memory -= len(self._temp_files[remove_entry][4])
 			del self._temp_files[remove_entry]

@@ -134,7 +134,7 @@ class PluginHandler:
 
 	def _load_plugins(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG['dev']:
+		if self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG.get('dev', False):
 			self.game_identifier = self.pyUbiForge.game_identifier
 			self.plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self.plugin_names = {}
@@ -154,7 +154,7 @@ class PluginHandler:
 					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin.dev" was not a bool')
 					continue
 				else:
-					if plugin.dev and not self.pyUbiForge.CONFIG['dev']:
+					if plugin.dev and not self.pyUbiForge.CONFIG.get('dev', False):
 						continue
 
 				if not isinstance(plugin.plugin_name, str):

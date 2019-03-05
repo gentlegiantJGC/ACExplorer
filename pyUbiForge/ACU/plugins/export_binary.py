@@ -14,7 +14,7 @@ class Plugin(BasePlugin):
 			return
 		out_file = open(
 			os.path.join(
-				py_ubi_forge.CONFIG['dumpFolder'],
+				py_ubi_forge.CONFIG.get('dumpFolder', 'output'),
 				f'{py_ubi_forge.game_functions.game_identifier}_{data.file_name}_{file_id:016X}.bin'
 			), 'wb'
 		)
