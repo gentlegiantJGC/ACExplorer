@@ -103,18 +103,16 @@ class PyUbiForgeMain:
 		self.temp_files.clear()
 		if game_identifier in _games:
 			self._game_functions = _games.get(game_identifier)
+			self._forge_files = {}
 			if os.path.isdir(self.CONFIG.game_folder(game_identifier)):
-				self._forge_files = {
-					forge_file_name: self.game_functions.forge.Forge(
-						self,
-						os.path.join(self.CONFIG.game_folder(game_identifier), forge_file_name),
-						forge_file_name
-					) for forge_file_name in os.listdir(
-						self.CONFIG.game_folder(game_identifier)
-					) if forge_file_name.endswith('.forge')
-				}
-			else:
-				self._forge_files = {}
+				for forge_file_name in os.listdir(self.CONFIG.game_folder(game_identifier)):
+					if forge_file_name.endswith('.forge'):
+						self._forge_files[forge_file_name] = self.game_functions.forge.Forge(
+								self,
+								os.path.join(self.CONFIG.game_folder(game_identifier), forge_file_name),
+								forge_file_name
+							)
+						yield forge_file_name
 
 			self.temp_files.load()
 		self.log.info(__name__, 'Finished Loading Game Files.')

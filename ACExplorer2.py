@@ -85,11 +85,8 @@ class App(QtWidgets.QApplication):
 		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
 		self.processEvents()
 
-		load_game = LoadGame(self.pyUbiForge.load_game, game_identifier)
-		load_game.start()
-		while not load_game.isFinished():
+		for _ in self.pyUbiForge.load_game(game_identifier):
 			self.processEvents()
-			time.sleep(0.05)
 
 		self.file_view.load_game(game_identifier)
 
@@ -100,6 +97,7 @@ class App(QtWidgets.QApplication):
 				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id)
 			self.processEvents()
 		self.pyUbiForge.log.info(__name__, 'Finished Populating File Tree')
+		self.pyUbiForge.log.info(__name__, '')
 
 	def search(self):
 		self.file_view.search(self.search_box.text())
@@ -117,16 +115,6 @@ class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):
 				self.showMessage(self.log.buffer)
 				self.log.buffer = None
 			time.sleep(0.02)
-
-
-class LoadGame(QtCore.QThread):
-	def __init__(self, load_game, game_identifier):
-		QtCore.QThread.__init__(self)
-		self.load_game = load_game
-		self.game_identifier = game_identifier
-
-	def run(self):
-		self.load_game(self.game_identifier)
 
 
 class TreeView(QtWidgets.QTreeWidget):
