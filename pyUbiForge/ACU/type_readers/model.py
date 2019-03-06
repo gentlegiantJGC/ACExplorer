@@ -14,108 +14,17 @@ class Reader(BaseModel, BaseReader):
 		self.type = model_file.read_str(4, out_file, indent_count)
 		model_file.read_str(1, out_file, indent_count)
 		a_count = model_file.read_uint_32(out_file, indent_count)
+		for a in range(a_count*2):
+			model_file.read_str(2, out_file, indent_count)
+			py_ubi_forge.read_file.get_data_recursive(model_file, out_file, indent_count)
 		if a_count > 0:
-			raise Exception('aCount not accounted for')
-		# {
-		# 	model_file.read_str(1, out_file, indent_count)
-		# 	for (int index1 = 0; index1 < 2; ++index1)
-		# 	{
-		# 		  binaryReader.BaseStream.Position += 13L;
-		# 		  if (fi.read(4) > 0)
-		# 		  {
-		# 			int num3 = (int) MessageBox.Show("Undetermined block of model information.", "Block 1 Issue", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-		# 			return;
-		# 		  }
-		# 		  int num4 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num4 * 4);
-		# 		  int num5 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num5 * 4);
-		# 		  int num6 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num6 * 4);
-		# 		  int num7 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) num7;
-		# 		  int num8 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num8 * 12);
-		# 		  int num9 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num9 * 12);
-		# 		  int num10 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num10 * 12);
-		# 		  int num11 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num11 * 12);
-		# 		  int num12 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num12 * 4);
-		# 		  if (fi.read(4) > 0)
-		# 		  {
-		# 			int num3 = (int) MessageBox.Show("Undetermined block of model information.", "Block 11 Issue", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-		# 			return;
-		# 		  }
-		# 		  ++binaryReader.BaseStream.Position;
-		# 		  int num13 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num13 * 4);
-		# 		  int num14 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num14 * 2);
-		# 		  int num15 = fi.read(4);
-		# 		  binaryReader.BaseStream.Position += (long) (num15 * 2);
-		# 		  int num16 = fi.read(4);
-		# 		  for (int index2 = 0; index2 < num16; ++index2)
-		# 		  {
-		# 			if (fi.read(4) > 0)
-		# 			{
-		# 			  int num3 = (int) MessageBox.Show("Undetermined block of model information.", "Block 15 Issue", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-		# 			  return;
-		# 			}
-		# 			if (fi.read(4) > 0)
-		# 			{
-		# 			  int num3 = (int) MessageBox.Show("Undetermined block of model information.", "Block 16 Issue", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-		# 			  return;
-		# 			}
-		# 			binaryReader.BaseStream.Position += 4L;
-		# 			if (fi.read(4) > 0)
-		# 			{
-		# 			  int num3 = (int) MessageBox.Show("Undetermined block of model information.", "Block 17 Issue", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-		# 			  return;
-		# 			}
-		# 			++binaryReader.BaseStream.Position;
-		# 			int num17 = fi.read(4);
-		# 			binaryReader.BaseStream.Position += (long) (num17 * 8);
-		# 			int num18 = fi.read(4);
-		# 			binaryReader.BaseStream.Position += (long) (num18 * 4);
-		# 		}
-		# 		binaryReader.BaseStream.Position += 12L;
-		# 	}
-		# }
-		bone_count = model_file.read_uint_32(out_file, indent_count)
-		if bone_count > 0:
-			raise Exception('boneCount not accounted for')
-		# {
-		# arxForm.acModel.boneStruct = new arxForm.acBoneStruct[arxForm.acModel.boneCount];
-		# for (int index = 0; index < arxForm.acModel.boneCount; ++index)
-		# {
-		#   arxForm.acModel.boneStruct[index].boneID = string.Format("{0:X8}", (object) fi.read(8)).PadLeft(16, '0');
-		#   arxForm.acModel.boneStruct[index].boneType = string.Format("{0:X4}", (object) fi.read(4)).PadLeft(8, '0');
-		#   arxForm.acModel.boneStruct[index].boneName = string.Format("{0:X4}", (object) fi.read(4)).PadLeft(8, '0');
-		#   arxForm.acModel.boneStruct[index].transMatrix.M11 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M12 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M13 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M14 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M21 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M22 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M23 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M24 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M31 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M32 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M33 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M34 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M41 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M42 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M43 = binaryReader.ReadSingle();
-		#   arxForm.acModel.boneStruct[index].transMatrix.M44 = binaryReader.ReadSingle();
-		#   ++binaryReader.BaseStream.Position;
-		#   arxForm.acModel.boneStruct[index].transMatrix.Invert();
-		# }
-		# }
+			model_file.read_str(1, out_file, indent_count)
 
-		# readStr(model_file, out_file, 41)
+		bone_count = model_file.read_uint_32(out_file, indent_count)
+		self.bones = []
+		for _ in range(bone_count):
+			self.bones.append(py_ubi_forge.read_file.get_data_recursive(model_file, out_file, indent_count))
+
 		self.bounding_box = model_file.read_numpy(numpy.float32, 32, out_file, indent_count).reshape(2, 4)
 		model_file.out_file_write(f'{self.bounding_box}\n', out_file, indent_count)
 
@@ -291,187 +200,46 @@ class Reader(BaseModel, BaseReader):
 					count = model_file.read_uint_32(out_file, indent_count)
 					model_file.read_str(count, out_file, indent_count)
 
-				model_file.read_id(out_file, indent_count)
-				model_file.read_type(out_file, indent_count)
-				model_file.read_str(3, out_file, indent_count)
-				model_file.out_file_write('Mesh Table\n', out_file, indent_count)
-				mesh_count = model_file.read_uint_32(out_file, indent_count)
-				self.meshes = model_file.read_numpy([
-					('file_id', numpy.uint64),
-					('file_type', numpy.uint32),
-					('verts_used', numpy.uint32),
-					('', numpy.uint32),
-					('vert_count', numpy.uint32),
-					('faces_used_x3', numpy.uint32),
-					('face_count', numpy.uint32),
-					('', numpy.uint32)
-				], 36 * mesh_count, out_file, indent_count)
+			model_file.read_id(out_file, indent_count)
+			model_file.read_type(out_file, indent_count)
+			model_file.read_str(3, out_file, indent_count)
+			model_file.out_file_write('Mesh Table\n', out_file, indent_count)
+			mesh_count = model_file.read_uint_32(out_file, indent_count)
+			self.meshes = model_file.read_numpy([
+				('file_id', numpy.uint64),
+				('file_type', numpy.uint32),
+				('verts_used', numpy.uint32),
+				('', numpy.uint32),
+				('vert_count', numpy.uint32),
+				('faces_used_x3', numpy.uint32),
+				('face_count', numpy.uint32),
+				('', numpy.uint32)
+			], 36 * mesh_count, out_file, indent_count)
 
-				model_file.out_file_write(f'{self.meshes}\n', out_file, indent_count)
+			model_file.out_file_write(f'{self.meshes}\n', out_file, indent_count)
 
+			if self.faces is not None:
 				for index, verts_used in enumerate(self.meshes['verts_used']):
 					self.faces[index] += verts_used
 
-				model_file.out_file_write('Shadow Table\n', out_file, indent_count)
-				shadow_count = model_file.read_uint_32(out_file, indent_count)
-				shadow_table = model_file.read_numpy([
-					('file_id', numpy.uint64),
-					('file_type', numpy.uint32),
-					('X', numpy.uint32),
-					('', numpy.uint32),
-					('Y', numpy.uint32),
-					('Z', numpy.uint32),
-					('W', numpy.uint32),
-					('', numpy.uint32),
-				], 36 * shadow_count, out_file, indent_count)
+			model_file.out_file_write('Shadow Table\n', out_file, indent_count)
+			shadow_count = model_file.read_uint_32(out_file, indent_count)
+			shadow_table = model_file.read_numpy([
+				('file_id', numpy.uint64),
+				('file_type', numpy.uint32),
+				('X', numpy.uint32),
+				('', numpy.uint32),
+				('Y', numpy.uint32),
+				('Z', numpy.uint32),
+				('W', numpy.uint32),
+				('', numpy.uint32),
+			], 36 * shadow_count, out_file, indent_count)
 
-				model_file.out_file_write(f'{shadow_table}\n', out_file, indent_count)
+			model_file.out_file_write(f'{shadow_table}\n', out_file, indent_count)
 
-				for index in range(2):
-					count = model_file.read_uint_32(out_file, indent_count)
-					model_file.read_str(count, out_file, indent_count+1)
-
-			elif self.type_switch == b'\x03':
-				raise Exception('typeSwitch 3 not implimented')
-				# binaryReader.BaseStream.Position += 11L;
-				# arxForm.acModel.vertTableSize = (int) binaryReader.ReadByte();
-				# arxForm.acModel.meshCount = fi.read(4);
-				# arxForm.acModel.meshData = new arxForm.acMeshStruct[arxForm.acModel.meshCount];
-				# for (int index = 0; index < arxForm.acModel.meshCount; ++index)
-				# {
-				# 	binaryReader.BaseStream.Position += 12L;
-				# 	arxForm.acModel.meshData[index].meshTable.X = (float) fi.read(4);
-				# 	binaryReader.BaseStream.Position += 4L;
-				# 	arxForm.acModel.meshData[index].meshTable.Y = (float) fi.read(4);
-				# 	arxForm.acModel.meshData[index].meshTable.Z = (float) fi.read(4);
-				# 	arxForm.acModel.meshData[index].meshTable.W = (float) fi.read(4);
-				# 	binaryReader.BaseStream.Position += 4L;
-				# }
-				# arxForm.acModel.shadowCount = fi.read(4);
-				# arxForm.acModel.shadowData = new arxForm.acMeshStruct[arxForm.acModel.shadowCount];
-				# for (int index = 0; index < arxForm.acModel.shadowCount; ++index)
-				# {
-				# 	binaryReader.BaseStream.Position += 12L;
-				# 	arxForm.acModel.shadowData[index].meshTable.X = (float) fi.read(4);
-				# 	binaryReader.BaseStream.Position += 4L;
-				# 	arxForm.acModel.shadowData[index].meshTable.Y = (float) fi.read(4);
-				# 	arxForm.acModel.shadowData[index].meshTable.Z = (float) fi.read(4);
-				# 	arxForm.acModel.shadowData[index].meshTable.W = (float) fi.read(4);
-				# 	binaryReader.BaseStream.Position += 4L;
-				# }
-				# int num8 = fi.read(4);
-				# arxForm.acModel.vertCount = num8 / arxForm.acModel.vertTableSize;
-				# arxForm.acModel.vertData = new arxForm.acVertStruct[arxForm.acModel.vertCount];
-				# for (int index = 0; index < arxForm.acModel.vertCount; ++index)
-				# {
-				# switch (arxForm.acModel.vertTableSize)
-				# 	{
-				# 	case 20:
-				# 		arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-				# 		short num4 = fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.X /= (float) num4;
-				# 		arxForm.acModel.vertData[index].vertex.Y /= (float) num4;
-				# 		arxForm.acModel.vertData[index].vertex.Z /= (float) num4;
-				# 		arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-				# 		binaryReader.BaseStream.Position += 2L;
-				# 		arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-				# 		break;
-				# 	case 32:
-				# 		arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-				# 		short num5 = fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.X /= (float) num5;
-				# 		arxForm.acModel.vertData[index].vertex.Y /= (float) num5;
-				# 		arxForm.acModel.vertData[index].vertex.Z /= (float) num5;
-				# 		arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-				# 		binaryReader.BaseStream.Position += 6L;
-				# 		arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
-				# 		break;
-				# 	case 40:
-				# 		arxForm.acModel.vertData[index].vertex.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.Z = (float) fi.read(2);
-				# 		short num6 = fi.read(2);
-				# 		arxForm.acModel.vertData[index].vertex.X /= (float) num6;
-				# 		arxForm.acModel.vertData[index].vertex.Y /= (float) num6;
-				# 		arxForm.acModel.vertData[index].vertex.Z /= (float) num6;
-				# 		arxForm.acModel.vertData[index].normals.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].normals.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].normals.Z = (float) fi.read(2);
-				# 		binaryReader.BaseStream.Position += 6L;
-				# 		arxForm.acModel.vertData[index].tVert.X = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].tVert.Y = (float) fi.read(2);
-				# 		arxForm.acModel.vertData[index].boneNum.X = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum.Y = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum.Z = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum.W = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum2.X = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum2.Y = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum2.Z = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneNum2.W = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.X = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.Y = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.Z = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt.W = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt2.X = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt2.Y = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt2.Z = (float) binaryReader.ReadByte();
-				# 		arxForm.acModel.vertData[index].boneWgt2.W = (float) binaryReader.ReadByte();
-				# 		break;
-				# 	default:
-				# 		int num7 = (int) MessageBox.Show("Not yet implemented!\n\nvertTableSize = " + (object) arxForm.acModel.vertTableSize, "Vert Read", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				# 		return;
-				# 	}
-				# }
-				# int num9 = fi.read(4);
-				# string str3 = str1;
-				# if (!(str3 == "HDMDL"))
-				# {
-				# 	if (str3 == "MDL")
-				# 	arxForm.acModel.faceCount = num9 / 6;
-				# }
-				# else
-				# 	arxForm.acModel.faceCount = num9 / 12;
-				# arxForm.acModel.faceData = new arxForm.acFaceStruct[arxForm.acModel.faceCount];
-				# for (int index = 0; index < arxForm.acModel.faceCount; ++index)
-				# {
-				# 	string str4 = str1;
-				# 	if (!(str4 == "HDMDL"))
-				# 	{
-				# 	if (str4 == "MDL")
-				# 	{
-				# 		arxForm.acModel.faceData[index].faceIndex.Y = (float) binaryReader.ReadUInt16();
-				# 		arxForm.acModel.faceData[index].faceIndex.X = (float) binaryReader.ReadUInt16();
-				# 		arxForm.acModel.faceData[index].faceIndex.Z = (float) binaryReader.ReadUInt16();
-				# 	}
-				# 	}
-				# 	else
-				# 	{
-				# 	arxForm.acModel.faceData[index].faceIndex.Y = (float) binaryReader.ReadUInt32();
-				# 	arxForm.acModel.faceData[index].faceIndex.X = (float) binaryReader.ReadUInt32();
-				# 	arxForm.acModel.faceData[index].faceIndex.Z = (float) binaryReader.ReadUInt32();
-				# 	}
-				# }
-				# break;
-			else:
-				raise Exception("New switchType found")
+			for index in range(2):
+				count = model_file.read_uint_32(out_file, indent_count)
+				model_file.read_str(count, out_file, indent_count+1)
 
 			model_file.out_file_write('Skin Data Table\n', out_file, indent_count)
 			skin_count = model_file.read_uint_32(out_file, indent_count)
