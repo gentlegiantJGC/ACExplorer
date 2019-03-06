@@ -44,6 +44,7 @@ class FileReaderHandler:
 		:return: objects defined in the plugins
 		"""
 
+		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 		file_object_data_wrapper.read_id(out_file, indent_count)
 		file_type = file_object_data_wrapper.read_type(out_file, indent_count)
 		if file_type in self.readers:
