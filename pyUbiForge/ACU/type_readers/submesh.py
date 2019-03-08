@@ -7,10 +7,9 @@ class Reader(BaseReader):
 
 	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
 		file_object_data_wrapper.read_uint_32(out_file, indent_count)  # should always be equal to 0
-		for n in (4, 4, 4, 1, 12, 12, 12, 12, 4):
+		for n in (4, 4, 4, 1, 12, 12, 12, 12, 4, 4):
 			count = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 			file_object_data_wrapper.read_str(count * n, out_file, indent_count+1)
-		file_object_data_wrapper.read_uint_32(out_file, indent_count)  # might not equal 0
 		file_object_data_wrapper.read_str(1, out_file, indent_count)
 		for n in (4, 2, 2):
 			count = file_object_data_wrapper.read_uint_32(out_file, indent_count)
