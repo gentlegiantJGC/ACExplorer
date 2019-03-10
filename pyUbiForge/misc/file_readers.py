@@ -2,6 +2,7 @@ import pkgutil
 import importlib
 from typing import Union, TextIO
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
+import time
 
 
 class BaseReader:
@@ -13,6 +14,8 @@ class FileReaderHandler:
 		self.pyUbiForge = py_ubi_forge
 		self.game_identifier = None
 		self.readers = {}
+		self._time = 0
+		self._wait = True
 
 	def __call__(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO] = None, indent_count: int = 0):
 		"""
@@ -24,6 +27,9 @@ class FileReaderHandler:
 		:return: objects defined in the plugins
 		"""
 		self._load_readers()
+		while self._wait:
+			time.sleep(0.1)
+		self._time = time.time()
 		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
 			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
 		file_object_data_wrapper.read_str(self.pyUbiForge.game_functions.pre_header_length, out_file, indent_count)
@@ -54,7 +60,9 @@ class FileReaderHandler:
 
 	def _load_readers(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG.get('dev', False):
+		if (self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG.get('dev', False)) and time.time() > self._time + 10:
+			self._time = time.time()
+			self._wait = True
 			self.game_identifier = self.pyUbiForge.game_identifier
 			self.readers = {}
 			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/type_readers']):
@@ -81,3 +89,4 @@ class FileReaderHandler:
 					continue
 				else:
 					self.readers[file_type] = reader
+			self._wait = False
