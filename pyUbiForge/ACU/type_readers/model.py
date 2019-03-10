@@ -1,12 +1,13 @@
 from pyUbiForge.misc.mesh import BaseModel
 from pyUbiForge.misc.file_readers import BaseReader
+from pyUbiForge.misc.file_object import FileObjectDataWrapper
 import numpy
 
 
 class Reader(BaseModel, BaseReader):
 	file_type = '415D9568'
 
-	def __init__(self, py_ubi_forge, model_file, out_file, indent_count):
+	def __init__(self, py_ubi_forge, model_file: FileObjectDataWrapper, out_file, indent_count):
 		BaseModel.__init__(self)
 
 		model_file.out_file_write('\n', out_file, indent_count)
@@ -15,7 +16,10 @@ class Reader(BaseModel, BaseReader):
 		model_file.read_str(1, out_file, indent_count)
 		a_count = model_file.read_uint_32(out_file, indent_count)
 		for a in range(a_count*2):
-			model_file.read_str(2, out_file, indent_count)
+			check = model_file.read_uint_8(out_file, indent_count)
+			while check == 3:
+				check = model_file.read_uint_8(out_file, indent_count)
+			model_file.read_str(1, out_file, indent_count)
 			py_ubi_forge.read_file.get_data_recursive(model_file, out_file, indent_count)
 		if a_count > 0:
 			model_file.read_str(1, out_file, indent_count)
