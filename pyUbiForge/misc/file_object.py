@@ -6,8 +6,8 @@ from typing import Union, IO, AnyStr
 
 class FileObject:
 	def __init__(self, path: str = None, mode: str = 'w', data: AnyStr = ''):
-		self.path = None
-		self.mode = None
+		self.path = path
+		self.mode = mode
 		self._data = data
 		if path is not None:
 			if 'r' in mode:
