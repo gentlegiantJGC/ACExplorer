@@ -22,7 +22,7 @@ class Reader(BaseReader):
 		# while ending0 == '03':
 		# ending0 = file_object_data_wrapper.read_str(1, out_file, indent_count)
 		py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
-		ending0 = file_object_data_wrapper.read_str(1, out_file, indent_count)
+		file_object_data_wrapper.read_str(1, out_file, indent_count)
 
 		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 
