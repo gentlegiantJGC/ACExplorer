@@ -242,7 +242,7 @@ class TempFilesContainer:
 	def __init__(self, py_ubi_forge):
 		self.pyUbiForge = py_ubi_forge
 		# dictionary to look up which dataFile a fileID is contained in (if it itself is not the main file in the dataFile)
-		self._light_dictionary = LightDictionary(py_ubi_forge)
+		self.light_dictionary = LightDictionary(py_ubi_forge)
 		# the amount of memory self.rawFiles takes (used to remove files)
 		self._memory = 0
 		# a dictionary of every file currently loaded into memory
@@ -251,11 +251,11 @@ class TempFilesContainer:
 
 	@property
 	def light_dict_changed(self) -> bool:
-		return self._light_dictionary.changed
+		return self.light_dictionary.changed
 
 	@property
 	def list_light_dictionary(self) -> list:
-		return self._light_dictionary.list
+		return self.light_dictionary.list
 
 	def add(self, file_id: int, forge_file_name: str, datafile_id: int, file_type: int, file_name: str, raw_file: bytes = None):
 		"""
@@ -279,7 +279,7 @@ class TempFilesContainer:
 			del self._temp_files[remove_entry]
 
 		if file_id != datafile_id:
-			self._light_dictionary.add(file_id, forge_file_name, datafile_id)
+			self.light_dictionary.add(file_id, forge_file_name, datafile_id)
 
 	def __call__(self, file_id: int, forge_file_name: str = None, datafile_id: int = None) -> Union[None, TempFile]:
 		"""Tries to find the file matching the description and return a TempFile class containing the data.
@@ -305,12 +305,12 @@ class TempFilesContainer:
 				if forge_file_name in self.pyUbiForge.forge_files and file_id in self.pyUbiForge.forge_files[forge_file_name].datafiles:
 					datafile_id = file_id
 				else:
-					forge_file_name, datafile_id = self._light_dictionary.get(file_id, forge_file_name)
+					forge_file_name, datafile_id = self.light_dictionary.get(file_id, forge_file_name)
 
 		if forge_file_name is None:
 			forge_file_name = next((fF for fF in self.pyUbiForge.forge_files.keys() if file_id in self.pyUbiForge.forge_files[fF].datafiles), None)
 			if forge_file_name is None:
-				forge_file_name, datafile_id = self._light_dictionary.get(file_id)
+				forge_file_name, datafile_id = self.light_dictionary.get(file_id)
 				if datafile_id is None:
 					return
 			else:
@@ -336,9 +336,9 @@ class TempFilesContainer:
 		"""Resets the TempFilesContainer class back to its starting state.
 		Used when opening loading a new game.
 		"""
-		if self._light_dictionary.changed:
+		if self.light_dictionary.changed:
 			self.save()
-		self._light_dictionary.clear()
+		self.light_dictionary.clear()
 		self._memory = 0
 		self._temp_files.clear()
 		self._last_used.clear()
@@ -350,7 +350,7 @@ class TempFilesContainer:
 		self._last_used.append(file_id)
 
 	def save(self):
-		self._light_dictionary.save()
+		self.light_dictionary.save()
 
 	def load(self):
-		self._light_dictionary.load()
+		self.light_dictionary.load()
