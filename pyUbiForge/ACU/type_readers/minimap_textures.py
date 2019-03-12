@@ -7,8 +7,8 @@ class Reader(BaseReader):
 
 	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
 		count1 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
+		self.width = self.height = int(count1**0.5)
+		self.image_ids = []
 		for n in range(count1):
 			file_object_data_wrapper.read_str(1, out_file, indent_count + 1)
-			fileID2 = file_object_data_wrapper.read_id(out_file, indent_count + 1)
-			py_ubi_forge.game_functions.read_file(py_ubi_forge, fileID2)
-			py_ubi_forge.log.info(__name__, f'{n} of {count1}')
+			self.image_ids.append(file_object_data_wrapper.read_id(out_file, indent_count + 1))
