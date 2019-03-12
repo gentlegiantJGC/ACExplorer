@@ -35,18 +35,19 @@ class BaseTexture:
 		self.dwCaps4 = b'\x00\x00\x00\x00'
 		self.dwReserved2 = b'\x00\x00\x00\x00'
 
+	@property
+	def dds_string(self):
+		return b'DDS ' + self.dwSize + self.dwFlags + self.dwHeight + self.dwWidth + self.dwPitchOrLinearSize +\
+			self.dwDepth + self.dwMipMapCount + self.dwReserved + self.ddspf + self.dwCaps + self.dwCaps2 + \
+			self.dwCaps3 + self.dwCaps4 + self.dwReserved2 + self.DXT10Header + self.buffer
+
 	def export_dds(self, path):
 		fi = open(path, 'wb')
-		fi.write(b'DDS ')
-		fi.write(self.dwSize + self.dwFlags + self.dwHeight + self.dwWidth +
-				 self.dwPitchOrLinearSize + self.dwDepth + self.dwMipMapCount +
-				 self.dwReserved + self.ddspf + self.dwCaps + self.dwCaps2 +
-				 self.dwCaps3 + self.dwCaps4 + self.dwReserved2 + self.DXT10Header)
-		fi.write(self.buffer)
+		fi.write(self.dds_string)
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = f'".\\resources\\texconv.exe" -fl 9.1 -y -px {self.pyUbiForge.CONFIG.get("dumpFolder", "output")}{os.sep} -f BC3_UNORM {path}'
+			texconv = f'".\\resources\\texconv.exe" -nologo -fl 9.1 -y -px {self.pyUbiForge.CONFIG.get("dumpFolder", "output")}{os.sep} -f BC3_UNORM {path}'
 			os.system(texconv)
 
 
