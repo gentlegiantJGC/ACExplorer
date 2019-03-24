@@ -1,7 +1,6 @@
 import pkgutil
 import importlib
 from typing import Tuple, List, Union, Any
-import copy
 
 
 class BasePlugin:
@@ -29,23 +28,11 @@ class PluginHandler:
 	>>>		plugin_level = 4            # see plugin_level below
 	>>>		file_type = '00000000'      # big endian hex representation of the file type (only needed if plugin_level == 4)
 	>>>
-	>>>		def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list):
+	>>>		def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
 	>>>			# the method that is called to run the plugin
-	>>>			if options is None:
-	>>>				# if the script requires inputs then populate options with the default options
-	>>>             self.script_options = __script_options__
-	>>>			elif options == []:  # This is the normal first input
-	>>>				# if the script requires options then return the specification for the first screen
-	>>>             return __new_screen_options__, None
-	>>>             # the first return value must be the next screen or None if there are no more screens.
-	>>>             # The second is the normal return value which can be whatever you want
-	>>>         # options will be a list containing a dictionary for each of the screens completed.
-	>>>         # Do what you need to and return a new screen for any new data the script needs
-	>>>         # When you no longer need any more inputs run the actual script
-	>>>         # Finally return the below. Make sure the first value is None otherwise it will get stuck in an infinate loop. __return_value__ can be None
-	>>>         return None, __return_value__
-
-
+	>>>
+	>>>     def options(self, options: Union[List[dict], None]):
+	>>>         # return data in the specified format which the wrapper program can show in the UI
 
 	plugin_level = integer 1, 2, 3 or 4  # this is the level in the file tree this plugin applies to.
 		1 - the top entry
@@ -54,6 +41,47 @@ class PluginHandler:
 		4 - the specific file in the datafile and the parent datafile with the same id
 			if plugin_level == 4 then the big endian hex string representation of the file type must be given
 			file_type = '415D9568'
+
+	Options: The options function should return a dictionary for the next screen in the following format.
+	If there are no more screens to display (or none at all) return None
+		{
+			"<Option Name>": {
+				{
+					"type": "select",
+					"options": [
+						"<option 1>",
+						"<option 2>",
+						...
+					]
+				}
+			},
+			"<Option Name>": {
+				{
+					"type": "str_entry",
+					"default": "<default_entry>"
+				}
+			},
+			"<Option Name>": {
+				{
+					"type": "int_entry",
+					"default": 0
+				}
+			},
+			"<Option Name>": {
+				{
+					"type": "dir_select"
+				}
+			},
+			"<Option Name>": {
+				{
+					"type": "file_select"
+				}
+			}
+		}
+
+	The value of options given to the options function will be a list of all the options given in the previous screens.
+	For run it will be the result of all the screens.
+	(Note the format does allow for a variable number of screens and varying screens based on previous inputs. This is intended)
 	"""
 	def __init__(self, py_ubi_forge):
 		self._pyUbiForge = py_ubi_forge
