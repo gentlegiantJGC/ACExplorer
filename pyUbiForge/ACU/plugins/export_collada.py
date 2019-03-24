@@ -1,5 +1,6 @@
 from pyUbiForge.misc import mesh
 from pyUbiForge.misc.plugins import BasePlugin
+from typing import Union
 
 
 class Plugin(BasePlugin):
@@ -7,7 +8,7 @@ class Plugin(BasePlugin):
 	plugin_level = 4
 	file_type = '415D9568'
 
-	def run(self, py_ubi_forge, file_id, forge_file_name, datafile_id, options):
+	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
 		# TODO add select directory option
 		save_folder = py_ubi_forge.CONFIG.get('dumpFolder', 'output')
 

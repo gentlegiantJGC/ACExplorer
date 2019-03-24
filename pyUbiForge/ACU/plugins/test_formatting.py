@@ -1,5 +1,6 @@
 from pyUbiForge.misc.plugins import BasePlugin
 import os
+from typing import Union
 
 
 class Plugin(BasePlugin):
@@ -7,7 +8,7 @@ class Plugin(BasePlugin):
 	plugin_level = 3
 	dev = True
 
-	def run(self, py_ubi_forge, file_id, forge_file_name, datafile_id, options):
+	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
 		for file_id in py_ubi_forge.forge_files[forge_file_name].datafiles[datafile_id].files.keys():
 			data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
 			if data is None:
