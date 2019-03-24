@@ -1,6 +1,6 @@
 import pkgutil
 import importlib
-from typing import Tuple, Union, Any
+from typing import Tuple, List, Union, Any
 
 
 class BasePlugin:
@@ -10,6 +10,9 @@ class BasePlugin:
 	dev = False
 
 	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list):
+		raise NotImplemented
+
+	def options(self, options: Union[List[dict], None]):
 		pass
 
 
