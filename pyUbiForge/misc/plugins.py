@@ -125,7 +125,7 @@ class PluginHandler:
 					list(self._plugins[4].get(file_type, {}).keys()) + list(self._plugins[4]['*'].keys())
 				)), file_id
 
-	def run(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None, options: list = None) -> Tuple[Union[None, dict], Any]:
+	def run(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None, options: list = None) -> Any:
 		"""
 		Returns a list of all the modules valid for the inputs.
 		:param plugin_name: The name of the plugin used as a UUID
@@ -140,13 +140,6 @@ class PluginHandler:
 		plugin = self._get_plugin(plugin_name)
 
 		return plugin.run(self._pyUbiForge, file_id, forge_file_name, datafile_id, options)
-		# the plugin should return a tuple with the first argument being the specification for the next screen (or None if not applicable)
-		# and the second being any optional return data. If only one thing is returned it will be assumed this is the output data
-		# (eg the implied `return None` at the end of any function)
-		# if isinstance(output, tuple) and len(output) == 2:
-		# 	return output
-		# else:
-		# 	return None, output
 
 	def get_screen_options(self, plugin_name: str, options):
 		return self._get_plugin(plugin_name).options(options)
