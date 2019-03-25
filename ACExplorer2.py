@@ -4,7 +4,7 @@
 """
 
 import pyUbiForge
-from typing import Union
+from typing import Union, Dict
 from PySide2 import QtCore, QtGui, QtWidgets
 import time
 
@@ -36,8 +36,7 @@ class App(QtWidgets.QApplication):
 		# drop down box to select the game
 		self.game_select = QtWidgets.QComboBox(self.central_widget)
 		self.game_select.setObjectName("game_select")
-		for game_identifier in self.pyUbiForge.game_identifiers:
-			self.game_select.addItem(game_identifier)
+		self.game_select.addItems(self.pyUbiForge.game_identifiers)
 		self.horizontal_layout.addWidget(self.game_select)
 
 		# search box
@@ -274,6 +273,82 @@ class ContextMenu(QtWidgets.QMenu):
 		while options is not None:
 			options, output = self.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id, options)
 			# TODO: show options screen, wait for response from option screen
+
+	def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
+		if event.button() == QtCore.Qt.RightButton:
+			entry = self.actionAt(event.pos())
+			if entry is not None:
+				plugin_name = entry.text()
+				options = []
+				escape = False
+				new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
+				while new_screen is not None and not escape:
+					# show screen
+					screen = PluginOptionsScreen(plugin_name, new_screen)
+					escape = screen.escape
+					if not escape:
+						# pull options from screen
+						options.append(screen.options)
+						new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
+		elif event.button() == QtCore.Qt.LeftButton:
+			QtWidgets.QMenu.mousePressEvent(self, event)
+
+
+class PluginOptionsScreen(QtWidgets.QDialog):
+	def __init__(self, plugin_name: str, screen: Dict[str, dict]):
+		QtWidgets.QDialog.__init__(self)
+		self.setModal(True)
+		self._screen = screen
+		self._options = {}
+		self._escape = False
+		self.setWindowTitle(plugin_name)
+		self.setWindowIcon(QtGui.QIcon('icon.ico'))
+
+		self._vertical_layout = QtWidgets.QVBoxLayout(self)
+		self._vertical_layout.setObjectName("verticalLayout")
+		self.setLayout(self._vertical_layout)
+
+		self._horizontal_layouts = []
+
+		for option_name, option in screen.items():
+			option_type = option.get('type', None)
+			self._horizontal_layouts.append(QtWidgets.QHBoxLayout())
+			self._vertical_layout.addLayout(self._horizontal_layouts[-1])
+			if option_type == 'select':
+				selection = option.get('options', [])
+				self._options[option_name] = QtWidgets.QComboBox()
+				self._options[option_name].addItems(selection)
+				self._horizontal_layouts[-1].addWidget(self._options[option_name])
+
+		self._horizontal_layouts.append(QtWidgets.QHBoxLayout())
+		self._vertical_layout.addLayout(self._horizontal_layouts[-1])
+		self._vertical_layout.addLayout(self._horizontal_layouts[-1])
+
+		self._okay_button = QtWidgets.QPushButton('OK')
+		self._okay_button.clicked.connect(lambda: self.done(1))
+		self._cancel_button = QtWidgets.QPushButton('Cancel')
+		self._cancel_button.clicked.connect(self.reject)
+		self._horizontal_layouts[-1].addWidget(self._okay_button)
+		self._horizontal_layouts[-1].addWidget(self._cancel_button)
+
+		self.show()
+		self.exec_()
+
+	def reject(self):
+		self._escape = True
+		QtWidgets.QDialog.reject(self)
+
+	@property
+	def options(self) -> Dict[str, Union[str, int, float]]:
+		options = {}
+		for option_name, var in self._options:
+			if isinstance(var, QtWidgets.QComboBox):
+				options[option_name] = self._screen[option_name]['options'][var.currentIndex()]
+		return options
+
+	@property
+	def escape(self) -> bool:
+		return self._escape
 
 
 if __name__ == "__main__":
