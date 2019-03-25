@@ -148,10 +148,10 @@ class PluginHandler:
 		# else:
 		# 	return None, output
 
-	def options(self, plugin_name: str, options):
-		return
+	def get_screen_options(self, plugin_name: str, options):
+		return self._get_plugin(plugin_name).options(options)
 
-	def _get_plugin(self, plugin_name: str):
+	def _get_plugin(self, plugin_name: str) -> BasePlugin:
 		plugin = self._plugin_names.get(plugin_name, None)
 		if plugin is None:
 			self._pyUbiForge.log.warn(__name__, f'Could not find plugin "{plugin_name}"')
