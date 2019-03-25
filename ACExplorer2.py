@@ -4,7 +4,7 @@
 """
 
 import pyUbiForge
-from typing import Union, Dict
+from typing import Union, Dict, List, Tuple
 from PySide2 import QtCore, QtGui, QtWidgets
 import time
 
@@ -120,10 +120,10 @@ class TreeView(QtWidgets.QTreeWidget):
 	"""This is the file tree used in the main application.
 	Wraps QTreeWidget and adds search functionality and a context menu
 	"""
-	def __init__(self, py_ubi_forge, parent):
+	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, parent):
 		QtWidgets.QTreeWidget.__init__(self, parent)
 		self.pyUbiForge = py_ubi_forge
-		self._entries = {}
+		self._entries: Dict[Tuple[Union[None, str], Union[None, int], Union[None, int]], TreeViewEntry] = {}
 		self._game_identifier = None
 		self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		self.customContextMenuRequested.connect(self.open_context_menu)
@@ -184,7 +184,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 	"""Individual entries in the file tree.
 	Wraps QTreeWidgetItem and saves more data related to each entry
 	"""
-	def __init__(self, py_ubi_forge, tree_view, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None):
+	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None):
 		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
 		self.pyUbiForge = py_ubi_forge
 		self._entry_name = entry_name
@@ -195,30 +195,30 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 		self._depth = None
 
 	@property
-	def entry_name(self):
+	def entry_name(self) -> str:
 		return self._entry_name
 
 	@property
-	def forge_file_name(self):
+	def forge_file_name(self) -> Union[str, None]:
 		return self._forge_file_name
 
 	@property
-	def datafile_id(self):
+	def datafile_id(self) -> Union[int, None]:
 		return self._datafile_id
 
 	@property
-	def file_id(self):
+	def file_id(self) -> Union[int, None]:
 		return self._file_id
 
 	@property
-	def dev_search(self):
+	def dev_search(self) -> List[str]:
 		if self._dev_search is None:
 			self._dev_search = [f'{attr:016X}' for attr in [self.datafile_id, self.file_id] if attr is not None]
 			self._dev_search += [''.join(attr[n:n + 2] for n in reversed(range(0, 16, 2))) for attr in self._dev_search]
 		return self._dev_search
 
 	@property
-	def depth(self):
+	def depth(self) -> int:
 		if self._depth is None:
 			if self.forge_file_name is not None:
 				if self.datafile_id is not None:
@@ -254,10 +254,10 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 
 class ContextMenu(QtWidgets.QMenu):
 	"""Context menu for use upon right click of an item in the file tree to access the plugin system."""
-	def __init__(self, py_ubi_forge, plugin_names, file_id, forge_file_name, datafile_id):
+	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
 		QtWidgets.QMenu.__init__(self)
 		self.pyUbiForge = py_ubi_forge
-		for plugin_name in plugin_names:
+		for plugin_name in sorted(plugin_names):
 			self.add_command(plugin_name, file_id, forge_file_name, datafile_id)
 
 	def add_command(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
@@ -289,6 +289,8 @@ class ContextMenu(QtWidgets.QMenu):
 						new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
 				if not escape:
 					entry.trigger()
+			else:
+				QtWidgets.QMenu.mousePressEvent(self, event)
 		elif event.button() == QtCore.Qt.LeftButton:
 			QtWidgets.QMenu.mousePressEvent(self, event)
 

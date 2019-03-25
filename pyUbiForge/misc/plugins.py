@@ -1,6 +1,6 @@
 import pkgutil
 import importlib
-from typing import Tuple, List, Union, Any
+from typing import Tuple, List, Dict, Union, Any
 
 
 class BasePlugin:
@@ -12,7 +12,7 @@ class BasePlugin:
 	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
 		raise NotImplemented
 
-	def options(self, options: Union[List[dict], None]):
+	def options(self, options: Union[List[dict], None]) -> Union[Dict[str, dict], None]:
 		return
 
 
@@ -94,7 +94,7 @@ class PluginHandler:
 		}
 		"""
 
-	def query(self, plugin_level: int, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None) -> Tuple[list, Union[str, int]]:
+	def query(self, plugin_level: int, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None) -> Tuple[List[str], Union[str, int]]:
 		"""
 		Look up which plugins are relevant to the given entry and return their names in a list.
 		Each plugin has a unique name which is used as the unique identifier. Give this name to the get function with the file information to run the plugin
@@ -141,7 +141,7 @@ class PluginHandler:
 
 		return plugin.run(self._pyUbiForge, file_id, forge_file_name, datafile_id, options)
 
-	def get_screen_options(self, plugin_name: str, options):
+	def get_screen_options(self, plugin_name: str, options) -> Union[Dict[str, dict], None]:
 		return self._get_plugin(plugin_name).options(options)
 
 	def _get_plugin(self, plugin_name: str) -> BasePlugin:

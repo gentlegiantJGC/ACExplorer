@@ -1,6 +1,6 @@
 from pyUbiForge.misc import mesh
 from pyUbiForge.misc.plugins import BasePlugin
-from typing import Union, List
+from typing import Union, List, Dict
 
 
 class Plugin(BasePlugin):
@@ -45,7 +45,7 @@ class Plugin(BasePlugin):
 			obj_handler.save_and_close()
 			py_ubi_forge.log.info(__name__, f'Exported {file_id:016X}')
 
-	def options(self, options: Union[List[dict], None]):
+	def options(self, options: Union[List[dict], None]) -> Union[Dict[str, dict], None]:
 		if options is None or (isinstance(options, list) and len(options) == 0):
 			return {
 				"Export Method": {
