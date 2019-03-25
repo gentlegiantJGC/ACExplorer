@@ -257,15 +257,23 @@ class ContextMenu(QtWidgets.QMenu):
 	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
 		QtWidgets.QMenu.__init__(self)
 		self.pyUbiForge = py_ubi_forge
+		self._right_click_icon = QtGui.QIcon('resources/icons/right_click.ico')
 		for plugin_name in sorted(plugin_names):
 			self.add_command(plugin_name, file_id, forge_file_name, datafile_id)
 
 	def add_command(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
 		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
-		self.addAction(
-			plugin_name,
-			lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
-		)
+		if self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, []) is None:
+			self.addAction(
+				plugin_name,
+				lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
+			)
+		else:
+			self.addAction(
+				self._right_click_icon,
+				plugin_name,
+				lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
+			)
 
 	def run_plugin(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None) -> None:
 		"""Method to run and handle plugin options."""
