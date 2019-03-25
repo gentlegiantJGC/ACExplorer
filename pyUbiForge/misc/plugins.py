@@ -46,36 +46,26 @@ class PluginHandler:
 	If there are no more screens to display (or none at all) return None
 		{
 			"<Option Name>": {
-				{
-					"type": "select",
-					"options": [
-						"<option 1>",
-						"<option 2>",
-						...
-					]
-				}
+				"type": "select",
+				"options": [
+					"<option 1>",
+					"<option 2>",
+					...
+				]
 			},
 			"<Option Name>": {
-				{
-					"type": "str_entry",
-					"default": "<default_entry>"
-				}
+				"type": "str_entry",
+				"default": "<default_entry>"
 			},
 			"<Option Name>": {
-				{
-					"type": "int_entry",
-					"default": 0
-				}
+				"type": "int_entry",
+				"default": 0
 			},
 			"<Option Name>": {
-				{
-					"type": "dir_select"
-				}
+				"type": "dir_select"
 			},
 			"<Option Name>": {
-				{
-					"type": "file_select"
-				}
+				"type": "file_select"
 			}
 		}
 
