@@ -287,7 +287,8 @@ class ContextMenu(QtWidgets.QMenu):
 						# pull options from screen
 						options.append(screen.options)
 						new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
-				entry.trigger()
+				if not escape:
+					entry.trigger()
 		elif event.button() == QtCore.Qt.LeftButton:
 			QtWidgets.QMenu.mousePressEvent(self, event)
 
