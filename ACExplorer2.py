@@ -269,12 +269,9 @@ class ContextMenu(QtWidgets.QMenu):
 
 	def run_plugin(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None) -> None:
 		"""Method to run and handle plugin options."""
-		options = []
-		while options is not None:
-			options, output = self.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id, options)
-			# TODO: show options screen, wait for response from option screen
+		self.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id)
 
-	def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
+	def mousePressEvent(self, event: QtGui.QMouseEvent):
 		if event.button() == QtCore.Qt.RightButton:
 			entry = self.actionAt(event.pos())
 			if entry is not None:
@@ -290,6 +287,7 @@ class ContextMenu(QtWidgets.QMenu):
 						# pull options from screen
 						options.append(screen.options)
 						new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
+				entry.trigger()
 		elif event.button() == QtCore.Qt.LeftButton:
 			QtWidgets.QMenu.mousePressEvent(self, event)
 
@@ -341,7 +339,7 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 	@property
 	def options(self) -> Dict[str, Union[str, int, float]]:
 		options = {}
-		for option_name, var in self._options:
+		for option_name, var in self._options.items():
 			if isinstance(var, QtWidgets.QComboBox):
 				options[option_name] = self._screen[option_name]['options'][var.currentIndex()]
 		return options
