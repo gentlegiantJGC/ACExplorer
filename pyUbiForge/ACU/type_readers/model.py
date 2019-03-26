@@ -45,16 +45,13 @@ class Reader(BaseModel, BaseReader):
 				model_file.read_str(5, out_file, indent_count)
 				model_file.out_file_write('Vert table width\n', out_file, indent_count)
 				vert_table_width = model_file.read_uint_32(out_file, indent_count)
-				model_file.read_uint_32(out_file, indent_count)
+				mesh_face_block_sum = model_file.read_uint_32(out_file, indent_count) # = sum(mesh_face_blocks)
 				bounding_box2 = model_file.read_numpy(numpy.float32, 24, out_file, indent_count).reshape(2, 3)
-				model_file.out_file_write(f'{bounding_box2}\n', out_file, indent_count)
 				mesh_face_block_count = model_file.read_uint_32(out_file, indent_count)
 				shadow_face_block_count = model_file.read_uint_32(out_file, indent_count)
 				model_file.out_file_write('Mesh Face Blocks\n', out_file, indent_count)
 				mesh_face_blocks = model_file.read_numpy(numpy.uint32, 4*mesh_face_block_count, out_file, indent_count)
-				model_file.out_file_write(f'{mesh_face_blocks}\n', out_file, indent_count)
 				shadow_face_blocks = model_file.read_numpy(numpy.uint32, 4*shadow_face_block_count, out_file, indent_count)
-				model_file.out_file_write(f'{shadow_face_blocks}\n', out_file, indent_count)
 				model_file.read_uint_32(out_file, indent_count)
 				model_file.read_str(1, out_file, indent_count)
 				model_file.out_file_write('\nVert table\n', out_file, indent_count)
@@ -151,16 +148,14 @@ class Reader(BaseModel, BaseReader):
 					py_ubi_forge.log.warn(__name__, f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
 					raise Exception()
 
-				model_file.out_file_write(f'{vert_table}\n', out_file, indent_count)
-
-				self.vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)
+				self._vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)
 				# self.vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
 				# for dim in range(3):
 				# 	self.vertices[:, dim] = numpy.interp(self.vertices[:, dim], (self.vertices[:, dim].min(), self.vertices[:, dim].max()), bounding_box2[:, dim])
-				self.texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
-				self.texture_vertices[:, 1] *= -1
+				self._texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
+				self._texture_vertices[:, 1] *= -1
 				if 'n' in vert_table:
-					self.normals = vert_table['n'].astype(numpy.float)
+					self._normals = vert_table['n'].astype(numpy.float)
 
 				# # scale verticies based on bouding box
 				# model['modelBoundingBox'] = {}
@@ -189,16 +184,15 @@ class Reader(BaseModel, BaseReader):
 
 				model_file.out_file_write('Face table\n', out_file, indent_count)
 				face_table_length = model_file.read_uint_32(out_file, indent_count)
-				face_table = model_file.read_numpy(numpy.uint16, face_table_length, out_file, indent_count).reshape(-1, 3) + 1
-				model_file.out_file_write(f'{face_table}\n', out_file, indent_count)
-				self.faces = numpy.split(face_table, numpy.cumsum(mesh_face_blocks * 64)[:-1])
+				self._faces = model_file.read_numpy(numpy.uint16, face_table_length, out_file, indent_count).reshape(-1, 3)
+				# self._faces = numpy.split(face_table, numpy.cumsum(mesh_face_blocks * 64)[:-1])
 				#
 				#
 				# mesh_face_blocks_x64 = numpy.cumsum(mesh_face_blocks * 64)
 				# mesh_face_blocks_x64[-1] =
 				# mesh_face_blocks[-1] =* 64 * 6 == face_table_length:
-				# 	self.faces = [face_table[64*mesh_face_blocks[index-1]:64*block_count] for index, block_count in enumerate(mesh_face_blocks)]
-				# self.faces = [face_table[:64 * block_count] if index==0 else face_table[64*mesh_face_blocks[index-1]:64*block_count] for index, block_count in enumerate(mesh_face_blocks)]
+				# 	self._faces = [face_table[64*mesh_face_blocks[index-1]:64*block_count] for index, block_count in enumerate(mesh_face_blocks)]
+				# self._faces = [face_table[:64 * block_count] if index==0 else face_table[64*mesh_face_blocks[index-1]:64*block_count] for index, block_count in enumerate(mesh_face_blocks)]
 
 				for _ in range(3):
 					count = model_file.read_uint_32(out_file, indent_count)
@@ -209,7 +203,7 @@ class Reader(BaseModel, BaseReader):
 			model_file.read_str(3, out_file, indent_count)
 			model_file.out_file_write('Mesh Table\n', out_file, indent_count)
 			mesh_count = model_file.read_uint_32(out_file, indent_count)
-			self.meshes = model_file.read_numpy([
+			self._meshes = model_file.read_numpy([
 				('file_id', numpy.uint64),
 				('file_type', numpy.uint32),
 				('verts_used', numpy.uint32),
@@ -220,11 +214,17 @@ class Reader(BaseModel, BaseReader):
 				('', numpy.uint32)
 			], 36 * mesh_count, out_file, indent_count)
 
-			model_file.out_file_write(f'{self.meshes}\n', out_file, indent_count)
+			if self._faces is not None:
 
-			if self.faces is not None:
-				for index, verts_used in enumerate(self.meshes['verts_used']):
-					self.faces[index] += verts_used
+				if mesh_face_block_sum * 64 * 6 == face_table_length:
+					self._faces = numpy.split(self._faces, numpy.cumsum(mesh_face_blocks * 64)[:-1])
+					for index, verts_used in enumerate(self.meshes['verts_used']):
+						self._faces[index] += verts_used
+				else:
+					faces = self._faces
+					self._faces = []
+					for faces_used_x3, face_count, verts_used in zip(self.meshes['faces_used_x3'], self.meshes['face_count'], self.meshes['verts_used']):
+						self._faces.append(faces[int(faces_used_x3/3):int(faces_used_x3/3)+face_count] + verts_used)
 
 			model_file.out_file_write('Shadow Table\n', out_file, indent_count)
 			shadow_count = model_file.read_uint_32(out_file, indent_count)
@@ -270,7 +270,7 @@ class Reader(BaseModel, BaseReader):
 			], 10 * material_count, out_file, indent_count)
 
 			model_file.out_file_write(f'{material_table}\n', out_file, indent_count)
-			self.materials = material_table['file_id']
+			self._materials = material_table['file_id']
 
 			model_file.read_rest(out_file, indent_count)
 

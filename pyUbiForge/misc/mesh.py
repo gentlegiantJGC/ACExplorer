@@ -6,14 +6,41 @@ from pyUbiForge.misc import texture
 
 
 class BaseModel:
-	def __init__(self):
-		self.name = None
-		self.vertices = None
-		self.texture_vertices = None
-		self.normals = None
-		self.faces = None
-		self.meshes = None
-		self.materials = None
+	_name = 'unknown'
+	_vertices = None
+	_texture_vertices = None
+	_normals = None
+	_faces = None
+	_meshes = None
+	_materials = None
+
+	@property
+	def name(self) -> str:
+		return self._name
+
+	@property
+	def vertices(self):
+		return self._vertices
+
+	@property
+	def texture_vertices(self):
+		return self._texture_vertices
+
+	@property
+	def normals(self):
+		return self._normals
+
+	@property
+	def faces(self):
+		return self._faces
+
+	@property
+	def meshes(self):
+		return self._meshes
+
+	@property
+	def materials(self):
+		return self._materials
 
 
 class ObjMtl:
@@ -65,7 +92,7 @@ class ObjMtl:
 		for mesh_index, mesh in enumerate(model.meshes):
 			self._obj.write(f'g {self.group_name(model_name)}\n')
 			self._obj.write(f'usemtl {self.mtl_handler.get(model.materials[mesh_index]).name}\n')
-			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']] + self.vertex_count]))
+			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']] + self.vertex_count + 1]))
 			self._obj.write(f'# {mesh["face_count"]} faces\n\n')
 
 		self.vertex_count += len(model.vertices)
@@ -178,7 +205,6 @@ class Collada:
 			# write models
 			for mesh_index, mesh in enumerate(model.meshes):
 				faces = model.faces[mesh_index][:mesh['face_count']].ravel()
-				faces -= 1
 				new_value_slice, faces = numpy.unique(faces, return_inverse=True)
 				vertices = model.vertices[new_value_slice]
 				texture_vertices = model.texture_vertices[new_value_slice]
