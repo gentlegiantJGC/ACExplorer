@@ -1,6 +1,7 @@
 from pyUbiForge.misc import mesh
 from pyUbiForge.misc.plugins import BasePlugin
 from typing import Union, List, Dict
+from multiprocessing.connection import Client
 
 
 class Plugin(BasePlugin):
@@ -30,7 +31,7 @@ class Plugin(BasePlugin):
 		model_name = data.file_name
 
 		if self._options[0]["Export Method"] == 'Wavefront (.obj)':
-			model = py_ubi_forge.read_file(data.file)
+			model: mesh.BaseModel = py_ubi_forge.read_file(data.file)
 			if model is not None:
 				obj_handler = mesh.ObjMtl(py_ubi_forge, model_name, save_folder)
 				obj_handler.export(model, model_name)
@@ -45,27 +46,45 @@ class Plugin(BasePlugin):
 			obj_handler.save_and_close()
 			py_ubi_forge.log.info(__name__, f'Exported {file_id:016X}')
 
+		elif self._options[0]["Export Method"] == 'Send to Blender (experimental)':
+			model: mesh.BaseModel = py_ubi_forge.read_file(data.file)
+			if model is not None:
+				c = Client(('localhost', 6163))
+				for mesh_index, m in enumerate(model.meshes):
+					c.send({
+						'type': 'MESH',
+						'verts': tuple(tuple(vert) for vert in model.vertices),
+						'faces': tuple(tuple(face) for face in model.faces[mesh_index][:m['face_count']])
+					})
+
 	def options(self, options: Union[List[dict], None]) -> Union[Dict[str, dict], None]:
 		if options is None or (isinstance(options, list) and len(options) == 0):
+			formats = [
+				'Wavefront (.obj)',
+				'Collada (.dae)',
+				'Send to Blender (experimental)'
+			]
+			formats.remove(self._options[0]["Export Method"])
+			formats.insert(0, self._options[0]["Export Method"])
 			return {
 				"Export Method": {
 					"type": "select",
-					"options": [
-						'Wavefront (.obj)',
-						'Collada (.dae)'
-					]
+					"options": formats
 				}
 			}
 		elif isinstance(options, list):
 			if len(options) == 1:
-				return {
-					"Texture Type": {
-						"type": "select",
-						"options": [
-							'DirectDraw Surface (.dds)'
-						]
+				if options[0]["Export Method"] in ('Wavefront (.obj)', 'Collada (.dae)'):
+					return {
+						"Texture Type": {
+							"type": "select",
+							"options": [
+								'DirectDraw Surface (.dds)'
+							]
+						}
 					}
-				}
+				else:
+					self._options = options
 
 			elif len(options) == 2:
 				self._options = options
