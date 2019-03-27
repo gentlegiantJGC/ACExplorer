@@ -309,6 +309,7 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 		self.setModal(True)
 		self._screen = screen
 		self._options = {}
+		self._labels = []
 		self._escape = False
 		self.setWindowTitle(plugin_name)
 		self.setWindowIcon(QtGui.QIcon('icon.ico'))
@@ -323,10 +324,50 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 			option_type = option.get('type', None)
 			self._horizontal_layouts.append(QtWidgets.QHBoxLayout())
 			self._vertical_layout.addLayout(self._horizontal_layouts[-1])
+			self._labels.append(QtWidgets.QLabel())
+			self._labels[-1].setText(option_name)
+			self._horizontal_layouts[-1].addWidget(self._labels[-1])
 			if option_type == 'select':
 				selection = option.get('options', [])
 				self._options[option_name] = QtWidgets.QComboBox()
 				self._options[option_name].addItems(selection)
+				self._horizontal_layouts[-1].addWidget(self._options[option_name])
+			elif option_type == 'str_entry':
+				self._options[option_name] = QtWidgets.QLineEdit()
+				self._options[option_name].setText(option.get('default', ''))
+				self._horizontal_layouts[-1].addWidget(self._options[option_name])
+			elif option_type == 'int_entry':
+				self._options[option_name] = QtWidgets.QSpinBox()
+				val = option.get('default', 0)
+				if not isinstance(val, int):
+					val = 0
+				self._options[option_name].setValue(val)
+				if isinstance(option.get('min', None), int):
+					self._options[option_name].setMinimum(option.get('min'))
+				else:
+					self._options[option_name].setMinimum(-999999999)
+				if isinstance(option.get('max', None), int):
+					self._options[option_name].setMaximum(option.get('max'))
+				else:
+					self._options[option_name].setMaximum(999999999)
+				self._horizontal_layouts[-1].addWidget(self._options[option_name])
+			elif option_type == 'float_entry':
+				self._options[option_name] = QtWidgets.QDoubleSpinBox()
+				self._options[option_name].setDecimals(10)
+				val = option.get('default', 0.0)
+				if isinstance(val, int):
+					val = float(val)
+				elif not isinstance(val, float):
+					val = 0.0
+				self._options[option_name].setValue(val)
+				if isinstance(option.get('min', None), (int, float)):
+					self._options[option_name].setMinimum(float(option.get('min')))
+				else:
+					self._options[option_name].setMinimum(float('-Inf'))
+				if isinstance(option.get('max', None), (int, float)):
+					self._options[option_name].setMaximum(float(option.get('max')))
+				else:
+					self._options[option_name].setMaximum(float('Inf'))
 				self._horizontal_layouts[-1].addWidget(self._options[option_name])
 
 		self._horizontal_layouts.append(QtWidgets.QHBoxLayout())
@@ -353,6 +394,12 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 		for option_name, var in self._options.items():
 			if isinstance(var, QtWidgets.QComboBox):
 				options[option_name] = self._screen[option_name]['options'][var.currentIndex()]
+			elif isinstance(var, QtWidgets.QLineEdit):
+				options[option_name] = var.text()
+			elif isinstance(var, QtWidgets.QSpinBox):
+				options[option_name] = var.value()
+			elif isinstance(var, QtWidgets.QDoubleSpinBox):
+				options[option_name] = var.value()
 		return options
 
 	@property

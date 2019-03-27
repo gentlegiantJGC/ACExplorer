@@ -59,7 +59,9 @@ class PluginHandler:
 			},
 			"<Option Name>": {
 				"type": "int_entry",
-				"default": 0
+				"default": 0,
+				"min": <int>,   # if undefined does not limit
+				"max": <int>    # if undefined does not limit
 			},
 			"<Option Name>": {
 				"type": "dir_select"
@@ -135,7 +137,7 @@ class PluginHandler:
 		:param options: options to be passed to the plugin
 		:return:
 		"""
-		self._load_plugins()
+		self._load_plugins(dev_reload=False)
 
 		plugin = self._get_plugin(plugin_name)
 
@@ -151,9 +153,9 @@ class PluginHandler:
 			raise Exception
 		return plugin
 
-	def _load_plugins(self):
+	def _load_plugins(self, dev_reload = True):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if self._pyUbiForge.game_identifier != self._game_identifier or self._pyUbiForge.CONFIG.get('dev', False):
+		if self._pyUbiForge.game_identifier != self._game_identifier or (self._pyUbiForge.CONFIG.get('dev', False) and dev_reload):
 			self._game_identifier = self._pyUbiForge.game_identifier
 			self._plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self._plugin_names = {}
