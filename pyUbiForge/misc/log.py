@@ -7,6 +7,7 @@ class Logger:
 
 	def warn(self, name: str, msg: str):
 		"""Log with the warning prefix"""
+		msg = str(msg)
 		self.logFile.write(f'[WARNING]:[{name}]:[{msg}]\n')
 		if self.pyUbiForge.CONFIG.get('dev', False):
 			print(msg)
@@ -14,6 +15,7 @@ class Logger:
 
 	def info(self, name: str, msg: str):
 		"""Log with the info prefix"""
+		msg = str(msg)
 		self.logFile.write(f'[INFO]:[{name}]:[{msg}]\n')
 		print(msg)
 		self.buffer = msg
