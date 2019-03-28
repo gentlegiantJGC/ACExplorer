@@ -342,7 +342,6 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 				val = option.get('default', 0)
 				if not isinstance(val, int):
 					val = 0
-				self._options[option_name].setValue(val)
 				if isinstance(option.get('min', None), int):
 					self._options[option_name].setMinimum(option.get('min'))
 				else:
@@ -351,6 +350,7 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 					self._options[option_name].setMaximum(option.get('max'))
 				else:
 					self._options[option_name].setMaximum(999999999)
+				self._options[option_name].setValue(val)
 				self._horizontal_layouts[-1].addWidget(self._options[option_name])
 			elif option_type == 'float_entry':
 				self._options[option_name] = QtWidgets.QDoubleSpinBox()
@@ -360,7 +360,6 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 					val = float(val)
 				elif not isinstance(val, float):
 					val = 0.0
-				self._options[option_name].setValue(val)
 				if isinstance(option.get('min', None), (int, float)):
 					self._options[option_name].setMinimum(float(option.get('min')))
 				else:
@@ -369,6 +368,7 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 					self._options[option_name].setMaximum(float(option.get('max')))
 				else:
 					self._options[option_name].setMaximum(float('Inf'))
+				self._options[option_name].setValue(val)
 				self._horizontal_layouts[-1].addWidget(self._options[option_name])
 			elif option_name == 'check_box':
 				self._options[option_name] = QtWidgets.QCheckBox()
