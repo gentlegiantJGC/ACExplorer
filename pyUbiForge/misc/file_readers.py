@@ -32,7 +32,7 @@ class FileReaderHandler:
 		self._time = time.time()
 		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
 			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
-		file_object_data_wrapper.read_str(self.pyUbiForge.game_functions.pre_header_length, out_file, indent_count)
+		file_object_data_wrapper.read_bytes(self.pyUbiForge.game_functions.pre_header_length, out_file, indent_count)
 		try:
 			data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
 		except Exception as e:

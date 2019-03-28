@@ -23,7 +23,7 @@ class Reader(BaseReader):
 
 			for _ in range(count1):
 				file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
-				if file_object_data_wrapper.read_str(2, out_file, indent_count + 1) not in [b'\x04\x00', b'\x00\x01']:  # 04 00
+				if file_object_data_wrapper.read_bytes(2, out_file, indent_count + 1) not in [b'\x04\x00', b'\x00\x01']:  # 04 00
 					raise Exception
 
 				py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper, out_file, indent_count + 1)
@@ -45,7 +45,7 @@ class Reader(BaseReader):
 
 			file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 
-			file_object_data_wrapper.read_str(43, out_file, indent_count)
+			file_object_data_wrapper.read_bytes(43, out_file, indent_count)
 
 			# data layer filter
 			# 4 count, more data in here sometimes

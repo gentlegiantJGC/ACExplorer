@@ -7,7 +7,7 @@ class Reader(BaseReader):
 	file_type = '1CBDE084'
 
 	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
-		file_object_data_wrapper.read_str(2, out_file, indent_count)
+		file_object_data_wrapper.read_bytes(2, out_file, indent_count)
 		file_object_data_wrapper.read_id(out_file, indent_count)
 		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 
@@ -22,7 +22,7 @@ class Reader(BaseReader):
 		self.files = []
 
 		for _ in range(count1):
-			file_object_data_wrapper.read_str(1, out_file, indent_count)
+			file_object_data_wrapper.read_bytes(1, out_file, indent_count)
 			self.files.append(
 				file_object_data_wrapper.read_id(out_file, indent_count)
 			)

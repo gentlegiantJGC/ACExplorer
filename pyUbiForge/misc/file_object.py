@@ -160,7 +160,7 @@ class FileObjectDataWrapper:
 	def read_uint_64(self, out_file: Union[IO, None] = None, indent_count: int = 0) -> int:
 		return self._read_struct(out_file, indent_count, 'Q')
 
-	def read_str(self, chr_len, out_file: Union[IO, None] = None, indent_count: int = 0) -> bytes:
+	def read_bytes(self, chr_len: int, out_file: Union[IO, None] = None, indent_count: int = 0) -> bytes:
 		return self._read_struct(out_file, indent_count, f'{chr_len}s')
 
 	def read_id(self, out_file: Union[IO, None] = None, indent_count: int = 0) -> int:

@@ -10,7 +10,7 @@ class Reader(BaseReader):
 
 		count1 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 		for _ in range(count1):
-			file_object_data_wrapper.read_str(12, out_file, indent_count)
+			file_object_data_wrapper.read_bytes(12, out_file, indent_count)
 
 		count2 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 		if count2 != 0:

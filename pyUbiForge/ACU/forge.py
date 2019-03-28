@@ -18,7 +18,7 @@ class Forge(BaseForge):
 
 		forge_file = FileObjectDataWrapper.from_file(self.pyUbiForge, self.path)
 		# header
-		if forge_file.read_str(8) != b'scimitar':
+		if forge_file.read_bytes(8) != b'scimitar':
 			return
 		forge_file.seek(1, 1)
 		forge_file_version, file_data_header_offset = forge_file.read_struct('iQ')
@@ -67,7 +67,7 @@ class Forge(BaseForge):
 				size_table = raw_data_chunk.read_numpy('<u4', comp_block_count * 8).reshape(-1, 2).astype(int)  # 'compressed_size', 'uncompressed_size'
 				for size in size_table:  # Could do this using numpy and then vectorise the decompression
 					raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
-					uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read_str(size[0]), size[1]))
+					uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read_bytes(size[0]), size[1]))
 
 		elif format_version == 128:
 			comp_block_count = raw_data_chunk.read_uint_32()
@@ -75,7 +75,7 @@ class Forge(BaseForge):
 			uncompressed_data_list = []
 			for size in size_table:  # Could do this using numpy and then vectorise the decompression
 				raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
-				uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read_str(size[1]), size[0]))
+				uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read_bytes(size[1]), size[0]))
 		else:
 			raise Exception('Format version not known. Please let the creator know where you found this.')
 
@@ -99,12 +99,12 @@ class Forge(BaseForge):
 		forge_file.seek(self.datafiles[datafile_id].raw_data_offset)
 		raw_data_chunk = FileObjectDataWrapper.from_binary(self.pyUbiForge, forge_file.read(self.datafiles[datafile_id].raw_data_size))
 		forge_file.close()
-		header = raw_data_chunk.read_str(8)
+		header = raw_data_chunk.read_bytes(8)
 		format_version = 128
 		if header == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
 			format_version, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
 			if format_version == 128:
-				if raw_data_chunk.read_str(8) == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':
+				if raw_data_chunk.read_bytes(8) == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':
 					_, uncompressed_data_list_ = self._read_compressed_data_section(raw_data_chunk)
 					uncompressed_data_list += uncompressed_data_list_
 				else:
@@ -133,7 +133,7 @@ class Forge(BaseForge):
 			for index in range(file_count):
 				file_type, file_size, file_name_size = uncompressed_data.read_struct('3I')
 				file_id = index_table[index][0]
-				file_name = uncompressed_data.read_str(file_name_size).decode("utf-8")
+				file_name = uncompressed_data.read_bytes(file_name_size).decode("utf-8")
 				check_byte = uncompressed_data.read_uint_8()
 				if check_byte == 1:
 					uncompressed_data.seek(3, 1)
@@ -142,7 +142,7 @@ class Forge(BaseForge):
 				elif check_byte != 0:
 					raise Exception('Either something has gone wrong or a new value has been found here')
 
-				raw_file = uncompressed_data.read_str(file_size)
+				raw_file = uncompressed_data.read_bytes(file_size)
 
 				if file_name == '':
 					file_name = f'{file_id:016X}'

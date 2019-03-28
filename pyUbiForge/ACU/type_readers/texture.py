@@ -15,7 +15,7 @@ class Reader(BaseTexture, BaseReader):
 			if not os.path.isdir(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes')):
 				os.makedirs(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes'))
 			with open(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes', 'A2B7E917'), 'a') as f2:
-				f2.write('{}\n'.format(' '.join(f'{b:02X}' for b in texture_file.read_str(116))))
+				f2.write('{}\n'.format(' '.join(f'{b:02X}' for b in texture_file.read_bytes(116))))
 				texture_file.seek(-116, 1)
 		# header has already been read
 
@@ -27,16 +27,16 @@ class Reader(BaseTexture, BaseReader):
 		DDSD_LINEARSIZE = True
 		DDSD_DEPTH = False
 		self.dwFlags = struct.pack('<i', (0x1*DDSD_CAPS)|(0x2*DDSD_HEIGHT)|(0x4*DDSD_WIDTH)|(0x8*DDSD_PITCH)|(0x1000*DDSD_PIXELFORMAT)|(0x20000*DDSD_MIPMAPCOUNT)|(0x80000*DDSD_LINEARSIZE)|(0x800000*DDSD_DEPTH))
-		self.dwWidth = texture_file.read_str(4, out_file, indent_count)
-		self.dwHeight = texture_file.read_str(4, out_file, indent_count)
-		self.dwDepth = texture_file.read_str(4, out_file, indent_count)
+		self.dwWidth = texture_file.read_bytes(4, out_file, indent_count)
+		self.dwHeight = texture_file.read_bytes(4, out_file, indent_count)
+		self.dwDepth = texture_file.read_bytes(4, out_file, indent_count)
 		self.imgDXT = texture_file.read_uint_32()
 		texture_file.seek(8, 1, out_file, indent_count)  # could be image format. Volume textures have first 4 \x03\x00\x00\x00 all else have \x01\x00\x00\x00
 		# next 4 are \x01\x00\x00\x00 for diffuse maps and \x00\x00\x00\x00 for other things like volume textures and maps
-		self.dwMipMapCount = texture_file.read_str(4, out_file, indent_count)
+		self.dwMipMapCount = texture_file.read_bytes(4, out_file, indent_count)
 		texture_file.seek(84, 1, out_file, indent_count)  # 24 of other data followed by "CompiledTextureMap" which duplicates most of the data
-		self.dwPitchOrLinearSize = texture_file.read_str(4, out_file, indent_count)
-		self.buffer = texture_file.read_str(struct.unpack('<I', self.dwPitchOrLinearSize)[0], out_file, indent_count)
+		self.dwPitchOrLinearSize = texture_file.read_bytes(4, out_file, indent_count)
+		self.buffer = texture_file.read_bytes(struct.unpack('<I', self.dwPitchOrLinearSize)[0], out_file, indent_count)
 		self.dwReserved = b'\x00\x00\x00\x00'*11
 
 		self.ddspf = b''  # (pixel format)

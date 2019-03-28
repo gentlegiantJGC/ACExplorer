@@ -11,18 +11,18 @@ class Reader(BaseModel, BaseReader):
 		BaseModel.__init__(self)
 
 		model_file.out_file_write('\n', out_file, indent_count)
-		model_file.read_str(1, out_file, indent_count)  # skip an empty byte
-		self.type = model_file.read_str(4, out_file, indent_count)
-		model_file.read_str(1, out_file, indent_count)
+		model_file.read_bytes(1, out_file, indent_count)  # skip an empty byte
+		self.type = model_file.read_bytes(4, out_file, indent_count)
+		model_file.read_bytes(1, out_file, indent_count)
 		a_count = model_file.read_uint_32(out_file, indent_count)
 		for a in range(a_count*2):
 			check = model_file.read_uint_8(out_file, indent_count)
 			while check == 3:
 				check = model_file.read_uint_8(out_file, indent_count)
-			model_file.read_str(1, out_file, indent_count)
+			model_file.read_bytes(1, out_file, indent_count)
 			py_ubi_forge.read_file.get_data_recursive(model_file, out_file, indent_count)
 		if a_count > 0:
-			model_file.read_str(1, out_file, indent_count)
+			model_file.read_bytes(1, out_file, indent_count)
 
 		bone_count = model_file.read_uint_32(out_file, indent_count)
 		self.bones = []
@@ -32,17 +32,17 @@ class Reader(BaseModel, BaseReader):
 		self.bounding_box = model_file.read_numpy(numpy.float32, 32, out_file, indent_count).reshape(2, 4)
 		model_file.out_file_write(f'{self.bounding_box}\n', out_file, indent_count)
 
-		model_file.read_str(1, out_file, indent_count)
+		model_file.read_bytes(1, out_file, indent_count)
 
 		model_file.read_id(out_file, indent_count)
 		if model_file.read_type(out_file, indent_count) == "FC9E1595":  # this part should get moved to a different file technically
-			model_file.read_str(4, out_file, indent_count)
+			model_file.read_bytes(4, out_file, indent_count)
 			model_file.out_file_write('Typeswitch\n', out_file, indent_count)
-			self.type_switch = model_file.read_str(1, out_file, indent_count)
+			self.type_switch = model_file.read_bytes(1, out_file, indent_count)
 			if self.type_switch == b'\x00':
 				model_file.read_id(out_file, indent_count)
 				model_file.read_type(out_file, indent_count)
-				model_file.read_str(5, out_file, indent_count)
+				model_file.read_bytes(5, out_file, indent_count)
 				model_file.out_file_write('Vert table width\n', out_file, indent_count)
 				vert_table_width = model_file.read_uint_32(out_file, indent_count)
 				mesh_face_block_sum = model_file.read_uint_32(out_file, indent_count) # = sum(mesh_face_blocks)
@@ -53,7 +53,7 @@ class Reader(BaseModel, BaseReader):
 				mesh_face_blocks = model_file.read_numpy(numpy.uint32, 4*mesh_face_block_count, out_file, indent_count)
 				shadow_face_blocks = model_file.read_numpy(numpy.uint32, 4*shadow_face_block_count, out_file, indent_count)
 				model_file.read_uint_32(out_file, indent_count)
-				model_file.read_str(1, out_file, indent_count)
+				model_file.read_bytes(1, out_file, indent_count)
 				model_file.out_file_write('\nVert table\n', out_file, indent_count)
 				vert_table_length = model_file.read_uint_32(out_file, indent_count)
 				self.vert_count = vert_table_length / vert_table_width
@@ -196,11 +196,11 @@ class Reader(BaseModel, BaseReader):
 
 				for _ in range(3):
 					count = model_file.read_uint_32(out_file, indent_count)
-					model_file.read_str(count, out_file, indent_count)
+					model_file.read_bytes(count, out_file, indent_count)
 
 			model_file.read_id(out_file, indent_count)
 			model_file.read_type(out_file, indent_count)
-			model_file.read_str(3, out_file, indent_count)
+			model_file.read_bytes(3, out_file, indent_count)
 			model_file.out_file_write('Mesh Table\n', out_file, indent_count)
 			mesh_count = model_file.read_uint_32(out_file, indent_count)
 			self._meshes = model_file.read_numpy([
@@ -243,7 +243,7 @@ class Reader(BaseModel, BaseReader):
 
 			for index in range(2):
 				count = model_file.read_uint_32(out_file, indent_count)
-				model_file.read_str(count, out_file, indent_count+1)
+				model_file.read_bytes(count, out_file, indent_count + 1)
 
 			model_file.out_file_write('Skin Data Table\n', out_file, indent_count)
 			skin_count = model_file.read_uint_32(out_file, indent_count)
@@ -259,7 +259,7 @@ class Reader(BaseModel, BaseReader):
 
 			model_file.out_file_write(f'{skin_table}\n', out_file, indent_count)
 
-			model_file.read_str(8, out_file, indent_count)
+			model_file.read_bytes(8, out_file, indent_count)
 			model_file.out_file_write('Model Scale?\n', out_file, indent_count)
 			model_file.read_float_32(out_file, indent_count)  # model scale? (possibly not)
 			model_file.out_file_write('Material Table\n', out_file, indent_count)
