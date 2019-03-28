@@ -4,7 +4,7 @@ from pyUbiForge.misc.plugins import BasePlugin
 from PIL import Image
 from io import BytesIO
 import struct
-from typing import Union
+from typing import Union, List
 
 
 class Plugin(BasePlugin):
@@ -12,7 +12,7 @@ class Plugin(BasePlugin):
 	plugin_level = 4
 	file_type = 'EE568905'
 
-	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
+	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
 		# TODO add select directory option
 		save_folder = py_ubi_forge.CONFIG.get('dumpFolder', 'output')
 

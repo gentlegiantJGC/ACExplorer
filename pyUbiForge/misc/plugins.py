@@ -9,7 +9,7 @@ class BasePlugin:
 	file_type = None
 	dev = False
 
-	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
+	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
 		raise NotImplemented
 
 	def options(self, options: Union[List[dict], None]) -> Union[Dict[str, dict], None]:
