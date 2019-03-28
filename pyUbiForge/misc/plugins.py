@@ -59,15 +59,27 @@ class PluginHandler:
 			},
 			"<Option Name>": {
 				"type": "int_entry",
-				"default": 0,
+				"default": <int>,
 				"min": <int>,   # if undefined does not limit
 				"max": <int>    # if undefined does not limit
 			},
 			"<Option Name>": {
-				"type": "dir_select"
+				"type": "float_entry",
+				"default": <float>,
+				"min": <float>,   # if undefined does not limit
+				"max": <float>    # if undefined does not limit
 			},
 			"<Option Name>": {
-				"type": "file_select"
+				"type": "check_box",
+				"default": <bool>
+			},
+			"<Option Name>": {
+				"type": "dir_select",
+				"default": <path>
+			},
+			"<Option Name>": {
+				"type": "file_select",
+				"default": <path>
 			}
 		}
 

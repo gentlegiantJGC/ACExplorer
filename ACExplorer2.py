@@ -289,7 +289,7 @@ class ContextMenu(QtWidgets.QMenu):
 				new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
 				while new_screen is not None and not escape:
 					# show screen
-					screen = PluginOptionsScreen(plugin_name, new_screen)
+					screen = PluginOptionsScreen(self.pyUbiForge, plugin_name, new_screen)
 					escape = screen.escape
 					if not escape:
 						# pull options from screen
@@ -304,8 +304,9 @@ class ContextMenu(QtWidgets.QMenu):
 
 
 class PluginOptionsScreen(QtWidgets.QDialog):
-	def __init__(self, plugin_name: str, screen: Dict[str, dict]):
+	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, plugin_name: str, screen: Dict[str, dict]):
 		QtWidgets.QDialog.__init__(self)
+		self._pyUbiForge = py_ubi_forge
 		self.setModal(True)
 		self._screen = screen
 		self._options = {}
@@ -369,6 +370,14 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 				else:
 					self._options[option_name].setMaximum(float('Inf'))
 				self._horizontal_layouts[-1].addWidget(self._options[option_name])
+			elif option_name == 'check_box':
+				self._options[option_name] = QtWidgets.QCheckBox()
+				self._options[option_name].setChecked(option.get('default', True))
+				self._horizontal_layouts[-1].addWidget(self._options[option_name])
+			elif option_type == 'dir_select':
+				self.create_dialog_button(option_name, option, 'dir')
+			elif option_type == 'file_select':
+				self.create_dialog_button(option_name, option, 'file')
 
 		self._horizontal_layouts.append(QtWidgets.QHBoxLayout())
 		self._vertical_layout.addLayout(self._horizontal_layouts[-1])
@@ -400,11 +409,37 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 				options[option_name] = var.value()
 			elif isinstance(var, QtWidgets.QDoubleSpinBox):
 				options[option_name] = var.value()
+			elif isinstance(var, QtWidgets.QCheckBox):
+				options[option_name] = var.isChecked()
+			elif isinstance(var, QtWidgets.QPushButton):
+				options[option_name] = var.text()
 		return options
 
 	@property
 	def escape(self) -> bool:
 		return self._escape
+
+	def create_dialog_button(self, option_name: str, option: dict, mode: str):
+		self._options[option_name] = QtWidgets.QPushButton()
+		if "default" in option and isinstance(option["default"], str):
+			path = option["default"]
+		else:
+			path = self._pyUbiForge.CONFIG.get("dumpFolder")
+		self._options[option_name].setText(path)
+		self._options[option_name].clicked.connect(lambda: self.open_dialog(option_name, mode, path))
+		self._horizontal_layouts[-1].addWidget(self._options[option_name])
+
+	def open_dialog(self, option_name: str, mode: str, path: str):
+		text = None
+		if mode == 'dir':
+			text = QtWidgets.QFileDialog.getExistingDirectory(self, "Open Directory", path)
+		elif mode == 'file':
+			text = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", path)
+			if text is not None:
+				text = text[0]
+
+		if text is not None:
+			self._options[option_name].setText(text)
 
 
 if __name__ == "__main__":

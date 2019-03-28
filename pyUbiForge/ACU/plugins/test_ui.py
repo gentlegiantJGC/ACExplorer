@@ -39,11 +39,15 @@ class Plugin(BasePlugin):
 					"type": "float_entry",
 					"default": 0
 				},
-				"Float Entry (-50 to 50)": {
+				"Float Entry (e to pi)": {
 					"type": "float_entry",
 					"default": 0,
 					"min": 2.7182818284,
 					"max": 3.1415926536
+				},
+				"Checkbox": {
+					"type": "check_box",
+					"default": True
 				},
 				"Directory Select": {
 					"type": "dir_select"
