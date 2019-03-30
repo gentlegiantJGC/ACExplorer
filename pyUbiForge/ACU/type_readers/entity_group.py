@@ -16,7 +16,7 @@ class Reader(BaseReader):
 		if check_byte_1 == 0:
 			py_ubi_forge.log.warn(__name__, 'checkbyte is not 3')
 			raise Exception
-		self.transformation_matrix = file_object_data_wrapper.read_numpy(numpy.float32, 64, out_file, indent_count).reshape((4, 4))
+		self.transformation_matrix = file_object_data_wrapper.read_numpy(numpy.float32, 64, out_file, indent_count).reshape((4, 4), order='F')
 		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 
 		self.file_id_list = []

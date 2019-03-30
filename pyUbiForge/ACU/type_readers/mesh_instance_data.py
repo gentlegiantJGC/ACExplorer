@@ -23,7 +23,7 @@ class Reader(BaseReader):
 			raise Exception()
 		self.transformation_matrix = []
 		for _ in range(count2):
-			self.transformation_matrix.append(file_object_data_wrapper.read_numpy(numpy.float32, 64, out_file, indent_count).reshape((4, 4)))
+			self.transformation_matrix.append(file_object_data_wrapper.read_numpy(numpy.float32, 64, out_file, indent_count).reshape((4, 4), order='F'))
 			file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
 		count3 = file_object_data_wrapper.read_uint_32(out_file, indent_count)
 		if count3 > 10000:
