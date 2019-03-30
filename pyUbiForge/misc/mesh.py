@@ -3,6 +3,7 @@ import shutil
 import numpy
 import urllib.parse
 from pyUbiForge.misc import texture
+from typing import Union, List
 
 
 class BaseModel:
@@ -19,27 +20,27 @@ class BaseModel:
 		return self._name
 
 	@property
-	def vertices(self):
+	def vertices(self) -> numpy.ndarray:
 		return self._vertices
 
 	@property
-	def texture_vertices(self):
+	def texture_vertices(self) -> numpy.ndarray:
 		return self._texture_vertices
 
 	@property
-	def normals(self):
+	def normals(self) -> numpy.ndarray:
 		return self._normals
 
 	@property
-	def faces(self):
+	def faces(self) -> numpy.ndarray:
 		return self._faces
 
 	@property
-	def meshes(self):
+	def meshes(self) -> numpy.ndarray:
 		return self._meshes
 
 	@property
-	def materials(self):
+	def materials(self) -> numpy.ndarray:
 		return self._materials
 
 
@@ -74,14 +75,20 @@ class ObjMtl:
 		self._group_name[name] += 1
 		return f'{name}_{self._group_name[name]}'
 
-	def export(self, model: BaseModel, model_name: str) -> None:
+	def export(self, model: BaseModel, model_name: str, transformation_matrix: Union[List[numpy.ndarray], numpy.ndarray] = None) -> None:
 		"""
 		when called will export the currently loaded mesh to the obj file
 		when finished will reset all the mesh variables so that things do not persist
 		:return: None
 		"""
+		if isinstance(transformation_matrix, numpy.ndarray) and transformation_matrix.shape == (4, 4):
+			vertices = numpy.vstack((model.vertices.transpose(), numpy.ones((1, model.vertices.shape[0]))))
+			vertices[:3, :] *= 0.001
+			vertices = numpy.dot(transformation_matrix, vertices)[:3, :].transpose()
+		else:
+			vertices = model.vertices
 		# write vertices
-		self._obj.write(''.join(['v {} {} {}\n'.format(*vertex) for vertex in model.vertices.round(6)]))
+		self._obj.write(''.join(['v {} {} {}\n'.format(*vertex) for vertex in vertices.round(6)]))
 		self._obj.write(f'# {len(model.vertices)} vertices\n\n')
 
 		# write texture coords
@@ -167,6 +174,8 @@ class Collada:
 		self.missing_no_exported = False
 
 		# the obj file object
+		if not os.path.isdir(self.save_folder):
+			os.makedirs(self.save_folder)
 		self._dae = open(f'{self.save_folder}{os.sep}{self.model_name}.dae', 'w')
 		self._dae.write('''<?xml version="1.0" encoding="utf-8"?>
 <COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
