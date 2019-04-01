@@ -39,7 +39,6 @@ class Plugin(BasePlugin):
 
 		if self._options[0]["Export Method"] == 'Wavefront (.obj)':
 			obj_handler = mesh.ObjMtl(py_ubi_forge, data_block_name, save_folder)
-
 			for data_block_entry_id in data_block.files:
 				data = py_ubi_forge.temp_files(data_block_entry_id)
 				if data is None:
@@ -67,13 +66,14 @@ class Plugin(BasePlugin):
 								continue
 							model: mesh.BaseModel = py_ubi_forge.read_file(model_data.file)
 							if model is None:
-								py_ubi_forge.log.warn(__name__, f"Failed reading model file {model.file_name} {model.file_id:016X}")
+								py_ubi_forge.log.warn(__name__, f"Failed reading model file {model_data.file_name} {model_data.file_id:016X}")
 								continue
 							obj_handler.export(model, model_data.file_name, entity.transformation_matrix)
 							py_ubi_forge.log.info(__name__, f'Exported {data.file_id:016X}')
 				else:
 					py_ubi_forge.log.info(__name__, f'File type "{data.file_type}" is not currently supported. It has been skipped')
 			obj_handler.save_and_close()
+			py_ubi_forge.log.info(__name__, f'Finished exporting {data_block_name}.obj')
 
 		# elif self._options[0]["Export Method"] == 'Collada (.dae)':
 		# 	obj_handler = mesh.Collada(py_ubi_forge, model_name, save_folder)
