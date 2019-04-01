@@ -53,7 +53,7 @@ class Reader(BaseModel, BaseReader):
 				mesh_face_blocks = model_file.read_numpy(numpy.uint32, 4*mesh_face_block_count, out_file, indent_count)
 				shadow_face_blocks = model_file.read_numpy(numpy.uint32, 4*shadow_face_block_count, out_file, indent_count)
 				model_file.read_uint_32(out_file, indent_count)
-				model_file.read_bytes(1, out_file, indent_count)
+				model_file.read_bytes(1, out_file, indent_count)    # use blocks?
 				model_file.out_file_write('\nVert table\n', out_file, indent_count)
 				vert_table_length = model_file.read_uint_32(out_file, indent_count)
 				self.vert_count = vert_table_length / vert_table_width
@@ -149,7 +149,7 @@ class Reader(BaseModel, BaseReader):
 					raise Exception()
 
 				self._vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)
-				# self.vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
+				self._vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
 				# for dim in range(3):
 				# 	self.vertices[:, dim] = numpy.interp(self.vertices[:, dim], (self.vertices[:, dim].min(), self.vertices[:, dim].max()), bounding_box2[:, dim])
 				self._texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
@@ -215,7 +215,6 @@ class Reader(BaseModel, BaseReader):
 			], 36 * mesh_count, out_file, indent_count)
 
 			if self._faces is not None:
-
 				if mesh_face_block_sum * 64 * 6 == face_table_length:
 					self._faces = numpy.split(self._faces, numpy.cumsum(mesh_face_blocks * 64)[:-1])
 					for index, verts_used in enumerate(self.meshes['verts_used']):
@@ -261,7 +260,7 @@ class Reader(BaseModel, BaseReader):
 
 			model_file.read_bytes(8, out_file, indent_count)
 			model_file.out_file_write('Model Scale?\n', out_file, indent_count)
-			model_file.read_float_32(out_file, indent_count)  # model scale? (possibly not)
+			model_file.read_float_32(out_file, indent_count)  # model scale? (looks to be the magnitude of sc in the vert table)
 			model_file.out_file_write('Material Table\n', out_file, indent_count)
 			material_count = model_file.read_uint_32(out_file, indent_count)
 			material_table = model_file.read_numpy([
