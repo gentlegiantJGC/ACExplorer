@@ -32,7 +32,7 @@ class BaseModel:
 		return self._normals
 
 	@property
-	def faces(self) -> numpy.ndarray:
+	def faces(self) -> List[numpy.ndarray]:
 		return self._faces
 
 	@property
@@ -83,7 +83,7 @@ class ObjMtl:
 		"""
 		if isinstance(transformation_matrix, numpy.ndarray) and transformation_matrix.shape == (4, 4):
 			vertices = numpy.vstack((model.vertices.transpose(), numpy.ones((1, model.vertices.shape[0]))))
-			vertices[:3, :] *= 0.001
+			# vertices[:3, :] *= 0.001
 			vertices = numpy.dot(transformation_matrix, vertices)[:3, :].transpose()
 		else:
 			vertices = model.vertices
@@ -99,7 +99,7 @@ class ObjMtl:
 		for mesh_index, mesh in enumerate(model.meshes):
 			self._obj.write(f'g {self.group_name(model_name)}\n')
 			self._obj.write(f'usemtl {self.mtl_handler.get(model.materials[mesh_index]).name}\n')
-			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']] + self.vertex_count + 1]))
+			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']].astype(numpy.int_) + self.vertex_count + 1]))
 			self._obj.write(f'# {mesh["face_count"]} faces\n\n')
 
 		self.vertex_count += len(model.vertices)
