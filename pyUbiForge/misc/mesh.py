@@ -88,17 +88,16 @@ class ObjMtl:
 		else:
 			vertices = model.vertices
 		# write vertices
-		self._obj.write(''.join(['v {} {} {}\n'.format(*vertex) for vertex in vertices.round(6)]))
+		self._obj.write(('v {} {} {}\n' * vertices.shape[0]).format(*vertices.ravel().round(6)))
 		self._obj.write(f'# {len(model.vertices)} vertices\n\n')
 
 		# write texture coords
-		self._obj.write(''.join(['vt {} {}\n'.format(*vertex) for vertex in model.texture_vertices.round(6)]))
+		self._obj.write(('vt {} {}\n' * model.texture_vertices.shape[0]).format(*model.texture_vertices.ravel().round(6)))
 		self._obj.write(f'# {len(model.texture_vertices)} texture coordinates\n\n')
 
 		# write faces
 		for mesh_index, mesh in enumerate(model.meshes):
-			self._obj.write(f'g {self.group_name(model_name)}\n')
-			self._obj.write(f'usemtl {self.mtl_handler.get(model.materials[mesh_index]).name}\n')
+			self._obj.write(f'g {self.group_name(model_name)}\nusemtl {self.mtl_handler.get(model.materials[mesh_index]).name}\n')
 			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']].astype(numpy.int_) + self.vertex_count + 1]))
 			self._obj.write(f'# {mesh["face_count"]} faces\n\n')
 
