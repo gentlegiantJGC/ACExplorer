@@ -95,10 +95,9 @@ class Forge(BaseForge):
 			return
 		uncompressed_data_list = []
 
-		forge_file = open(os.path.join(self.pyUbiForge.CONFIG.game_folder(self.pyUbiForge.game_identifier), self.forge_file_name), 'rb')
-		forge_file.seek(self.datafiles[datafile_id].raw_data_offset)
-		raw_data_chunk = FileObjectDataWrapper.from_binary(self.pyUbiForge, forge_file.read(self.datafiles[datafile_id].raw_data_size))
-		forge_file.close()
+		with open(os.path.join(self.pyUbiForge.CONFIG.game_folder(self.pyUbiForge.game_identifier), self.forge_file_name), 'rb', buffering=0) as forge_file:
+			forge_file.seek(self.datafiles[datafile_id].raw_data_offset)
+			raw_data_chunk = FileObjectDataWrapper.from_binary(self.pyUbiForge, forge_file.read(self.datafiles[datafile_id].raw_data_size))
 		header = raw_data_chunk.read_bytes(8)
 		format_version = 128
 		if header == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
