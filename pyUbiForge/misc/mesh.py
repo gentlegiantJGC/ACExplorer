@@ -98,7 +98,7 @@ class ObjMtl:
 		# write faces
 		for mesh_index, mesh in enumerate(model.meshes):
 			self._obj.write(f'g {self.group_name(model_name)}\nusemtl {self.mtl_handler.get(model.materials[mesh_index]).name}\n')
-			self._obj.write(''.join(['f {0}/{0} {1}/{1} {2}/{2}\n'.format(*face) for face in model.faces[mesh_index][:mesh['face_count']].astype(numpy.int_) + self.vertex_count + 1]))
+			self._obj.write(('f {}/{} {}/{} {}/{}\n' * mesh['face_count']).format(*numpy.repeat(model.faces[mesh_index][:mesh['face_count']], 2).astype(numpy.int_) + self.vertex_count + 1))
 			self._obj.write(f'# {mesh["face_count"]} faces\n\n')
 
 		self.vertex_count += len(model.vertices)
