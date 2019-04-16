@@ -6,10 +6,11 @@ from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 class DataFile:
 	"""This class houses data for each datafile. It stores the name of the datafile and the files contained within."""
-	def __init__(self, raw_data_offset: int, raw_data_size: int, file_name: str):
+	def __init__(self, raw_data_offset: int, raw_data_size: int, file_name: str, file_type: int):
 		self._raw_data_offset = raw_data_offset
 		self._raw_data_size = raw_data_size
 		self._file_name = file_name
+		self._file_type = file_type
 		self._files = {}
 
 	@property

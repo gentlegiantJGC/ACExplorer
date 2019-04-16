@@ -1,5 +1,6 @@
 import os
-from typing import Tuple, List, Union, TextIO
+from typing import Tuple, List
+import numpy
 from pyUbiForge.misc import decompress
 from pyUbiForge.misc.forge import BaseForge, DataFile
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
@@ -30,18 +31,37 @@ class Forge(BaseForge):
 		# File Data
 		index_count, index_table_offset, file_data_offset2, name_table_offset, raw_data_table_offset = forge_file.read_struct('i4x2q8x2q')
 		forge_file.seek(index_table_offset)
-		index_table = forge_file.read_struct('QQI' * index_count)
+		index_table = forge_file.read_numpy([
+			('raw_data_offset', numpy.uint64),
+			('file_id', numpy.uint64),
+			('raw_data_size', numpy.uint32)
+		], 20 * index_count)
 		forge_file.seek(name_table_offset)
-		name_table = forge_file.read_struct('i40x128s20x' * index_count)
+		name_table = forge_file.read_numpy([
+			('raw_data_size', numpy.uint32),
+			('', numpy.uint64),
+			('', numpy.uint32),
+			('file_type', numpy.uint32),
+			('', numpy.uint64),
+			('', numpy.uint32),     # next file count
+			('', numpy.uint32),     # previous file count
+			('', numpy.uint32),
+			('', numpy.uint32),     # timestamp
+			('file_name', 'S128'),
+			('', numpy.uint32),
+			('', numpy.uint32),
+			('', numpy.uint32),
+			('', numpy.uint32),
+			('', numpy.uint32)
+		], 192 * index_count)
 		for n in range(index_count):
-			file_id = index_table[n * 3 + 1]
-			file_name = name_table[n * 2 + 1].replace(b'\x00', b'').decode("utf-8")
-			if index_table[n * 3 + 2] != name_table[n * 2]:
+			if index_table['raw_data_size'][n] != name_table['raw_data_size'][n]:
 				raise Exception('These should be the same. Is something wrong?')
-			self._datafiles[file_id] = DataFile(
-				index_table[n * 3],
-				index_table[n * 3 + 2],
-				file_name
+			self._datafiles[index_table['raw_data_size'][n]] = DataFile(
+				index_table['raw_data_offset'][n],
+				index_table['raw_data_size'][n],
+				name_table['file_name'][n].replace(b'\x00', b'').decode("utf-8"),
+				name_table['file_type'][n]
 			)
 
 		forge_file.close()
