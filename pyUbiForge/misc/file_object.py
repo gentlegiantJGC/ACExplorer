@@ -79,6 +79,9 @@ class FileObjectDataWrapper:
 	def indent(self, count: int = 1):
 		self._indent_count = max(self._indent_count + count, 0)
 
+	def bind_out_file(self, out_file: IO):
+		self._out_file = out_file
+
 	def close(self):
 		self.file_object.close()
 		if self._out_file is not None:

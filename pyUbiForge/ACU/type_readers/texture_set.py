@@ -6,10 +6,10 @@ from pyUbiForge.misc import Material
 class Reader(BaseReader, Material):
 	file_type = 'D70E6670'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
+	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
 		Material.__init__(self, None)
 
-		texture_table = file_object_data_wrapper.read_numpy([('', '<u2'), ('texture_id', '<u8')], 120, out_file, indent_count)
+		texture_table = file_object_data_wrapper.read_numpy([('', '<u2'), ('texture_id', '<u8')], 120)
 		self.diffuse, self.normal, self.specular, \
 			self.height, tex5, self.transmission, tex7, \
 			self.mask1, self.mask2, tex10, tex11, tex12 \

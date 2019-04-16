@@ -17,44 +17,44 @@ class FileReaderHandler:
 		self._time = 0
 		self._wait = True
 
-	def __call__(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO] = None, indent_count: int = 0):
+	def __call__(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO] = None):
 		"""
 		Call this function in the right click methods as the start point
 		Will call get_data_recursive to get the actual data followed by the clever_format method to read the rest of the file
 		:param file_object_data_wrapper: The input raw data
-		:param out_file: A file object to output the formatted data to
-		:param indent_count: The number of indents in out_file
 		:return: objects defined in the plugins
 		"""
+		file_object_data_wrapper.bind_out_file(out_file)
 		self._load_readers()
 		while self._wait:
 			time.sleep(0.1)
 		self._time = time.time()
 		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
 			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
-		file_object_data_wrapper.read_bytes(self.pyUbiForge.game_functions.pre_header_length, out_file, indent_count)
+		file_object_data_wrapper.read_bytes(self.pyUbiForge.game_functions.pre_header_length)
 		try:
-			data = self.get_data_recursive(file_object_data_wrapper, out_file, indent_count)
+			data = self.get_data_recursive(file_object_data_wrapper)
 		except Exception as e:
 			self.pyUbiForge.log.warn(__name__, e)
 			data = None
-		file_object_data_wrapper.clever_format(out_file, indent_count)
+		file_object_data_wrapper.clever_format()
 		return data
 
-	def get_data_recursive(self, file_object_data_wrapper: FileObjectDataWrapper, out_file: Union[None, FileObjectDataWrapper, TextIO], indent_count: int = 0):
+	def get_data_recursive(self, file_object_data_wrapper: FileObjectDataWrapper):
 		"""
 		Call this function in file reader methods to access other file types in the same file
 		:param file_object_data_wrapper: The input raw data
-		:param out_file: A file object to output the formatted data to
-		:param indent_count: The number of indents in out_file
 		:return: objects defined in the plugins
 		"""
 
-		file_object_data_wrapper.out_file_write('\n', out_file, indent_count)
-		file_object_data_wrapper.read_id(out_file, indent_count)
-		file_type = file_object_data_wrapper.read_type(out_file, indent_count)
+		file_object_data_wrapper.out_file_write('\n')
+		file_object_data_wrapper.read_id()
+		file_type = file_object_data_wrapper.read_type()
 		if file_type in self.readers:
-			return self.readers[file_type](self.pyUbiForge, file_object_data_wrapper, out_file, indent_count + 1)
+			file_object_data_wrapper.indent()
+			ret = self.readers[file_type](self.pyUbiForge, file_object_data_wrapper)
+			file_object_data_wrapper.indent(-1)
+			return ret
 		else:
 			raise Exception(f'File type {file_type} does not have a file reader')
 

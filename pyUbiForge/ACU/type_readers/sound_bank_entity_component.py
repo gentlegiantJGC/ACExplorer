@@ -5,5 +5,5 @@ from pyUbiForge.misc.file_readers import BaseReader
 class Reader(BaseReader):
 	file_type = 'DAB4219F'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
+	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
 		pass

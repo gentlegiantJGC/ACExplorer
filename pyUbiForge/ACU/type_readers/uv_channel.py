@@ -5,8 +5,10 @@ from pyUbiForge.misc.file_readers import BaseReader
 class Reader(BaseReader):
 	file_type = 'BDAD8273'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper, out_file, indent_count):
-		file_object_data_wrapper.read_bytes(5, out_file, indent_count)
+	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
+		file_object_data_wrapper.read_bytes(5)
 		for n in (8, 4):
-			count = file_object_data_wrapper.read_uint_32(out_file, indent_count)
-			file_object_data_wrapper.read_bytes(count * n, out_file, indent_count + 1)
+			count = file_object_data_wrapper.read_uint_32()
+			file_object_data_wrapper.indent()
+			file_object_data_wrapper.read_bytes(count * n)
+			file_object_data_wrapper.indent(-1)
