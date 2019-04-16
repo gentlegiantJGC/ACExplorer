@@ -6,6 +6,7 @@ from pyUbiForge.ACU.type_readers.visual import Reader as Visual
 from pyUbiForge.ACU.type_readers.lod_selector import Reader as LODSelector
 from pyUbiForge.ACU.type_readers.mesh_instance_data import Reader as MeshInstanceData
 from typing import Union, List, Dict
+import numpy
 # from multiprocessing.connection import Client
 
 
@@ -44,7 +45,7 @@ class Plugin(BasePlugin):
 				if data is None:
 					py_ubi_forge.log.warn(__name__, f"Failed to find file {data_block_entry_id:016X}")
 					continue
-				if data.file_type == '0984415E':  # entity
+				if data.file_type in ('0984415E', '3F742D26'):  # entity and entity group
 					entity: Entity = py_ubi_forge.read_file(data.file)
 					if entity is None:
 						py_ubi_forge.log.warn(__name__, f"Failed reading file {data.file_name} {data.file_id:016X}")
@@ -60,15 +61,23 @@ class Plugin(BasePlugin):
 							else:
 								py_ubi_forge.log.warn(__name__, f"Could not find mesh instance data for {data.file_name} {data.file_id:016X}")
 								continue
+							if mesh_instance_data is None:
+								py_ubi_forge.log.warn(__name__, f"Failed to find file {data.file_name}")
+								continue
 							model_data = py_ubi_forge.temp_files(mesh_instance_data.mesh_id)
 							if model_data is None:
 								py_ubi_forge.log.warn(__name__, f"Failed to find file {mesh_instance_data.mesh_id:016X}")
 								continue
 							model: mesh.BaseModel = py_ubi_forge.read_file(model_data.file)
-							if model is None:
+							if model is None or model.vertices is None:
 								py_ubi_forge.log.warn(__name__, f"Failed reading model file {model_data.file_name} {model_data.file_id:016X}")
 								continue
-							obj_handler.export(model, model_data.file_name, entity.transformation_matrix)
+							transform = entity.transformation_matrix
+							if len(mesh_instance_data.transformation_matrix) == 0:
+								obj_handler.export(model, model_data.file_name, transform)
+							else:
+								for trm in mesh_instance_data.transformation_matrix:
+									obj_handler.export(model, model_data.file_name, numpy.matmul(transform, trm))
 							py_ubi_forge.log.info(__name__, f'Exported {data.file_id:016X}')
 				else:
 					py_ubi_forge.log.info(__name__, f'File type "{data.file_type}" is not currently supported. It has been skipped')
