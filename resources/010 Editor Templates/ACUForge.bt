@@ -54,13 +54,15 @@ struct {
         struct {
             int32 rawDataSize;
             int64 fileIDUnk;
-            int32 unk1[4];
+            int32 unk1;
+            int32 file_type;
+            int32 unk2[2];
             int32 nextFileCount;
             int32 previousFileCount;
-            int32 unk2;
-            int32 timestamp;
+            int32 unk3;
+            time_t timestamp;
             byte fileString[128];
-            int32 unk3[5];
+            int32 unk4[5];
         } NameTable[FileData2.indexCount];
         byte rawDataTableOffset[FileData2.rawDataTableOffset-FTell()];
         struct {
