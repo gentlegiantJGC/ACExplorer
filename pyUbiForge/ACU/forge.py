@@ -57,11 +57,11 @@ class Forge(BaseForge):
 		for n in range(index_count):
 			if index_table['raw_data_size'][n] != name_table['raw_data_size'][n]:
 				raise Exception('These should be the same. Is something wrong?')
-			self._datafiles[index_table['raw_data_size'][n]] = DataFile(
-				index_table['raw_data_offset'][n],
-				index_table['raw_data_size'][n],
+			self._datafiles[int(index_table['file_id'][n])] = DataFile(
+				int(index_table['raw_data_offset'][n]),
+				int(index_table['raw_data_size'][n]),
 				name_table['file_name'][n].replace(b'\x00', b'').decode("utf-8"),
-				name_table['file_type'][n]
+				int(name_table['file_type'][n])
 			)
 
 		forge_file.close()
