@@ -1,6 +1,7 @@
 import os
 import json
 import numpy
+import time
 from typing import Union, Tuple
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
@@ -144,97 +145,110 @@ class LastUsed:
 class LightDictionary:
 	def __init__(self, py_ubi_forge):
 		self.pyUbiForge = py_ubi_forge
-		self._light_dictionary = {}
+		self._light_dictionary = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
+		self._light_dictionary_temp = []
 		self._changed = False
 		self._forge_to_index = {}
 		self._index_to_forge = {}
 		self._max_forge_index = 0
 
-	@property
-	def changed(self):
-		return self._changed
-
-	def load(self):
-		"""Load the light dictionary file from disk into memory if it exists."""
-		self.clear()
-		if os.path.isfile(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.json'):
-			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.json', 'r') as light_dict:
-				self._light_dictionary = json.load(light_dict)
-			self._forge_to_index = self._light_dictionary['forge_index']
-			self._max_forge_index = len(self._forge_to_index)
-			del self._light_dictionary['forge_index']
-			self._index_to_forge = {val: key for key, val in self._forge_to_index.items()}
-
-	def save(self):
-		"""Save the light dictionary in memory back to disk if it has changed."""
-		if self.changed:
-			if not os.path.isdir('./resources/lightDict'):
-				os.makedirs('./resources/lightDict')
-			temp_light_dict = self._light_dictionary
-			temp_light_dict['forge_index'] = self._forge_to_index
-			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.json', 'w') as f:
-				json.dump(temp_light_dict, f)
-
 	def clear(self):
-		self._light_dictionary.clear()
-		self._changed = False
+		self._light_dictionary = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
+		self._light_dictionary_temp = []
+		self._changed = True
 		self._forge_to_index.clear()
 		self._index_to_forge.clear()
 		self._max_forge_index = 0
 
-	def get(self, file_id: int, forge_file_name: str = None) -> Union[Tuple[str, int], Tuple[None, None]]:
-		file_id = self.int_to_base64(file_id)
-		forge_file_index = None
-		if forge_file_name is not None:
-			forge_file_index = self._forge_to_index[forge_file_name]
-		if file_id in self._light_dictionary:
-			if forge_file_index is not None and forge_file_index in self._light_dictionary[file_id]:
-				return forge_file_name, self.base64_to_int(self._light_dictionary[file_id][0])
-			else:
-				forge_file_index = list(self._light_dictionary[file_id].keys())[0]
-				return self._index_to_forge[forge_file_index], self.base64_to_int(self._light_dictionary[file_id][forge_file_index][0])
-		else:
-			return None, None
+	def _forge_index(self, forge_file_name: str) -> int:
+		if forge_file_name not in self._forge_to_index:
+			self._forge_to_index[forge_file_name] = self._max_forge_index
+			self._index_to_forge[self._max_forge_index] = forge_file_name
+			self._max_forge_index += 1
+		return self._forge_to_index[forge_file_name]
+
+	@property
+	def changed(self):
+		return self._changed
 
 	@property
 	def list(self) -> list:
-		return [self.base64_to_int(file_id) for file_id in self._light_dictionary.keys()]
+		return list(self._light_dictionary[:, 0])
+
+	def load(self):
+		"""Load the light dictionary file from disk into memory if it exists."""
+		self.clear()
+
+		if os.path.isfile(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld'):
+			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld', 'rb') as light_dict:
+				header_len = int(numpy.fromfile(light_dict, numpy.uint32, 1))
+				header = json.loads(light_dict.read(header_len).decode('utf-8'))
+				self._forge_to_index = header['forge_index']
+				self._light_dictionary = numpy.fromfile(
+					light_dict,
+					numpy.uint64
+					# [
+					# 	('file_id', numpy.uint64),
+					# 	('forge_file', numpy.uint64),
+					# 	('datafile_id', numpy.uint64)
+					# ]
+				).reshape((-1, 3))
+			self._max_forge_index = len(self._forge_to_index)
+			self._index_to_forge = {val: key for key, val in self._forge_to_index.items()}
+
+	def save(self):
+		"""Save the light dictionary in memory back to disk if it has changed."""
+		self._merge_light_dict_temp()
+		if self.changed:
+			if not os.path.isdir('./resources/lightDict'):
+				os.makedirs('./resources/lightDict')
+			header = json.dumps(
+				{
+					'forge_index': self._forge_to_index
+				}
+			).encode()
+			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld', 'wb') as f:
+				numpy.uint32(len(header)).tofile(f)
+				f.write(header)
+				self._light_dictionary.tofile(f)
+
+	def get(self, file_id: int, forge_file_name: str = None) -> Union[Tuple[str, int], Tuple[None, None]]:
+		"""Find a datafile containing a file id with optional forge file name
+
+		:param file_id: numerical file id of an end file
+		:param forge_file_name: string name of the forge file (optional)
+		:return: (forge file name, datafile id)
+		"""
+		self._merge_light_dict_temp()
+		where = numpy.where(self._light_dictionary[:, 0] == file_id)[0]
+		if len(where) > 0:
+			if forge_file_name is not None:
+				where2 = numpy.where(self._light_dictionary[where, 1] == self._forge_index(forge_file_name))[0]
+				if len(where2) > 0:
+					return forge_file_name, int(self._light_dictionary[where[where2][0], 2])
+			return self._index_to_forge[int(self._light_dictionary[where[0], 1])], int(self._light_dictionary[where[0], 2])
+		else:
+			return None, None
 
 	def add(self, file_id: int, forge_file_name: str, datafile_id: int):
-		file_id = self.int_to_base64(file_id)
-		datafile_id = self.int_to_base64(datafile_id)
-		if forge_file_name not in self._forge_to_index:
-			self._forge_to_index[forge_file_name] = self.int_to_base64(self._max_forge_index)
-			self._index_to_forge[self._forge_to_index[forge_file_name]] = forge_file_name
-			self._max_forge_index += 1
-		forge_file_name = self._forge_to_index[forge_file_name]
-		if file_id not in self._light_dictionary:
-			self._light_dictionary[file_id] = {}
-		if forge_file_name not in self._light_dictionary[file_id]:
-			self._light_dictionary[file_id][forge_file_name] = []
-		if datafile_id not in self._light_dictionary[file_id][forge_file_name]:
-			self._light_dictionary[file_id][forge_file_name].append(datafile_id)
-			self._changed = True
+		forge_file_name = self._forge_index(forge_file_name)
+		self._light_dictionary_temp.append(
+			(file_id, forge_file_name, datafile_id)
+		)
 
-	@staticmethod
-	def int_to_base64(inp: int) -> str:
-		if inp == 0:
-			return 'A'
-		output = []
-		table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-		while inp > 0:
-			output.insert(0, table[inp & 63])
-			inp = inp >> 6
-		return ''.join(output)
-
-	@staticmethod
-	def base64_to_int(inp: str) -> int:
-		output = 0
-		table = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9, 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15, 'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23, 'Y': 24, 'Z': 25, 'a': 26, 'b': 27, 'c': 28, 'd': 29, 'e': 30, 'f': 31, 'g': 32, 'h': 33, 'i': 34, 'j': 35, 'k': 36, 'l': 37, 'm': 38, 'n': 39, 'o': 40, 'p': 41, 'q': 42, 'r': 43, 's': 44, 't': 45, 'u': 46, 'v': 47, 'w': 48, 'x': 49, 'y': 50, 'z': 51, '0': 52, '1': 53, '2': 54, '3': 55, '4': 56, '5': 57, '6': 58, '7': 59, '8': 60, '9': 61, '+': 62, '/': 63}
-		for c in inp:
-			output = output << 6
-			output += table[c]
-		return output
+	def _merge_light_dict_temp(self):
+		if len(self._light_dictionary_temp) > 0:
+			count = len(self._light_dictionary)
+			self._light_dictionary = numpy.append(
+				self._light_dictionary,
+				numpy.array(self._light_dictionary_temp, numpy.uint64),
+				axis=0
+			)
+			_, index = numpy.unique(self._light_dictionary[:, :1], axis=0, return_index=True)
+			self._light_dictionary = self._light_dictionary[index, :]
+			self._light_dictionary_temp = []
+			if count != len(self._light_dictionary):
+				self._changed = True
 
 
 class TempFilesContainer:
