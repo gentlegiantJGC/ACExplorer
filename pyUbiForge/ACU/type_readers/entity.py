@@ -25,8 +25,10 @@ class Reader(BaseReader):
 
 		for _ in range(count1):
 			file_object_data_wrapper.out_file_write('\n')
-			if file_object_data_wrapper.read_bytes(2 + 1) not in [b'\x04\x00', b'\x00\x01']:  # 04 00
+			file_object_data_wrapper.indent()
+			if file_object_data_wrapper.read_bytes(2) not in [b'\x04\x00', b'\x00\x01']:  # 04 00
 				raise Exception
+			file_object_data_wrapper.indent(-1)
 
 			self.nested_files.append(py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper))
 
