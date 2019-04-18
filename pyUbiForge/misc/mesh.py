@@ -1,6 +1,7 @@
 import os
 import shutil
 import numpy
+from concurrent.futures import ThreadPoolExecutor
 import urllib.parse
 from pyUbiForge.misc import texture
 from typing import Union, List
@@ -111,6 +112,30 @@ class ObjMtl:
 		"""
 		mtl = open(f'{self.save_folder}{os.sep}{self.model_name}.mtl', 'w')
 		mtl.write('# Material Library\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
+
+		with ThreadPoolExecutor(max_workers=10) as executor:
+			fild_ids = [
+				file_id
+				for
+				material in self.mtl_handler.materials.values()
+				if not material.missing_no for
+				map_type, file_id in [
+					['map_Kd', material.diffuse],
+					['map_d', material.diffuse],
+					['map_Ks', material.specular],
+					['map_bump', material.normal],
+					['disp', material.height]
+				]
+				if file_id is not None
+			]
+			materials = list(executor.map(
+				texture.export_dds,
+				[self.pyUbiForge] * len(fild_ids),
+				fild_ids,
+				[self.save_folder] * len(fild_ids)
+			))
+
+		material_counter = 0
 		for material in self.mtl_handler.materials.values():
 			mtl.write(f'newmtl {material.name}\n')
 			mtl.write('Ka 1.000 1.000 1.000\nKd 1.000 1.000 1.000\nKs 0.000 0.000 0.000\nNs 0.000\n')
@@ -126,14 +151,14 @@ class ObjMtl:
 											['map_bump', material.normal],
 											['disp', material.height]
 										]:
-					if file_id is None:
-						continue
-					image_path = texture.export_dds(self.pyUbiForge, file_id, self.save_folder)
-					if image_path is None:
-						mtl.write(f"{map_type} {os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
-						self.export_missing_no()
-					else:
-						mtl.write(f'{map_type} {os.path.basename(image_path)}\n')
+					if file_id is not None:
+						image_path = materials[material_counter]
+						material_counter += 1
+						if image_path is None:
+							mtl.write(f"{map_type} {os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
+							self.export_missing_no()
+						else:
+							mtl.write(f'{map_type} {os.path.basename(image_path)}\n')
 			mtl.write('\n')
 		mtl.close()
 		self._obj.close()
