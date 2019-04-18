@@ -40,6 +40,7 @@ class App(QtWidgets.QApplication):
 		self.horizontal_layout.addWidget(self.game_select)
 
 		# search box
+		self._last_search = ''
 		self.search_box = QtWidgets.QLineEdit(self.central_widget)
 		self.search_box.setObjectName("search_box")
 		self.search_box.editingFinished.connect(self.search)
@@ -99,7 +100,9 @@ class App(QtWidgets.QApplication):
 		self.pyUbiForge.log.info(__name__, '')
 
 	def search(self):
-		self.file_view.search(self.search_box.text())
+		if self.search_box.text() != self._last_search:
+			self._last_search = self.search_box.text()
+			self.file_view.search(self.search_box.text())
 
 
 class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):
