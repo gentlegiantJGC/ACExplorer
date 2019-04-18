@@ -147,6 +147,7 @@ class LightDictionary:
 		self.pyUbiForge = py_ubi_forge
 		self._light_dictionary = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
 		self._light_dictionary_temp = []
+		self._light_dictionary_set = set()
 		self._changed = False
 		self._forge_to_index = {}
 		self._index_to_forge = {}
@@ -155,7 +156,8 @@ class LightDictionary:
 	def clear(self):
 		self._light_dictionary = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
 		self._light_dictionary_temp = []
-		self._changed = True
+		self._light_dictionary_set.clear()
+		self._changed = False
 		self._forge_to_index.clear()
 		self._index_to_forge.clear()
 		self._max_forge_index = 0
@@ -193,6 +195,7 @@ class LightDictionary:
 					# 	('datafile_id', numpy.uint64)
 					# ]
 				).reshape((-1, 3))
+				self._light_dictionary_set = set(map(tuple, self._light_dictionary[:, :2]))
 			self._max_forge_index = len(self._forge_to_index)
 			self._index_to_forge = {val: key for key, val in self._forge_to_index.items()}
 
@@ -210,7 +213,8 @@ class LightDictionary:
 			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld', 'wb') as f:
 				numpy.uint32(len(header)).tofile(f)
 				f.write(header)
-				self._light_dictionary.tofile(f)
+				_, index = numpy.unique(self._light_dictionary[:, :2], axis=0, return_index=True)
+				self._light_dictionary[index, :].tofile(f)
 
 	def get(self, file_id: int, forge_file_name: str = None) -> Union[Tuple[str, int], Tuple[None, None]]:
 		"""Find a datafile containing a file id with optional forge file name
@@ -232,23 +236,21 @@ class LightDictionary:
 
 	def add(self, file_id: int, forge_file_name: str, datafile_id: int):
 		forge_file_name = self._forge_index(forge_file_name)
-		self._light_dictionary_temp.append(
-			(file_id, forge_file_name, datafile_id)
-		)
+		if not (file_id, forge_file_name) in self._light_dictionary_set:
+			self._light_dictionary_set.add((file_id, forge_file_name))
+			self._light_dictionary_temp.append(
+				(file_id, forge_file_name, datafile_id)
+			)
 
 	def _merge_light_dict_temp(self):
 		if len(self._light_dictionary_temp) > 0:
-			count = len(self._light_dictionary)
 			self._light_dictionary = numpy.append(
 				self._light_dictionary,
 				numpy.array(self._light_dictionary_temp, numpy.uint64),
 				axis=0
 			)
-			_, index = numpy.unique(self._light_dictionary[:, :1], axis=0, return_index=True)
-			self._light_dictionary = self._light_dictionary[index, :]
 			self._light_dictionary_temp = []
-			if count != len(self._light_dictionary):
-				self._changed = True
+			self._changed = True
 
 
 class TempFilesContainer:
