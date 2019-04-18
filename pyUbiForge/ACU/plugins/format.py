@@ -13,6 +13,8 @@ class Plugin(BasePlugin):
 		if data is None:
 			py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
 			return
+		if not os.path.isdir(py_ubi_forge.CONFIG.get('dumpFolder', 'output')):
+			os.makedirs(py_ubi_forge.CONFIG.get('dumpFolder', 'output'))
 		out_file = open(
 			os.path.join(
 				py_ubi_forge.CONFIG.get('dumpFolder', 'output'),

@@ -1,4 +1,5 @@
 import json
+import os
 
 
 class Config:
@@ -37,6 +38,11 @@ class Config:
 		return self.CONFIG
 
 	def get(self, item, default=None):
+		if item == 'dumpFolder':
+			path = self.CONFIG.get(item, default)
+			if not os.path.isdir(path):
+				os.makedirs(path)
+			return path
 		return self.CONFIG.get(item, default)
 
 	def __setitem__(self, key, value):

@@ -62,6 +62,8 @@ class ObjMtl:
 		self.missing_no_exported = False
 
 		# the obj file object
+		if not os.path.isdir(self.save_folder):
+			os.makedirs(self.save_folder)
 		self._obj = open(f'{self.save_folder}{os.sep}{self.model_name}.obj', 'w')
 		self._obj.write('#Wavefront Object File\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
 		self._obj.write(f'mtllib ./{self.model_name}.mtl\n')
@@ -110,6 +112,8 @@ class ObjMtl:
 		when finished will close both mtl and self._obj
 		:return:
 		"""
+		if not os.path.isdir(self.save_folder):
+			os.makedirs(self.save_folder)
 		mtl = open(f'{self.save_folder}{os.sep}{self.model_name}.mtl', 'w')
 		mtl.write('# Material Library\n#Exported by ACExplorer, written by gentlegiantJGC, based on code from ARchive_neXt\n\n')
 
