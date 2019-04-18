@@ -318,7 +318,7 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 		self.setWindowTitle(plugin_name)
 		self.setWindowIcon(QtGui.QIcon('icon.ico'))
 
-		self._vertical_layout = QtWidgets.QVBoxLayout(self)
+		self._vertical_layout = QtWidgets.QVBoxLayout()
 		self._vertical_layout.setObjectName("verticalLayout")
 		self.setLayout(self._vertical_layout)
 
