@@ -10,7 +10,7 @@ a = Analysis(
 		('./pyUbiForge', './pyUbiForge'),
 		('./icon.ico', '.')
 	],
-	hiddenimports=[],
+	hiddenimports=['PIL.Image'],
 	hookspath=[],
 	runtime_hooks=[],
 	excludes=[],
