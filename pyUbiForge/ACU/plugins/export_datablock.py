@@ -7,7 +7,6 @@ from pyUbiForge.ACU.type_readers.lod_selector import Reader as LODSelector
 from pyUbiForge.ACU.type_readers.mesh_instance_data import Reader as MeshInstanceData
 from typing import Union, List, Dict
 import numpy
-# from multiprocessing.connection import Client
 
 
 class Plugin(BasePlugin):
@@ -78,7 +77,7 @@ class Plugin(BasePlugin):
 							else:
 								for trm in mesh_instance_data.transformation_matrix:
 									obj_handler.export(model, model_data.file_name, numpy.matmul(transform, trm))
-							py_ubi_forge.log.info(__name__, f'Exported {data.file_id:016X}')
+							py_ubi_forge.log.info(__name__, f'Exported {model_data.file_name}')
 				else:
 					py_ubi_forge.log.info(__name__, f'File type "{data.file_type}" is not currently supported. It has been skipped')
 			obj_handler.save_and_close()
