@@ -1,8 +1,7 @@
 import os
 import json
 import numpy
-import time
-from typing import Union, Tuple
+from typing import Union, Tuple, Dict
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 """
@@ -145,18 +144,20 @@ class LastUsed:
 class LightDictionary:
 	def __init__(self, py_ubi_forge):
 		self.pyUbiForge = py_ubi_forge
-		self._light_dictionary = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
+		self._light_dictionary_numpy = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
 		self._light_dictionary_temp = []
-		self._light_dictionary_set = set()
+		self._light_dictionary: Dict[Tuple[int, int], int] = {}
+		self._light_dictionary_no_forge: Dict[int, Tuple[int, int]] = {}
 		self._changed = False
 		self._forge_to_index = {}
 		self._index_to_forge = {}
 		self._max_forge_index = 0
 
 	def clear(self):
-		self._light_dictionary = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
+		self._light_dictionary_numpy = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
 		self._light_dictionary_temp = []
-		self._light_dictionary_set.clear()
+		self._light_dictionary.clear()
+		self._light_dictionary_no_forge.clear()
 		self._changed = False
 		self._forge_to_index.clear()
 		self._index_to_forge.clear()
@@ -175,7 +176,7 @@ class LightDictionary:
 
 	@property
 	def list(self) -> list:
-		return list(self._light_dictionary[:, 0])
+		return list(self._light_dictionary_no_forge.items())
 
 	def load(self):
 		"""Load the light dictionary file from disk into memory if it exists."""
@@ -186,7 +187,7 @@ class LightDictionary:
 				header_len = int(numpy.fromfile(light_dict, numpy.uint32, 1))
 				header = json.loads(light_dict.read(header_len).decode('utf-8'))
 				self._forge_to_index = header['forge_index']
-				self._light_dictionary = numpy.fromfile(
+				self._light_dictionary_numpy = numpy.fromfile(
 					light_dict,
 					numpy.uint64
 					# [
@@ -195,7 +196,24 @@ class LightDictionary:
 					# 	('datafile_id', numpy.uint64)
 					# ]
 				).reshape((-1, 3))
-				self._light_dictionary_set = set(map(tuple, self._light_dictionary[:, :2]))
+				self._light_dictionary = dict(
+					zip(
+						map(
+							tuple,
+							self._light_dictionary_numpy[:, :2]
+						),
+						self._light_dictionary_numpy[:, 2]
+					)
+				)
+				self._light_dictionary_no_forge = dict(
+					zip(
+						self._light_dictionary_numpy[:, 0],
+						map(
+							tuple,
+							self._light_dictionary_numpy[:, 1:]
+						)
+					)
+				)
 			self._max_forge_index = len(self._forge_to_index)
 			self._index_to_forge = {val: key for key, val in self._forge_to_index.items()}
 
@@ -213,8 +231,8 @@ class LightDictionary:
 			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld', 'wb') as f:
 				numpy.uint32(len(header)).tofile(f)
 				f.write(header)
-				_, index = numpy.unique(self._light_dictionary[:, :2], axis=0, return_index=True)
-				self._light_dictionary[index, :].tofile(f)
+				_, index = numpy.unique(self._light_dictionary_numpy[:, :2], axis=0, return_index=True)
+				self._light_dictionary_numpy[index, :].tofile(f)
 
 	def get(self, file_id: int, forge_file_name: str = None) -> Union[Tuple[str, int], Tuple[None, None]]:
 		"""Find a datafile containing a file id with optional forge file name
@@ -223,29 +241,30 @@ class LightDictionary:
 		:param forge_file_name: string name of the forge file (optional)
 		:return: (forge file name, datafile id)
 		"""
-		self._merge_light_dict_temp()
-		where = numpy.where(self._light_dictionary[:, 0] == file_id)[0]
-		if len(where) > 0:
-			if forge_file_name is not None:
-				where2 = numpy.where(self._light_dictionary[where, 1] == self._forge_index(forge_file_name))[0]
-				if len(where2) > 0:
-					return forge_file_name, int(self._light_dictionary[where[where2][0], 2])
-			return self._index_to_forge[int(self._light_dictionary[where[0], 1])], int(self._light_dictionary[where[0], 2])
+		if forge_file_name is not None:
+			forge_file_index = self._forge_index(forge_file_name)
+			if (file_id, forge_file_index) in self._light_dictionary:
+				return forge_file_name, self._light_dictionary[(file_id, forge_file_index)]
+		if file_id in self._light_dictionary_no_forge:
+			forge_file_index, datafile_id = self._light_dictionary_no_forge[file_id]
+			return self._index_to_forge[forge_file_index], datafile_id
 		else:
 			return None, None
 
 	def add(self, file_id: int, forge_file_name: str, datafile_id: int):
-		forge_file_name = self._forge_index(forge_file_name)
-		if not (file_id, forge_file_name) in self._light_dictionary_set:
-			self._light_dictionary_set.add((file_id, forge_file_name))
+		forge_file_index = self._forge_index(forge_file_name)
+		if (file_id, forge_file_index) not in self._light_dictionary:
+			self._light_dictionary[(file_id, forge_file_index)] = datafile_id
+			if file_id not in self._light_dictionary_no_forge:
+				self._light_dictionary_no_forge[file_id] = (forge_file_index, datafile_id)
 			self._light_dictionary_temp.append(
-				(file_id, forge_file_name, datafile_id)
+				(file_id, forge_file_index, datafile_id)
 			)
 
 	def _merge_light_dict_temp(self):
 		if len(self._light_dictionary_temp) > 0:
-			self._light_dictionary = numpy.append(
-				self._light_dictionary,
+			self._light_dictionary_numpy = numpy.append(
+				self._light_dictionary_numpy,
 				numpy.array(self._light_dictionary_temp, numpy.uint64),
 				axis=0
 			)
