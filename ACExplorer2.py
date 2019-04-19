@@ -7,6 +7,7 @@ import pyUbiForge
 from typing import Union, Dict, List, Tuple
 from PySide2 import QtCore, QtGui, QtWidgets
 import time
+import os
 
 
 class App(QtWidgets.QApplication):
@@ -15,11 +16,13 @@ class App(QtWidgets.QApplication):
 	"""
 	def __init__(self):
 		QtWidgets.QApplication.__init__(self)
-		with open('./resources/themes/QDarkStyle/style.qss') as style:
-			self.setStyleSheet(style.read())
 		self.pyUbiForge = pyUbiForge.PyUbiForgeMain()
 		self.log = self.pyUbiForge.log
 		self.log.info(__name__, 'Building GUI Window')
+
+		# load the style
+		self.icons = {}
+		self.load_style('QDarkStyle')
 
 		# set up main window
 		self.main_window = QtWidgets.QMainWindow()
@@ -49,7 +52,7 @@ class App(QtWidgets.QApplication):
 		self.horizontal_layout.addWidget(self.search_box)
 
 		# file tree view
-		self.file_view = TreeView(self.pyUbiForge, self.central_widget)
+		self.file_view = TreeView(self.pyUbiForge, self.central_widget, self.icons)
 		self.file_view.setObjectName("file_view")
 		self.vertical_layout.addWidget(self.file_view)
 
@@ -106,6 +109,13 @@ class App(QtWidgets.QApplication):
 			self._last_search = self.search_box.text()
 			self.file_view.search(self.search_box.text())
 
+	def load_style(self, style_name: str):
+		with open(f'./resources/themes/{style_name}/style.qss') as style:
+			self.setStyleSheet(style.read())
+		self.icons['context_right_click_icon'] = QtGui.QIcon('resources/icons/right_click.ico')
+		if os.path.isfile(f'resources/themes/{style_name}/icons/context_right_click.png'):
+			self.icons['context_right_click_icon'] = QtGui.QIcon(f'resources/themes/{style_name}/icons/context_right_click.png')
+
 
 class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):
 	def __init__(self, parent: QtWidgets.QMainWindow, log: pyUbiForge.misc.log.Logger):
@@ -125,8 +135,9 @@ class TreeView(QtWidgets.QTreeWidget):
 	"""This is the file tree used in the main application.
 	Wraps QTreeWidget and adds search functionality and a context menu
 	"""
-	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, parent):
+	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, parent: QtWidgets.QWidget, icons: Dict[str, QtGui.QIcon]):
 		QtWidgets.QTreeWidget.__init__(self, parent)
+		self.icons = icons
 		self.pyUbiForge = py_ubi_forge
 		self._entries: Dict[Tuple[Union[None, str], Union[None, int], Union[None, int]], TreeViewEntry] = {}
 		self._game_identifier = None
@@ -180,7 +191,7 @@ class TreeView(QtWidgets.QTreeWidget):
 			unique_identifier = (None, entry.forge_file_name, entry.datafile_id, entry.file_id)[entry.depth-1]
 			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(entry.depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
 
-			menu = ContextMenu(self.pyUbiForge, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
+			menu = ContextMenu(self.pyUbiForge, self.icons, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
 			menu.exec_(self.viewport().mapToGlobal(position))
 			self.populate_tree()
 
@@ -259,10 +270,11 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 
 class ContextMenu(QtWidgets.QMenu):
 	"""Context menu for use upon right click of an item in the file tree to access the plugin system."""
-	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
+	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, icons: Dict[str, QtGui.QIcon], plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
 		QtWidgets.QMenu.__init__(self)
 		self.pyUbiForge = py_ubi_forge
-		self._right_click_icon = QtGui.QIcon('resources/icons/right_click.ico')
+		self.icons = icons
+
 		for plugin_name in sorted(plugin_names):
 			self.add_command(plugin_name, file_id, forge_file_name, datafile_id)
 
@@ -275,7 +287,7 @@ class ContextMenu(QtWidgets.QMenu):
 			)
 		else:
 			self.addAction(
-				self._right_click_icon,
+				self.icons.get('context_right_click_icon', None),
 				plugin_name,
 				lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
 			)
