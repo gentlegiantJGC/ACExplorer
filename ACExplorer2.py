@@ -9,6 +9,8 @@ from PySide2 import QtCore, QtGui, QtWidgets
 import time
 import os
 import json
+import sys
+import subprocess
 
 
 class App(QtWidgets.QApplication):
@@ -57,14 +59,6 @@ class App(QtWidgets.QApplication):
 		self.file_view.setHeaderHidden(True)
 		self.vertical_layout.addWidget(self.file_view)
 
-		# menu options
-		self.menubar = QtWidgets.QMenuBar()
-		self.menubar.setGeometry(QtCore.QRect(0, 0, 809, 26))
-		self.menubar.setObjectName("menubar")
-		self.file_menu = QtWidgets.QMenu()
-		self.file_menu.setObjectName("file_menu")
-		self.main_window.setMenuBar(self.menubar)
-
 		default_options = {
 			"style": 'QDarkStyle'
 		}
@@ -78,9 +72,25 @@ class App(QtWidgets.QApplication):
 		except:
 			self._options = default_options
 
+		# menu options
+		self.menubar = QtWidgets.QMenuBar()
+		self.menubar.setGeometry(QtCore.QRect(0, 0, 809, 26))
+		self.menubar.setObjectName("menubar")
+		self.main_window.setMenuBar(self.menubar)
+
+		self.menubar.addAction(
+			'Games',
+			lambda: self._show_games()
+		)
+
 		self.menubar.addAction(
 			'Options',
-			lambda: print(time.time())
+			lambda: self._show_options()
+		)
+
+		self.menubar.addAction(
+			'Donate',
+			lambda: self._donate()
 		)
 
 		# statusbar
@@ -88,10 +98,6 @@ class App(QtWidgets.QApplication):
 		self.statusbar.setObjectName("statusbar")
 		self.main_window.setStatusBar(self.statusbar)
 		self.statusbar.start()
-		self.options_button = QtWidgets.QAction()
-		self.options_button.setObjectName("actionOptions")
-		self.file_menu.addAction(self.options_button)
-		self.menubar.addAction(self.file_menu.menuAction())
 
 		self.load_style(self._options['style'])
 
@@ -104,8 +110,6 @@ class App(QtWidgets.QApplication):
 
 	def translate_(self):
 		self.main_window.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "ACExplorer"))
-		self.file_menu.setTitle(QtWidgets.QApplication.translate("MainWindow", "File"))
-		self.options_button.setText(QtWidgets.QApplication.translate("MainWindow", "Options"))
 
 	def load_game(self, game_identifier: str):
 		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
@@ -142,6 +146,63 @@ class App(QtWidgets.QApplication):
 		if os.path.isfile(f'resources/themes/{style_name}/icons/context_right_click.png'):
 			self.icons['context_right_click_icon'] = QtGui.QIcon(f'resources/themes/{style_name}/icons/context_right_click.png')
 
+	def _show_games(self):
+		current_game_path = self.pyUbiForge.CONFIG.game_folder(self.game_select.currentText())
+		screen = PluginOptionsScreen(
+			self.pyUbiForge,
+			'Game Paths',
+			{
+				game_identifier: {
+					'type': 'dir_select',
+					'default': game_path
+				} for game_identifier, game_path in self.pyUbiForge.CONFIG.get('gameFolders', {}).items()
+			}
+		)
+		self.pyUbiForge.CONFIG['gameFolders'] = screen.options
+		if self.pyUbiForge.CONFIG.game_folder(self.game_select.currentText()) != current_game_path:
+			self.load_game(self.game_select.currentText())
+
+	def _show_options(self):
+		screen = PluginOptionsScreen(
+			self.pyUbiForge,
+			'Options',
+			{
+				'Missing Texture Path': {
+					'type': 'file_select',
+					'default': self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png')
+				},
+				'Default Output Folder': {
+					'type': 'dir_select',
+					'default': self.pyUbiForge.CONFIG.get('dumpFolder', 'output')
+				},
+				'Log File': {
+					'type': 'file_select',
+					'default': self.pyUbiForge.CONFIG.get('logFile', 'ACExplorer.log')
+				},
+				'Temporary Files Memory Buffer (MB)': {
+					'type': 'int_entry',
+					'default': self.pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048)
+				}
+			}
+		)
+		options = screen.options
+		self.pyUbiForge.CONFIG['missingNo'] = options['Missing Texture Path']
+		self.pyUbiForge.CONFIG['dumpFolder'] = options['Default Output Folder']
+		self.pyUbiForge.CONFIG['logFile'] = options['Log File']
+		self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB'] = options['Temporary Files Memory Buffer (MB)']
+
+	@staticmethod
+	def _donate():
+		if sys.platform == 'win32':
+			os.startfile('https://www.paypal.me/gentlegiantJGC')
+		elif sys.platform == 'darwin':
+			subprocess.Popen(['open', 'https://www.paypal.me/gentlegiantJGC'])
+		else:
+			try:
+				subprocess.Popen(['xdg-open', 'https://www.paypal.me/gentlegiantJGC'])
+			except OSError:
+				pass
+
 
 class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):
 	def __init__(self, parent: QtWidgets.QMainWindow, log: pyUbiForge.misc.log.Logger):
@@ -172,7 +233,7 @@ class TreeView(QtWidgets.QTreeWidget):
 
 	def load_game(self, game_identifier: str):
 		self._entries.clear()
-		# TODO: check that this removes entries from the tree
+		self.clear()
 		self._game_identifier = game_identifier
 		self.insert(game_identifier)
 
