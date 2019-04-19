@@ -40,7 +40,7 @@ class Config:
 	def get(self, item, default=None):
 		if item == 'dumpFolder':
 			path = self.CONFIG.get(item, default)
-			if not os.path.isdir(path):
+			if path != '' and not os.path.isdir(path):
 				os.makedirs(path)
 			return path
 		return self.CONFIG.get(item, default)

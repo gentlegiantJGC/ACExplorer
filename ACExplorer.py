@@ -158,9 +158,10 @@ class App(QtWidgets.QApplication):
 				} for game_identifier, game_path in self.pyUbiForge.CONFIG.get('gameFolders', {}).items()
 			}
 		)
-		self.pyUbiForge.CONFIG['gameFolders'] = screen.options
-		if self.pyUbiForge.CONFIG.game_folder(self.game_select.currentText()) != current_game_path:
-			self.load_game(self.game_select.currentText())
+		if not screen.escape:
+			self.pyUbiForge.CONFIG['gameFolders'] = screen.options
+			if self.pyUbiForge.CONFIG.game_folder(self.game_select.currentText()) != current_game_path:
+				self.load_game(self.game_select.currentText())
 
 	def _show_options(self):
 		screen = PluginOptionsScreen(
@@ -186,10 +187,11 @@ class App(QtWidgets.QApplication):
 			}
 		)
 		options = screen.options
-		self.pyUbiForge.CONFIG['missingNo'] = options['Missing Texture Path']
-		self.pyUbiForge.CONFIG['dumpFolder'] = options['Default Output Folder']
-		self.pyUbiForge.CONFIG['logFile'] = options['Log File']
-		self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB'] = options['Temporary Files Memory Buffer (MB)']
+		if not screen.escape:
+			self.pyUbiForge.CONFIG['missingNo'] = options['Missing Texture Path']
+			self.pyUbiForge.CONFIG['dumpFolder'] = options['Default Output Folder']
+			self.pyUbiForge.CONFIG['logFile'] = options['Log File']
+			self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB'] = options['Temporary Files Memory Buffer (MB)']
 
 	@staticmethod
 	def _donate():
@@ -539,10 +541,10 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 			text = QtWidgets.QFileDialog.getExistingDirectory(self, "Open Directory", path)
 		elif mode == 'file':
 			text = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", path)
-			if text is not None:
+			if text != '':
 				text = text[0]
 
-		if text is not None:
+		if text != '':
 			self._options[option_name].setText(text)
 
 
