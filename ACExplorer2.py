@@ -8,6 +8,7 @@ from typing import Union, Dict, List, Tuple
 from PySide2 import QtCore, QtGui, QtWidgets
 import time
 import os
+import json
 
 
 class App(QtWidgets.QApplication):
@@ -22,7 +23,6 @@ class App(QtWidgets.QApplication):
 
 		# load the style
 		self.icons = {}
-		self.load_style('QDarkStyle')
 
 		# set up main window
 		self.main_window = QtWidgets.QMainWindow()
@@ -64,6 +64,26 @@ class App(QtWidgets.QApplication):
 		self.file_menu = QtWidgets.QMenu()
 		self.file_menu.setObjectName("file_menu")
 		self.main_window.setMenuBar(self.menubar)
+
+		default_options = {
+			"style": 'QDarkStyle'
+		}
+
+		try:
+			with open('config.json') as config:
+				self._options = json.load(config)
+			for key, val in default_options:
+				if key not in self._options:
+					self._options[key] = val
+		except:
+			self._options = default_options
+
+		self.menubar.addAction(
+			'Options',
+			lambda: print(time.time())
+		)
+
+		# statusbar
 		self.statusbar = StatusBar(self.main_window, self.log)
 		self.statusbar.setObjectName("statusbar")
 		self.main_window.setStatusBar(self.statusbar)
@@ -72,6 +92,8 @@ class App(QtWidgets.QApplication):
 		self.options_button.setObjectName("actionOptions")
 		self.file_menu.addAction(self.options_button)
 		self.menubar.addAction(self.file_menu.menuAction())
+
+		self.load_style(self._options['style'])
 
 		self.translate_()
 		# QtCore.QMetaObject.connectSlotsByName(self.main_window)
@@ -102,6 +124,11 @@ class App(QtWidgets.QApplication):
 			self.processEvents()
 		self.pyUbiForge.log.info(__name__, 'Finished Populating File Tree')
 		self.pyUbiForge.log.info(__name__, '')
+
+	def save(self):
+		self.pyUbiForge.save()
+		with open('config.json', 'w') as config:
+			json.dump(self._options, config)
 
 	def search(self):
 		if self.search_box.text() != self._last_search:
@@ -460,4 +487,4 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 
 if __name__ == "__main__":
 	app = App()
-	app.pyUbiForge.save()
+	app.save()
