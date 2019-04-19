@@ -39,14 +39,14 @@ class App(QtWidgets.QApplication):
 		self.vertical_layout.addLayout(self.horizontal_layout)
 
 		# drop down box to select the game
-		self.game_select = QtWidgets.QComboBox(self.central_widget)
+		self.game_select = QtWidgets.QComboBox()
 		self.game_select.setObjectName("game_select")
 		self.game_select.addItems(self.pyUbiForge.game_identifiers)
 		self.horizontal_layout.addWidget(self.game_select)
 
 		# search box
 		self._last_search = ''
-		self.search_box = QtWidgets.QLineEdit(self.central_widget)
+		self.search_box = QtWidgets.QLineEdit()
 		self.search_box.setObjectName("search_box")
 		self.search_box.editingFinished.connect(self.search)
 		self.horizontal_layout.addWidget(self.search_box)
@@ -57,18 +57,17 @@ class App(QtWidgets.QApplication):
 		self.vertical_layout.addWidget(self.file_view)
 
 		# menu options
-		self.menubar = QtWidgets.QMenuBar(self.main_window)
+		self.menubar = QtWidgets.QMenuBar()
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 809, 26))
 		self.menubar.setObjectName("menubar")
-		self.file_menu = QtWidgets.QMenu(self.menubar)
+		self.file_menu = QtWidgets.QMenu()
 		self.file_menu.setObjectName("file_menu")
 		self.main_window.setMenuBar(self.menubar)
 		self.statusbar = StatusBar(self.main_window, self.log)
 		self.statusbar.setObjectName("statusbar")
 		self.main_window.setStatusBar(self.statusbar)
 		self.statusbar.start()
-		# self.statusbar.showMessage('hi')
-		self.options_button = QtWidgets.QAction(self.main_window)
+		self.options_button = QtWidgets.QAction()
 		self.options_button.setObjectName("actionOptions")
 		self.file_menu.addAction(self.options_button)
 		self.menubar.addAction(self.file_menu.menuAction())
