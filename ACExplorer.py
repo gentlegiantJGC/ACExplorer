@@ -145,6 +145,7 @@ class App(QtWidgets.QApplication):
 		self.icons['context_right_click_icon'] = QtGui.QIcon('resources/icons/right_click.ico')
 		if os.path.isfile(f'resources/themes/{style_name}/icons/context_right_click.png'):
 			self.icons['context_right_click_icon'] = QtGui.QIcon(f'resources/themes/{style_name}/icons/context_right_click.png')
+		self._options['style'] = style_name
 
 	def _show_games(self):
 		current_game_path = self.pyUbiForge.CONFIG.game_folder(self.game_select.currentText())
@@ -182,7 +183,14 @@ class App(QtWidgets.QApplication):
 				},
 				'Temporary Files Memory Buffer (MB)': {
 					'type': 'int_entry',
-					'default': self.pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048)
+					'default': self.pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048),
+					"min": 50
+				},
+				'Style': {
+					'type': "select",
+					"options": [
+						theme for theme in os.listdir('./resources/themes') if os.path.isdir(f'./resources/themes/{theme}') and os.path.isfile(f'./resources/themes/{theme}/style.qss')
+					]
 				}
 			}
 		)
@@ -192,6 +200,9 @@ class App(QtWidgets.QApplication):
 			self.pyUbiForge.CONFIG['dumpFolder'] = options['Default Output Folder']
 			self.pyUbiForge.CONFIG['logFile'] = options['Log File']
 			self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB'] = options['Temporary Files Memory Buffer (MB)']
+			if self._options['style'] != options['Style']:
+				self._options['style'] = options['Style']
+				self.load_style(self._options['style'])
 
 	@staticmethod
 	def _donate():
