@@ -2,7 +2,7 @@
 block_cipher = None
 
 a = Analysis(
-	['ACExplorer2.py'],
+	['ACExplorer.py'],
 	pathex=['D:\\Programs\\AC-Explorer'],
 	binaries=[],
 	datas=[
