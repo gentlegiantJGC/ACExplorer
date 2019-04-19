@@ -27,13 +27,25 @@ We finally have a release version that you can download and run without having t
 Extract all files from the zip folder into a directory and run the exe file.
 
 # Using ACExplorer
-Load the program (run ACExplorer.py or ACExplorer.exe depending on which of the above two methods you use).
-Select "Games" in the top left corner which will bring up a dialogue box of paths to each of the games.
-Click the right box for the games you want to add the path and navigate to the install location for that game.
-Click OK.
-The program will read the forge files to get some information and will build the file tree in the UI.
-Click on the arrow next to the entry to expand or contract that entry.
-Right click an entry to see which export methods there are for that file.
+- Load the program (run ACExplorer.py or ACExplorer.exe depending on which of the above two methods you use).
+- Select "Games" in the top left corner which will bring up a dialogue box of paths to each of the games.
+- Click the right box for the games you want to add the path and navigate to the install location for that game.
+- Click OK.
+- The program will read the forge files to get some information and will build the file tree in the UI.
+- Click on the arrow next to the entry to expand or contract that entry.
+- Right click an entry to see which export methods there are for that file.
+
 Some export methods will have a right click mouse button next to them. These have aditional options, such as the export format, which can be obtained by right clicking (the plugin command will be run when the last option screen is filled) or left click to use the previously used options (options do not persist after closing)
 
 Some fun files to export are mesh files (usually end in LOD and a number 0-5 eg LOD0), Cell DataBlock files contain the data of how the individual models are pieced together. There is a plugin to export this data but the exports are incomplete due to incomplete support of the file format.
+
+# Screenshots
+![ACExplorer User Interface](/resources/screenshots/ACExplorer.png)
+![ACExplorer Context Menu](/resources/screenshots/context.png)
+![ACExplorer Plugin Menu](/resources/screenshots/plugin_options.png)
+
+# Example Exports
+![Cell07603](/resources/screenshots/Cell07603.png)
+![Notre Dame](/resources/screenshots/ND1.png)
+![Notre Dame](/resources/screenshots/ND2.png)
+![Notre Dame](/resources/screenshots/ND3.png)
