@@ -54,6 +54,7 @@ class App(QtWidgets.QApplication):
 		# file tree view
 		self.file_view = TreeView(self.pyUbiForge, self.central_widget, self.icons)
 		self.file_view.setObjectName("file_view")
+		self.file_view.setHeaderHidden(True)
 		self.vertical_layout.addWidget(self.file_view)
 
 		# menu options
@@ -83,7 +84,6 @@ class App(QtWidgets.QApplication):
 		self.main_window.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "ACExplorer"))
 		self.file_menu.setTitle(QtWidgets.QApplication.translate("MainWindow", "File"))
 		self.options_button.setText(QtWidgets.QApplication.translate("MainWindow", "Options"))
-		self.file_view.headerItem().setText(0, QtWidgets.QApplication.translate("MainWindow", "Name"))
 
 	def load_game(self, game_identifier: str):
 		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
