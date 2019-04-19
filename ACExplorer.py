@@ -446,7 +446,7 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 			self._labels[-1].setText(option_name)
 			self._horizontal_layouts[-1].addWidget(self._labels[-1])
 			if option_type == 'select':
-				selection = option.get('options', [])
+				selection = [str(op) for op in option.get('options', [])]
 				self._options[option_name] = QtWidgets.QComboBox()
 				self._options[option_name].addItems(selection)
 				self._horizontal_layouts[-1].addWidget(self._options[option_name])
