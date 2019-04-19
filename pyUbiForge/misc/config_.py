@@ -5,7 +5,7 @@ import os
 class Config:
 	def __init__(self):
 		try:
-			with open("config.json") as f:
+			with open(f"{os.path.dirname(__file__)}/../config.json") as f:
 				self.CONFIG = json.load(f)
 		except:
 			self.CONFIG = {}
@@ -52,5 +52,5 @@ class Config:
 		return self.CONFIG.get('gameFolders', {}).get(identifier, ".")
 
 	def save(self):
-		with open('./config.json', 'w') as f:
+		with open(f"{os.path.dirname(__file__)}/../config.json", 'w') as f:
 			json.dump(self.raw, f, indent=4)
