@@ -1555,7 +1555,7 @@ QTreeView::item:!selected:hover,
 QTableView::item:!selected:hover,
 QColumnView::item:!selected:hover {
     outline: 0;
-    color: #148CD2;
+    color: #FFFFFF;
     background-color: #32414B;
 }
 
@@ -1563,8 +1563,8 @@ QListView::item:selected:hover,
 QTreeView::item:selected:hover,
 QTableView::item:selected:hover,
 QColumnView::item:selected:hover {
-    background: #1464A0;
-    color:  #19232D;
+    background: #445866;
+    color:  #FFFFFF;
 }
 
 QTreeView::indicator:checked,
@@ -1655,7 +1655,7 @@ QListView::item:selected:active,
 QTreeView::item:selected:active,
 QTableView::item:selected:active,
 QColumnView::item:selected:active {
-    background-color: #1464A0;
+    background-color: #445866;
 }
 
 QTableCornerButton::section {
