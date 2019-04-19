@@ -15,6 +15,8 @@ class App(QtWidgets.QApplication):
 	"""
 	def __init__(self):
 		QtWidgets.QApplication.__init__(self)
+		with open('./resources/themes/QDarkStyle/style.qss') as style:
+			self.setStyleSheet(style.read())
 		self.pyUbiForge = pyUbiForge.PyUbiForgeMain()
 		self.log = self.pyUbiForge.log
 		self.log.info(__name__, 'Building GUI Window')
