@@ -53,7 +53,7 @@ class Reader(BaseModel, BaseReader):
 				mesh_face_blocks = model_file.read_numpy(numpy.uint32, 4*mesh_face_block_count)
 				shadow_face_blocks = model_file.read_numpy(numpy.uint32, 4*shadow_face_block_count)
 				model_file.read_uint_32()
-				model_file.read_bytes(1)    # use blocks?
+				use_blocks = model_file.read_uint_8()    # use blocks?
 				model_file.out_file_write('\nVert table\n')
 				vert_table_length = model_file.read_uint_32()
 				self.vert_count = vert_table_length / vert_table_width
@@ -215,7 +215,7 @@ class Reader(BaseModel, BaseReader):
 			], 36 * mesh_count)
 
 			if self._faces is not None:
-				if mesh_face_block_sum * 64 * 6 == face_table_length:
+				if use_blocks == 1:
 					self._faces = numpy.split(self._faces, numpy.cumsum(mesh_face_blocks * 64)[:-1])
 					for index, verts_used in enumerate(self.meshes['verts_used']):
 						self._faces[index] += verts_used
