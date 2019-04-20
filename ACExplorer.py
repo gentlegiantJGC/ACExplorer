@@ -122,9 +122,9 @@ class App(QtWidgets.QApplication):
 
 		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
 			self.pyUbiForge.log.info(__name__, f'Populating File Tree For {forge_file_name}')
-			self.file_view.insert(forge_file_name, forge_file_name)
+			self.file_view.insert(forge_file_name, forge_file_name, icon=self.icons.get('unknown_file', None))
 			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
-				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id)
+				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id, icon=self.icons.get(f'{datafile.file_type:08X}', None))
 			self.processEvents()
 		self.pyUbiForge.log.info(__name__, 'Finished Populating File Tree')
 		self.pyUbiForge.log.info(__name__, '')
@@ -142,9 +142,10 @@ class App(QtWidgets.QApplication):
 	def load_style(self, style_name: str):
 		with open(f'./resources/themes/{style_name}/style.qss') as style:
 			self.setStyleSheet(style.read())
-		self.icons['context_right_click_icon'] = QtGui.QIcon('resources/icons/right_click.ico')
-		if os.path.isfile(f'resources/themes/{style_name}/icons/context_right_click.png'):
-			self.icons['context_right_click_icon'] = QtGui.QIcon(f'resources/themes/{style_name}/icons/context_right_click.png')
+		for icon in os.listdir('resources/icons'):
+			self.icons[os.path.splitext(icon)[0]] = QtGui.QIcon(f'resources/icons/{icon}')
+		for icon in os.listdir(f'resources/themes/{style_name}/icons'):
+			self.icons[os.path.splitext(icon)[0]] = QtGui.QIcon(f'resources/themes/{style_name}/icons/{icon}')
 		self._options['style'] = style_name
 
 	def _show_games(self):
@@ -248,12 +249,12 @@ class TreeView(QtWidgets.QTreeWidget):
 		self._entries.clear()
 		self.clear()
 		self._game_identifier = game_identifier
-		self.insert(game_identifier)
+		self.insert(game_identifier, icon=self.icons['directory'])
 
 	def search(self, search_string: str) -> None:
 		self._entries[(None, None, None)].search(search_string)
 
-	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None) -> None:
+	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None) -> None:
 		if forge_file_name is not None:
 			if datafile_id is not None:
 				if file_id is not None:  # the fact that the ends of these align makes me very happy
@@ -262,10 +263,10 @@ class TreeView(QtWidgets.QTreeWidget):
 					parent = self._entries[(forge_file_name, None, None)]
 			else:
 				parent = self._entries[(None, None, None)]
-			entry = TreeViewEntry(self.pyUbiForge, parent, entry_name, forge_file_name, datafile_id, file_id)
+			entry = TreeViewEntry(self.pyUbiForge, parent, entry_name, forge_file_name, datafile_id, file_id, icon=icon)
 			parent.addChild(entry)
 		else:
-			entry = TreeViewEntry(self.pyUbiForge, self, entry_name)
+			entry = TreeViewEntry(self.pyUbiForge, self, entry_name, icon=icon)
 
 		self._entries[(forge_file_name, datafile_id, file_id)] = entry
 
@@ -274,7 +275,16 @@ class TreeView(QtWidgets.QTreeWidget):
 		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
 			for datafile_id in forge_file.new_datafiles:
 				for file_id, file_name in sorted(forge_file.datafiles[datafile_id].files.items(), key=lambda v: v[1].lower()):
-					self.insert(file_name, forge_file_name, datafile_id, file_id)
+					self.insert(
+						file_name,
+						forge_file_name,
+						datafile_id,
+						file_id,
+						icon=self.icons.get(
+							self.pyUbiForge.temp_files(file_id, forge_file_name, datafile_id).file_type,
+							None
+						)
+					)
 			forge_file.new_datafiles.clear()
 
 	def mousePressEvent(self, event: QtGui.QMouseEvent):
@@ -300,8 +310,10 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 	"""Individual entries in the file tree.
 	Wraps QTreeWidgetItem and saves more data related to each entry
 	"""
-	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None):
+	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None):
 		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
+		if icon is not None:
+			self.setIcon(0, icon)
 		self.pyUbiForge = py_ubi_forge
 		self._entry_name = entry_name
 		self._forge_file_name = forge_file_name

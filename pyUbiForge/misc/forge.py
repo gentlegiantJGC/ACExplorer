@@ -29,6 +29,11 @@ class DataFile:
 		return self._file_name
 
 	@property
+	def file_type(self) -> str:
+		"""The name associated with this forge file."""
+		return self._file_type
+
+	@property
 	def files(self) -> Dict[int, str]:
 		"""A dictionary mapping from file_id to string name for each file in the datafile.
 
