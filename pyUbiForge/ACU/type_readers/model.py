@@ -206,7 +206,7 @@ class Reader(BaseModel, BaseReader):
 			self._meshes = model_file.read_numpy([
 				('file_id', numpy.uint64),
 				('file_type', numpy.uint32),
-				('verts_used', numpy.uint32),
+				('verts_used', numpy.uint32),  # this is not always perfect
 				('', numpy.uint32),
 				('vert_count', numpy.uint32),
 				('faces_used_x3', numpy.uint32),
@@ -217,8 +217,10 @@ class Reader(BaseModel, BaseReader):
 			if self._faces is not None:
 				if use_blocks == 1:
 					self._faces = numpy.split(self._faces, numpy.cumsum(mesh_face_blocks * 64)[:-1])
-					for index, verts_used in enumerate(self.meshes['verts_used']):
-						self._faces[index] += verts_used
+					for index in range(len(self._faces)):
+						self._faces[index] = self._faces[index][:self.meshes['face_count'][index]]  # strip the end of the block
+						if index >= 1:
+							self._faces[index] += self._faces[index-1].max() + 1  # add the vertex offset (each block starts from 0)
 				else:
 					faces = self._faces
 					self._faces = []
