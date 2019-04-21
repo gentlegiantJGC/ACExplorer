@@ -144,8 +144,9 @@ class App(QtWidgets.QApplication):
 			self.setStyleSheet(style.read())
 		for icon in os.listdir('resources/icons'):
 			self.icons[os.path.splitext(icon)[0]] = QtGui.QIcon(f'resources/icons/{icon}')
-		for icon in os.listdir(f'resources/themes/{style_name}/icons'):
-			self.icons[os.path.splitext(icon)[0]] = QtGui.QIcon(f'resources/themes/{style_name}/icons/{icon}')
+		if os.path.isdir(f'resources/themes/{style_name}/icons'):
+			for icon in os.listdir(f'resources/themes/{style_name}/icons'):
+				self.icons[os.path.splitext(icon)[0]] = QtGui.QIcon(f'resources/themes/{style_name}/icons/{icon}')
 		self._options['style'] = style_name
 
 	def _show_games(self):
