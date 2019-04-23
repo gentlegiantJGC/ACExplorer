@@ -511,7 +511,6 @@ class PluginOptionsScreen(QtWidgets.QDialog):
 
 		self._horizontal_layouts.append(QtWidgets.QHBoxLayout())
 		self._vertical_layout.addLayout(self._horizontal_layouts[-1])
-		self._vertical_layout.addLayout(self._horizontal_layouts[-1])
 
 		self._okay_button = QtWidgets.QPushButton('OK')
 		self._okay_button.clicked.connect(lambda: self.done(1))
