@@ -3,7 +3,7 @@
 	of the Assassin's Creed franchise. 	This is just a UI wrapper for pyUbiForge where the heavy lifting is done.
 """
 
-import pyUbiForge
+from pyUbiForge import main as pyUbiForge
 from typing import Union, Dict, List, Tuple
 from PySide2 import QtCore, QtGui, QtWidgets
 import time
@@ -19,7 +19,7 @@ class App(QtWidgets.QApplication):
 	"""
 	def __init__(self):
 		QtWidgets.QApplication.__init__(self)
-		self.pyUbiForge = pyUbiForge.PyUbiForgeMain()
+		self.pyUbiForge = pyUbiForge
 		self.log = self.pyUbiForge.log
 		self.log.info(__name__, 'Building GUI Window')
 
@@ -237,7 +237,7 @@ class TreeView(QtWidgets.QTreeWidget):
 	"""This is the file tree used in the main application.
 	Wraps QTreeWidget and adds search functionality and a context menu
 	"""
-	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, parent: QtWidgets.QWidget, icons: Dict[str, QtGui.QIcon]):
+	def __init__(self, py_ubi_forge: pyUbiForge, parent: QtWidgets.QWidget, icons: Dict[str, QtGui.QIcon]):
 		QtWidgets.QTreeWidget.__init__(self, parent)
 		self.icons = icons
 		self.pyUbiForge = py_ubi_forge
@@ -311,7 +311,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 	"""Individual entries in the file tree.
 	Wraps QTreeWidgetItem and saves more data related to each entry
 	"""
-	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None):
+	def __init__(self, py_ubi_forge: pyUbiForge, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None):
 		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
 		if icon is not None:
 			self.setIcon(0, icon)
@@ -383,7 +383,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 
 class ContextMenu(QtWidgets.QMenu):
 	"""Context menu for use upon right click of an item in the file tree to access the plugin system."""
-	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, icons: Dict[str, QtGui.QIcon], plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
+	def __init__(self, py_ubi_forge: pyUbiForge, icons: Dict[str, QtGui.QIcon], plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
 		QtWidgets.QMenu.__init__(self)
 		self.pyUbiForge = py_ubi_forge
 		self.icons = icons
@@ -434,7 +434,7 @@ class ContextMenu(QtWidgets.QMenu):
 
 
 class PluginOptionsScreen(QtWidgets.QDialog):
-	def __init__(self, py_ubi_forge: pyUbiForge.PyUbiForgeMain, plugin_name: str, screen: Dict[str, dict]):
+	def __init__(self, py_ubi_forge: pyUbiForge, plugin_name: str, screen: Dict[str, dict]):
 		QtWidgets.QDialog.__init__(self)
 		self._pyUbiForge = py_ubi_forge
 		self.setModal(True)

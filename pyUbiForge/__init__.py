@@ -12,31 +12,31 @@
 
 import os
 from typing import Union, Dict, List
-from pyUbiForge import ACU, misc
+from pyUbiForge import ACU
+from pyUbiForge import misc as misc_
 from pyUbiForge.misc.forge import BaseForge
 
-_games = {
-	'ACU': ACU
-}
 
-
-class PyUbiForgeMain:
+class _PyUbiForgeMain:
 	"""This is the main class that holds all the data for this package.
 
 	To initiate the package first import it then create an instance of this class.
 	All the methods needed are either defined here or can be found within objects defined here.
 	"""
 	def __init__(self):
-		self._CONFIG = misc.Config()
+		self._games = {
+			'ACU': ACU
+		}
+		self._CONFIG = misc_.Config()
 		self._game_functions = None
-		self._log = misc.Logger(self)
-		self._temp_files = misc.TempFilesContainer(self)
-		self._right_click_plugins = misc.plugins.PluginHandler(self)
-		self._read_file = misc.file_readers.FileReaderHandler(self)
+		self._log = misc_.Logger(self)
+		self._temp_files = misc_.TempFilesContainer(self)
+		self._right_click_plugins = misc_.plugins.PluginHandler(self)
+		self._read_file = misc_.file_readers.FileReaderHandler(self)
 		self._forge_files = {}  # _forge_files is a dictionary mapping from str name of the forge file to a Forge class.
 
 	@property
-	def CONFIG(self) -> misc.Config:
+	def CONFIG(self) -> misc_.Config:
 		"""Returns the config class with data from config.json loaded if it exists."""
 		return self._CONFIG
 
@@ -46,12 +46,16 @@ class PyUbiForgeMain:
 		return self._game_functions
 
 	@property
-	def log(self) -> misc.Logger:
+	def log(self) -> misc_.Logger:
 		"""Returns the logging class."""
 		return self._log
 
 	@property
-	def temp_files(self) -> misc.TempFilesContainer:
+	def misc(self) -> misc_:
+		return misc_
+
+	@property
+	def temp_files(self) -> misc_.TempFilesContainer:
 		"""Returns the temp_files class where all decompressed data is stored.
 
 		If you want a file, request it from this class and it will look for it, decompress it
@@ -60,12 +64,12 @@ class PyUbiForgeMain:
 		return self._temp_files
 
 	@property
-	def right_click_plugins(self) -> misc.plugins.PluginHandler:
+	def right_click_plugins(self) -> misc_.plugins.PluginHandler:
 		"""Returns a class that stores right click methods."""
 		return self._right_click_plugins
 
 	@property
-	def read_file(self) -> misc.file_readers.FileReaderHandler:
+	def read_file(self) -> misc_.file_readers.FileReaderHandler:
 		"""Returns a class containing the code to read data from the files."""
 		return self._read_file
 
@@ -90,7 +94,7 @@ class PyUbiForgeMain:
 
 	@property
 	def game_identifiers(self) -> List[str]:
-		return list(_games.keys())
+		return list(self._games.keys())
 
 	def load_game(self, game_identifier: str):
 		"""Call this with the identifier of the game you want to load.
@@ -101,8 +105,8 @@ class PyUbiForgeMain:
 		"""
 		self.log.info(__name__, 'Loading Game Files.')
 		self.temp_files.clear()
-		if game_identifier in _games:
-			self._game_functions = _games.get(game_identifier)
+		if game_identifier in self._games:
+			self._game_functions = self._games.get(game_identifier)
 			self._forge_files = {}
 			if os.path.isdir(self.CONFIG.game_folder(game_identifier)):
 				for forge_file_name in os.listdir(self.CONFIG.game_folder(game_identifier)):
@@ -121,3 +125,6 @@ class PyUbiForgeMain:
 		"""Call this method to save the config file and light dictioary back to disk."""
 		self.CONFIG.save()
 		self.temp_files.save()
+
+
+main: _PyUbiForgeMain = _PyUbiForgeMain()
