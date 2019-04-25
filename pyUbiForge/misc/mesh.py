@@ -15,6 +15,7 @@ class BaseModel:
 	_faces = None
 	_meshes = None
 	_materials = None
+	_bones = None
 
 	@property
 	def name(self) -> str:
@@ -43,6 +44,10 @@ class BaseModel:
 	@property
 	def materials(self) -> numpy.ndarray:
 		return self._materials
+
+	@property
+	def bones(self):
+		return self._bones
 
 
 class ObjMtl:

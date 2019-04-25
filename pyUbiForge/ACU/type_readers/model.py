@@ -25,9 +25,9 @@ class Reader(BaseModel, BaseReader):
 			model_file.read_bytes(1)
 
 		bone_count = model_file.read_uint_32()
-		self.bones = []
+		self._bones = []
 		for _ in range(bone_count):
-			self.bones.append(py_ubi_forge.read_file.get_data_recursive(model_file))
+			self._bones.append(py_ubi_forge.read_file.get_data_recursive(model_file))
 
 		self.bounding_box = model_file.read_numpy(numpy.float32, 32).reshape(2, 4)
 		model_file.out_file_write(f'{self.bounding_box}\n')
@@ -124,10 +124,8 @@ class Reader(BaseModel, BaseReader):
 						('n', numpy.int16, 3),
 						('', numpy.int16, 3),  # not sure what this is
 						('vt', numpy.int16, 2),
-						('bn', numpy.uint8, 4),
-						('bn2', numpy.uint8, 4),
-						('bw', numpy.uint8, 4),
-						('bw2', numpy.uint8, 4)
+						('bn', numpy.uint8, 8),
+						('bw', numpy.uint8, 8)
 					], vert_table_length)
 
 				elif vert_table_width == 48:
@@ -138,10 +136,8 @@ class Reader(BaseModel, BaseReader):
 						('', numpy.int16, 3),  # not sure what this is
 						('vt', numpy.int16, 2),
 						('', numpy.int16, 2),  # not sure what this is
-						('bn', numpy.uint8, 4),
-						('bn2', numpy.uint8, 4),
-						('bw', numpy.uint8, 4),
-						('bw2', numpy.uint8, 4),
+						('bn', numpy.uint8, 8),
+						('bw', numpy.uint8, 8),
 						('', numpy.int16, 2),  # not sure what this is
 					], vert_table_length)
 				else:
@@ -149,13 +145,14 @@ class Reader(BaseModel, BaseReader):
 					raise Exception()
 
 				self._vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)
-				self._vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
+				# self._vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
 				# for dim in range(3):
 				# 	self.vertices[:, dim] = numpy.interp(self.vertices[:, dim], (self.vertices[:, dim].min(), self.vertices[:, dim].max()), bounding_box2[:, dim])
 				self._texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
 				self._texture_vertices[:, 1] *= -1
 				if 'n' in vert_table:
 					self._normals = vert_table['n'].astype(numpy.float)
+				self.vert_table = vert_table
 
 				# # scale verticies based on bouding box
 				# model['modelBoundingBox'] = {}
