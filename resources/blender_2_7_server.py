@@ -1,6 +1,7 @@
 from multiprocessing.connection import Listener
 import threading
 import bpy
+import mathutils
 
 
 class Server(threading.Thread):
@@ -47,6 +48,42 @@ class Child(threading.Thread):
 					scene = bpy.context.scene
 					scene.objects.link(obj)
 					# obj.select = True
+
+				elif isinstance(msg, dict) and msg.get('type', None) == 'BONES':
+					bpy.context.scene.cursor_location = (0.0, 0.0, 0.0)
+					if bpy.ops.object.mode_set.poll():
+						bpy.ops.object.mode_set(mode='OBJECT')
+					bpy.ops.object.armature_add()
+					armature = bpy.data.armatures[-1]
+
+					if bpy.ops.object.mode_set.poll():
+						bpy.ops.object.mode_set(mode='EDIT')
+
+					for bone in armature.edit_bones:
+						armature.edit_bones.remove(bone)
+
+					for bone_id, transformation_matrix in zip(msg['bone_id'], msg['mat']):
+						edit_bone = armature.edit_bones.new(bone_id)
+						edit_bone.tail = (1, 0, 0)
+
+						edit_bone.matrix = mathutils.Matrix(
+							(
+								transformation_matrix[0, :],
+								transformation_matrix[1, :],
+								transformation_matrix[2, :],
+								transformation_matrix[3, :]
+							)
+						)
+						edit_bone.length = edit_bone.matrix.to_scale().length * 0.1
+						print('imported_bone')
+
+					if bpy.ops.object.mode_set.poll():
+						bpy.ops.object.mode_set(mode='OBJECT')
+					if bpy.ops.object.mode_set.poll():
+						bpy.ops.object.mode_set(mode='EDIT')
+					if bpy.ops.object.mode_set.poll():
+						bpy.ops.object.mode_set(mode='OBJECT')
+
 				else:
 					print('{}\n{}'.format(type(msg), msg))
 			except EOFError:
