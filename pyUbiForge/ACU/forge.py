@@ -16,7 +16,7 @@ class Forge(BaseForge):
 		These tables are parsed and the data from them stored for each datafile in self.datafiles for use later
 		"""
 		BaseForge.__init__(self, path, forge_file_name)
-		logging.info(__name__, f'Building file tree for {forge_file_name}')
+		logging.info(f'Building file tree for {forge_file_name}')
 
 		forge_file = FileObjectDataWrapper.from_file(self.path)
 		# header
@@ -188,7 +188,7 @@ class Forge(BaseForge):
 					try:
 						open(path, 'wb').write(raw_file)
 					except Exception as e:
-						logging.warning(__name__, f'Error saving temporary file with path "{path}"\n{e}')
+						logging.warning(f'Error saving temporary file with path "{path}"\n{e}')
 
 		else:
 			raise Exception('Format version not known. Please let the creator know where you found this.')

@@ -120,13 +120,13 @@ class App(QtWidgets.QApplication):
 		self.file_view.load_game(game_identifier)
 
 		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
-			logging.info(__name__, f'Populating File Tree For {forge_file_name}')
+			logging.info(f'Populating File Tree For {forge_file_name}')
 			self.file_view.insert(forge_file_name, forge_file_name, icon=self.icons.get('unknown_file', None))
 			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
 				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id, icon=self.icons.get(datafile.file_type, None))
 			self.processEvents()
-		logging.info(__name__, 'Finished Populating File Tree')
-		logging.info(__name__, '')
+		logging.info('Finished Populating File Tree')
+		logging.info('')
 
 	def save(self):
 		self.pyUbiForge.save()

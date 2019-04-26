@@ -237,7 +237,7 @@ class Collada:
 		if not self.is_exported(model_file_id):
 			data = self.pyUbiForge.temp_files(model_file_id, forge_file_name, datafile_id)
 			if data is None:
-				logging.warning(__name__, f"Failed to find file {model_file_id:016X}")
+				logging.warning(f"Failed to find file {model_file_id:016X}")
 				return
 			model = self.pyUbiForge.read_file(data.file)
 			if model is None:  # sometimes reading the model fails
