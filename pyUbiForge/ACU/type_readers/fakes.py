@@ -12,12 +12,12 @@ class Reader(BaseReader):
 		self.fakes: List[Fake] = []
 		for _ in range(fake_count):
 			self.fakes.append(
-				py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+				file_object_data_wrapper.read_file()
 			)
 		near_fake_count = file_object_data_wrapper.read_uint_32()
 		self.near_fakes = []
 		for _ in range(near_fake_count):
 			self.near_fakes.append(
-				py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+				file_object_data_wrapper.read_file()
 			)
 		file_object_data_wrapper.read_bytes(1)

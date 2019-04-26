@@ -10,7 +10,7 @@ class Reader(BaseReader):
 		check_byte = file_object_data_wrapper.read_uint_8()  # checkbyte 03 to continue (other stuff to not? have seen 00 with data after)
 		if check_byte == 0:
 			for _ in range(2):
-				py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+				file_object_data_wrapper.read_file()
 		file_object_data_wrapper.out_file_write('Transformation Matrix\n')
 		self.transformation_matrix = file_object_data_wrapper.read_numpy(numpy.float32, 64).reshape((4, 4), order='F')
 
@@ -30,7 +30,7 @@ class Reader(BaseReader):
 				raise Exception
 			file_object_data_wrapper.indent(-1)
 
-			self.nested_files.append(py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper))
+			self.nested_files.append(file_object_data_wrapper.read_file())
 
 		# float * 7
 
@@ -54,12 +54,12 @@ class Reader(BaseReader):
 		# data layer filter
 		# 4 count, more data in here sometimes
 		for _ in range(3):
-			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			file_object_data_wrapper.read_file()
 
 		# 03 end file?
 		check_byte_2 = file_object_data_wrapper.read_uint_8()
 		if check_byte_2 == 0:
-			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			file_object_data_wrapper.read_file()
 		elif check_byte_2 != 3:
 			raise Exception
 		file_object_data_wrapper.out_file_write('\n')

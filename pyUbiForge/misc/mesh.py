@@ -1,10 +1,12 @@
 import os
+import logging
 import shutil
 import numpy
 from concurrent.futures import ThreadPoolExecutor
 import urllib.parse
-from pyUbiForge.misc import texture
 from typing import Union, List
+from pyUbiForge.misc import texture
+import pyUbiForge
 
 
 class BaseModel:
@@ -58,11 +60,10 @@ class ObjMtl:
 	When the .save_and_close method is called these materials are written to the mtl file.
 	"""
 	def __init__(self, model_name: str, save_folder: str):
-		pyUbiForge = py_ubi_forge
 		self.model_name = model_name
 		self.save_folder = save_folder
 		self.vertex_count = 0   # the number of vertices that have been processed. Used to calculate the vertex offset
-		self.mtl_handler = MaterialHandler(pyUbiForge)      # used when generating the .mtl file
+		self.mtl_handler = MaterialHandler()      # used when generating the .mtl file
 		self._group_name = {}   # used for getting a unique name for each model
 		self.missing_no_exported = False
 
@@ -197,11 +198,10 @@ class Collada:
 		If it hasn't been then read the model file
 	"""
 	def __init__(self, model_name: str, save_folder: str):
-		pyUbiForge = py_ubi_forge
 		self.model_name = model_name
 		self.save_folder = save_folder
 		self._models_exported = {}
-		self._mtl_handler = MaterialHandler(pyUbiForge)      # used when generating the .mtl file
+		self._mtl_handler = MaterialHandler()      # used when generating the .mtl file
 		self._group_name = {}   # used for getting a unique name for each model
 		self._library_visual_scenes = []
 		self.missing_no_exported = False
@@ -442,7 +442,6 @@ class Collada:
 
 class MaterialHandler:
 	def __init__(self):
-		pyUbiForge = py_ubi_forge
 		self.materials = {}
 		self.name = 'Unknown'
 

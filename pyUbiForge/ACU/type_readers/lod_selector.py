@@ -13,7 +13,7 @@ class Reader(BaseReader):
 		for _ in range(5):
 			ending0 = file_object_data_wrapper.read_uint_8()
 			if ending0 == 0:
-				self.lod.append(py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper))
+				self.lod.append(file_object_data_wrapper.read_file())
 			elif ending0 == 3:
 				self.lod.append(None)
 			else:

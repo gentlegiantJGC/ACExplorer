@@ -2,6 +2,7 @@ import os
 import logging
 from typing import Tuple, List
 import numpy
+import pyUbiForge
 from pyUbiForge.misc import decompress
 from pyUbiForge.misc.forge import BaseForge, DataFile
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
@@ -143,7 +144,7 @@ class Forge(BaseForge):
 			self.datafiles[datafile_id].files[datafile_id] = self.datafiles[datafile_id].file_name
 
 		elif format_version == 128:
-			uncompressed_data = FileObjectDataWrapper.from_binary(pyUbiForge, b''.join(uncompressed_data_list))
+			uncompressed_data = FileObjectDataWrapper.from_binary(b''.join(uncompressed_data_list))
 
 			file_count = uncompressed_data.read_uint_16()
 			index_table = []
@@ -167,7 +168,7 @@ class Forge(BaseForge):
 				if file_name == '':
 					file_name = f'{file_id:016X}'
 				pyUbiForge.temp_files.add(file_id, self.forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
-				datafiles[datafile_id].files[file_id] = file_name
+				self.datafiles[datafile_id].files[file_id] = file_name
 				if pyUbiForge.CONFIG.get('writeToDisk', False):
 					folder = os.path.join(
 						pyUbiForge.CONFIG.get('dumpFolder', 'output'),

@@ -8,4 +8,4 @@ class Reader(BaseReader):
 	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		count = file_object_data_wrapper.read_uint_32()
 		# for _ in range(count):  # the above looks like a count but there is only 1 of the below
-		py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+		file_object_data_wrapper.read_file()

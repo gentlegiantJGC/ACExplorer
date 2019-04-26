@@ -6,7 +6,7 @@ class Reader(BaseReader):
 	file_type = '5730D30E'
 
 	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
-		py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+		file_object_data_wrapper.read_file()
 
 		count1 = file_object_data_wrapper.read_uint_32()
 		for _ in range(count1):

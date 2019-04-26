@@ -1,11 +1,11 @@
 import os
 import struct
 from typing import Union
+import pyUbiForge
 
 
 class BaseTexture:
 	def __init__(self):
-		pyUbiForge = py_ubi_forge
 		self.dwSize = b'\x7C\x00\x00\x00'  # 124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
 		# (probably should be set based on the data)

@@ -14,7 +14,7 @@ class Reader(BaseReader):
 		file_object_data_wrapper.out_file_write('\n')
 		for n in range(count1):
 			file_object_data_wrapper.read_bytes(1)
-			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			file_object_data_wrapper.read_file()
 
 		# file_object_data_wrapper.read_bytes(8) # two counts. first count for transformation matrix. second for more things?
 		count2 = file_object_data_wrapper.read_uint_32()
@@ -30,7 +30,7 @@ class Reader(BaseReader):
 			raise Exception('count3 is too large. Aborting')
 		self.bounding_box = []
 		for _ in range(count3):
-			sub_file_container = py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			sub_file_container = file_object_data_wrapper.read_file()
 			if sub_file_container.file_type == '4AEC3476':
 				self.bounding_box.append(sub_file_container.bounding_box)
 		file_object_data_wrapper.out_file_write('\n')

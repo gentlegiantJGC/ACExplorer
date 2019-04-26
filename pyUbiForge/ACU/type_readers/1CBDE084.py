@@ -12,7 +12,7 @@ class Reader(BaseReader):
 		file_object_data_wrapper.out_file_write('\n')
 
 		for _ in range(2):
-			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			file_object_data_wrapper.read_file()
 
 		self.transformation_matrix = file_object_data_wrapper.read_numpy(numpy.float32, 64).reshape((4, 4), order='F')
 		file_object_data_wrapper.out_file_write('\n')

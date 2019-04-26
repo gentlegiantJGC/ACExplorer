@@ -8,4 +8,4 @@ class Reader(BaseReader):
 	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		file_object_data_wrapper.read_bytes(44)
 		for _ in range(3):
-			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			file_object_data_wrapper.read_file()

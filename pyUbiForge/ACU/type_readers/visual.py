@@ -13,7 +13,7 @@ class Reader(BaseReader):
 
 		self.nested_files = {}
 
-		nested_file = py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+		nested_file = file_object_data_wrapper.read_file()
 		self.nested_files[nested_file.file_type] = nested_file
 
 		file_object_data_wrapper.read_bytes(1)

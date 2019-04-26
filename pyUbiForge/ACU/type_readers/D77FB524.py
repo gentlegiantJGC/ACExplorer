@@ -8,11 +8,11 @@ class Reader(BaseReader):
 
 	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		file_object_data_wrapper.read_bytes(2)
-		self.entity: Entity = py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+		self.entity: Entity = file_object_data_wrapper.read_file()
 		count1 = file_object_data_wrapper.read_uint_32()
 		file_object_data_wrapper.indent()
 		for _ in range(count1):
-			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			file_object_data_wrapper.read_file()
 		file_object_data_wrapper.indent(-1)
 		count2 = file_object_data_wrapper.read_uint_32()
 		file_object_data_wrapper.indent()

@@ -1,3 +1,4 @@
+import logging
 import pkgutil
 import importlib
 from typing import Union, TextIO
@@ -35,7 +36,7 @@ class FileReaderHandler:
 		try:
 			data = self.get_data_recursive(file_object_data_wrapper)
 		except Exception as e:
-			pyUbiForge.log.warn(__name__, str(e))
+			logging.warning(str(e))
 			data = None
 		file_object_data_wrapper.clever_format()
 		return data
@@ -70,22 +71,22 @@ class FileReaderHandler:
 				importlib.reload(module)
 
 				if not hasattr(module, 'Reader') and issubclass(module.Reader, BaseReader):
-					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Reader" was either not defined, not a class or not a subclass of BaseReader')
+					logging.warning(f'Failed loading {name} because "Reader" was either not defined, not a class or not a subclass of BaseReader')
 					continue
 
 				reader = module.Reader
 
 				if not hasattr(reader, 'file_type'):
-					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
+					logging.warning(f'Failed loading {name} because "file_type" was not defined')
 					continue
 				elif not isinstance(reader.file_type, str):
-					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
+					logging.warning(f'Failed loading {name} because "file_type" was not a string')
 					continue
 
 				file_type = reader.file_type
 
 				if file_type in self.readers:
-					pyUbiForge.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
+					logging.warning(f'Skipping plugin "{name}" because a reader for this file type was already found')
 					continue
 				else:
 					self.readers[file_type] = reader

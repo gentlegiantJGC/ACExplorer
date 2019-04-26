@@ -18,7 +18,7 @@ class Reader(BaseReader):
 		while found_count < total_count or empty_count != filled_count + 1:
 			check_byte = file_object_data_wrapper.read_uint_8()
 			if check_byte == 0:
-				sub_file_container = py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+				sub_file_container = file_object_data_wrapper.read_file()
 				found_count += sub_file_container.count
 				if sub_file_container.count > 0:
 					filled_count += 1
@@ -34,11 +34,11 @@ class Reader(BaseReader):
 		count = file_object_data_wrapper.read_uint_32()
 		for _ in range(count):
 			check_byte = file_object_data_wrapper.read_bytes(1)
-			py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+			file_object_data_wrapper.read_file()
 		count = file_object_data_wrapper.read_uint_32()
 		for _ in range(count):
 			file_object_data_wrapper.read_bytes(4)
 		file_object_data_wrapper.read_bytes(1)
 		for _ in range(7):
 			file_object_data_wrapper.read_bytes(4)
-		py_ubi_forge.read_file.get_data_recursive(file_object_data_wrapper)
+		file_object_data_wrapper.read_file()

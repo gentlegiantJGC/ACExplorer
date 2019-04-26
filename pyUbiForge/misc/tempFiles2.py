@@ -60,7 +60,6 @@ class TempFile:
 		"""Container for data related to a file.
 		Should help with typing and argument selection compared to the old dictionary method
 		"""
-		self._pyUbiForge = py_ubi_forge
 		self._forge_file = forge_file
 		self._datafile_id = datafile_id
 		self._file_id = file_id
@@ -103,7 +102,7 @@ class TempFile:
 		"""The raw data wrapped up in a custom data wrapper.
 		See FileObjectDataWrapper for more information.
 		"""
-		return FileObjectDataWrapper.from_binary(self._pyUbiForge, self._raw_file)
+		return FileObjectDataWrapper.from_binary(self._raw_file)
 
 
 class LastUsed:
@@ -355,7 +354,6 @@ class TempFilesContainer:
 		self.refresh_usage(file_id)
 		if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]:
 			return TempFile(
-				pyUbiForge,
 				forge_file_name,
 				datafile_id,
 				file_id,
