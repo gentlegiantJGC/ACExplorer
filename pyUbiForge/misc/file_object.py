@@ -212,6 +212,9 @@ class FileObjectDataWrapper:
 			self._out_file.write(f'{self._indent_count * self.indent_chr}{hex_string(binary)}\t\t{val}\n')
 		return val
 
+	def read_file(self):
+		return pyUbiForge.read_file.get_data_recursive(self)
+
 	def read_rest(self) -> bytes:
 		binary = self.file_object.read()
 		if self._out_file is not None:
