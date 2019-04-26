@@ -30,8 +30,8 @@ class DataFile:
 
 	@property
 	def file_type(self) -> str:
-		"""The name associated with this forge file."""
-		return self._file_type
+		"""The file type associated with this forge file."""
+		return f'{self._file_type:08X}'
 
 	@property
 	def files(self) -> Dict[int, str]:
@@ -46,8 +46,7 @@ class BaseForge:
 
 	It sets up all the variables and accessors for the variables.
 	"""
-	def __init__(self, py_ubi_forge, path: str, forge_file_name: str):
-		self.pyUbiForge = py_ubi_forge
+	def __init__(self, path: str, forge_file_name: str):
 		self._forge_file_name = forge_file_name
 		self._path = path
 		self._datafiles = {}

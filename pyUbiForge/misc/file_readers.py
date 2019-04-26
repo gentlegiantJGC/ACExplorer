@@ -10,8 +10,7 @@ class BaseReader:
 
 
 class FileReaderHandler:
-	def __init__(self, py_ubi_forge):
-		self.pyUbiForge = py_ubi_forge
+	def __init__(self):
 		self.game_identifier = None
 		self.readers = {}
 		self._time = 0
@@ -31,11 +30,11 @@ class FileReaderHandler:
 		self._time = time.time()
 		if not isinstance(file_object_data_wrapper, FileObjectDataWrapper):
 			raise Exception('file_object_data_wrapper is not of type FileObjectDataWrapper')
-		file_object_data_wrapper.read_bytes(self.pyUbiForge.game_functions.pre_header_length)
+		file_object_data_wrapper.read_bytes(pyUbiForge.game_functions.pre_header_length)
 		try:
 			data = self.get_data_recursive(file_object_data_wrapper)
 		except Exception as e:
-			self.pyUbiForge.log.warn(__name__, e)
+			pyUbiForge.log.warn(__name__, str(e))
 			data = None
 		file_object_data_wrapper.clever_format()
 		return data
@@ -52,7 +51,7 @@ class FileReaderHandler:
 		file_type = file_object_data_wrapper.read_type()
 		if file_type in self.readers:
 			file_object_data_wrapper.indent()
-			ret = self.readers[file_type](self.pyUbiForge, file_object_data_wrapper)
+			ret = self.readers[file_type](pyUbiForge, file_object_data_wrapper)
 			file_object_data_wrapper.indent(-1)
 			return ret
 		else:
@@ -60,33 +59,36 @@ class FileReaderHandler:
 
 	def _load_readers(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if (self.pyUbiForge.game_identifier != self.game_identifier or self.pyUbiForge.CONFIG.get('dev', False)) and time.time() > self._time + 10:
+		if (pyUbiForge.game_identifier != self.game_identifier or pyUbiForge.CONFIG.get('dev', False)) and time.time() > self._time + 10:
 			self._time = time.time()
 			self._wait = True
-			self.game_identifier = self.pyUbiForge.game_identifier
+			self.game_identifier = pyUbiForge.game_identifier
 			self.readers = {}
-			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self.pyUbiForge.game_identifier}/type_readers']):
-				module = importlib.import_module(f'pyUbiForge.{self.pyUbiForge.game_identifier}.type_readers.{name}')
+			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{pyUbiForge.game_identifier}/type_readers']):
+				module = importlib.import_module(f'pyUbiForge.{pyUbiForge.game_identifier}.type_readers.{name}')
 				importlib.reload(module)
 
 				if not hasattr(module, 'Reader') and issubclass(module.Reader, BaseReader):
-					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Reader" was either not defined, not a class or not a subclass of BaseReader')
+					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Reader" was either not defined, not a class or not a subclass of BaseReader')
 					continue
 
 				reader = module.Reader
 
 				if not hasattr(reader, 'file_type'):
-					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
+					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined')
 					continue
 				elif not isinstance(reader.file_type, str):
-					self.pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
+					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not a string')
 					continue
 
 				file_type = reader.file_type
 
 				if file_type in self.readers:
-					self.pyUbiForge.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
+					pyUbiForge.log.warn(__name__, f'Skipping plugin "{name}" because a reader for this file type was already found')
 					continue
 				else:
 					self.readers[file_type] = reader
 			self._wait = False
+
+
+file_reader_handler = FileReaderHandler()

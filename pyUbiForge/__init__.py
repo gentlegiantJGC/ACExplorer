@@ -22,7 +22,7 @@ from pyUbiForge import ACU
 games = {
 	'ACU': ACU
 }
-game_functions: Union[ACU] = None
+game_functions = None
 forge_files: Dict[str, BaseForge] = {}
 read_file: file_reader_handler = file_reader_handler
 

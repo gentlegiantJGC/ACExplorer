@@ -1,6 +1,7 @@
 import pkgutil
 import importlib
 from typing import Tuple, List, Dict, Union, Any
+import pyUbiForge
 
 
 class BasePlugin:
@@ -87,8 +88,7 @@ class PluginHandler:
 	For run it will be the result of all the screens.
 	(Note the format does allow for a variable number of screens and varying screens based on previous inputs. This is intended)
 	"""
-	def __init__(self, py_ubi_forge):
-		self._pyUbiForge = py_ubi_forge
+	def __init__(self):
 		self._game_identifier = None
 		self._plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 		self._plugin_names = {}
@@ -127,7 +127,7 @@ class PluginHandler:
 
 		elif plugin_level in (3, 4):
 			file_id = int(file_id)
-			file_type = self._pyUbiForge.temp_files(file_id, forge_file_name, datafile_id).file_type
+			file_type = pyUbiForge.temp_files(file_id, forge_file_name, datafile_id).file_type
 
 			if plugin_level == 3:
 				return list(set(
@@ -153,7 +153,7 @@ class PluginHandler:
 
 		plugin = self._get_plugin(plugin_name)
 
-		return plugin.run(self._pyUbiForge, file_id, forge_file_name, datafile_id, options)
+		return plugin.run(pyUbiForge, file_id, forge_file_name, datafile_id, options)
 
 	def get_screen_options(self, plugin_name: str, options) -> Union[Dict[str, dict], None]:
 		return self._get_plugin(plugin_name).options(options)
@@ -161,49 +161,49 @@ class PluginHandler:
 	def _get_plugin(self, plugin_name: str) -> BasePlugin:
 		plugin = self._plugin_names.get(plugin_name, None)
 		if plugin is None:
-			self._pyUbiForge.log.warn(__name__, f'Could not find plugin "{plugin_name}"')
+			pyUbiForge.log.warn(__name__, f'Could not find plugin "{plugin_name}"')
 			raise Exception
 		return plugin
 
 	def _load_plugins(self, dev_reload = True):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if self._pyUbiForge.game_identifier != self._game_identifier or (self._pyUbiForge.CONFIG.get('dev', False) and dev_reload):
-			self._game_identifier = self._pyUbiForge.game_identifier
+		if pyUbiForge.game_identifier != self._game_identifier or (pyUbiForge.CONFIG.get('dev', False) and dev_reload):
+			self._game_identifier = pyUbiForge.game_identifier
 			self._plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self._plugin_names = {}
 			# iterate through every plugin
-			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{self._pyUbiForge.game_identifier}/plugins']):
+			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{pyUbiForge.game_identifier}/plugins']):
 				# load module and confirm that all required attributes are defined
-				module = importlib.import_module(f'pyUbiForge.{self._pyUbiForge.game_identifier}.plugins.{name}')
+				module = importlib.import_module(f'pyUbiForge.{pyUbiForge.game_identifier}.plugins.{name}')
 				importlib.reload(module)
 
 				if not hasattr(module, 'Plugin') and issubclass(module.Plugin, BasePlugin):
-					self._pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin" was either not defined, not a class or not a subclass of BasePlugin')
+					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin" was either not defined, not a class or not a subclass of BasePlugin')
 					continue
 
 				plugin = module.Plugin
 
 				if not isinstance(plugin.dev, bool):
-					self._pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin.dev" was not a bool')
+					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin.dev" was not a bool')
 					continue
 				else:
-					if plugin.dev and not self._pyUbiForge.CONFIG.get('dev', False):
+					if plugin.dev and not pyUbiForge.CONFIG.get('dev', False):
 						continue
 
 				if not isinstance(plugin.plugin_name, str):
-					self._pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin.plugin_name" was not a string')
+					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "Plugin.plugin_name" was not a string')
 					continue
 				if not isinstance(plugin.plugin_level, int) and plugin.plugin_level in [1, 2, 3, 4]:
-					self._pyUbiForge.log.warn(__name__, f'Failed loading {name} because "plugin_level" was not an int in [1,2,3,4]')
+					pyUbiForge.log.warn(__name__, f'Failed loading {name} because "plugin_level" was not an int in [1,2,3,4]')
 					continue
 				if plugin.plugin_level == 4:
 					if not isinstance(plugin.file_type, str):
-						self._pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined or was not a string')
+						pyUbiForge.log.warn(__name__, f'Failed loading {name} because "file_type" was not defined or was not a string')
 						continue
 
 				# The plugin name is used as a UUID so make sure that it is unique
 				if plugin.plugin_name in self._plugin_names:
-					self._pyUbiForge.log.warn(__name__, f'Multiple plugins defined with name "{plugin.plugin_name}"')
+					pyUbiForge.log.warn(__name__, f'Multiple plugins defined with name "{plugin.plugin_name}"')
 					continue
 
 				plugin_instance = plugin()

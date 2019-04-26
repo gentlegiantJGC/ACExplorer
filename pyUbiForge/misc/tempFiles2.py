@@ -3,6 +3,7 @@ import json
 import numpy
 from typing import Union, Tuple, Dict
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
+import pyUbiForge
 
 """
 Forge file
@@ -142,8 +143,7 @@ class LastUsed:
 
 
 class LightDictionary:
-	def __init__(self, py_ubi_forge):
-		self.pyUbiForge = py_ubi_forge
+	def __init__(self):
 		self._light_dictionary_numpy = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
 		self._light_dictionary_temp = []
 		self._light_dictionary: Dict[Tuple[int, int], int] = {}
@@ -182,8 +182,8 @@ class LightDictionary:
 		"""Load the light dictionary file from disk into memory if it exists."""
 		self.clear()
 
-		if os.path.isfile(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld'):
-			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld', 'rb') as light_dict:
+		if os.path.isfile(f'./resources/lightDict/{pyUbiForge.game_functions.game_identifier}.ld'):
+			with open(f'./resources/lightDict/{pyUbiForge.game_functions.game_identifier}.ld', 'rb') as light_dict:
 				header_len = int(numpy.fromfile(light_dict, numpy.uint32, 1))
 				header = json.loads(light_dict.read(header_len).decode('utf-8'))
 				self._forge_to_index = header['forge_index']
@@ -228,7 +228,7 @@ class LightDictionary:
 					'forge_index': self._forge_to_index
 				}
 			).encode()
-			with open(f'./resources/lightDict/{self.pyUbiForge.game_functions.game_identifier}.ld', 'wb') as f:
+			with open(f'./resources/lightDict/{pyUbiForge.game_functions.game_identifier}.ld', 'wb') as f:
 				numpy.uint32(len(header)).tofile(f)
 				f.write(header)
 				_, index = numpy.unique(self._light_dictionary_numpy[:, :2], axis=0, return_index=True)
@@ -274,10 +274,9 @@ class LightDictionary:
 
 class TempFilesContainer:
 	"""Class to hold all the files and the methods to access them and pull them from the original files."""
-	def __init__(self, py_ubi_forge):
-		self.pyUbiForge = py_ubi_forge
+	def __init__(self):
 		# dictionary to look up which dataFile a fileID is contained in (if it itself is not the main file in the dataFile)
-		self.light_dictionary = LightDictionary(py_ubi_forge)
+		self.light_dictionary = LightDictionary()
 		# the amount of memory self.rawFiles takes (used to remove files)
 		self._memory = 0
 		# a dictionary of every file currently loaded into memory
@@ -308,7 +307,7 @@ class TempFilesContainer:
 		if raw_file is not None:
 			self._memory += len(raw_file)
 
-		while self._memory > self.pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048)*1000000:
+		while self._memory > pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048)*1000000:
 			remove_entry = self._last_used.pop()
 			self._memory -= len(self._temp_files[remove_entry][4])
 			del self._temp_files[remove_entry]
@@ -337,13 +336,13 @@ class TempFilesContainer:
 				datafile_id = self._temp_files[file_id][1]
 			else:
 				# preferentially use one found in the forgeFile asked but look in others if needed
-				if forge_file_name in self.pyUbiForge.forge_files and file_id in self.pyUbiForge.forge_files[forge_file_name].datafiles:
+				if forge_file_name in pyUbiForge.forge_files and file_id in pyUbiForge.forge_files[forge_file_name].datafiles:
 					datafile_id = file_id
 				else:
 					forge_file_name, datafile_id = self.light_dictionary.get(file_id, forge_file_name)
 
 		if forge_file_name is None:
-			forge_file_name = next((fF for fF in self.pyUbiForge.forge_files.keys() if file_id in self.pyUbiForge.forge_files[fF].datafiles), None)
+			forge_file_name = next((fF for fF in pyUbiForge.forge_files.keys() if file_id in pyUbiForge.forge_files[fF].datafiles), None)
 			if forge_file_name is None:
 				forge_file_name, datafile_id = self.light_dictionary.get(file_id)
 				if datafile_id is None:
@@ -352,11 +351,11 @@ class TempFilesContainer:
 				datafile_id = file_id
 
 		if not (file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]):
-			self.pyUbiForge.forge_files[forge_file_name].decompress_datafile(datafile_id)
+			pyUbiForge.forge_files[forge_file_name].decompress_datafile(datafile_id)
 		self.refresh_usage(file_id)
 		if file_id in self._temp_files and forge_file_name == self._temp_files[file_id][0] and datafile_id == self._temp_files[file_id][1]:
 			return TempFile(
-				self.pyUbiForge,
+				pyUbiForge,
 				forge_file_name,
 				datafile_id,
 				file_id,
@@ -389,3 +388,6 @@ class TempFilesContainer:
 
 	def load(self):
 		self.light_dictionary.load()
+
+
+temp_files = TempFilesContainer()

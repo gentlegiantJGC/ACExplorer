@@ -3,7 +3,7 @@
 	of the Assassin's Creed franchise. 	This is just a UI wrapper for pyUbiForge where the heavy lifting is done.
 """
 
-from pyUbiForge import main as pyUbiForge
+import pyUbiForge.misc
 from typing import Union, Dict, List, Tuple
 from PySide2 import QtCore, QtGui, QtWidgets
 import time
@@ -12,16 +12,16 @@ import json
 import sys
 import subprocess
 
+import logging.config
+logging.basicConfig(filename='ACExplorer.log', filemode='w', format='[%(levelname)s]:[%(module)s]:[%(message)s]')
+
 
 class App(QtWidgets.QApplication):
-	"""This is the main application that contains the file tree.
-	This class also sets up pyUbiForge.
-	"""
+	"""This is the main application that contains the file tree."""
 	def __init__(self):
 		QtWidgets.QApplication.__init__(self)
 		self.pyUbiForge = pyUbiForge
-		self.log = self.pyUbiForge.log
-		self.log.info(__name__, 'Building GUI Window')
+		logging.info('Building GUI Window')
 
 		# load the style
 		self.icons = {}
@@ -43,7 +43,7 @@ class App(QtWidgets.QApplication):
 		# drop down box to select the game
 		self.game_select = QtWidgets.QComboBox()
 		self.game_select.setObjectName("game_select")
-		self.game_select.addItems(self.pyUbiForge.game_identifiers)
+		self.game_select.addItems(self.pyUbiForge.game_identifiers())
 		self.horizontal_layout.addWidget(self.game_select)
 
 		# search box
@@ -94,7 +94,7 @@ class App(QtWidgets.QApplication):
 		)
 
 		# statusbar
-		self.statusbar = StatusBar(self.main_window, self.log)
+		self.statusbar = StatusBar(self.main_window)
 		self.statusbar.setObjectName("statusbar")
 		self.main_window.setStatusBar(self.statusbar)
 		self.statusbar.start()
@@ -121,13 +121,13 @@ class App(QtWidgets.QApplication):
 		self.file_view.load_game(game_identifier)
 
 		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
-			self.pyUbiForge.log.info(__name__, f'Populating File Tree For {forge_file_name}')
+			logging.info(__name__, f'Populating File Tree For {forge_file_name}')
 			self.file_view.insert(forge_file_name, forge_file_name, icon=self.icons.get('unknown_file', None))
 			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
-				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id, icon=self.icons.get(f'{datafile.file_type:08X}', None))
+				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id, icon=self.icons.get(datafile.file_type, None))
 			self.processEvents()
-		self.pyUbiForge.log.info(__name__, 'Finished Populating File Tree')
-		self.pyUbiForge.log.info(__name__, '')
+		logging.info(__name__, 'Finished Populating File Tree')
+		logging.info(__name__, '')
 
 	def save(self):
 		self.pyUbiForge.save()
@@ -219,18 +219,18 @@ class App(QtWidgets.QApplication):
 				pass
 
 
-class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):
-	def __init__(self, parent: QtWidgets.QMainWindow, log: pyUbiForge.misc.log.Logger):
+class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):  # TODO: Make this work again
+	def __init__(self, parent: QtWidgets.QMainWindow):
 		QtWidgets.QStatusBar.__init__(self, parent)
 		QtCore.QThread.__init__(self)
-		self.log = log
 
 	def run(self):
-		while True:
-			if self.log.buffer is not None:
-				self.showMessage(self.log.buffer)
-				self.log.buffer = None
-			time.sleep(0.02)
+		return
+		# while True:
+		# 	if self.log.buffer is not None:
+		# 		self.showMessage(self.log.buffer)
+		# 		self.log.buffer = None
+		# 	time.sleep(0.02)
 
 
 class TreeView(QtWidgets.QTreeWidget):

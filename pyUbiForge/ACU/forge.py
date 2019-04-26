@@ -1,4 +1,5 @@
 import os
+import logging
 from typing import Tuple, List
 import numpy
 from pyUbiForge.misc import decompress
@@ -8,16 +9,16 @@ from pyUbiForge.misc.file_object import FileObjectDataWrapper
 
 class Forge(BaseForge):
 	"""This is a container which houses pointers to the data for each forge file and methods to decompress it."""
-	def __init__(self, py_ubi_forge, path: str, forge_file_name: str):
+	def __init__(self, path: str, forge_file_name: str):
 		"""Initiate the class and read the header tables to get the locations of the files.
 
 		The forge file has a couple of data tables before the actual data that points to where the actual data is stored.
 		These tables are parsed and the data from them stored for each datafile in self.datafiles for use later
 		"""
-		BaseForge.__init__(self, py_ubi_forge, path, forge_file_name)
-		self.pyUbiForge.log.info(__name__, f'Building file tree for {forge_file_name}')
+		BaseForge.__init__(self, path, forge_file_name)
+		logging.info(__name__, f'Building file tree for {forge_file_name}')
 
-		forge_file = FileObjectDataWrapper.from_file(self.pyUbiForge, self.path)
+		forge_file = FileObjectDataWrapper.from_file(self.path)
 		# header
 		if forge_file.read_bytes(8) != b'scimitar':
 			return
@@ -187,7 +188,7 @@ class Forge(BaseForge):
 					try:
 						open(path, 'wb').write(raw_file)
 					except Exception as e:
-						self.pyUbiForge.log.warn(__name__, f'Error saving temporary file with path "{path}"\n{e}')
+						logging.warning(__name__, f'Error saving temporary file with path "{path}"\n{e}')
 
 		else:
 			raise Exception('Format version not known. Please let the creator know where you found this.')
