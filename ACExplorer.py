@@ -119,7 +119,7 @@ class App(QtWidgets.QApplication):
 
 		self.file_view.load_game(game_identifier)
 
-		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
+		for forge_file_name, forge_file in pyUbiForge.forge_files.items():
 			logging.info(f'Populating File Tree For {forge_file_name}')
 			self.file_view.insert(forge_file_name, forge_file_name, icon=self.icons.get('unknown_file', None))
 			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
@@ -129,7 +129,7 @@ class App(QtWidgets.QApplication):
 		logging.info('')
 
 	def save(self):
-		self.pyUbiForge.save()
+		pyUbiForge.save()
 		with open('config.json', 'w') as config:
 			json.dump(self._options, config)
 
@@ -149,42 +149,42 @@ class App(QtWidgets.QApplication):
 		self._options['style'] = style_name
 
 	def _show_games(self):
-		current_game_path = self.pyUbiForge.CONFIG.game_folder(self.game_select.currentText())
+		current_game_path = pyUbiForge.CONFIG.game_folder(self.game_select.currentText())
 		screen = PluginOptionsScreen(
-			self.pyUbiForge,
+			pyUbiForge,
 			'Game Paths',
 			{
 				game_identifier: {
 					'type': 'dir_select',
 					'default': game_path
-				} for game_identifier, game_path in self.pyUbiForge.CONFIG.get('gameFolders', {}).items()
+				} for game_identifier, game_path in pyUbiForge.CONFIG.get('gameFolders', {}).items()
 			}
 		)
 		if not screen.escape:
-			self.pyUbiForge.CONFIG['gameFolders'] = screen.options
-			if self.pyUbiForge.CONFIG.game_folder(self.game_select.currentText()) != current_game_path:
+			pyUbiForge.CONFIG['gameFolders'] = screen.options
+			if pyUbiForge.CONFIG.game_folder(self.game_select.currentText()) != current_game_path:
 				self.load_game(self.game_select.currentText())
 
 	def _show_options(self):
 		screen = PluginOptionsScreen(
-			self.pyUbiForge,
+			pyUbiForge,
 			'Options',
 			{
 				'Missing Texture Path': {
 					'type': 'file_select',
-					'default': self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png')
+					'default': pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png')
 				},
 				'Default Output Folder': {
 					'type': 'dir_select',
-					'default': self.pyUbiForge.CONFIG.get('dumpFolder', 'output')
+					'default': pyUbiForge.CONFIG.get('dumpFolder', 'output')
 				},
 				'Log File': {
 					'type': 'file_select',
-					'default': self.pyUbiForge.CONFIG.get('logFile', 'ACExplorer.log')
+					'default': pyUbiForge.CONFIG.get('logFile', 'ACExplorer.log')
 				},
 				'Temporary Files Memory Buffer (MB)': {
 					'type': 'int_entry',
-					'default': self.pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048),
+					'default': pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048),
 					"min": 50
 				},
 				'Style': {
@@ -197,10 +197,10 @@ class App(QtWidgets.QApplication):
 		)
 		options = screen.options
 		if not screen.escape:
-			self.pyUbiForge.CONFIG['missingNo'] = options['Missing Texture Path']
-			self.pyUbiForge.CONFIG['dumpFolder'] = options['Default Output Folder']
-			self.pyUbiForge.CONFIG['logFile'] = options['Log File']
-			self.pyUbiForge.CONFIG['tempFilesMaxMemoryMB'] = options['Temporary Files Memory Buffer (MB)']
+			pyUbiForge.CONFIG['missingNo'] = options['Missing Texture Path']
+			pyUbiForge.CONFIG['dumpFolder'] = options['Default Output Folder']
+			pyUbiForge.CONFIG['logFile'] = options['Log File']
+			pyUbiForge.CONFIG['tempFilesMaxMemoryMB'] = options['Temporary Files Memory Buffer (MB)']
 			if self._options['style'] != options['Style']:
 				self._options['style'] = options['Style']
 				self.load_style(self._options['style'])
@@ -298,7 +298,7 @@ class TreeView(QtWidgets.QTreeWidget):
 		entry: TreeViewEntry = self.itemAt(position)
 		if entry is not None:
 			unique_identifier = (None, entry.forge_file_name, entry.datafile_id, entry.file_id)[entry.depth-1]
-			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(entry.depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
+			plugin_names, file_id = pyUbiForge.right_click_plugins.query(entry.depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
 
 			menu = ContextMenu(self.icons, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
 			menu.exec_(self.viewport().mapToGlobal(position))
@@ -363,7 +363,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 			# if the string is empty or matches one of the parameters unhide self and children.
 			self.recursively_unhide_children()
 			return True
-		elif self.pyUbiForge.CONFIG.get('dev', False) and any(search_string.upper() in attr for attr in self.dev_search):
+		elif pyUbiForge.CONFIG.get('dev', False) and any(search_string.upper() in attr for attr in self.dev_search):
 			# if in dev mode and matches one of the file ids unhide self and children
 			self.recursively_unhide_children()
 			return True
@@ -382,7 +382,7 @@ class ContextMenu(QtWidgets.QMenu):
 	"""Context menu for use upon right click of an item in the file tree to access the plugin system."""
 	def __init__(self: pyUbiForge, icons: Dict[str, QtGui.QIcon], plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
 		QtWidgets.QMenu.__init__(self)
-		self.pyUbiForge = py_ubi_forge
+		pyUbiForge = py_ubi_forge
 		self.icons = icons
 
 		for plugin_name in sorted(plugin_names):
@@ -390,7 +390,7 @@ class ContextMenu(QtWidgets.QMenu):
 
 	def add_command(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None):
 		"""Workaround for plugin in post method getting overwritten which lead to all options calling the last plugin."""
-		if self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, []) is None:
+		if pyUbiForge.right_click_plugins.get_screen_options(plugin_name, []) is None:
 			self.addAction(
 				plugin_name,
 				lambda: self.run_plugin(plugin_name, file_id, forge_file_name, datafile_id)
@@ -404,7 +404,7 @@ class ContextMenu(QtWidgets.QMenu):
 
 	def run_plugin(self, plugin_name: str, file_id: Union[str, int], forge_file_name: Union[None, str] = None, datafile_id: Union[None, int] = None) -> None:
 		"""Method to run and handle plugin options."""
-		self.pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id)
+		pyUbiForge.right_click_plugins.run(plugin_name, file_id, forge_file_name, datafile_id)
 
 	def mousePressEvent(self, event: QtGui.QMouseEvent):
 		if event.button() == QtCore.Qt.RightButton:
@@ -413,15 +413,15 @@ class ContextMenu(QtWidgets.QMenu):
 				plugin_name = entry.text()
 				options = []
 				escape = False
-				new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
+				new_screen = pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
 				while new_screen is not None and not escape:
 					# show screen
-					screen = PluginOptionsScreen(self.pyUbiForge, plugin_name, new_screen)
+					screen = PluginOptionsScreen(pyUbiForge, plugin_name, new_screen)
 					escape = screen.escape
 					if not escape:
 						# pull options from screen
 						options.append(screen.options)
-						new_screen = self.pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
+						new_screen = pyUbiForge.right_click_plugins.get_screen_options(plugin_name, options)
 				if not escape:
 					entry.trigger()
 			else:

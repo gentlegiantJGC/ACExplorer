@@ -58,11 +58,11 @@ class ObjMtl:
 	When the .save_and_close method is called these materials are written to the mtl file.
 	"""
 	def __init__(self, model_name: str, save_folder: str):
-		self.pyUbiForge = py_ubi_forge
+		pyUbiForge = py_ubi_forge
 		self.model_name = model_name
 		self.save_folder = save_folder
 		self.vertex_count = 0   # the number of vertices that have been processed. Used to calculate the vertex offset
-		self.mtl_handler = MaterialHandler(self.pyUbiForge)      # used when generating the .mtl file
+		self.mtl_handler = MaterialHandler(pyUbiForge)      # used when generating the .mtl file
 		self._group_name = {}   # used for getting a unique name for each model
 		self.missing_no_exported = False
 
@@ -139,7 +139,7 @@ class ObjMtl:
 			]
 			materials = list(executor.map(
 				texture.export_dds,
-				[self.pyUbiForge] * len(fild_ids),
+				[pyUbiForge] * len(fild_ids),
 				fild_ids,
 				[self.save_folder] * len(fild_ids)
 			))
@@ -150,7 +150,7 @@ class ObjMtl:
 			mtl.write('Ka 1.000 1.000 1.000\nKd 1.000 1.000 1.000\nKs 0.000 0.000 0.000\nNs 0.000\n')
 
 			if material.missing_no:
-				mtl.write(f"map_Kd {os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
+				mtl.write(f"map_Kd {os.path.basename(pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
 				self.export_missing_no()
 			else:
 				for map_type, file_id in [
@@ -164,7 +164,7 @@ class ObjMtl:
 						image_path = materials[material_counter]
 						material_counter += 1
 						if image_path is None:
-							mtl.write(f"{map_type} {os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
+							mtl.write(f"{map_type} {os.path.basename(pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))}\n")
 							self.export_missing_no()
 						else:
 							mtl.write(f'{map_type} {os.path.basename(image_path)}\n')
@@ -179,7 +179,7 @@ class ObjMtl:
 		"""
 		if not self.missing_no_exported:
 			self.missing_no_exported = True
-			shutil.copy(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'), self.save_folder)
+			shutil.copy(pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'), self.save_folder)
 
 
 def plaintext_array(array):
@@ -197,11 +197,11 @@ class Collada:
 		If it hasn't been then read the model file
 	"""
 	def __init__(self, model_name: str, save_folder: str):
-		self.pyUbiForge = py_ubi_forge
+		pyUbiForge = py_ubi_forge
 		self.model_name = model_name
 		self.save_folder = save_folder
 		self._models_exported = {}
-		self._mtl_handler = MaterialHandler(self.pyUbiForge)      # used when generating the .mtl file
+		self._mtl_handler = MaterialHandler(pyUbiForge)      # used when generating the .mtl file
 		self._group_name = {}   # used for getting a unique name for each model
 		self._library_visual_scenes = []
 		self.missing_no_exported = False
@@ -235,11 +235,11 @@ class Collada:
 		"""
 
 		if not self.is_exported(model_file_id):
-			data = self.pyUbiForge.temp_files(model_file_id, forge_file_name, datafile_id)
+			data = pyUbiForge.temp_files(model_file_id, forge_file_name, datafile_id)
 			if data is None:
 				logging.warning(f"Failed to find file {model_file_id:016X}")
 				return
-			model = self.pyUbiForge.read_file(data.file)
+			model = pyUbiForge.read_file(data.file)
 			if model is None:  # sometimes reading the model fails
 				return
 			self._models_exported[model_file_id] = []
@@ -346,7 +346,7 @@ class Collada:
 			image_path = None
 			material_name = material.name
 			if material.missing_no:
-				image_path = os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))
+				image_path = os.path.basename(pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))
 				self.export_missing_no()
 			else:
 				for map_type, file_id in [
@@ -358,9 +358,9 @@ class Collada:
 				]:
 					if file_id is None:
 						continue
-					image_path = os.path.basename(texture.export_dds(self.pyUbiForge, file_id, self.save_folder))
+					image_path = os.path.basename(texture.export_dds(pyUbiForge, file_id, self.save_folder))
 					if image_path is None:
-						image_path = os.path.basename(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))
+						image_path = os.path.basename(pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))
 						self.export_missing_no()
 					library_images.append(f'''		<image id="{material_name}-{map_type}" name="{material_name}">
 			<init_from>{urllib.parse.quote(image_path)}</init_from>
@@ -437,16 +437,16 @@ class Collada:
 		"""
 		if not self.missing_no_exported:
 			self.missing_no_exported = True
-			shutil.copy(self.pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'), self.save_folder)
+			shutil.copy(pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'), self.save_folder)
 
 
 class MaterialHandler:
 	def __init__(self):
-		self.pyUbiForge = py_ubi_forge
+		pyUbiForge = py_ubi_forge
 		self.materials = {}
 		self.name = 'Unknown'
 
 	def get(self, file_id: int):
 		if file_id not in self.materials:
-			self.materials[file_id] = self.pyUbiForge.game_functions.get_material_ids(self.pyUbiForge, file_id)
+			self.materials[file_id] = pyUbiForge.game_functions.get_material_ids(pyUbiForge, file_id)
 		return self.materials[file_id]

@@ -5,7 +5,7 @@ from typing import Union
 
 class BaseTexture:
 	def __init__(self):
-		self.pyUbiForge = py_ubi_forge
+		pyUbiForge = py_ubi_forge
 		self.dwSize = b'\x7C\x00\x00\x00'  # 124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True
 		# (probably should be set based on the data)
@@ -47,7 +47,7 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = f'".\\resources\\texconv.exe" -nologo -fl 9.1 -y -px {self.pyUbiForge.CONFIG.get("dumpFolder", "output")}{os.sep} -f BC3_UNORM {path}'
+			texconv = f'".\\resources\\texconv.exe" -nologo -fl 9.1 -y -px {pyUbiForge.CONFIG.get("dumpFolder", "output")}{os.sep} -f BC3_UNORM {path}'
 			os.system(texconv)
 
 

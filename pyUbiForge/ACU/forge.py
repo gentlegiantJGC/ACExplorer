@@ -139,11 +139,11 @@ class Forge(BaseForge):
 				uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
 
 		if format_version == 0:
-			self.pyUbiForge.temp_files.add(datafile_id, self.forge_file_name, datafile_id, 0, self.datafiles[datafile_id].file_name, raw_file=b''.join(uncompressed_data_list))
+			pyUbiForge.temp_files.add(datafile_id, self.forge_file_name, datafile_id, 0, self.datafiles[datafile_id].file_name, raw_file=b''.join(uncompressed_data_list))
 			self.datafiles[datafile_id].files[datafile_id] = self.datafiles[datafile_id].file_name
 
 		elif format_version == 128:
-			uncompressed_data = FileObjectDataWrapper.from_binary(self.pyUbiForge, b''.join(uncompressed_data_list))
+			uncompressed_data = FileObjectDataWrapper.from_binary(pyUbiForge, b''.join(uncompressed_data_list))
 
 			file_count = uncompressed_data.read_uint_16()
 			index_table = []
