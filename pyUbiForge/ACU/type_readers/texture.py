@@ -9,8 +9,8 @@ from pyUbiForge.misc.file_object import FileObjectDataWrapper
 class Reader(BaseTexture, BaseReader):
 	file_type = 'A2B7E917'
 
-	def __init__(self, py_ubi_forge, texture_file: FileObjectDataWrapper):
-		BaseTexture.__init__(self, py_ubi_forge)
+	def __init__(self, texture_file: FileObjectDataWrapper):
+		BaseTexture.__init__(self)
 		if py_ubi_forge.CONFIG.get('dev', False):
 			if not os.path.isdir(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes')):
 				os.makedirs(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes'))

@@ -8,7 +8,7 @@ class Plugin(BasePlugin):
 	dev = True
 	_options = []
 
-	def run(self, py_ubi_forge, *_):
+	def run(self, *_):
 		py_ubi_forge.log.info(__name__, self._options)
 
 	def options(self, options: Union[List[dict], None]):

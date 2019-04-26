@@ -56,7 +56,7 @@ lightDictionary
 
 
 class TempFile:
-	def __init__(self, py_ubi_forge, forge_file: str, datafile_id: int, file_id: int, file_type: str, file_name: str, raw_file: bytes):
+	def __init__(self, forge_file: str, datafile_id: int, file_id: int, file_type: str, file_name: str, raw_file: bytes):
 		"""Container for data related to a file.
 		Should help with typing and argument selection compared to the old dictionary method
 		"""

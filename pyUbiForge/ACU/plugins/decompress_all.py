@@ -5,7 +5,7 @@ class Plugin(BasePlugin):
 	plugin_name = 'Decompress All'
 	plugin_level = 1
 
-	def run(self, py_ubi_forge, *_):
+	def run(self, *_):
 		datafile_count = 0
 		datafile_completed_count = 0
 		for forge_file_name in py_ubi_forge.forge_files:

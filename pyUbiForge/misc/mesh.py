@@ -57,7 +57,7 @@ class ObjMtl:
 	While this is being done the materials are saved to a buffer.
 	When the .save_and_close method is called these materials are written to the mtl file.
 	"""
-	def __init__(self, py_ubi_forge, model_name: str, save_folder: str):
+	def __init__(self, model_name: str, save_folder: str):
 		self.pyUbiForge = py_ubi_forge
 		self.model_name = model_name
 		self.save_folder = save_folder
@@ -196,7 +196,7 @@ class Collada:
 	First use .is_exported to check if the model id has been exported.
 		If it hasn't been then read the model file
 	"""
-	def __init__(self, py_ubi_forge, model_name: str, save_folder: str):
+	def __init__(self, model_name: str, save_folder: str):
 		self.pyUbiForge = py_ubi_forge
 		self.model_name = model_name
 		self.save_folder = save_folder
@@ -441,7 +441,7 @@ class Collada:
 
 
 class MaterialHandler:
-	def __init__(self, py_ubi_forge):
+	def __init__(self):
 		self.pyUbiForge = py_ubi_forge
 		self.materials = {}
 		self.name = 'Unknown'

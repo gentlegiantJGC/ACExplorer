@@ -7,7 +7,7 @@ import numpy
 class Reader(BaseModel, BaseReader):
 	file_type = '415D9568'
 
-	def __init__(self, py_ubi_forge, model_file: FileObjectDataWrapper):
+	def __init__(self, model_file: FileObjectDataWrapper):
 		BaseModel.__init__(self)
 
 		model_file.out_file_write('\n')

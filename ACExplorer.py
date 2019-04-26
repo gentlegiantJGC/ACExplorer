@@ -13,7 +13,7 @@ import sys
 import subprocess
 
 import logging.config
-logging.basicConfig(filename='ACExplorer.log', filemode='w', format='[%(levelname)s]:[%(module)s]:[%(message)s]')
+logging.basicConfig(filename='ACExplorer.log', filemode='w', format='[%(levelname)s]:[%(module)s]:[%(message)s]', level='INFO')
 
 
 class App(QtWidgets.QApplication):
@@ -53,7 +53,7 @@ class App(QtWidgets.QApplication):
 		self.horizontal_layout.addWidget(self.search_box)
 
 		# file tree view
-		self.file_view = TreeView(self.pyUbiForge, self.central_widget, self.icons)
+		self.file_view = TreeView(self.central_widget, self.icons)
 		self.file_view.setObjectName("file_view")
 		self.file_view.setHeaderHidden(True)
 		self.vertical_layout.addWidget(self.file_view)
@@ -114,7 +114,7 @@ class App(QtWidgets.QApplication):
 		"""Tell pyUbiForge to load the new game and populate the file tree with the data it gives."""
 		self.processEvents()
 
-		for _ in self.pyUbiForge.load_game(game_identifier):
+		for _ in pyUbiForge.load_game(game_identifier):
 			self.processEvents()
 
 		self.file_view.load_game(game_identifier)
@@ -262,16 +262,16 @@ class TreeView(QtWidgets.QTreeWidget):
 					parent = self._entries[(forge_file_name, None, None)]
 			else:
 				parent = self._entries[(None, None, None)]
-			entry = TreeViewEntry(self.pyUbiForge, parent, entry_name, forge_file_name, datafile_id, file_id, icon=icon)
+			entry = TreeViewEntry(parent, entry_name, forge_file_name, datafile_id, file_id, icon=icon)
 			parent.addChild(entry)
 		else:
-			entry = TreeViewEntry(self.pyUbiForge, self, entry_name, icon=icon)
+			entry = TreeViewEntry(self, entry_name, icon=icon)
 
 		self._entries[(forge_file_name, datafile_id, file_id)] = entry
 
 	def populate_tree(self):
 		"""A helper function to populate files in the file view."""
-		for forge_file_name, forge_file in self.pyUbiForge.forge_files.items():
+		for forge_file_name, forge_file in pyUbiForge.forge_files.items():
 			for datafile_id in forge_file.new_datafiles:
 				for file_id, file_name in sorted(forge_file.datafiles[datafile_id].files.items(), key=lambda v: v[1].lower()):
 					self.insert(
@@ -280,7 +280,7 @@ class TreeView(QtWidgets.QTreeWidget):
 						datafile_id,
 						file_id,
 						icon=self.icons.get(
-							self.pyUbiForge.temp_files(file_id, forge_file_name, datafile_id).file_type,
+							pyUbiForge.temp_files(file_id, forge_file_name, datafile_id).file_type,
 							None
 						)
 					)
@@ -290,7 +290,7 @@ class TreeView(QtWidgets.QTreeWidget):
 		entry: TreeViewEntry = self.itemAt(event.pos())
 		if entry is not None and entry.depth == 3 and entry.childCount() == 0:
 			forge_file_name, datafile_id = entry.forge_file_name, entry.datafile_id
-			self.pyUbiForge.forge_files[forge_file_name].decompress_datafile(datafile_id)
+			pyUbiForge.forge_files[forge_file_name].decompress_datafile(datafile_id)
 			self.populate_tree()
 		QtWidgets.QTreeWidget.mousePressEvent(self, event)
 
@@ -300,7 +300,7 @@ class TreeView(QtWidgets.QTreeWidget):
 			unique_identifier = (None, entry.forge_file_name, entry.datafile_id, entry.file_id)[entry.depth-1]
 			plugin_names, file_id = self.pyUbiForge.right_click_plugins.query(entry.depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
 
-			menu = ContextMenu(self.pyUbiForge, self.icons, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
+			menu = ContextMenu(self.icons, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
 			menu.exec_(self.viewport().mapToGlobal(position))
 			self.populate_tree()
 
@@ -380,7 +380,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 
 class ContextMenu(QtWidgets.QMenu):
 	"""Context menu for use upon right click of an item in the file tree to access the plugin system."""
-	def __init__(self, py_ubi_forge: pyUbiForge, icons: Dict[str, QtGui.QIcon], plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
+	def __init__(self: pyUbiForge, icons: Dict[str, QtGui.QIcon], plugin_names: List[str], file_id: Union[str, int], forge_file_name: Union[None, str], datafile_id: Union[None, int]):
 		QtWidgets.QMenu.__init__(self)
 		self.pyUbiForge = py_ubi_forge
 		self.icons = icons
@@ -431,7 +431,7 @@ class ContextMenu(QtWidgets.QMenu):
 
 
 class PluginOptionsScreen(QtWidgets.QDialog):
-	def __init__(self, py_ubi_forge: pyUbiForge, plugin_name: str, screen: Dict[str, dict]):
+	def __init__(self: pyUbiForge, plugin_name: str, screen: Dict[str, dict]):
 		QtWidgets.QDialog.__init__(self)
 		self._pyUbiForge = py_ubi_forge
 		self.setModal(True)

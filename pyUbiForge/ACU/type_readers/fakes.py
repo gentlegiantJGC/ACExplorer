@@ -7,7 +7,7 @@ from pyUbiForge.ACU.type_readers.D77FB524 import Reader as Fake
 class Reader(BaseReader):
 	file_type = 'C69A7F31'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
+	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		fake_count = file_object_data_wrapper.read_uint_32()
 		self.fakes: List[Fake] = []
 		for _ in range(fake_count):

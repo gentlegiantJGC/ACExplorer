@@ -4,7 +4,7 @@ from typing import Union
 
 
 class BaseTexture:
-	def __init__(self, py_ubi_forge):
+	def __init__(self):
 		self.pyUbiForge = py_ubi_forge
 		self.dwSize = b'\x7C\x00\x00\x00'  # 124
 		DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True

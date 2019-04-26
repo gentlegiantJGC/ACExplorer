@@ -6,7 +6,7 @@ from pyUbiForge.misc import Material
 class Reader(BaseReader, Material):
 	file_type = 'D70E6670'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
+	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		Material.__init__(self, None)
 
 		texture_table = file_object_data_wrapper.read_numpy([('', '<u2'), ('texture_id', '<u8')], 120)

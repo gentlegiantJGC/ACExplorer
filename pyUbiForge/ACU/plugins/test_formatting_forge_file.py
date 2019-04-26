@@ -31,7 +31,7 @@ class Plugin(BasePlugin):
 		}
 	]
 
-	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
+	def run(self, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
 		if options is not None:
 			self._options = options     # should do some validation here
 

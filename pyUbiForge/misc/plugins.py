@@ -10,7 +10,7 @@ class BasePlugin:
 	file_type = None
 	dev = False
 
-	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
+	def run(self, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
 		raise NotImplemented
 
 	def options(self, options: Union[List[dict], None]) -> Union[Dict[str, dict], None]:
@@ -29,7 +29,7 @@ class PluginHandler:
 	>>>		plugin_level = 4            # see plugin_level below
 	>>>		file_type = '00000000'      # big endian hex representation of the file type (only needed if plugin_level == 4)
 	>>>
-	>>>		def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
+	>>>		def run(self, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: list = None):
 	>>>			# the method that is called to run the plugin
 	>>>
 	>>>     def options(self, options: Union[List[dict], None]):

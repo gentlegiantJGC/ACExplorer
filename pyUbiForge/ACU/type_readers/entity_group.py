@@ -6,7 +6,7 @@ import numpy
 class Reader(BaseReader):
 	file_type = '3F742D26'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
+	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		check_byte = file_object_data_wrapper.read_uint_8()  # checkbyte 03 to continue (other stuff to not? have seen 00 with data after)
 		if check_byte == 0:
 			for _ in range(2):

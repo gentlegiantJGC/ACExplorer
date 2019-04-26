@@ -8,7 +8,7 @@ class Plugin(BasePlugin):
 	plugin_level = 4
 	file_type = '*'
 
-	def run(self, py_ubi_forge, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
+	def run(self, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
 		data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
 		if data is None:
 			py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")

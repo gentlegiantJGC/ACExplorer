@@ -30,7 +30,7 @@ class Plugin(BasePlugin):
 	}
 	"""
 
-	def run(self, py_ubi_forge, *_):
+	def run(self, *_):
 		dict_doc = {}
 		file_list = set([binascii.hexlify(struct.pack('<Q', file_id)).decode("utf-8").upper() for file_id in py_ubi_forge.temp_files.list_light_dictionary])
 		datafile_count = 0

@@ -6,7 +6,7 @@ import numpy
 class Reader(BaseReader):
 	file_type = '536E963B'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
+	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		file_object_data_wrapper.read_bytes(1)
 		self.mesh_id = file_object_data_wrapper.read_id()
 		file_object_data_wrapper.read_bytes(40)  # contains a compiled mesh instance 4368101B

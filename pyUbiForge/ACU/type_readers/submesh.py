@@ -5,7 +5,7 @@ from pyUbiForge.misc.file_readers import BaseReader
 class Reader(BaseReader):
 	file_type = '5755DE7F'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
+	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		file_object_data_wrapper.read_uint_32()  # should always be equal to 0
 		for n in (4, 4, 4, 1, 12, 12, 12, 12, 4, 4):
 			count = file_object_data_wrapper.read_uint_32()

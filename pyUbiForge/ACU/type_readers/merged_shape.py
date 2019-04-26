@@ -6,7 +6,7 @@ import numpy
 class Reader(BaseReader):
 	file_type = '2D675BA2'
 
-	def __init__(self, py_ubi_forge, file_object_data_wrapper: FileObjectDataWrapper):
+	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		count1 = file_object_data_wrapper.read_uint_32()  # possibly a count
 		if count1 != 0:
 			py_ubi_forge.log.warn(__name__, '"2D675BA2" count1 is not 0')
