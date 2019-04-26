@@ -116,9 +116,9 @@ class Forge(BaseForge):
 			return
 		uncompressed_data_list = []
 
-		with open(os.path.join(self.pyUbiForge.CONFIG.game_folder(self.pyUbiForge.game_identifier), self.forge_file_name), 'rb', buffering=0) as forge_file:
+		with open(os.path.join(pyUbiForge.CONFIG.game_folder(pyUbiForge.game_identifier()), self.forge_file_name), 'rb', buffering=0) as forge_file:
 			forge_file.seek(self.datafiles[datafile_id].raw_data_offset)
-			raw_data_chunk = FileObjectDataWrapper.from_binary(self.pyUbiForge, forge_file.read(self.datafiles[datafile_id].raw_data_size))
+			raw_data_chunk = FileObjectDataWrapper.from_binary(forge_file.read(self.datafiles[datafile_id].raw_data_size))
 		header = raw_data_chunk.read_bytes(8)
 		format_version = 128
 		if header == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
@@ -166,23 +166,23 @@ class Forge(BaseForge):
 
 				if file_name == '':
 					file_name = f'{file_id:016X}'
-				self.pyUbiForge.temp_files.add(file_id, self.forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
-				self.datafiles[datafile_id].files[file_id] = file_name
-				if self.pyUbiForge.CONFIG.get('writeToDisk', False):
+				pyUbiForge.temp_files.add(file_id, self.forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
+				datafiles[datafile_id].files[file_id] = file_name
+				if pyUbiForge.CONFIG.get('writeToDisk', False):
 					folder = os.path.join(
-						self.pyUbiForge.CONFIG.get('dumpFolder', 'output'),
-						self.pyUbiForge.game_identifier,
+						pyUbiForge.CONFIG.get('dumpFolder', 'output'),
+						pyUbiForge.game_identifier(),
 						self.forge_file_name,
 						self.datafiles[datafile_id].file_name,
 						f'{file_type:08X}'
 					)
-					if os.path.isfile(os.path.join(folder, f'{file_name}.{self.pyUbiForge.game_identifier.lower()}')):
+					if os.path.isfile(os.path.join(folder, f'{file_name}.{pyUbiForge.game_identifier().lower()}')):
 						duplicate = 1
-						while os.path.isfile(os.path.join(folder, f'{file_name}_{duplicate}.{self.pyUbiForge.game_identifier.lower()}')):
+						while os.path.isfile(os.path.join(folder, f'{file_name}_{duplicate}.{pyUbiForge.game_identifier().lower()}')):
 							duplicate += 1
-						path = os.path.join(folder, f'{file_name}_{duplicate}.{self.pyUbiForge.game_identifier.lower()}')
+						path = os.path.join(folder, f'{file_name}_{duplicate}.{pyUbiForge.game_identifier().lower()}')
 					else:
-						path = os.path.join(folder, f'{file_name}.{self.pyUbiForge.game_identifier.lower()}')
+						path = os.path.join(folder, f'{file_name}.{pyUbiForge.game_identifier().lower()}')
 					if not os.path.isdir(folder):
 						os.makedirs(folder)
 					try:

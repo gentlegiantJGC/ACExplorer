@@ -167,14 +167,14 @@ class PluginHandler:
 
 	def _load_plugins(self, dev_reload = True):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if pyUbiForge.game_identifier != self._game_identifier or (pyUbiForge.CONFIG.get('dev', False) and dev_reload):
-			self._game_identifier = pyUbiForge.game_identifier
+		if pyUbiForge.game_identifier() != self._game_identifier or (pyUbiForge.CONFIG.get('dev', False) and dev_reload):
+			self._game_identifier = pyUbiForge.game_identifier()
 			self._plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self._plugin_names = {}
 			# iterate through every plugin
-			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{pyUbiForge.game_identifier}/plugins']):
+			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{pyUbiForge.game_identifier()}/plugins']):
 				# load module and confirm that all required attributes are defined
-				module = importlib.import_module(f'pyUbiForge.{pyUbiForge.game_identifier}.plugins.{name}')
+				module = importlib.import_module(f'pyUbiForge.{pyUbiForge.game_identifier()}.plugins.{name}')
 				importlib.reload(module)
 
 				if not hasattr(module, 'Plugin') and issubclass(module.Plugin, BasePlugin):

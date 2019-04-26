@@ -2,6 +2,7 @@ import pkgutil
 import importlib
 from typing import Union, TextIO
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
+import pyUbiForge
 import time
 
 
@@ -59,13 +60,13 @@ class FileReaderHandler:
 
 	def _load_readers(self):
 		"""Call this method to load plugins from disk. (This method is automatically called by the get method)"""
-		if (pyUbiForge.game_identifier != self.game_identifier or pyUbiForge.CONFIG.get('dev', False)) and time.time() > self._time + 10:
+		if (pyUbiForge.game_identifier() != self.game_identifier or pyUbiForge.CONFIG.get('dev', False)) and time.time() > self._time + 10:
 			self._time = time.time()
 			self._wait = True
-			self.game_identifier = pyUbiForge.game_identifier
+			self.game_identifier = pyUbiForge.game_identifier()
 			self.readers = {}
-			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{pyUbiForge.game_identifier}/type_readers']):
-				module = importlib.import_module(f'pyUbiForge.{pyUbiForge.game_identifier}.type_readers.{name}')
+			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{pyUbiForge.game_identifier()}/type_readers']):
+				module = importlib.import_module(f'pyUbiForge.{pyUbiForge.game_identifier()}.type_readers.{name}')
 				importlib.reload(module)
 
 				if not hasattr(module, 'Reader') and issubclass(module.Reader, BaseReader):

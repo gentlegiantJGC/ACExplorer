@@ -20,7 +20,6 @@ class App(QtWidgets.QApplication):
 	"""This is the main application that contains the file tree."""
 	def __init__(self):
 		QtWidgets.QApplication.__init__(self)
-		self.pyUbiForge = pyUbiForge
 		logging.info('Building GUI Window')
 
 		# load the style
@@ -43,7 +42,7 @@ class App(QtWidgets.QApplication):
 		# drop down box to select the game
 		self.game_select = QtWidgets.QComboBox()
 		self.game_select.setObjectName("game_select")
-		self.game_select.addItems(self.pyUbiForge.game_identifiers())
+		self.game_select.addItems(pyUbiForge.game_identifiers())
 		self.horizontal_layout.addWidget(self.game_select)
 
 		# search box
@@ -237,10 +236,9 @@ class TreeView(QtWidgets.QTreeWidget):
 	"""This is the file tree used in the main application.
 	Wraps QTreeWidget and adds search functionality and a context menu
 	"""
-	def __init__(self, py_ubi_forge: pyUbiForge, parent: QtWidgets.QWidget, icons: Dict[str, QtGui.QIcon]):
+	def __init__(self, parent: QtWidgets.QWidget, icons: Dict[str, QtGui.QIcon]):
 		QtWidgets.QTreeWidget.__init__(self, parent)
 		self.icons = icons
-		self.pyUbiForge = py_ubi_forge
 		self._entries: Dict[Tuple[Union[None, str], Union[None, int], Union[None, int]], TreeViewEntry] = {}
 		self._game_identifier = None
 		self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -311,11 +309,10 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 	"""Individual entries in the file tree.
 	Wraps QTreeWidgetItem and saves more data related to each entry
 	"""
-	def __init__(self, py_ubi_forge: pyUbiForge, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None):
+	def __init__(self, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None):
 		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
 		if icon is not None:
 			self.setIcon(0, icon)
-		self.pyUbiForge = py_ubi_forge
 		self._entry_name = entry_name
 		self._forge_file_name = forge_file_name
 		self._datafile_id = datafile_id
