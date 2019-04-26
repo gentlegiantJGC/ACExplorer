@@ -1,5 +1,5 @@
-from ..type_readers.minimap_textures import Reader as MMClass
-from ..type_readers.texture import Reader as TextureClass
+from pyUbiForge.ACU.type_readers.minimap_textures import Reader as MMClass
+from pyUbiForge.ACU.type_readers.texture import Reader as TextureClass
 from pyUbiForge.misc.plugins import BasePlugin
 from PIL import Image
 from io import BytesIO
