@@ -16,10 +16,10 @@ class Config:
 			"gameFolders": {
 				"ACU": "",
 			},
+			"loadedGame": "ACU",
 
 			"dumpFolder": "output",
 
-			"logFile": "ACExplorer.log",
 			"tempFilesMaxMemoryMB": 2048,
 			"writeToDisk": False,
 			"dev": False
@@ -54,3 +54,6 @@ class Config:
 	def save(self):
 		with open(f"{os.path.dirname(__file__)}/../config.json", 'w') as f:
 			json.dump(self.raw, f, indent=4)
+
+
+CONFIG = Config()
