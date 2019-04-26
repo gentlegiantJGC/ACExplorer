@@ -12,13 +12,22 @@ import json
 import sys
 import subprocess
 
-import logging.config
+import logging
+
+log_file = logging.FileHandler('ACExplorer.log', 'w')
+log_file.setFormatter(
+	logging.Formatter('[%(levelname)s]:[%(module)s]:[%(message)s]')
+)
+console = logging.StreamHandler()
+console.setFormatter(
+	logging.Formatter('%(message)s')
+)
+
 logging.basicConfig(
 	level=logging.INFO,
-	format='[%(levelname)s]:[%(module)s]:[%(message)s]',
 	handlers=[
-		logging.FileHandler('ACExplorer.log', 'w'),
-		logging.StreamHandler()
+		log_file,
+		console
 	]
 )
 
@@ -27,7 +36,7 @@ class App(QtWidgets.QApplication):
 	"""This is the main application that contains the file tree."""
 	def __init__(self):
 		QtWidgets.QApplication.__init__(self)
-		logging.info('Building GUI Window')
+		# logging.info('Building GUI Window')
 
 		# load the style
 		self.icons = {}
@@ -100,10 +109,20 @@ class App(QtWidgets.QApplication):
 		)
 
 		# statusbar
-		self.statusbar = StatusBar(self.main_window)
+		self.statusbar = QtWidgets.QStatusBar()
 		self.statusbar.setObjectName("statusbar")
 		self.main_window.setStatusBar(self.statusbar)
-		self.statusbar.start()
+
+		status_bar_handler = logging.StreamHandler(
+			StatusBar(self, self.statusbar)
+		)
+		status_bar_handler.setFormatter(
+			logging.Formatter('%(message)s')
+		)
+
+		logging.getLogger('').addHandler(
+			status_bar_handler
+		)
 
 		self.load_style(self._options['style'])
 
@@ -222,18 +241,14 @@ class App(QtWidgets.QApplication):
 				pass
 
 
-class StatusBar(QtWidgets.QStatusBar, QtCore.QThread):  # TODO: Make this work again
-	def __init__(self, parent: QtWidgets.QMainWindow):
-		QtWidgets.QStatusBar.__init__(self, parent)
-		QtCore.QThread.__init__(self)
+class StatusBar:
+	def __init__(self, parent, statusbar):
+		self.parent = parent
+		self.statusbar = statusbar
 
-	def run(self):
-		return
-		# while True:
-		# 	if self.log.buffer is not None:
-		# 		self.showMessage(self.log.buffer)
-		# 		self.log.buffer = None
-		# 	time.sleep(0.02)
+	def write(self, msg):
+		if msg != '\n':
+			self.statusbar.showMessage(msg)
 
 
 class TreeView(QtWidgets.QTreeWidget):
@@ -437,7 +452,6 @@ class ContextMenu(QtWidgets.QMenu):
 class PluginOptionsScreen(QtWidgets.QDialog):
 	def __init__(self: pyUbiForge, plugin_name: str, screen: Dict[str, dict]):
 		QtWidgets.QDialog.__init__(self)
-		self._pyUbiForge = py_ubi_forge
 		self.setModal(True)
 		self._screen = screen
 		self._options = {}
