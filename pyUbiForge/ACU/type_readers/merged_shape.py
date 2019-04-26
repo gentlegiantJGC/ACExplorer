@@ -1,6 +1,7 @@
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 from pyUbiForge.misc.file_readers import BaseReader
 import numpy
+import logging
 
 
 class Reader(BaseReader):
@@ -9,7 +10,7 @@ class Reader(BaseReader):
 	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
 		count1 = file_object_data_wrapper.read_uint_32()  # possibly a count
 		if count1 != 0:
-			py_ubi_forge.log.warn(__name__, '"2D675BA2" count1 is not 0')
+			logging.warning('"2D675BA2" count1 is not 0')
 		count2 = file_object_data_wrapper.read_uint_32()
 		for _ in range(count2):
 			file_object_data_wrapper.read_bytes(2)

@@ -1,5 +1,6 @@
 from pyUbiForge.misc.plugins import BasePlugin
 from typing import Union, List
+import logging
 
 
 class Plugin(BasePlugin):
@@ -9,7 +10,7 @@ class Plugin(BasePlugin):
 	_options = []
 
 	def run(self, *_):
-		py_ubi_forge.log.info(__name__, self._options)
+		logging.info(self._options)
 
 	def options(self, options: Union[List[dict], None]):
 		if options is None or (isinstance(options, list) and len(options) == 0):

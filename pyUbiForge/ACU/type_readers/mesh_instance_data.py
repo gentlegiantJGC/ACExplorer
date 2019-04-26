@@ -1,6 +1,7 @@
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 from pyUbiForge.misc.file_readers import BaseReader
 import numpy
+import logging
 
 
 class Reader(BaseReader):
@@ -19,7 +20,7 @@ class Reader(BaseReader):
 		# file_object_data_wrapper.read_bytes(8) # two counts. first count for transformation matrix. second for more things?
 		count2 = file_object_data_wrapper.read_uint_32()
 		if count2 > 10000:
-			py_ubi_forge.log.warn(__name__, 'count2:{} is too large. Aborting'.format(count2))
+			logging.warning('count2:{} is too large. Aborting'.format(count2))
 			raise Exception()
 		self.transformation_matrix = []
 		for _ in range(count2):

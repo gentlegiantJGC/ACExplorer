@@ -151,7 +151,6 @@ class App(QtWidgets.QApplication):
 	def _show_games(self):
 		current_game_path = pyUbiForge.CONFIG.game_folder(self.game_select.currentText())
 		screen = PluginOptionsScreen(
-			pyUbiForge,
 			'Game Paths',
 			{
 				game_identifier: {
@@ -167,7 +166,6 @@ class App(QtWidgets.QApplication):
 
 	def _show_options(self):
 		screen = PluginOptionsScreen(
-			pyUbiForge,
 			'Options',
 			{
 				'Missing Texture Path': {

@@ -1,6 +1,8 @@
 import os
 from pyUbiForge.misc.plugins import BasePlugin
 from typing import Union, List
+import pyUbiForge
+import logging
 
 
 class Plugin(BasePlugin):
@@ -9,17 +11,17 @@ class Plugin(BasePlugin):
 	file_type = '*'
 
 	def run(self, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
-		data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
+		data = pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)
 		if data is None:
-			py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
+			logging.warning(f"Failed to find file {file_id:016X}")
 			return
-		if not os.path.isdir(py_ubi_forge.CONFIG.get('dumpFolder', 'output')):
-			os.makedirs(py_ubi_forge.CONFIG.get('dumpFolder', 'output'))
+		if not os.path.isdir(pyUbiForge.CONFIG.get('dumpFolder', 'output')):
+			os.makedirs(pyUbiForge.CONFIG.get('dumpFolder', 'output'))
 		out_file = open(
 			os.path.join(
-				py_ubi_forge.CONFIG.get('dumpFolder', 'output'),
-				f'{py_ubi_forge.game_functions.game_identifier}_{data.file_name}_{file_id:016X}.format'
+				pyUbiForge.CONFIG.get('dumpFolder', 'output'),
+				f'{pyUbiForge.game_identifier()}_{data.file_name}_{file_id:016X}.format'
 			), 'w'
 		)
-		py_ubi_forge.read_file(data.file, out_file)
-		py_ubi_forge.log.info(__name__, "Finished Formatting")
+		pyUbiForge.read_file(data.file, out_file)
+		logging.info("Finished Formatting")

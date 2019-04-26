@@ -1,6 +1,7 @@
 from pyUbiForge.misc import texture
 from pyUbiForge.misc.plugins import BasePlugin
 from typing import Union, List
+import pyUbiForge
 
 
 class Plugin(BasePlugin):
@@ -10,5 +11,5 @@ class Plugin(BasePlugin):
 
 	def run(self, file_id: Union[str, int], forge_file_name: str, datafile_id: int, options: Union[List[dict], None] = None):
 		# TODO add select directory option
-		save_folder = py_ubi_forge.CONFIG.get('dumpFolder', 'output')
-		texture.export_dds(py_ubi_forge, file_id, save_folder, forge_file_name, datafile_id)
+		save_folder = pyUbiForge.CONFIG.get('dumpFolder', 'output')
+		texture.export_dds(pyUbiForge, file_id, save_folder, forge_file_name, datafile_id)

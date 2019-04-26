@@ -21,7 +21,7 @@ class Reader(BaseReader):
 		count1 = file_object_data_wrapper.read_uint_32()
 
 		if count1 > 100:
-			py_ubi_forge.log.warn(__name__, 'error reading unknown file type')
+			logging.warning('error reading unknown file type')
 			# convert to an actual logger
 			return fileContainer
 		for _ in range(count1):
@@ -30,7 +30,7 @@ class Reader(BaseReader):
 
 		count2 = file_object_data_wrapper.read_uint_32()
 		if count2 > 100:
-			py_ubi_forge.log.warn(__name__, 'error reading unknown file type')
+			logging.warning('error reading unknown file type')
 			# convert to an actual logger
 			return fileContainer
 		for _ in range(count2):

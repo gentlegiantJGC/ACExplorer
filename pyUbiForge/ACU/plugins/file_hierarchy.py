@@ -3,6 +3,8 @@ import binascii
 import json
 import re
 from pyUbiForge.misc.plugins import BasePlugin
+import pyUbiForge
+import logging
 
 
 class Plugin(BasePlugin):
@@ -32,22 +34,22 @@ class Plugin(BasePlugin):
 
 	def run(self, *_):
 		dict_doc = {}
-		file_list = set([binascii.hexlify(struct.pack('<Q', file_id)).decode("utf-8").upper() for file_id in py_ubi_forge.temp_files.list_light_dictionary])
+		file_list = set([binascii.hexlify(struct.pack('<Q', file_id)).decode("utf-8").upper() for file_id in pyUbiForge.temp_files.list_light_dictionary])
 		datafile_count = 0
 		datafile_completed_count = 0
-		for forge_file_name in py_ubi_forge.forge_files:
-			datafile_count += len(py_ubi_forge.forge_files[forge_file_name].datafiles)
+		for forge_file_name in pyUbiForge.forge_files:
+			datafile_count += len(pyUbiForge.forge_files[forge_file_name].datafiles)
 
-		for forge_file_name, forge_file_class in py_ubi_forge.forge_files.items():
+		for forge_file_name, forge_file_class in pyUbiForge.forge_files.items():
 			for datafile_id, datafile_class in forge_file_class.datafiles.items():
 				datafile_id_hex = binascii.hexlify(struct.pack('<Q', datafile_id)).decode("utf-8").upper()
 				try:
-					py_ubi_forge.temp_files(datafile_id, forge_file_name, datafile_id)
+					pyUbiForge.temp_files(datafile_id, forge_file_name, datafile_id)
 				except:
 					continue
 				for file_id in datafile_class.files.keys():
 					file_id_hex = binascii.hexlify(struct.pack('<Q', file_id)).decode("utf-8").upper()
-					temp_file = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
+					temp_file = pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)
 					file_wrapper = temp_file.file
 					file_wrapper.seek(9)
 					file_type = file_wrapper.read_type()
@@ -69,7 +71,7 @@ class Plugin(BasePlugin):
 							if file_id_hex not in dict_doc[potential_file_id_hex][3]:
 								dict_doc[potential_file_id_hex][3].append(file_id_hex)
 				datafile_completed_count += 1
-				py_ubi_forge.log.info(__name__, f"Processed {round(100*datafile_completed_count/datafile_count, 2)}% of {datafile_count} datafiles")
-		py_ubi_forge.log.info(__name__, "Processed all files")
-		with open(f"{py_ubi_forge.CONFIG.get('dumpFolder', 'output')}/ACU_hierarchy.json", 'w') as f:
+				logging.info(f"Processed {round(100*datafile_completed_count/datafile_count, 2)}% of {datafile_count} datafiles")
+		logging.info("Processed all files")
+		with open(f"{pyUbiForge.CONFIG.get('dumpFolder', 'output')}/ACU_hierarchy.json", 'w') as f:
 			json.dump(dict_doc, f, indent=4)

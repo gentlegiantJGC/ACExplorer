@@ -4,6 +4,8 @@ from typing import Union, List, Dict
 from multiprocessing.connection import Client
 from PIL import Image, ImageDraw
 import numpy
+import pyUbiForge
+import logging
 
 
 class Plugin(BasePlugin):
@@ -24,32 +26,32 @@ class Plugin(BasePlugin):
 			self._options = options     # should do some validation here
 
 		# TODO add select directory option
-		save_folder = py_ubi_forge.CONFIG.get('dumpFolder', 'output')
+		save_folder = pyUbiForge.CONFIG.get('dumpFolder', 'output')
 
-		data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
+		data = pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)
 		if data is None:
-			py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
+			logging.warning(f"Failed to find file {file_id:016X}")
 			return
 		model_name = data.file_name
 
 		if self._options[0]["Export Method"] == 'Wavefront (.obj)':
-			model: mesh.BaseModel = py_ubi_forge.read_file(data.file)
+			model: mesh.BaseModel = pyUbiForge.read_file(data.file)
 			if model is not None:
-				obj_handler = mesh.ObjMtl(py_ubi_forge, model_name, save_folder)
+				obj_handler = mesh.ObjMtl(model_name, save_folder)
 				obj_handler.export(model, model_name)
 				obj_handler.save_and_close()
-				py_ubi_forge.log.info(__name__, f'Exported {file_id:016X}')
+				logging.info(f'Exported {file_id:016X}')
 			else:
-				py_ubi_forge.log.warn(__name__, f'Failed to export {file_id:016X}')
+				logging.warning(f'Failed to export {file_id:016X}')
 
 		elif self._options[0]["Export Method"] == 'Collada (.dae)':
-			obj_handler = mesh.Collada(py_ubi_forge, model_name, save_folder)
+			obj_handler = mesh.Collada(model_name, save_folder)
 			obj_handler.export(file_id, forge_file_name, datafile_id)
 			obj_handler.save_and_close()
-			py_ubi_forge.log.info(__name__, f'Exported {file_id:016X}')
+			logging.info(f'Exported {file_id:016X}')
 
 		elif self._options[0]["Export Method"] == 'Send to Blender (experimental)':
-			model: mesh.BaseModel = py_ubi_forge.read_file(data.file)
+			model: mesh.BaseModel = pyUbiForge.read_file(data.file)
 			if model is not None:
 				c = Client(('localhost', 6163))
 				cols = [Image.new('RGB', (1024, 1024), (128, 0, 0)) for _ in range(len(model.bones))]

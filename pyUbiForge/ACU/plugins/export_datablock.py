@@ -7,6 +7,8 @@ from pyUbiForge.ACU.type_readers.lod_selector import Reader as LODSelector
 from pyUbiForge.ACU.type_readers.mesh_instance_data import Reader as MeshInstanceData
 from typing import Union, List, Dict
 import numpy
+import pyUbiForge
+import logging
 
 
 class Plugin(BasePlugin):
@@ -28,26 +30,26 @@ class Plugin(BasePlugin):
 			self._options = options     # should do some validation here
 
 		# TODO add select directory option
-		save_folder = py_ubi_forge.CONFIG.get('dumpFolder', 'output')
+		save_folder = pyUbiForge.CONFIG.get('dumpFolder', 'output')
 
-		data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
+		data = pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)
 		if data is None:
-			py_ubi_forge.log.warn(__name__, f"Failed to find file {file_id:016X}")
+			logging.warning(f"Failed to find file {file_id:016X}")
 			return
 		data_block_name = data.file_name
-		data_block: DataBlock = py_ubi_forge.read_file(data.file)
+		data_block: DataBlock = pyUbiForge.read_file(data.file)
 
 		if self._options[0]["Export Method"] == 'Wavefront (.obj)':
-			obj_handler = mesh.ObjMtl(py_ubi_forge, data_block_name, save_folder)
+			obj_handler = mesh.ObjMtl(data_block_name, save_folder)
 			for data_block_entry_id in data_block.files:
-				data = py_ubi_forge.temp_files(data_block_entry_id)
+				data = pyUbiForge.temp_files(data_block_entry_id)
 				if data is None:
-					py_ubi_forge.log.warn(__name__, f"Failed to find file {data_block_entry_id:016X}")
+					logging.warning(f"Failed to find file {data_block_entry_id:016X}")
 					continue
 				if data.file_type in ('0984415E', '3F742D26'):  # entity and entity group
-					entity: Entity = py_ubi_forge.read_file(data.file)
+					entity: Entity = pyUbiForge.read_file(data.file)
 					if entity is None:
-						py_ubi_forge.log.warn(__name__, f"Failed reading file {data.file_name} {data.file_id:016X}")
+						logging.warning(f"Failed reading file {data.file_name} {data.file_id:016X}")
 						continue
 					for nested_file in entity.nested_files:
 						if nested_file.file_type == 'EC658D29':  # visual
@@ -58,18 +60,18 @@ class Plugin(BasePlugin):
 							elif '536E963B' in nested_file.nested_files.keys():  # Mesh instance
 								mesh_instance_data: MeshInstanceData = nested_file.nested_files['536E963B']
 							else:
-								py_ubi_forge.log.warn(__name__, f"Could not find mesh instance data for {data.file_name} {data.file_id:016X}")
+								logging.warning(f"Could not find mesh instance data for {data.file_name} {data.file_id:016X}")
 								continue
 							if mesh_instance_data is None:
-								py_ubi_forge.log.warn(__name__, f"Failed to find file {data.file_name}")
+								logging.warning(f"Failed to find file {data.file_name}")
 								continue
-							model_data = py_ubi_forge.temp_files(mesh_instance_data.mesh_id)
+							model_data = pyUbiForge.temp_files(mesh_instance_data.mesh_id)
 							if model_data is None:
-								py_ubi_forge.log.warn(__name__, f"Failed to find file {mesh_instance_data.mesh_id:016X}")
+								logging.warning(f"Failed to find file {mesh_instance_data.mesh_id:016X}")
 								continue
-							model: mesh.BaseModel = py_ubi_forge.read_file(model_data.file)
+							model: mesh.BaseModel = pyUbiForge.read_file(model_data.file)
 							if model is None or model.vertices is None:
-								py_ubi_forge.log.warn(__name__, f"Failed reading model file {model_data.file_name} {model_data.file_id:016X}")
+								logging.warning(f"Failed reading model file {model_data.file_name} {model_data.file_id:016X}")
 								continue
 							transform = entity.transformation_matrix
 							if len(mesh_instance_data.transformation_matrix) == 0:
@@ -77,20 +79,20 @@ class Plugin(BasePlugin):
 							else:
 								for trm in mesh_instance_data.transformation_matrix:
 									obj_handler.export(model, model_data.file_name, numpy.matmul(transform, trm))
-							py_ubi_forge.log.info(__name__, f'Exported {model_data.file_name}')
+							logging.info(f'Exported {model_data.file_name}')
 				else:
-					py_ubi_forge.log.info(__name__, f'File type "{data.file_type}" is not currently supported. It has been skipped')
+					logging.info(f'File type "{data.file_type}" is not currently supported. It has been skipped')
 			obj_handler.save_and_close()
-			py_ubi_forge.log.info(__name__, f'Finished exporting {data_block_name}.obj')
+			logging.info(f'Finished exporting {data_block_name}.obj')
 
 		# elif self._options[0]["Export Method"] == 'Collada (.dae)':
-		# 	obj_handler = mesh.Collada(py_ubi_forge, model_name, save_folder)
+		# 	obj_handler = mesh.Collada(pyUbiForge, model_name, save_folder)
 		# 	obj_handler.export(file_id, forge_file_name, datafile_id)
 		# 	obj_handler.save_and_close()
-		# 	py_ubi_forge.log.info(__name__, f'Exported {file_id:016X}')
+		# 	logging.info(f'Exported {file_id:016X}')
 		#
 		# elif self._options[0]["Export Method"] == 'Send to Blender (experimental)':
-		# 	model: mesh.BaseModel = py_ubi_forge.read_file(data.file)
+		# 	model: mesh.BaseModel = pyUbiForge.read_file(data.file)
 		# 	if model is not None:
 		# 		c = Client(('localhost', 6163))
 		# 		for mesh_index, m in enumerate(model.meshes):

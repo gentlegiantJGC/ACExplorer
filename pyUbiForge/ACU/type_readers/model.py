@@ -2,6 +2,8 @@ from pyUbiForge.misc.mesh import BaseModel
 from pyUbiForge.misc.file_readers import BaseReader
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 import numpy
+import pyUbiForge
+import logging
 
 
 class Reader(BaseModel, BaseReader):
@@ -20,14 +22,14 @@ class Reader(BaseModel, BaseReader):
 			while check == 3:
 				check = model_file.read_uint_8()
 			model_file.read_bytes(1)
-			py_ubi_forge.read_file.get_data_recursive(model_file)
+			pyUbiForge.read_file.get_data_recursive(model_file)
 		if a_count > 0:
 			model_file.read_bytes(1)
 
 		bone_count = model_file.read_uint_32()
 		self._bones = []
 		for _ in range(bone_count):
-			self._bones.append(py_ubi_forge.read_file.get_data_recursive(model_file))
+			self._bones.append(pyUbiForge.read_file.get_data_recursive(model_file))
 
 		self.bounding_box = model_file.read_numpy(numpy.float32, 32).reshape(2, 4)
 		model_file.out_file_write(f'{self.bounding_box}\n')
@@ -39,6 +41,7 @@ class Reader(BaseModel, BaseReader):
 			model_file.read_bytes(4)
 			model_file.out_file_write('Typeswitch\n')
 			self.type_switch = model_file.read_bytes(1)
+			use_blocks = 0
 			if self.type_switch == b'\x00':
 				model_file.read_id()
 				model_file.read_type()
@@ -141,7 +144,7 @@ class Reader(BaseModel, BaseReader):
 						('', numpy.int16, 2),  # not sure what this is
 					], vert_table_length)
 				else:
-					py_ubi_forge.log.warn(__name__, f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
+					logging.warning(f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
 					raise Exception()
 
 				self._vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)

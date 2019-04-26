@@ -181,8 +181,8 @@ class LightDictionary:
 		"""Load the light dictionary file from disk into memory if it exists."""
 		self.clear()
 
-		if os.path.isfile(f'./resources/lightDict/{pyUbiForge.game_functions.game_identifier}.ld'):
-			with open(f'./resources/lightDict/{pyUbiForge.game_functions.game_identifier}.ld', 'rb') as light_dict:
+		if os.path.isfile(f'./resources/lightDict/{pyUbiForge.game_identifier()}.ld'):
+			with open(f'./resources/lightDict/{pyUbiForge.game_identifier()}.ld', 'rb') as light_dict:
 				header_len = int(numpy.fromfile(light_dict, numpy.uint32, 1))
 				header = json.loads(light_dict.read(header_len).decode('utf-8'))
 				self._forge_to_index = header['forge_index']
@@ -227,7 +227,7 @@ class LightDictionary:
 					'forge_index': self._forge_to_index
 				}
 			).encode()
-			with open(f'./resources/lightDict/{pyUbiForge.game_functions.game_identifier}.ld', 'wb') as f:
+			with open(f'./resources/lightDict/{pyUbiForge.game_identifier()}.ld', 'wb') as f:
 				numpy.uint32(len(header)).tofile(f)
 				f.write(header)
 				_, index = numpy.unique(self._light_dictionary_numpy[:, :2], axis=0, return_index=True)

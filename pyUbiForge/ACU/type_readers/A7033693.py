@@ -10,4 +10,3 @@ class Reader(BaseReader):
 		count = file_object_data_wrapper.read_uint_32()
 		for _ in range(count):
 			file_object_data_wrapper.read_file()
-

@@ -1,5 +1,6 @@
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 from pyUbiForge.misc.file_readers import BaseReader
+import logging
 
 
 class Reader(BaseReader):
@@ -13,7 +14,7 @@ class Reader(BaseReader):
 		elif check == 3:
 			file_object_data_wrapper.read_bytes(9)
 		else:
-			py_ubi_forge.log.warn(__name__, f'Expected check to be 1 or 3 but got {check}')
+			logging.warning(f'Expected check to be 1 or 3 but got {check}')
 			raise Exception
 
 		file_object_data_wrapper.read_bytes(1)
@@ -25,5 +26,5 @@ class Reader(BaseReader):
 		elif check == 3:
 			file_object_data_wrapper.read_bytes(9)
 		else:
-			py_ubi_forge.log.warn(__name__, f'Expected check to be 1 or 3 but got {check}')
+			logging.warning(f'Expected check to be 1 or 3 but got {check}')
 			raise Exception

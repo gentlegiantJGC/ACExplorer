@@ -1,6 +1,7 @@
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 from pyUbiForge.misc.file_readers import BaseReader
 from pyUbiForge.misc import Material
+import logging
 
 
 class Reader(BaseReader, Material):
@@ -17,4 +18,4 @@ class Reader(BaseReader, Material):
 
 		for var, pos in [[tex5, 5], [tex7, 7], [tex10, 10], [tex11, 11], [tex12, 12]]:
 			if var is not None:
-				py_ubi_forge.log.info(f'found a texture set with an id in position {pos}')
+				logging.info(f'found a texture set with an id in position {pos}')

@@ -1,9 +1,9 @@
 import os
 import struct
-from typing import Union, TextIO
 from pyUbiForge.misc import BaseTexture
 from pyUbiForge.misc.file_readers import BaseReader
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
+import pyUbiForge
 
 
 class Reader(BaseTexture, BaseReader):
@@ -11,10 +11,10 @@ class Reader(BaseTexture, BaseReader):
 
 	def __init__(self, texture_file: FileObjectDataWrapper):
 		BaseTexture.__init__(self)
-		if py_ubi_forge.CONFIG.get('dev', False):
-			if not os.path.isdir(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes')):
-				os.makedirs(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes'))
-			with open(os.path.join(py_ubi_forge.CONFIG.get('dumpFolder', 'output'), 'fileTypes', 'A2B7E917'), 'a') as f2:
+		if pyUbiForge.CONFIG.get('dev', False):
+			if not os.path.isdir(os.path.join(pyUbiForge.CONFIG.get('dumpFolder', 'output'), 'fileTypes')):
+				os.makedirs(os.path.join(pyUbiForge.CONFIG.get('dumpFolder', 'output'), 'fileTypes'))
+			with open(os.path.join(pyUbiForge.CONFIG.get('dumpFolder', 'output'), 'fileTypes', 'A2B7E917'), 'a') as f2:
 				f2.write('{}\n'.format(' '.join(f'{b:02X}' for b in texture_file.read_bytes(116))))
 				texture_file.seek(-116, 1)
 		# header has already been read

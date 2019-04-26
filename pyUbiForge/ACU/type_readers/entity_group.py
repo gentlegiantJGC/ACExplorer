@@ -1,6 +1,7 @@
 from pyUbiForge.misc.file_object import FileObjectDataWrapper
 from pyUbiForge.misc.file_readers import BaseReader
 import numpy
+import logging
 
 
 class Reader(BaseReader):
@@ -17,7 +18,7 @@ class Reader(BaseReader):
 		file_object_data_wrapper.out_file_write('\n')
 		count1 = file_object_data_wrapper.read_uint_32()
 		if count1 > 10000:
-			py_ubi_forge.log.warn(__name__, 'error reading entity file')
+			logging.warning('error reading entity file')
 			# convert to an actual logger
 			raise Exception
 
