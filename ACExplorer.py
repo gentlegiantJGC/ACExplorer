@@ -13,7 +13,14 @@ import sys
 import subprocess
 
 import logging.config
-logging.basicConfig(filename='ACExplorer.log', filemode='w', format='[%(levelname)s]:[%(module)s]:[%(message)s]', level='INFO')
+logging.basicConfig(
+	level=logging.INFO,
+	format='[%(levelname)s]:[%(module)s]:[%(message)s]',
+	handlers=[
+		logging.FileHandler('ACExplorer.log', 'w'),
+		logging.StreamHandler()
+	]
+)
 
 
 class App(QtWidgets.QApplication):
@@ -126,7 +133,6 @@ class App(QtWidgets.QApplication):
 				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id, icon=self.icons.get(datafile.file_type, None))
 			self.processEvents()
 		logging.info('Finished Populating File Tree')
-		logging.info('')
 
 	def save(self):
 		pyUbiForge.save()

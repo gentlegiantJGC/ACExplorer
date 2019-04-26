@@ -55,7 +55,7 @@ def load_game(game_identifier_: str):
 	global game_functions
 	global forge_files
 	if game_identifier_ != game_identifier():
-		logging.info(f'Loading Game Files for {game_identifier_}.')
+		logging.info(f'Loading Game Files for {game_identifier_}')
 		temp_files.clear()
 		if game_identifier_ in games:
 			game_functions = games.get(game_identifier_)
@@ -70,7 +70,7 @@ def load_game(game_identifier_: str):
 						yield forge_file_name
 
 			temp_files.load()
-		logging.info('Finished Loading Game Files.')
+		logging.info('Finished Loading Game Files')
 
 
 def save():
