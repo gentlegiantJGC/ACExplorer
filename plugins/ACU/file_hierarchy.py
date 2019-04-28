@@ -2,7 +2,7 @@ import struct
 import binascii
 import json
 import re
-from pyUbiForge.misc.plugins import BasePlugin
+from plugins import BasePlugin
 import pyUbiForge
 import logging
 

@@ -140,7 +140,6 @@ class ObjMtl:
 			]
 			materials = list(executor.map(
 				texture.export_dds,
-				[pyUbiForge] * len(fild_ids),
 				fild_ids,
 				[self.save_folder] * len(fild_ids)
 			))
@@ -358,7 +357,7 @@ class Collada:
 				]:
 					if file_id is None:
 						continue
-					image_path = os.path.basename(texture.export_dds(pyUbiForge, file_id, self.save_folder))
+					image_path = os.path.basename(texture.export_dds(file_id, self.save_folder))
 					if image_path is None:
 						image_path = os.path.basename(pyUbiForge.CONFIG.get('missingNo', 'resources/missingNo.png'))
 						self.export_missing_no()
@@ -447,5 +446,5 @@ class MaterialHandler:
 
 	def get(self, file_id: int):
 		if file_id not in self.materials:
-			self.materials[file_id] = pyUbiForge.game_functions.get_material_ids(pyUbiForge, file_id)
+			self.materials[file_id] = pyUbiForge.game_functions.get_material_ids(file_id)
 		return self.materials[file_id]

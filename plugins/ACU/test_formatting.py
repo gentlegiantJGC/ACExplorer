@@ -1,4 +1,4 @@
-from pyUbiForge.misc.plugins import BasePlugin
+from plugins import BasePlugin
 import os
 from typing import Union, List
 import pyUbiForge

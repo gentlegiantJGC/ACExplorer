@@ -1,5 +1,5 @@
 from pyUbiForge.misc import mesh
-from pyUbiForge.misc.plugins import BasePlugin
+from plugins import BasePlugin
 from typing import Union, List, Dict
 from multiprocessing.connection import Client
 from PIL import Image, ImageDraw

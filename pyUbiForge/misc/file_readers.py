@@ -53,7 +53,7 @@ class FileReaderHandler:
 		file_type = file_object_data_wrapper.read_type()
 		if file_type in self.readers:
 			file_object_data_wrapper.indent()
-			ret = self.readers[file_type](pyUbiForge, file_object_data_wrapper)
+			ret = self.readers[file_type](file_object_data_wrapper)
 			file_object_data_wrapper.indent(-1)
 			return ret
 		else:

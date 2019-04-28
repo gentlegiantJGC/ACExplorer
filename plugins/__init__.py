@@ -173,9 +173,9 @@ class PluginHandler:
 			self._plugins = {1: {}, 2: {}, 3: {}, 4: {'*': {}}}
 			self._plugin_names = {}
 			# iterate through every plugin
-			for _, name, _ in pkgutil.iter_modules([f'./pyUbiForge/{pyUbiForge.game_identifier()}/plugins']):
+			for _, name, _ in pkgutil.iter_modules([f'./plugins/{pyUbiForge.game_identifier()}']):
 				# load module and confirm that all required attributes are defined
-				module = importlib.import_module(f'pyUbiForge.{pyUbiForge.game_identifier()}.plugins.{name}')
+				module = importlib.import_module(f'plugins.{pyUbiForge.game_identifier()}.{name}')
 				importlib.reload(module)
 
 				if not hasattr(module, 'Plugin') and issubclass(module.Plugin, BasePlugin):
@@ -218,3 +218,6 @@ class PluginHandler:
 					if plugin.file_type not in self._plugins[plugin.plugin_level]:
 						self._plugins[plugin.plugin_level][plugin.file_type] = {}
 					self._plugins[plugin.plugin_level][plugin.file_type][plugin.plugin_name] = plugin_instance
+
+
+right_click_plugins = PluginHandler()

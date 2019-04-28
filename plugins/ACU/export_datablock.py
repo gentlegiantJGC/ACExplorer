@@ -1,5 +1,5 @@
 from pyUbiForge.misc import mesh
-from pyUbiForge.misc.plugins import BasePlugin
+from plugins import BasePlugin
 from pyUbiForge.ACU.type_readers.datablock import Reader as DataBlock
 from pyUbiForge.ACU.type_readers.entity import Reader as Entity
 from pyUbiForge.ACU.type_readers.visual import Reader as Visual
@@ -86,7 +86,7 @@ class Plugin(BasePlugin):
 			logging.info(f'Finished exporting {data_block_name}.obj')
 
 		# elif self._options[0]["Export Method"] == 'Collada (.dae)':
-		# 	obj_handler = mesh.Collada(pyUbiForge, model_name, save_folder)
+		# 	obj_handler = mesh.Collada(model_name, save_folder)
 		# 	obj_handler.export(file_id, forge_file_name, datafile_id)
 		# 	obj_handler.save_and_close()
 		# 	logging.info(f'Exported {file_id:016X}')

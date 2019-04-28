@@ -1,4 +1,4 @@
-from pyUbiForge.misc.plugins import BasePlugin
+from plugins import BasePlugin
 from pyUbiForge.misc.file_object import FileObject
 import os
 from typing import Union, List
@@ -7,7 +7,7 @@ import pyUbiForge
 import logging
 
 
-def read_file(pyUbiForge, data, file_id):
+def read_file(data, file_id):
 	try:
 		out_file = FileObject()
 		pyUbiForge.read_file(data.file, out_file)
