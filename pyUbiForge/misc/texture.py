@@ -3,6 +3,7 @@ import struct
 from typing import Union
 import pyUbiForge
 import logging
+import pyUbiForge
 
 
 class BaseTexture:
@@ -65,8 +66,8 @@ class Material:
 		self.mask2 = mask2
 
 
-def export_dds(py_ubi_forge, file_id: int, save_folder: str, forge_file_name: Union[None, str]=None, datafile_id: Union[None, int]=None):
-	data = py_ubi_forge.temp_files(file_id, forge_file_name, datafile_id)
+def export_dds(file_id: int, save_folder: str, forge_file_name: Union[None, str]=None, datafile_id: Union[None, int]=None):
+	data = pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)
 	if data is None:
 		logging.warning(f"Failed to find file {file_id:016X}")
 		return
@@ -74,7 +75,7 @@ def export_dds(py_ubi_forge, file_id: int, save_folder: str, forge_file_name: Un
 	if os.path.isfile(save_path):
 		logging.info(f'Texture "{data.file_name}" already exported')
 		return save_path
-	tex = py_ubi_forge.read_file(data.file)
+	tex = pyUbiForge.read_file(data.file)
 	tex.export_dds(save_path)
 	logging.info(f'Texture "{data.file_name}" exported')
 	return save_path
