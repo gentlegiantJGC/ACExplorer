@@ -1,9 +1,10 @@
 from ctypes import CDLL, c_ushort
+import os
 import platform
 if platform.architecture()[0] == '64bit':
-	lzoPath = "resources/lzo64.dll"
+	lzoPath = f'{os.path.dirname(__file__)}/../resources/lzo64.dll'
 elif platform.architecture()[0] == '32bit':
-	lzoPath = "resources/lzo32.dll"
+	lzoPath = f'{os.path.dirname(__file__)}/../resources/lzo32.dll'
 else:
 	raise Exception('Unknown Architecture')
 
