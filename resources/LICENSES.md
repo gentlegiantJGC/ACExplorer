@@ -1,7 +1,6 @@
-# texconv.dll version built from source on 2019-05-10
+# texconv.exe version 2017-04-24
 
-texconv.dll was built from the source code found at the following link. The code
-was modified a tiny amount to expose the main function in the dll library.
+texconv.exe is redistributed from
 https://github.com/Microsoft/DirectXTex/wiki/Texconv/ and is licensed under the
 MIT License (MIT):
 
