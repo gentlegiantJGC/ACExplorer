@@ -1,9 +1,9 @@
 import os
 import struct
 from typing import Union
-import pyUbiForge
 import logging
 import pyUbiForge
+from pyUbiForge.misc import texconv
 
 
 class BaseTexture:
@@ -49,8 +49,8 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			texconv = f'".\\resources\\texconv.exe" -nologo -fl 9.1 -y -px {pyUbiForge.CONFIG.get("dumpFolder", "output")}{os.sep} -f BC3_UNORM {path}'
-			os.system(texconv)
+			arg = f'-fl 9.1 -y -o {pyUbiForge.CONFIG.get("dumpFolder", "output")} -f BC3_UNORM {path}'
+			texconv.convert_texture(arg)
 
 
 class Material:
