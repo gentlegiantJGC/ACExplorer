@@ -61,7 +61,7 @@ class Plugin(BasePlugin):
 
 				logging.info(data.file_name)
 				# executor.submit(read_file, pyUbiForge, data, file_id)
-				read_file(pyUbiForge, data, file_id)
+				read_file(data, file_id)
 				files_done += 1
 				if files_done >= max_count:
 					break
