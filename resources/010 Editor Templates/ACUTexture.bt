@@ -1,0 +1,45 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+struct {
+    struct {
+        byte check;
+        uint64 fileId;
+        uint32 fileType;
+        uint32 dwWidth;
+        uint32 dwHeight;
+        uint32 dwDepth;
+        uint32 dxt;
+        uint32 ukn1;
+        uint32 ukn2;
+        uint32 mipmapcount;
+        uint32 ukn3;
+        uint32 ukn4;
+        uint32 other[4];
+        struct {
+            uint64 fileId;
+            uint32 resourceId;
+            uint32 one;
+            uint32 seven;
+            uint32 dwWidth;
+            uint32 dwHeight;
+            uint32 dwDepth;
+            uint32 mipmapcount;
+            uint32 dxt;
+            uint32 compiledTex[5];
+        } CompliedTex;
+        uint32 image_size;
+    } Header;
+    struct {
+        byte image[Header.image_size];
+    } FileDataHeader1;
+} Texture;
