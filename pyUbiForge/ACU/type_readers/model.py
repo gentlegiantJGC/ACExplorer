@@ -147,40 +147,14 @@ class Reader(BaseModel, BaseReader):
 					logging.warning(f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
 					raise Exception()
 
-				self._vertices = vert_table['v'].astype(numpy.float) / vert_table['sc'].reshape(-1, 1).astype(numpy.float)
+				self._vertices = vert_table['v'].astype(numpy.float) * vert_table['sc'].reshape(-1, 1) / 2 ** 15
 				# self._vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
-				# for dim in range(3):
-				# 	self.vertices[:, dim] = numpy.interp(self.vertices[:, dim], (self.vertices[:, dim].min(), self.vertices[:, dim].max()), bounding_box2[:, dim])
+
 				self._texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
 				self._texture_vertices[:, 1] *= -1
 				if 'n' in vert_table:
 					self._normals = vert_table['n'].astype(numpy.float)
 				self.vert_table = vert_table
-
-				# # scale verticies based on bouding box
-				# model['modelBoundingBox'] = {}
-				# vertTemp = [a['X'] for a in model['vertData']['vertex']]
-				# model['modelBoundingBox']['minx'] = min(vertTemp)
-				# model['modelBoundingBox']['maxx'] = max(vertTemp)
-				# vertTemp = [a['Y'] for a in model['vertData']['vertex']]
-				# model['modelBoundingBox']['miny'] = min(vertTemp)
-				# model['modelBoundingBox']['maxy'] = max(vertTemp)
-				# vertTemp = [a['Z'] for a in model['vertData']['vertex']]
-				# model['modelBoundingBox']['minz'] = min(vertTemp)
-				# model['modelBoundingBox']['maxz'] = max(vertTemp)
-				#
-				# if model['boundingBox'] != {"maxz": 0.0,"maxx": 0.0,"maxy": 0.0,"minx": 0.0,"miny": 0.0,"minz": 0.0}:
-				# 	for coord in 'xyz':
-				# 		for index in model['vertData']['vertex']:
-				# 			modelMin = model['modelBoundingBox']['min'+coord]
-				# 			modelMax = model['modelBoundingBox']['max'+coord]
-				# 			worldMin = model['boundingBox']['min'+coord]
-				# 			worldMax = model['boundingBox']['max'+coord]
-				# 			index[coord.upper()] = ((index[coord.upper()] - modelMin) / (modelMax - modelMin)) * (worldMax-worldMin) + worldMin
-				# else:
-				# 	for index in model['vertData']['vertex']:
-				# 		for coord in 'xyz':
-				# 			index[coord.upper()] /= 200.0
 
 				model_file.out_file_write('Face table\n')
 				face_table_length = model_file.read_uint_32()
