@@ -39,6 +39,8 @@ Some export methods will have a right click mouse button next to them. These hav
 
 Some fun files to export are mesh files (usually end in LOD and a number 0-5 eg LOD0), Cell DataBlock files contain the data of how the individual models are pieced together. There is a plugin to export this data but the exports are incomplete due to incomplete support of the file format.
 
+There is a discussion thread for this program over on Xentax where I will be making posts to answer frequently asked questions: https://forum.xentax.com/viewtopic.php?f=10&t=20061
+
 # Screenshots
 ![ACExplorer User Interface](/resources/screenshots/ACExplorer.png)
 ![ACExplorer Context Menu](/resources/screenshots/context.png)
