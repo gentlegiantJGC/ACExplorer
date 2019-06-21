@@ -12,6 +12,7 @@ import os
 import json
 import sys
 import subprocess
+import re
 
 import logging
 
@@ -163,7 +164,7 @@ class App(QtWidgets.QApplication):
 	def search(self):
 		if self.search_box.text() != self._last_search:
 			self._last_search = self.search_box.text()
-			self.file_view.search(self.search_box.text())
+			self.file_view.search(self.search_box.text(), False, False)
 
 	def load_style(self, style_name: str):
 		with open(f'./resources/themes/{style_name}/style.qss') as style:
@@ -261,18 +262,38 @@ class TreeView(QtWidgets.QTreeWidget):
 		QtWidgets.QTreeWidget.__init__(self, parent)
 		self.icons = icons
 		self._entries: Dict[Tuple[Union[None, str], Union[None, int], Union[None, int]], TreeViewEntry] = {}
+		self._search: Dict[str, List[TreeViewEntry]] = {}
 		self._game_identifier = None
 		self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		self.customContextMenuRequested.connect(self.open_context_menu)
 
 	def load_game(self, game_identifier: str):
 		self._entries.clear()
+		self._search.clear()
 		self.clear()
 		self._game_identifier = game_identifier
 		self.insert(game_identifier, icon=self.icons['directory'])
 
-	def search(self, search_string: str) -> None:
-		self._entries[(None, None, None)].search(search_string)
+	def search(self, search_string: str, match_case: bool, regex: bool) -> None:
+		if search_string == '':
+			for entry in self._entries.values():
+				entry.setHidden(False)
+		else:
+			for entry in self._entries.values():
+				entry.setHidden(True)
+
+			for entry_name in self._search.keys():
+				if (regex and re.match(search_string, entry_name))\
+					or (
+						not regex and (
+						(match_case and search_string in entry_name)
+						or
+						(not match_case and search_string.lower() in entry_name.lower())
+					)
+				):
+					for entry in self._search[entry_name]:
+						entry.recursively_unhide_children()
+						entry.recursively_unhide_parents()
 
 	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None) -> None:
 		if forge_file_name is not None:
@@ -289,6 +310,9 @@ class TreeView(QtWidgets.QTreeWidget):
 			entry = TreeViewEntry(self, entry_name, icon=icon)
 
 		self._entries[(forge_file_name, datafile_id, file_id)] = entry
+		if entry_name not in self._search:
+			self._search[entry_name] = []
+		self._search[entry_name].append(entry)
 
 	def populate_tree(self):
 		"""A helper function to populate files in the file view."""
@@ -397,6 +421,12 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 		self.setHidden(False)
 		for index in range(self.childCount()):
 			self.child(index).recursively_unhide_children()
+
+	def recursively_unhide_parents(self):
+		parent = self.parent()
+		if parent is not None:
+			parent.setHidden(False)
+			parent.recursively_unhide_parents()
 
 
 class ContextMenu(QtWidgets.QMenu):
