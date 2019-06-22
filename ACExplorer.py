@@ -13,7 +13,6 @@ import json
 import sys
 import subprocess
 import re
-
 import logging
 
 log_file = logging.FileHandler('ACExplorer.log', 'w')
@@ -64,11 +63,17 @@ class App(QtWidgets.QApplication):
 		self.horizontal_layout.addWidget(self.game_select)
 
 		# search box
-		self._last_search = ''
-		self.search_box = QtWidgets.QLineEdit()
+		self.search_box = QtWidgets.QLineEdit(placeholderText='Enter a search term.')
+		self.search_box.setClearButtonEnabled(True)
 		self.search_box.setObjectName("search_box")
-		self.search_box.editingFinished.connect(self.search)
+		self.search_box.textChanged.connect(self.search)
 		self.horizontal_layout.addWidget(self.search_box)
+		self.match_case = QtWidgets.QCheckBox('Match Case')
+		self.match_case.stateChanged.connect(self.search)
+		self.horizontal_layout.addWidget(self.match_case)
+		self.regex = QtWidgets.QCheckBox('Regex')
+		self.regex.stateChanged.connect(self.regex_changed)
+		self.horizontal_layout.addWidget(self.regex)
 
 		# file tree view
 		self.file_view = TreeView(self.central_widget, self.icons)
@@ -162,9 +167,14 @@ class App(QtWidgets.QApplication):
 			json.dump(self._options, config)
 
 	def search(self):
-		if self.search_box.text() != self._last_search:
-			self._last_search = self.search_box.text()
-			self.file_view.search(self.search_box.text(), False, False)
+		self.file_view.search(self.search_box.text(), self.match_case.isChecked(), self.regex.isChecked())
+
+	def regex_changed(self):
+		if self.regex.isChecked():
+			self.match_case.setEnabled(False)
+		else:
+			self.match_case.setEnabled(True)
+		self.search()
 
 	def load_style(self, style_name: str):
 		with open(f'./resources/themes/{style_name}/style.qss') as style:
@@ -282,8 +292,11 @@ class TreeView(QtWidgets.QTreeWidget):
 			for entry in self._entries.values():
 				entry.setHidden(True)
 
+			if regex:
+				regex_search = re.compile(search_string)
+
 			for entry_name in self._search.keys():
-				if (regex and re.match(search_string, entry_name))\
+				if (regex and regex_search.search(entry_name))\
 					or (
 						not regex and (
 						(match_case and search_string in entry_name)
