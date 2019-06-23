@@ -147,7 +147,7 @@ class Reader(BaseModel, BaseReader):
 					logging.warning(f'Not yet implemented!\n\nvertTableWidth = {vert_table_width}')
 					raise Exception()
 
-				self._vertices = vert_table['v'].astype(numpy.float) * vert_table['sc'].reshape(-1, 1) / 2 ** 15
+				self._vertices = vert_table['v'].astype(numpy.float) * numpy.sign(vert_table['sc'].reshape(-1, 1)) / 2 ** 15
 				# self._vertices *= numpy.sum(bounding_box2, 0) / numpy.amax(self.vertices, 0)
 
 				self._texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
@@ -238,7 +238,8 @@ class Reader(BaseModel, BaseReader):
 
 			model_file.read_bytes(8)
 			model_file.out_file_write('Model Scale?\n')
-			model_file.read_float_32()  # model scale? (looks to be the magnitude of sc in the vert table)
+			model_scale = model_file.read_float_32()  # model scale? (looks to be the magnitude of sc in the vert table)
+			self._vertices *= model_scale
 			model_file.out_file_write('Material Table\n')
 			material_count = model_file.read_uint_32()
 			material_table = model_file.read_numpy([
