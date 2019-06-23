@@ -75,6 +75,12 @@ class App(QtWidgets.QApplication):
 		self.regex.stateChanged.connect(self.regex_changed)
 		self.horizontal_layout.addWidget(self.regex)
 
+		self.search_time = time.time() + 2**30
+		self.search_update = QtCore.QTimer()
+		self.search_update.setInterval(150)
+		self.search_update.timeout.connect(self.search_)
+		self.search_update.start()
+
 		# file tree view
 		self.file_view = TreeView(self.central_widget, self.icons)
 		self.file_view.setObjectName("file_view")
@@ -167,7 +173,12 @@ class App(QtWidgets.QApplication):
 			json.dump(self._options, config)
 
 	def search(self):
-		self.file_view.search(self.search_box.text(), self.match_case.isChecked(), self.regex.isChecked())
+		self.search_time = time.time() + 0.15
+
+	def search_(self):
+		if self.search_time < time.time():
+			self.search_time = time.time() + 2**30
+			self.file_view.search(self.search_box.text(), self.match_case.isChecked(), self.regex.isChecked())
 
 	def regex_changed(self):
 		if self.regex.isChecked():
