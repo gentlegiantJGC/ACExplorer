@@ -299,10 +299,11 @@ class TreeView(QtWidgets.QTreeWidget):
 		if search_string == '':
 			for entry in self._entries.values():
 				entry.setHidden(False)
+				entry.children_shown = True
 		else:
 			for entry in self._entries.values():
 				entry.setHidden(True)
-
+				entry.children_shown = False
 			if regex:
 				regex_search = re.compile(search_string)
 
@@ -388,6 +389,7 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 		self._file_id = file_id
 		self._dev_search = None
 		self._depth = None
+		self.children_shown = True
 
 	@property
 	def entry_name(self) -> str:
@@ -442,9 +444,11 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 			return shown
 
 	def recursively_unhide_children(self):
-		self.setHidden(False)
-		for index in range(self.childCount()):
-			self.child(index).recursively_unhide_children()
+		if not self.children_shown:
+			self.children_shown = True
+			self.setHidden(False)
+			for index in range(self.childCount()):
+				self.child(index).recursively_unhide_children()
 
 	def recursively_unhide_parents(self):
 		parent = self.parent()
