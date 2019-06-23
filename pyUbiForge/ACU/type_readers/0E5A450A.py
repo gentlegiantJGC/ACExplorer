@@ -10,3 +10,8 @@ class Reader(BaseReader):
 		file_object_data_wrapper.read_bytes(14)
 		for _ in range(2):
 			file_object_data_wrapper.read_file()
+		file_object_data_wrapper.read_bytes(1)
+		check_byte = file_object_data_wrapper.read_uint_8()
+		if check_byte != 3:
+			file_object_data_wrapper.read_id()
+		file_object_data_wrapper.read_bytes(13)

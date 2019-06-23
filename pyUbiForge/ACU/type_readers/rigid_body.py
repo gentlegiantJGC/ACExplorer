@@ -7,7 +7,7 @@ class Reader(BaseReader):
 	file_type = '228F402A'
 
 	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
-		file_object_data_wrapper.read_bytes(29)
+		file_object_data_wrapper.read_file()
 		file_object_data_wrapper.read_id()
 		file_object_data_wrapper.read_bytes(17)
 		file_object_data_wrapper.out_file_write('Transformation Matrix\n')
