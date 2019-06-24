@@ -165,6 +165,7 @@ class App(QtWidgets.QApplication):
 			for datafile_id, datafile in sorted(forge_file.datafiles.items(), key=lambda v: v[1].file_name.lower()):
 				self.file_view.insert(datafile.file_name, forge_file_name, datafile_id, icon=self.icons.get(datafile.file_type, None))
 			self.processEvents()
+		self.search()
 		logging.info('Finished Populating File Tree')
 
 	def save(self):
