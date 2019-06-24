@@ -11,7 +11,7 @@ class Plugin(BasePlugin):
 	dev = True
 	_options = [
 		{
-			"File Types": "0984415E;85C817C3"
+			"File Types": "0984415E;85C817C3;3F742D26"
 		}
 	]
 
