@@ -1,4 +1,11 @@
 # -*- mode: python -*-
+import os
+import shutil
+for root, dirs, _ in os.walk("."):
+	for d in dirs:
+		if d == '__pycache__' and os.path.isdir(os.path.join(root, d)):
+			shutil.rmtree(os.path.join(root, d))
+
 block_cipher = None
 
 a = Analysis(
@@ -8,9 +15,10 @@ a = Analysis(
 	datas=[
 		('./resources', './resources'),
 		('./pyUbiForge', './pyUbiForge'),
+		('./plugins', './plugins'),
 		('./icon.ico', '.')
 	],
-	hiddenimports=['PIL.Image'],
+	hiddenimports=['PIL.Image', 'PIL.ImageDraw'],
 	hookspath=[],
 	runtime_hooks=[],
 	excludes=[],
