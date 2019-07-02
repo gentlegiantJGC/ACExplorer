@@ -370,7 +370,7 @@ class TreeView(QtWidgets.QTreeWidget):
 		if entry is not None:
 			unique_identifier = (None, entry.forge_file_name, entry.datafile_id, entry.file_id)[entry.depth-1]
 			plugin_names, file_id = right_click_plugins.query(entry.depth, unique_identifier, entry.forge_file_name, entry.datafile_id)
-			if len(plugin_names > 0):
+			if len(plugin_names) > 0:
 				menu = ContextMenu(self.icons, plugin_names, file_id, entry.forge_file_name, entry.datafile_id)
 				menu.exec_(self.viewport().mapToGlobal(position))
 			self.populate_tree()
