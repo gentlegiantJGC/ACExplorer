@@ -12,6 +12,11 @@ A small amount of the code is based on code from ARchive_neXt which can be found
 
 The long term goal is to include other games that use the forge file storage system but currently the goal is to be able to export the world models from AC Unity.
 
+# Compiled Builds
+We finally have a release version that you can download and run without having to install python or any of the dependencies. It can be found at the following link: https://github.com/gentlegiantJGC/ACExplorer/releases
+
+Extract all files from the zip folder into a directory and run the exe file.
+
 # Installing From Source
 Prerequisites:
 - Python 3.7
@@ -20,11 +25,6 @@ Prerequisites:
 - Pillow >= 5.2
 
 Download the whole repository and run ACExplorer.py
-
-# Compiled Builds
-We finally have a release version that you can download and run without having to install python or any of the dependencies. It can be found at the following link: https://github.com/gentlegiantJGC/ACExplorer/releases
-
-Extract all files from the zip folder into a directory and run the exe file.
 
 # Using ACExplorer
 - Load the program (run ACExplorer.py or ACExplorer.exe depending on which of the above two methods you use).
