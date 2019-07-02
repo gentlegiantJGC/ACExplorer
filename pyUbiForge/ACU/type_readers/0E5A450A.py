@@ -14,4 +14,8 @@ class Reader(BaseReader):
 		check_byte = file_object_data_wrapper.read_uint_8()
 		if check_byte != 3:
 			file_object_data_wrapper.read_id()
-		file_object_data_wrapper.read_bytes(13)
+		count = file_object_data_wrapper.read_uint_32()
+		for _ in range(count):
+			file_object_data_wrapper.read_bytes(1)
+			file_object_data_wrapper.read_id()
+		file_object_data_wrapper.read_bytes(9)
