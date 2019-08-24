@@ -1365,7 +1365,6 @@
 	"FA6F25A3": "EventID",
 	"FA88CB86": "MissionActionAIEntityInteractionID",
 	"FB7AE28C": "MissionActionInventoryItemCategorySetAvailableID",
-	"FBB63E47": "UnknownID",
 	"FC1DA7EC": "UnknownID",
 	"FC27D415": "WitnessEventSeedID",
 	"FC5224E0": "UnknownID",
@@ -1676,8 +1675,6 @@
 	"76C0E4AB": "Layer2_WaterN",
 	"1E0B798F": "Layer2Color",
 	"EB830ADA": "LeftArm",
-	"58988870": "LeftFoot",
-	"058B96DD": "LeftFootThumb1",
 	"89B93A80": "LeftForeArm",
 	"B675F36C": "LeftHand",
 	"1E679ED0": "LeftHandIndex1",
@@ -2099,19 +2096,36 @@
 	"688FC2F9": "Unknown",
 	"554C614C": "Unknown",
 	"95741049": "Sub-Skeleton",
-
-	"530EC1CB": "Waist",
-	"DED10611": "Hips",
+	"FBB63E47": "LevelMain",
 	"2BA0BB9F": "Left Hip",
 	"6B6D1E0D": "Right Hip",
 	"C45F66C8": "Left Thigh",
 	"5DAE94EA": "Right Thigh",
 	"176183F0": "Left Shin",
-	"060DF401": "Right Shin",
-	"9B14362C": "Right Knee",
-	"757F1291": "Right Anckle?",
-	"863D09FC": "Left Knee/Right Anckle",
-	"E556C9BE": "RightToes",
+
+
+	"757F1291": "Right Anckle-qm",
+
+
+
+
+
+
+
+
 	"8F39FA4E": "Spine1",
-	"1630ABF4": "Spine2"
+	"1630ABF4": "Spine2",
+
+	"530EC1CB": "Waist",
+		"DED10611": "Hips",
+			"6F69051F": "LeftThigh",
+				"2AFD6F95": "LeftKnee",
+					"060DF401": "LeftShin",
+						"58988870": "LeftFoot",
+							"058B96DD": "LeftToes",
+			"0B7AD5A4": "RightThigh",
+				"554FD4DD": "RightKnee",
+					"863D09FC": "RightShin",
+						"9B14362C": "RightFoot",
+							"E556C9BE": "RightToes"
 }
