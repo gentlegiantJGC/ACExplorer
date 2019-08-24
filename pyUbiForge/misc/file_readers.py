@@ -8,7 +8,8 @@ import time
 
 
 class BaseReader:
-	file_type = None
+	file_id: int = None
+	file_type: str = None
 
 
 class FileReaderHandler:
@@ -49,11 +50,12 @@ class FileReaderHandler:
 		"""
 
 		file_object_data_wrapper.out_file_write('\n')
-		file_object_data_wrapper.read_id()
+		file_id = file_object_data_wrapper.read_id()
 		file_type = file_object_data_wrapper.read_type()
 		if file_type in self.readers:
 			file_object_data_wrapper.indent()
 			ret = self.readers[file_type](file_object_data_wrapper)
+			ret.file_id = file_id
 			file_object_data_wrapper.indent(-1)
 			return ret
 		else:
