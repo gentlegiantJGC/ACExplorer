@@ -2,10 +2,12 @@ from pyUbiForge.misc import mesh
 from plugins import BasePlugin
 from typing import Union, List, Dict
 from multiprocessing.connection import Client
-from PIL import Image, ImageDraw
+from PIL import Image
 import numpy
 import pyUbiForge
 import logging
+import os
+import json
 
 
 class Plugin(BasePlugin):
@@ -51,31 +53,50 @@ class Plugin(BasePlugin):
 			logging.info(f'Exported {file_id:016X}')
 
 		elif self._options[0]["Export Method"] == 'Send to Blender (experimental)':
+			if os.path.isfile(os.path.join(os.path.dirname(__file__), 'bone_hierarchy.json')):
+				with open(os.path.join(os.path.dirname(__file__), 'bone_hierarchy.json')) as f:
+					bone_hierarchy: Dict[str, str] = json.load(f)
+			else:
+				bone_hierarchy: Dict[str, str] = {}
+
 			model: mesh.BaseModel = pyUbiForge.read_file(data.file)
 			if model is not None:
 				c = Client(('localhost', 6163))
-				cols = [Image.new('RGB', (1024, 1024), (128, 0, 0)) for _ in range(len(model.bones))]
-				r = 5
+				faces = []
 				for mesh_index, m in enumerate(model.meshes):
-					c.send({
-						'type': 'MESH',
-						'verts': tuple(tuple(vert) for vert in model.vertices),
-						'faces': tuple(tuple(face) for face in model.faces[mesh_index][:m['face_count']])
-					})
-					for vtx in model.vert_table:
-						x, y = vtx['vt'].astype(numpy.float) / 2
-						for index, bone_index in enumerate(vtx['bn']):
-							if vtx['bw'][index] > 0:
-								draw = ImageDraw.Draw(cols[bone_index])
-								draw.ellipse((x - r, y - r, x + r, y + r), fill=(vtx['bw'][index], vtx['bw'][index], vtx['bw'][index]))
-				for index, im in enumerate(cols):
-					im.save(f'{save_folder}/{model_name}_{index}.png')
-					print(f'saved {save_folder}/{model_name}_{index}.png')
+					faces.append(tuple(model.faces[mesh_index][:m['face_count']]))
+
+				trms = {}
+				# collect the correct transformation matrix for each bone
+				for bone in model.bones:
+					trms[bone.bone_id] = [numpy.linalg.inv(bone.transformation_matrix), None]
+
+				# collect parents
+				for bone in model.bones:
+					if bone.bone_id in bone_hierarchy:
+						parent_bone_id = next((bid for bid in bone_hierarchy[bone.bone_id] if bid in trms), None)
+						if parent_bone_id is not None:
+							trms[bone.bone_id][1] = pyUbiForge.game_functions.file_types.get(parent_bone_id, parent_bone_id)
+
+				bone_weights = []
+				for bone_indexs, bone_weights_ in zip(model.bone_numbers, model.bone_weights):
+					vertex_weights = []
+					for bone_index, bone_weight in zip(bone_indexs, bone_weights_):
+						if bone_weight != 0:
+							vertex_weights.append(
+								[pyUbiForge.game_functions.file_types.get(model.bones[bone_index].bone_id, model.bones[bone_index].bone_id), bone_weight]
+							)
+					bone_weights.append(vertex_weights)
+
+				# print(bone_weights)
 
 				c.send({
-					'type': 'BONES',
-					'bone_id': [bone.bone_id for bone in model.bones],
-					'mat': [bone.transformation_matrix for bone in model.bones],
+					'type': 'MESH',
+					'verts': tuple(model.vertices),
+					'tvers': tuple(model.texture_vertices),
+					'faces': faces,
+					'bone_id_trm': {pyUbiForge.game_functions.file_types.get(bone_id, bone_id): mats for bone_id, mats in trms.items()},
+					'bone_weights': bone_weights
 				})
 
 	def options(self, options: Union[List[dict], None]) -> Union[Dict[str, dict], None]:
