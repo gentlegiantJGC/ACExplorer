@@ -38,6 +38,7 @@ class Child(threading.Thread):
 				msg = client.recv()
 				if isinstance(msg, dict) and msg.get('type', None) == 'MESH':
 					verts = msg.get('verts', [])
+					tverts = msg.get('tverts', [])
 					faces = msg.get('faces', [])
 					mesh_data = bpy.data.meshes.new("cube_mesh_data")
 					mesh_data.from_pydata(verts, [], faces)
@@ -62,19 +63,41 @@ class Child(threading.Thread):
 					for bone in armature.edit_bones:
 						armature.edit_bones.remove(bone)
 
-					for bone_id, transformation_matrix in zip(msg['bone_id'], msg['mat']):
-						edit_bone = armature.edit_bones.new(bone_id)
-						edit_bone.tail = (1, 0, 0)
+					# for bone_id, transformation_matrix in zip(msg['bone_id'], msg['mat']):
+					# 	edit_bone = armature.edit_bones.new(bone_id)
+					# 	edit_bone.tail = (1, 0, 0)
+					#
+					# 	edit_bone.matrix = mathutils.Matrix(
+					# 		(
+					# 			transformation_matrix[0, :],
+					# 			transformation_matrix[1, :],
+					# 			transformation_matrix[2, :],
+					# 			transformation_matrix[3, :]
+					# 		)
+					# 	)
+					# 	edit_bone.length = edit_bone.matrix.to_scale().length * 0.2
+					#
+					# 	# edit_bone2 = armature.edit_bones.new(bone_id)
+					# 	# edit_bone2.tail = transformation_matrix[:3, 3]
+					# 	print('imported_bone')
 
-						edit_bone.matrix = mathutils.Matrix(
-							(
-								transformation_matrix[0, :],
-								transformation_matrix[1, :],
-								transformation_matrix[2, :],
-								transformation_matrix[3, :]
-							)
-						)
-						edit_bone.length = edit_bone.matrix.to_scale().length * 0.1
+					for bone_id, (head_pos, tail_pos) in msg['bone_id_trm'].items():
+						edit_bone = armature.edit_bones.new(bone_id)
+						edit_bone.head = head_pos
+						edit_bone.tail = tail_pos
+
+						# edit_bone.matrix = mathutils.Matrix(
+						# 	(
+						# 		transformation_matrix[0, :],
+						# 		transformation_matrix[1, :],
+						# 		transformation_matrix[2, :],
+						# 		transformation_matrix[3, :]
+						# 	)
+						# )
+						# edit_bone.length = edit_bone.matrix.to_scale().length * 0.2
+
+						# edit_bone2 = armature.edit_bones.new(bone_id)
+						# edit_bone2.tail = transformation_matrix[:3, 3]
 						print('imported_bone')
 
 					if bpy.ops.object.mode_set.poll():
