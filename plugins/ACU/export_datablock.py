@@ -1,3 +1,4 @@
+import os
 from pyUbiForge.misc import mesh
 from plugins import BasePlugin
 from pyUbiForge.ACU.type_readers.datablock import Reader as DataBlock
@@ -30,7 +31,7 @@ class Plugin(BasePlugin):
 			self._options = options     # should do some validation here
 
 		# TODO add select directory option
-		save_folder = pyUbiForge.CONFIG.get('dumpFolder', 'output')
+		save_folder = os.path.join(pyUbiForge.CONFIG.get('dumpFolder', 'output'), forge_file_name)
 
 		data = pyUbiForge.temp_files(file_id, forge_file_name, datafile_id)
 		if data is None:
