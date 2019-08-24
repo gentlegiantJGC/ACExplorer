@@ -152,8 +152,13 @@ class Reader(BaseModel, BaseReader):
 
 				self._texture_vertices = vert_table['vt'].astype(numpy.float) / 2048.0
 				self._texture_vertices[:, 1] *= -1
-				if 'n' in vert_table:
+				if 'n' in vert_table.dtype.names:
 					self._normals = vert_table['n'].astype(numpy.float)
+				if 'bn' in vert_table.dtype.names:
+					self.bone_numbers = vert_table['bn']
+					self.bone_weights = vert_table['bw']
+				else:
+					self.bone_number = None
 				self.vert_table = vert_table
 
 				model_file.out_file_write('Face table\n')

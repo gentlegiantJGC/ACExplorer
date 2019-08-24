@@ -48,7 +48,7 @@ class Reader(BaseTexture, BaseReader):
 			# 8 Mask2Map
 			# 11 for 3D LUT, cube maps and other merged textures
 		unk4 = texture_file.read_uint_32()  # range 0-5
-		unk5 = texture_file.read_uint_32()  # a large number (may be a bit field)
+		self.bit_field = texture_file.read_uint_32()  # a large number (may be a bit field)
 		unk6 = texture_file.read_uint_32()  # seems to always be 0
 		unk7 = texture_file.read_uint_32()  # seems to always be 0
 		unk8 = texture_file.read_uint_32()  # seems to always be 0
@@ -68,6 +68,8 @@ class Reader(BaseTexture, BaseReader):
 		unk11 = texture_file.read_uint_32()  # always 0
 		unk12 = texture_file.read_uint_32()  # always 0
 		unk13 = texture_file.read_uint_32()  # always 0
+
+		# print(unk1, unk2, self.material_type, unk4, f"{unk5:032b}")
 
 		#logging.info(f'{unk1}	{unk2}	{self.material_type}	{unk4}	{unk5}	{unk6}	{unk7}	{unk8}	{unk9}	{unk10}	{unk11} {unk12}	{unk13} {one}	{seven}    [{dwWidth == self.dwWidth} {dwHeight == self.dwHeight}  {dwDepth == self.dwDepth}  {mipmapcount == self.dwMipMapCount}  {imgDXT == self.imgDXT}]')
 

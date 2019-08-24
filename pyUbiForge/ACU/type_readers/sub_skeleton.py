@@ -6,13 +6,17 @@ class Reader(BaseReader):
 	file_type = '95741049'
 
 	def __init__(self, file_object_data_wrapper: FileObjectDataWrapper):
-		file_object_data_wrapper.read_type()
-		for _ in range(2):
-			check = file_object_data_wrapper.read_bytes(1)
-			if check != b'\x03':
-				file_object_data_wrapper.read_id()
-		for _ in range(2):
-			file_object_data_wrapper.read_bytes(32)  # ?
+		self.bone_id = file_object_data_wrapper.read_type()
+
+		self.parent = None
+
+		if file_object_data_wrapper.read_uint_8() != 3:
+			self.parent = file_object_data_wrapper.read_id()
+
+		if file_object_data_wrapper.read_uint_8() != 3:
+			file_object_data_wrapper.read_id()  # perhaps child id
+
+		file_object_data_wrapper.read_bytes(64)  # trm mtx?
 
 		file_object_data_wrapper.read_bytes(5)
 		count = file_object_data_wrapper.read_uint_32()
