@@ -9,12 +9,15 @@ class Reader(BaseReader):
 		file_object_data_wrapper.read_bytes(1)
 		file_object_data_wrapper.read_id()
 		file_object_data_wrapper.out_file_write('\n')
-		self.lod = []
+		self._lod = []
 		for _ in range(5):
 			ending0 = file_object_data_wrapper.read_uint_8()
 			if ending0 == 0:
-				self.lod.append(file_object_data_wrapper.read_file())
+				self._lod.append(file_object_data_wrapper.read_file())
 			elif ending0 == 3:
-				self.lod.append(None)
+				self._lod.append(None)
 			else:
 				raise Exception()
+
+	def __getitem__(self, index: int):
+		return self._lod[index]

@@ -57,7 +57,7 @@ class Plugin(BasePlugin):
 							nested_file: Visual
 							if '01437462' in nested_file.nested_files.keys():  # LOD selector
 								lod_selector: LODSelector = nested_file.nested_files['01437462']
-								mesh_instance_data: MeshInstanceData = lod_selector.lod[self._options[0]['LOD']]
+								mesh_instance_data: MeshInstanceData = lod_selector[self._options[0]['LOD']]
 							elif '536E963B' in nested_file.nested_files.keys():  # Mesh instance
 								mesh_instance_data: MeshInstanceData = nested_file.nested_files['536E963B']
 							else:
