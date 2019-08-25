@@ -49,7 +49,7 @@ class BaseTexture:
 		fi.close()
 
 		if self.imgDXT == 8:
-			arg = f'-fl 9.1 -y -o {pyUbiForge.CONFIG.get("dumpFolder", "output")} -f BC3_UNORM {path}'
+			arg = f'-fl 9.1 -y -o {os.path.dirname(path)} -f BC3_UNORM {path}'
 			texconv.convert_texture(arg)
 
 
