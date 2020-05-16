@@ -5,7 +5,7 @@
 
 import pyUbiForge.misc
 from plugins import right_click_plugins
-from typing import Union, Dict, List, Tuple
+from typing import Union, Dict, List, Tuple, Optional
 from PySide2 import QtCore, QtGui, QtWidgets
 import time
 import os
@@ -321,7 +321,7 @@ class TreeView(QtWidgets.QTreeWidget):
 						entry.recursively_unhide_children()
 						entry.recursively_unhide_parents()
 
-	def insert(self, entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None) -> None:
+	def insert(self, entry_name: str, forge_file_name: Optional[str] = None, datafile_id: Optional[int] = None, file_id: Optional[int] = None, icon: QtGui.QIcon = None) -> None:
 		if forge_file_name is not None:
 			if datafile_id is not None:
 				if file_id is not None:  # the fact that the ends of these align makes me very happy
@@ -336,9 +336,9 @@ class TreeView(QtWidgets.QTreeWidget):
 			entry = TreeViewEntry(self, entry_name, icon=icon)
 
 		self._entries[(forge_file_name, datafile_id, file_id)] = entry
-		if entry_name not in self._search:
-			self._search[entry_name] = []
-		self._search[entry_name].append(entry)
+		if entry.entry_name not in self._search:
+			self._search[entry.entry_name] = []
+		self._search[entry.entry_name].append(entry)
 
 	def populate_tree(self):
 		"""A helper function to populate files in the file view."""
@@ -381,10 +381,16 @@ class TreeViewEntry(QtWidgets.QTreeWidgetItem):
 	Wraps QTreeWidgetItem and saves more data related to each entry
 	"""
 	def __init__(self, tree_view: Union[TreeView, 'TreeViewEntry'], entry_name: str, forge_file_name: str = None, datafile_id: int = None, file_id: int = None, icon: QtGui.QIcon = None):
-		QtWidgets.QTreeWidgetItem.__init__(self, tree_view, [entry_name])
+		if file_id is not None:
+			public_name = f"{entry_name}\t\t{file_id:016X}"
+		elif datafile_id is not None:
+			public_name = f"{entry_name}\t\t{datafile_id:016X}"
+		else:
+			public_name = entry_name
+		super().__init__(tree_view, [public_name])
 		if icon is not None:
 			self.setIcon(0, icon)
-		self._entry_name = entry_name
+		self._entry_name = public_name
 		self._forge_file_name = forge_file_name
 		self._datafile_id = datafile_id
 		self._file_id = file_id
