@@ -1,7 +1,7 @@
 import os
 import struct
 import numpy
-from typing import Union, IO, AnyStr
+from typing import Union, IO, AnyStr, Optional
 import pyUbiForge
 
 
@@ -27,8 +27,8 @@ class FileObject:
 		self._data += s
 		self._file_pointer += len(s)
 
-	def read(self, length: Union[str, int] = 'end'):
-		if length == 'end':
+	def read(self, length: Optional[int] = None):
+		if length is None:
 			data = self._data[self._file_pointer:]
 			self._file_pointer = len(self._data)
 			return data

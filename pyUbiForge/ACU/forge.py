@@ -112,7 +112,7 @@ class Forge(BaseForge):
 		self.new_datafiles so that external applications (such as the UI wrapper ACExplorer) will know which datafiles have been
 		decompressed and have data to be added to the UI.
 		"""
-		repoulate_tree = self.datafiles[datafile_id].files == {}
+		repopulate_tree = self.datafiles[datafile_id].files == {}
 		if datafile_id == 0 or datafile_id > 2 ** 40:
 			return
 		uncompressed_data_list = []
@@ -121,7 +121,6 @@ class Forge(BaseForge):
 			forge_file.seek(self.datafiles[datafile_id].raw_data_offset)
 			raw_data_chunk = FileObjectDataWrapper.from_binary(forge_file.read(self.datafiles[datafile_id].raw_data_size))
 		header = raw_data_chunk.read_bytes(8)
-		format_version = 128
 		if header == b'\x33\xAA\xFB\x57\x99\xFA\x04\x10':  # if compressed
 			format_version, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
 			if format_version == 128:
@@ -133,6 +132,7 @@ class Forge(BaseForge):
 			if len(raw_data_chunk.read_rest()) != 0:
 				raise Exception('Compression Issue. More data found')
 		else:
+			format_version = 128
 			raw_data_chunk_rest = header + raw_data_chunk.read_rest()
 			if b'\x33\xAA\xFB\x57\x99\xFA\x04\x10' in raw_data_chunk_rest:
 				raise Exception('Compression Issue')
@@ -194,5 +194,5 @@ class Forge(BaseForge):
 		else:
 			raise Exception('Format version not known. Please let the creator know where you found this.')
 
-		if repoulate_tree:
+		if repopulate_tree:
 			self.new_datafiles.append(datafile_id)
