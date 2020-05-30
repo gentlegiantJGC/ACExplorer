@@ -144,6 +144,9 @@ class Forge(BaseForge):
 			self.datafiles[datafile_id].files[datafile_id] = self.datafiles[datafile_id].file_name
 
 		elif format_version == 128:
+			write_to_disk = pyUbiForge.CONFIG.get('writeToDisk', False)
+			dump_folder = pyUbiForge.CONFIG.get('dumpFolder', 'output')
+
 			uncompressed_data = FileObjectDataWrapper.from_binary(b''.join(uncompressed_data_list))
 
 			file_count = uncompressed_data.read_uint_16()
@@ -169,9 +172,9 @@ class Forge(BaseForge):
 					file_name = f'{file_id:016X}'
 				pyUbiForge.temp_files.add(file_id, self.forge_file_name, datafile_id, file_type, file_name, raw_file=raw_file)
 				self.datafiles[datafile_id].files[file_id] = file_name
-				if pyUbiForge.CONFIG.get('writeToDisk', False):
+				if write_to_disk:
 					folder = os.path.join(
-						pyUbiForge.CONFIG.get('dumpFolder', 'output'),
+						dump_folder,
 						pyUbiForge.game_identifier(),
 						self.forge_file_name,
 						self.datafiles[datafile_id].file_name,

@@ -107,37 +107,30 @@ class TempFile:
 
 class LastUsed:
 	def __init__(self):
-		self._position_to_data = {}
-		self._data_to_position = {}
-		self._min = 0
+		self._position_to_data: Dict[int, int] = {}
+		self._data_to_position: Dict[int, int] = {}
 		self._max = 0
 
-	def remove(self, data: int):
-		if data in self._data_to_position:
-			position = self._data_to_position[data]
-			del self._data_to_position[data]
-			del self._position_to_data[position]
-
-	def pop(self):
-		while self._min not in self._position_to_data and self._min < self._max:
-			self._min += 1
-		if self._min == self._max:
-			return
-		else:
-			data = self._position_to_data[self._min]
-			del self._position_to_data[self._min]
-			del self._data_to_position[data]
-			return data
-
 	def append(self, data: int):
+		position = self._data_to_position.get(data)
+		if position is not None:
+			del self._position_to_data[position]
 		self._position_to_data[self._max] = data
 		self._data_to_position[data] = self._max
 		self._max += 1
 
+	def cull(self) -> Tuple[int]:
+		if self._position_to_data:
+			positions, datas = list(zip(*list(self._position_to_data.items())[:len(self._position_to_data) // 2]))
+			for position in positions:
+				del self._position_to_data[position]
+			for data in datas:
+				del self._data_to_position[data]
+			return datas
+
 	def clear(self):
 		self._position_to_data.clear()
 		self._data_to_position.clear()
-		self._min = 0
 		self._max = 0
 
 
@@ -151,6 +144,12 @@ class LightDictionary:
 		self._forge_to_index = {}
 		self._index_to_forge = {}
 		self._max_forge_index = 0
+
+	def __contains__(self, item: Tuple[str, int]):
+		"""Forge file name, file_id"""
+		forge_file_name, file_id = item
+		forge_file_index = self._forge_index(forge_file_name)
+		return (file_id, forge_file_index) in self._light_dictionary
 
 	def clear(self):
 		self._light_dictionary_numpy = numpy.empty(0, dtype=[('file_id', numpy.uint64), ('forge_file', numpy.uint8), ('datafile_id', numpy.uint64)])
@@ -282,6 +281,9 @@ class TempFilesContainer:
 		self._temp_files = {}
 		self._last_used = LastUsed()
 
+	def __contains__(self, item):
+		return item in self.light_dictionary
+
 	@property
 	def light_dict_changed(self) -> bool:
 		return self.light_dictionary.changed
@@ -306,10 +308,11 @@ class TempFilesContainer:
 		if raw_file is not None:
 			self._memory += len(raw_file)
 
-		while self._memory > pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048)*1000000:
-			remove_entry = self._last_used.pop()
-			self._memory -= len(self._temp_files[remove_entry][4])
-			del self._temp_files[remove_entry]
+		if self._memory > pyUbiForge.CONFIG.get('tempFilesMaxMemoryMB', 2048)*1000000:
+			remove_entries = self._last_used.cull()
+			for remove_entry in remove_entries:
+				self._memory -= len(self._temp_files[remove_entry][4])
+				del self._temp_files[remove_entry]
 
 		if file_id != datafile_id:
 			self.light_dictionary.add(file_id, forge_file_name, datafile_id)
@@ -322,11 +325,10 @@ class TempFilesContainer:
 		:param datafile_id: int of the containing datafile
 		:return: TempFile, None
 		"""
-		if not isinstance(file_id, int):
-			if isinstance(file_id, numpy.integer):
-				file_id = int(file_id)
-			else:
-				raise Exception(f'Expected an integer type but got {type(file_id)}')
+		if isinstance(file_id, numpy.integer):
+			file_id = int(file_id)
+		elif not isinstance(file_id, int):
+			raise Exception(f'Expected an integer type but got {type(file_id)}')
 		if file_id == 0:
 			return
 
@@ -377,8 +379,6 @@ class TempFilesContainer:
 
 	def refresh_usage(self, file_id: int):
 		"""Mark file_id as recently used so that it is not unloaded if the memory limit is reached."""
-		if file_id in self._temp_files:
-			self._last_used.remove(file_id)
 		self._last_used.append(file_id)
 
 	def save(self):
