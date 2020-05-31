@@ -1,4 +1,3 @@
-from typing import Tuple
 from dataclasses import dataclass
 
 from pyUbiForge2.api.data_types import (

@@ -3,7 +3,7 @@ import glob
 import os
 
 from pyUbiForge2.api.game.forge import BaseForge
-from pyUbiForge2.api.game.cache import FileCache
+from pyUbiForge2.api.game.file_cache import FileCache
 from pyUbiForge2.api.game.file_finder import FileFinder
 from pyUbiForge2.api.data_types import (
     ForgeStorage,
@@ -28,7 +28,7 @@ class BaseGame:
             raise Exception("ForgeClass game identifier does not match Game game identifier")
         self._game_directory = game_directory
         self._forge_files: ForgeStorage = {}  # storage for forge classes
-        self._file_cache = FileCache()  # store raw data for files
+        self._file_cache = FileCache(cache_megabytes)  # store raw data for files
         self._file_finder = FileFinder()  # find where a given file is stored
 
     def init(self):

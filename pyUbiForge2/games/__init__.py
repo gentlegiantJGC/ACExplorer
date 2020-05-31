@@ -1,1 +1,1 @@
-from .ACU import ACUGame
+from .ACU import ACUGame as ACU

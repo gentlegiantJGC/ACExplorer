@@ -1,13 +1,11 @@
 import os
-from typing import Tuple, Generator, Dict, Optional, Sequence
+from typing import Tuple, Generator, Dict, Optional
 import gzip
 import pickle
 
 from pyUbiForge2 import CACHE_DIR
 from pyUbiForge2.api.data_types import (
     DataFileIdentifier,
-    DataFileResourceType,
-    DataFileName,
     FileIdentifier,
     FileResourceType,
     FileName,
