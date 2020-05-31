@@ -1,0 +1,2 @@
+class FileNotFound(Exception):
+    pass
