@@ -15,8 +15,8 @@ class FileCache:
             bytes
         ] = {}
 
-    def add_data_file(self, forge_file: ForgeFileName, data_file: DataFileIdentifier, files: Dict[FileIdentifier, bytes]):
+    def add_data_file(self, forge_file: ForgeFileName, data_file_id: DataFileIdentifier, files: Dict[FileIdentifier, bytes]):
         for file_id, file in files.items():
-            self._cache.setdefault((forge_file, data_file, file_id), file)
+            self._cache.setdefault((forge_file, data_file_id, file_id), file)
 
     def get_file(self, ):

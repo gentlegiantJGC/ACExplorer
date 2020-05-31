@@ -1,9 +1,8 @@
-from typing import Dict, Generator, Tuple, Optional
+from typing import Generator, Tuple, Optional
 import glob
 import os
 
 from pyUbiForge2.api.game.forge import BaseForge
-from pyUbiForge2.api.data_types import ForgeFileName
 from pyUbiForge2.api.game.cache import FileCache
 from pyUbiForge2.api.game.file_finder import FileFinder
 from pyUbiForge2.api.data_types import (
@@ -16,10 +15,17 @@ from pyUbiForge2.api.data_types import (
 
 class BaseGame:
     ForgeClass = BaseForge
+    GameIdentifier = None
 
     def __init__(self, game_directory: str, cache_megabytes: int = 1000):
         if self.__class__ is BaseGame:
             raise Exception("BaseGame must be subclassed")
+        if self.GameIdentifier is None:
+            raise Exception(f"GameIdentifier has not been set in {self.__class__.__name__}")
+        if self.ForgeClass is BaseForge:
+            raise Exception("ForgeClass attribute has not been overwritten.")
+        if self.GameIdentifier != self.ForgeClass.GameIdentifier:
+            raise Exception("ForgeClass game identifier does not match Game game identifier")
         self._game_directory = game_directory
         self._forge_files: ForgeStorage = {}  # storage for forge classes
         self._file_cache = FileCache()  # store raw data for files
@@ -33,8 +39,6 @@ class BaseGame:
     def init_iter(self) -> Generator[Tuple[float, float], None, None]:
         """Load the forge file classes and metadata.
         Yields a float in the range 0.0 to 1.0 to give an indicator of progress."""
-        if self.ForgeClass is BaseForge:
-            raise Exception("ForgeClass attribute has not been overwritten.")
         memory_sum = 0
         for forge_file_path in glob.glob(os.path.join(self._game_directory, "*.forge")):
             forge_file = self.ForgeClass(forge_file_path)
@@ -69,9 +73,9 @@ class BaseGame:
 
     def get_file(
             self,
-            file: FileIdentifier,
+            file_id: FileIdentifier,
             forge_file: Optional[ForgeFileName] = None,
-            data_file: Optional[DataFileIdentifier] = None
+            data_file_id: Optional[DataFileIdentifier] = None
     ):
         pass
 

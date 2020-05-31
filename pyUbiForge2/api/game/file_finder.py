@@ -28,41 +28,41 @@ class FileFinder:
 
     def contains(
             self,
-            file: FileIdentifier,
+            file_id: FileIdentifier,
             forge_file: Optional[ForgeFileName] = None,
-            data_file: Optional[DataFileIdentifier] = None
+            data_file_id: Optional[DataFileIdentifier] = None
     ) -> bool:
         """Does the file exist."""
-        return (forge_file, data_file, file) in self._file_lookup
+        return (forge_file, data_file_id, file_id) in self._file_lookup
 
     def add_data_file(
             self,
             forge_file: ForgeFileName,
-            data_file: DataFileIdentifier,
+            data_file_id: DataFileIdentifier,
             files: Sequence[FileIdentifier]
     ):
         """Populate the database for a data file and its files."""
         # if this key is already present the data file has been added before
-        if (forge_file, data_file, data_file) not in self._file_lookup:
-            data_file_key = (forge_file, data_file)
-            for file in files:
-                self._file_lookup[(None, None, file)] = data_file_key
-                self._file_lookup[(forge_file, None, file)] = data_file_key
-                self._file_lookup[(forge_file, data_file, file)] = data_file_key
+        if (forge_file, data_file_id, data_file_id) not in self._file_lookup:
+            data_file_key = (forge_file, data_file_id)
+            for file_id in files:
+                self._file_lookup[(None, None, file_id)] = data_file_key
+                self._file_lookup[(forge_file, None, file_id)] = data_file_key
+                self._file_lookup[(forge_file, data_file_id, file_id)] = data_file_key
 
     def find(
             self,
-            file: FileIdentifier,
+            file_id: FileIdentifier,
             forge_file: Optional[ForgeFileName] = None,
-            data_file: Optional[DataFileIdentifier] = None
+            data_file_id: Optional[DataFileIdentifier] = None
     ) -> Optional[
         Tuple[ForgeFileName, DataFileIdentifier]
     ]:
         """Returns the forge file and data file where a file can be found.
         None if the file cannot be found"""
-        location = self._file_lookup.get((forge_file, data_file, file))
+        location = self._file_lookup.get((forge_file, data_file_id, file_id))
         if location is None:
-            location = self._file_lookup.get((forge_file, None, file))
+            location = self._file_lookup.get((forge_file, None, file_id))
             if location is None:
-                location = self._file_lookup.get((None, None, file))
+                location = self._file_lookup.get((None, None, file_id))
         return location
