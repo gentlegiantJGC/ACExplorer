@@ -126,3 +126,5 @@ $RECYCLE.BIN/
 .idea/
 formatLog.json
 config.json
+*.forge_db
+*.tmpbin

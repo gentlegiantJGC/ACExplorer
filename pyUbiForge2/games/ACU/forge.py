@@ -1,7 +1,8 @@
-from typing import Tuple, Dict, Optional
+from typing import Tuple, Dict, Optional, List
 import logging
 import struct
 import numpy
+from io import BytesIO
 
 from pyUbiForge2.api import BaseForge
 from pyUbiForge2.api.data_types import (
@@ -12,6 +13,9 @@ from pyUbiForge2.api.data_types import (
     FileResourceType,
     FileName,
 )
+from pyUbiForge2.util.compression import decompress
+
+CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
 
 
 class ACUForge(BaseForge):
@@ -79,6 +83,41 @@ class ACUForge(BaseForge):
                 index_table[["raw_data_offset", "raw_data_size"]].tolist()
             ))
 
+    @staticmethod
+    def _read_compressed_data_section(raw_data_chunk: BytesIO) -> Tuple[int, List[bytes]]:
+        """This is a helper function used in decompression"""
+        raw_data_chunk.seek(2, 1)
+        compression_type = ord(raw_data_chunk.read(1))
+        raw_data_chunk.seek(3, 1)
+        format_version = ord(raw_data_chunk.read(1))
+        if format_version == 0:
+            uncompressed_data_list = []
+            comp_block_count = 1
+            while comp_block_count == 1:
+                try:
+                    comp_block_count = ord(raw_data_chunk.read(1))
+                except:
+                    comp_block_count = 0
+                    continue
+                if comp_block_count != 1:
+                    raise Exception('This file has a count not equal to 1. No example of this has been found yet. Please let the creator know where you found this.')
+                size_table: Tuple[Tuple[int, int], ...] = numpy.frombuffer(raw_data_chunk.read(comp_block_count * 2 * 4), '<u4').reshape(-1, 2).tolist()  # 'compressed_size', 'uncompressed_size'
+                for compressed_size, uncompressed_size in size_table:
+                    raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
+                    uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
+
+        elif format_version == 128:
+            comp_block_count = struct.unpack("<I", raw_data_chunk.read(4))[0]
+            size_table = numpy.frombuffer(raw_data_chunk.read(comp_block_count * 2 * 2), '<u2').reshape(-1, 2).tolist()  # 'uncompressed_size', 'compressed_size'
+            uncompressed_data_list = []
+            for uncompressed_size, compressed_size in size_table:
+                raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
+                uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
+        else:
+            raise Exception('Format version not known. Please let the creator know where you found this.')
+
+        return format_version, uncompressed_data_list
+
     def decompress_data_file(self, data_file_id: DataFileIdentifier, metadata_only=False) -> Dict[
         FileIdentifier,
         Tuple[
@@ -87,4 +126,68 @@ class ACUForge(BaseForge):
             Optional[bytes]
         ]
     ]:
-        raise NotImplementedError
+        """This is the decompression method
+
+        Given a numerical id of a datafile that is present in the forge file, this method will decompress that datafile, storing
+        the data in the pyUbiForgeMain instance which was given to this class. It will populate self.datafiles[datafile_id].files
+        with mappings from numerical id to file_name for each file within the datafile. It will also add the datafile id to
+        self.new_datafiles so that external applications (such as the UI wrapper ACExplorer) will know which datafiles have been
+        decompressed and have data to be added to the UI.
+        """
+        uncompressed_data_list = []
+
+        raw_data_chunk = self.get_compressed_data(data_file_id)
+        header = raw_data_chunk.read(8)
+        if header == CompressionMarker:  # if compressed
+            format_version, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
+            if format_version == 128:
+                if raw_data_chunk.read(8) == CompressionMarker:
+                    _, uncompressed_data_list_ = self._read_compressed_data_section(raw_data_chunk)
+                    uncompressed_data_list += uncompressed_data_list_
+                else:
+                    raise Exception('Compression Issue. Second compression block not found')
+            if raw_data_chunk.read():
+                raise Exception('Compression Issue. More data found')
+        else:
+            format_version = 128
+            raw_data_chunk_rest = header + raw_data_chunk.read()
+            if CompressionMarker in raw_data_chunk_rest:
+                raise Exception('Compression Issue')
+            uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
+
+        if format_version == 0:
+            data_file = self.get_data_file(data_file_id)
+            return {
+                data_file_id: (data_file.resource_type, data_file.name, b''.join(uncompressed_data_list))
+            }
+
+        elif format_version == 128:
+            files = {}
+            uncompressed_data = BytesIO(b''.join(uncompressed_data_list))
+
+            file_count = struct.unpack("<H", uncompressed_data.read(2))[0]
+            index_table = []
+            for _ in range(file_count):
+                index_table.append(
+                    struct.unpack('<QIH', uncompressed_data.read(14))
+                )  # file_id, data_size (file_size + header), extra16_count (for next line)
+                uncompressed_data.seek(index_table[-1][2] * 2, 1)
+            for index in range(file_count):
+                file_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
+                file_id = index_table[index][0]
+                file_name = uncompressed_data.read(file_name_size).decode("utf-8")
+                check_byte = ord(uncompressed_data.read(1))
+                if check_byte == 1:
+                    uncompressed_data.seek(3, 1)
+                    unk_count = struct.unpack("<I", uncompressed_data.read(4))[0]
+                    uncompressed_data.seek(12 * unk_count, 1)
+                elif check_byte != 0:
+                    raise Exception('Either something has gone wrong or a new value has been found here')
+
+                raw_file = uncompressed_data.read(file_size)
+
+                files[file_id] = (file_type, file_name, raw_file)
+            return files
+
+        else:
+            raise Exception('Format version not known. Please let the creator know where you found this.')

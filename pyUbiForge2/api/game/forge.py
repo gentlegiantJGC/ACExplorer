@@ -2,6 +2,7 @@ import os
 from typing import Tuple, Generator, Dict, Optional
 import gzip
 import pickle
+from io import BytesIO
 
 from pyUbiForge2 import CACHE_DIR
 from pyUbiForge2.api.data_types import (
@@ -36,6 +37,9 @@ class BaseForge:
         self._data_file_location: DataFileByteLocations = {}
         self._data_files: DataFileStorage = {}
 
+    def __repr__(self):
+        return f"{self.GameIdentifier}:{self.file_name}"
+
     def init_iter(self) -> Generator[float, None, None]:
         """Load the metadata and populate DataFile classes.
         Yield back the progress on a scale from 0.0 to 1.0."""
@@ -63,21 +67,34 @@ class BaseForge:
             index = 0
             for data_file_id, (data_file_resource_type, data_file_name) in metadata.items():
                 index += 1
-                files = self.decompress_data_file(data_file_id, True)
+                data_file = self._data_files[data_file_id] = DataFile(data_file_id, data_file_resource_type, data_file_name)
+                try:
+                    files = self.decompress_data_file(data_file_id, True)
+                except:
+                    print(f"Error loading {self.file_name} {data_file_id} {data_file_name}")
+                    files = {}
+                    # files = self.decompress_data_file(data_file_id, True)
+                data_file.files = {
+                    file_id: (file_resource_type, file_name) for file_id, (file_resource_type, file_name, _) in files.items()
+                }
                 database[data_file_id] = (
                     data_file_resource_type,
                     data_file_name,
-                    {
-                        file_id: (file_resource_type, file_name) for file_id, (file_resource_type, file_name, _) in files.items()
-                    }
+                    data_file.files
                 )
                 yield index / len(metadata)
             os.makedirs(os.path.dirname(database_path), exist_ok=True)
             with gzip.open(database_path, 'wb') as f:
                 pickle.dump(database, f)
 
-        for data_file_id, data in database.items():
-            self._data_files[data_file_id] = DataFile(*data)
+        else:
+            for data_file_id, (data_file_resource_type, data_file_name, files) in database.items():
+                self._data_files[data_file_id] = DataFile(
+                    data_file_id,
+                    data_file_resource_type,
+                    data_file_name,
+                    files
+                )
 
         # populate
         yield 1.0
@@ -89,6 +106,15 @@ class BaseForge:
 
         """Parse the forge file to load metadata and data file locations."""
         raise NotImplementedError
+
+    def get_compressed_data(
+            self,
+            data_file_id: DataFileIdentifier
+    ) -> BytesIO:
+        offset, size = self._data_file_location[data_file_id]
+        with open(self.path, 'rb') as f:
+            f.seek(offset)
+            return BytesIO(f.read(size))
 
     def decompress_data_file(
             self,

@@ -62,8 +62,8 @@ class BaseGame:
         return self._forge_files
 
     @property
-    def forge_file_ids(self) -> Tuple[ForgeFileName, ...]:
-        """A tuple of forge file ids contained within this forge file."""
+    def forge_file_names(self) -> Tuple[ForgeFileName, ...]:
+        """A tuple of forge file names contained within this game file."""
         return tuple(self._forge_files.keys())
 
     def get_forge_file(self, forge_file: ForgeFileName) -> BaseForge:
