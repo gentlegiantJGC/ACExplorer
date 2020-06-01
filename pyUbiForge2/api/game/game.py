@@ -78,5 +78,3 @@ class BaseGame:
             data_file_id: Optional[DataFileIdentifier] = None
     ):
         pass
-
-

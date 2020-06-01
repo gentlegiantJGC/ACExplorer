@@ -2,7 +2,7 @@ import os
 from typing import Tuple, Generator, Dict, Optional
 import gzip
 import pickle
-from io import BytesIO
+import traceback
 
 from pyUbiForge2 import CACHE_DIR
 from pyUbiForge2.api.data_types import (
@@ -22,6 +22,7 @@ class BaseForge:
     """The base API for a forge file. Each game should build from this."""
 
     GameIdentifier = None  # string identifier to match the one used in the game class
+    NonContainerDataFiles = set()
 
     def __init__(self, path: str):
         if self.__class__ is BaseForge:
@@ -69,11 +70,11 @@ class BaseForge:
                 index += 1
                 data_file = self._data_files[data_file_id] = DataFile(data_file_id, data_file_resource_type, data_file_name)
                 try:
-                    files = self.decompress_data_file(data_file_id, True)
+                    files = self.get_unpacked_data_file(data_file_id)
                 except:
+                    traceback.print_exc()
                     print(f"Error loading {self.file_name} {data_file_id} {data_file_name}")
                     files = {}
-                    # files = self.decompress_data_file(data_file_id, True)
                 database[data_file_id] = data_file.files = {
                     file_id: (file_resource_type, file_name) for file_id, (file_resource_type, file_name, _) in files.items()
                 }
@@ -103,20 +104,24 @@ class BaseForge:
         """Parse the forge file to load metadata and data file locations."""
         raise NotImplementedError
 
-    def get_compressed_data(
+    def get_compressed_data_file(
             self,
             data_file_id: DataFileIdentifier
-    ) -> BytesIO:
+    ) -> bytes:
         offset, size = self._data_file_location[data_file_id]
         with open(self.path, 'rb') as f:
             f.seek(offset)
-            return BytesIO(f.read(size))
+            return f.read(size)
 
-    def decompress_data_file(
+    def get_decompressed_data_file(
             self,
-            data_file_id: DataFileIdentifier,
-            metadata_only=False
-    ) -> Dict[
+            data_file_id: DataFileIdentifier
+    ) -> bytes:
+        """Decompress and return data for a given data file."""
+        # Start byte and offset can be found in self._data_file_location
+        raise NotImplementedError
+
+    def get_unpacked_data_file(self, data_file_id: DataFileIdentifier) -> Dict[
         FileIdentifier,
         Tuple[
             FileResourceType,
@@ -124,8 +129,7 @@ class BaseForge:
             Optional[bytes]
         ]
     ]:
-        """Decompress and return data for a given data file."""
-        # Start byte and offset can be found in self._data_file_location
+        """Get the data file unpacked into individual files"""
         raise NotImplementedError
 
     @property

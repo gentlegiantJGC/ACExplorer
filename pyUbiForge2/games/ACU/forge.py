@@ -20,6 +20,7 @@ CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
 
 class ACUForge(BaseForge):
     GameIdentifier = "ACU"
+    NonContainerDataFiles = {16, 145}
 
     def _parse_forge(self) -> Tuple[
         DataFileMetadata,
@@ -86,9 +87,9 @@ class ACUForge(BaseForge):
     @staticmethod
     def _read_compressed_data_section(raw_data_chunk: BytesIO) -> Tuple[int, List[bytes]]:
         """This is a helper function used in decompression"""
-        raw_data_chunk.seek(2, 1)
+        raw_data_chunk.seek(2, 1)  # 01 00
         compression_type = ord(raw_data_chunk.read(1))
-        raw_data_chunk.seek(3, 1)
+        raw_data_chunk.seek(3, 1)  # 00 80 00
         format_version = ord(raw_data_chunk.read(1))
         if format_version == 0:
             uncompressed_data_list = []
@@ -119,25 +120,13 @@ class ACUForge(BaseForge):
 
         return format_version, uncompressed_data_list
 
-    def decompress_data_file(self, data_file_id: DataFileIdentifier, metadata_only=False) -> Dict[
-        FileIdentifier,
-        Tuple[
-            FileResourceType,
-            FileName,
-            Optional[bytes]
-        ]
-    ]:
-        """This is the decompression method
-
-        Given a numerical id of a datafile that is present in the forge file, this method will decompress that datafile, storing
-        the data in the pyUbiForgeMain instance which was given to this class. It will populate self.datafiles[datafile_id].files
-        with mappings from numerical id to file_name for each file within the datafile. It will also add the datafile id to
-        self.new_datafiles so that external applications (such as the UI wrapper ACExplorer) will know which datafiles have been
-        decompressed and have data to be added to the UI.
+    def get_decompressed_data_file(self, data_file_id: DataFileIdentifier) -> bytes:
+        """Get the decompressed bytes of the datafile.
+        Used get_unpacked_data_file to have the data unpacked into individual files.
         """
         uncompressed_data_list = []
 
-        raw_data_chunk = self.get_compressed_data(data_file_id)
+        raw_data_chunk = BytesIO(self.get_compressed_data_file(data_file_id))
         header = raw_data_chunk.read(8)
         if header == CompressionMarker:  # if compressed
             format_version, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
@@ -150,21 +139,32 @@ class ACUForge(BaseForge):
             if raw_data_chunk.read():
                 raise Exception('Compression Issue. More data found')
         else:
-            format_version = 128
             raw_data_chunk_rest = header + raw_data_chunk.read()
             if CompressionMarker in raw_data_chunk_rest:
                 raise Exception('Compression Issue')
             uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
 
-        if format_version == 0 or data_file_id == 16:
+        return b''.join(uncompressed_data_list)
+
+    def get_unpacked_data_file(self, data_file_id: DataFileIdentifier) -> Dict[
+        FileIdentifier,
+        Tuple[
+            FileResourceType,
+            FileName,
+            Optional[bytes]
+        ]
+    ]:
+        """Get the data file unpacked into individual files"""
+        uncompressed_data = self.get_decompressed_data_file(data_file_id)
+        if data_file_id in self.NonContainerDataFiles:
             data_file = self.get_data_file(data_file_id)
             return {
-                data_file_id: (data_file.resource_type, data_file.name, b''.join(uncompressed_data_list))
+                data_file_id: (data_file.resource_type, data_file.name, uncompressed_data)
             }
 
-        elif format_version == 128:
+        else:
             files = {}
-            uncompressed_data = BytesIO(b''.join(uncompressed_data_list))
+            uncompressed_data = BytesIO(uncompressed_data)
 
             file_count = struct.unpack("<H", uncompressed_data.read(2))[0]
             index_table = []
@@ -189,6 +189,3 @@ class ACUForge(BaseForge):
 
                 files[file_id] = (file_type, file_name, raw_file)
             return files
-
-        else:
-            raise Exception('Format version not known. Please let the creator know where you found this.')
