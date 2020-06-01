@@ -92,19 +92,20 @@ class ACUForge(BaseForge):
         format_version = ord(raw_data_chunk.read(1))
         if format_version == 0:
             uncompressed_data_list = []
-            comp_block_count = 1
-            while comp_block_count == 1:
-                try:
-                    comp_block_count = ord(raw_data_chunk.read(1))
-                except:
-                    comp_block_count = 0
+            extra_metadata = b"\x01"
+            while extra_metadata:
+                extra_metadata = raw_data_chunk.read(1)
+                if not extra_metadata:
                     continue
-                if comp_block_count != 1:
-                    raise Exception('This file has a count not equal to 1. No example of this has been found yet. Please let the creator know where you found this.')
-                size_table: Tuple[Tuple[int, int], ...] = numpy.frombuffer(raw_data_chunk.read(comp_block_count * 2 * 4), '<u4').reshape(-1, 2).tolist()  # 'compressed_size', 'uncompressed_size'
-                for compressed_size, uncompressed_size in size_table:
-                    raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
+                if extra_metadata == b"\x00":
+                    compressed_size = struct.unpack("<I", raw_data_chunk.read(4))[0]
+                    # uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
+                    uncompressed_data_list.append(raw_data_chunk.read(compressed_size))  # TODO check if this is actually compressed
+                elif extra_metadata == b"\x01":
+                    compressed_size, uncompressed_size, _ = struct.unpack("<3I", raw_data_chunk.read(12))
                     uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
+                else:
+                    raise Exception(f"Extra metadata byte {extra_metadata} is not recognised")
 
         elif format_version == 128:
             comp_block_count = struct.unpack("<I", raw_data_chunk.read(4))[0]
@@ -155,7 +156,7 @@ class ACUForge(BaseForge):
                 raise Exception('Compression Issue')
             uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
 
-        if format_version == 0:
+        if format_version == 0 or data_file_id == 16:
             data_file = self.get_data_file(data_file_id)
             return {
                 data_file_id: (data_file.resource_type, data_file.name, b''.join(uncompressed_data_list))
