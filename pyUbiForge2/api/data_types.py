@@ -30,11 +30,7 @@ FileStorage = Dict[
 ]
 SerialisedMetadata = Dict[
     DataFileIdentifier,
-    Tuple[
-        DataFileResourceType,
-        DataFileName,
-        FileStorage
-    ]
+    FileStorage
 ]
 
 DataFileMetadata = Dict[

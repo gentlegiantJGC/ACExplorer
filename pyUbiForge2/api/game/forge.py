@@ -74,21 +74,17 @@ class BaseForge:
                     print(f"Error loading {self.file_name} {data_file_id} {data_file_name}")
                     files = {}
                     # files = self.decompress_data_file(data_file_id, True)
-                data_file.files = {
+                database[data_file_id] = data_file.files = {
                     file_id: (file_resource_type, file_name) for file_id, (file_resource_type, file_name, _) in files.items()
                 }
-                database[data_file_id] = (
-                    data_file_resource_type,
-                    data_file_name,
-                    data_file.files
-                )
                 yield index / len(metadata)
             os.makedirs(os.path.dirname(database_path), exist_ok=True)
             with gzip.open(database_path, 'wb') as f:
                 pickle.dump(database, f)
 
         else:
-            for data_file_id, (data_file_resource_type, data_file_name, files) in database.items():
+            for data_file_id, (data_file_resource_type, data_file_name) in metadata.items():
+                files = database.get(data_file_id, {})
                 self._data_files[data_file_id] = DataFile(
                     data_file_id,
                     data_file_resource_type,
