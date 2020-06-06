@@ -1,4 +1,4 @@
-from typing import Generator, Tuple, Optional
+from typing import Generator, Tuple, Optional, Dict
 import glob
 import os
 
@@ -16,12 +16,19 @@ from pyUbiForge2.api.data_types import (
 class BaseGame:
     ForgeClass = BaseForge
     GameIdentifier = None
+    FileIDType = None
+    ResourceType = None
 
     def __init__(self, game_directory: str, cache_megabytes: int = 1000):
         if self.__class__ is BaseGame:
             raise Exception("BaseGame must be subclassed")
-        if self.GameIdentifier is None:
-            raise Exception(f"GameIdentifier has not been set in {self.__class__.__name__}")
+        for attr, attr_name in (
+                (self.GameIdentifier, "GameIdentifier"),
+                (self.FileIDType, "FileIDType"),
+                (self.ResourceType, "ResourceType")
+        ):
+            if attr is None:
+                raise Exception(f"{attr_name} has not been set in {self.__class__.__name__}")
         if self.ForgeClass is BaseForge:
             raise Exception("ForgeClass attribute has not been overwritten.")
         if self.GameIdentifier != self.ForgeClass.GameIdentifier:
@@ -52,6 +59,8 @@ class BaseGame:
                 yield progress + forge_progress * forge_progress_step, forge_progress
             progress += forge_progress_step
 
+        # TODO: populate file finder
+
     @property
     def game_directory(self):
         return self._game_directory
@@ -70,6 +79,22 @@ class BaseGame:
         """Get the ForgeFile class for a given id.
         Will raise KeyError if the ForgeFile does not exist."""
         return self._forge_files[forge_file]
+
+    @property
+    def file_types(self) -> Dict[int, str]:
+        """A dictionary mapping resource type to a prettier name"""
+        # implement this in subclasses
+        return {}
+
+    def find_file(
+            self,
+            file_id: FileIdentifier,
+            forge_file: Optional[ForgeFileName] = None,
+            data_file_id: Optional[DataFileIdentifier] = None
+    ) -> Optional[
+        Tuple[ForgeFileName, DataFileIdentifier]
+    ]:
+        return self._file_finder.find(file_id, forge_file, data_file_id)
 
     def get_file(
             self,
