@@ -18,6 +18,7 @@ class BaseGame:
     GameIdentifier = None
     FileIDType = None
     ResourceType = None
+    endianness = "<"
 
     def __init__(self, game_directory: str, cache_megabytes: int = 1000):
         if self.__class__ is BaseGame:

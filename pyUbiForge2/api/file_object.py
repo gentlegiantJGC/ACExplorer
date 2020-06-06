@@ -13,14 +13,13 @@ class FileDataWrapper(BytesIO):
 	def __init__(
 			self,
 			file: bytes,
-			game: BaseGame,
-			endianness: str = '<'
+			game: "BaseGame"
 	):
 		assert isinstance(file, bytes)
-		assert endianness in ('<', '>')
+		assert game.endianness in ('<', '>')
 		super().__init__(file)
 		self._game = game
-		self._endianness = endianness
+		self._endianness = game.endianness
 
 	def indent(self, count: int = 1):
 		pass
@@ -96,11 +95,10 @@ class FileFormatDataWrapper(FileDataWrapper):
 	def __init__(
 			self,
 			file: bytes,
-			game: BaseGame,
-			out_file: TextIO,
-			endianness: str = '<'
+			game: "BaseGame",
+			out_file: TextIO
 	):
-		super().__init__(file, game, endianness)
+		super().__init__(file, game)
 		self._out_file = out_file
 		self._indent_count = 0
 		self.indent_chr = '\t'
