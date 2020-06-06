@@ -1,9 +1,10 @@
 import struct
 import numpy
-from typing import AnyStr, TextIO, Tuple, Any
+from typing import AnyStr, TextIO, Tuple, Any, TYPE_CHECKING
 from io import BytesIO
 
-from pyUbiForge2.api.game.game import BaseGame
+if TYPE_CHECKING:
+	from pyUbiForge2.api.game.game import BaseGame
 
 
 NEWLINE = "\n"
