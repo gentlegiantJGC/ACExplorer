@@ -1,10 +1,10 @@
 import struct
 import numpy
-from typing import AnyStr, TextIO, Tuple, Any, TYPE_CHECKING
+from typing import TextIO, Tuple, Any, TYPE_CHECKING
 from io import BytesIO
 
 if TYPE_CHECKING:
-	from pyUbiForge2.api.game.game import BaseGame
+	from pyUbiForge2 import BaseGame, BaseFile
 
 
 NEWLINE = "\n"
@@ -35,7 +35,7 @@ class FileDataWrapper(BytesIO):
 		"""with file.indent:"""
 		return Indent()
 
-	def out_file_write(self, val: AnyStr):
+	def out_file_write(self, val: str):
 		pass
 
 	def _read_struct(self, data_type: str) -> Tuple[Any]:
@@ -89,7 +89,10 @@ class FileDataWrapper(BytesIO):
 	def read_resource_type(self) -> int:
 		return self._read_struct(self._game.ResourceType)[0]
 
-	def read_numpy(self, dtype, binary_size: int):
+	def read_file(self) -> "BaseFile":
+		return self._game.read_file(self)
+
+	def read_numpy(self, dtype, binary_size: int) -> numpy.ndarray:
 		binary = self.read(binary_size)
 		if len(binary) != binary_size:
 			raise EOFError('Reached End Of File')
@@ -158,7 +161,7 @@ class FileFormatDataWrapper(FileDataWrapper):
 				self._out_file.write(f'Skipped back {abs(count)} bytes\n')
 				super().seek(offset, whence)
 
-	def out_file_write(self, val: AnyStr):
+	def out_file_write(self, val: str):
 		self._out_file.write(f'{self.indent_count * self.indent_chr}{val}')
 
 	def _read_struct(self, data_type: str, trailing_newline: bool = True) -> Tuple[Any]:
