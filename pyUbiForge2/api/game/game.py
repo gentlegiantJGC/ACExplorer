@@ -94,7 +94,29 @@ class BaseGame:
     ) -> Optional[
         Tuple[ForgeFileName, DataFileIdentifier]
     ]:
+        """Find the forge file name and data file id for a given file id.
+        Will return None if the file does not exist."""
         return self._file_finder.find(file_id, forge_file, data_file_id)
+
+    def get_file_bytes(
+            self,
+            file_id: FileIdentifier,
+            forge_file: Optional[ForgeFileName] = None,
+            data_file_id: Optional[DataFileIdentifier] = None
+    ) -> Optional[bytes]:
+        """Get the binary representation of a given file id.
+        Will return None if the file does not exist."""
+        key = self.find_file(file_id, forge_file, data_file_id)
+        if key is None:
+            return
+        else:
+            forge_file, data_file_id = key
+            if self._file_cache.contains(forge_file, data_file_id, file_id):
+                return self._file_cache.get_file(forge_file, data_file_id, file_id)
+            else:
+                files = self.get_forge_file(forge_file).get_decompressed_files_bytes(data_file_id)
+                self._file_cache.add_data_file(forge_file, data_file_id, files)
+                return files[file_id]
 
     def get_file(
             self,
@@ -102,4 +124,7 @@ class BaseGame:
             forge_file: Optional[ForgeFileName] = None,
             data_file_id: Optional[DataFileIdentifier] = None
     ):
-        pass
+        """Get the python class representation of a given file id.
+        Will return None if the file does not exist.
+        May throw an exception if parsing the file failed."""
+        raise NotImplementedError
