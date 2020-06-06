@@ -2,6 +2,8 @@ from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type
 import glob
 import os
 
+from pyUbiForge2.api import log
+from pyUbiForge2.api.file_object import FileDataWrapper, FileFormatDataWrapper
 from pyUbiForge2.api.game.file_cache import FileCache
 from pyUbiForge2.api.game.file_finder import FileFinder
 from pyUbiForge2.api.data_types import (
@@ -61,6 +63,7 @@ class BaseGame:
             forge_progress_step = forge.file_size / memory_sum  # the amount this forge file contributes to the whole loading.
             for forge_progress in forge.init_iter():
                 yield progress + forge_progress * forge_progress_step, forge_progress
+            log.info(f"Loaded {forge_name}")
             progress += forge_progress_step
 
         # TODO: populate file finder
@@ -126,9 +129,22 @@ class BaseGame:
             self,
             file_id: FileIdentifier,
             forge_file: Optional[ForgeFileName] = None,
-            data_file_id: Optional[DataFileIdentifier] = None
+            data_file_id: Optional[DataFileIdentifier] = None,
+            format_file_path: str = None
     ):
         """Get the python class representation of a given file id.
         Will return None if the file does not exist.
         May throw an exception if parsing the file failed."""
+        file = self.get_file_bytes(file_id, forge_file, data_file_id)
+        if isinstance(format_file_path, str):
+            os.makedirs(os.path.dirname(format_file_path), exist_ok=True)
+            with open(format_file_path, 'w') as f:
+                file_wrapper = FileFormatDataWrapper(file, self, f)
+                return self.read_file(file_wrapper)
+        else:
+            file_wrapper = FileDataWrapper(file, self)
+            return self.read_file(file_wrapper)
+
+    def read_file(self, file: FileDataWrapper) -> "BaseFile":
+        """Read a file id, resource type and the file payload and return the data packed into a class."""
         raise NotImplementedError
