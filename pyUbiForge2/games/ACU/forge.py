@@ -122,7 +122,7 @@ class ACUForge(BaseForge):
 
     def get_decompressed_data_file(self, data_file_id: DataFileIdentifier) -> bytes:
         """Get the decompressed bytes of the datafile.
-        Used get_unpacked_data_file to have the data unpacked into individual files.
+        Use get_decompressed_files to have the data unpacked into individual files.
         """
         uncompressed_data_list = []
 
@@ -146,7 +146,7 @@ class ACUForge(BaseForge):
 
         return b''.join(uncompressed_data_list)
 
-    def get_unpacked_data_file(self, data_file_id: DataFileIdentifier) -> Dict[
+    def get_decompressed_files(self, data_file_id: DataFileIdentifier) -> Dict[
         FileIdentifier,
         Tuple[
             FileResourceType,

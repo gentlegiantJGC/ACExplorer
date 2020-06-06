@@ -70,7 +70,7 @@ class BaseForge:
                 index += 1
                 data_file = self._data_files[data_file_id] = DataFile(data_file_id, data_file_resource_type, data_file_name)
                 try:
-                    files = self.get_unpacked_data_file(data_file_id)
+                    files = self.get_decompressed_files(data_file_id)
                 except:
                     traceback.print_exc()
                     print(f"Error loading {self.file_name} {data_file_id} {data_file_name}")
@@ -117,20 +117,30 @@ class BaseForge:
             self,
             data_file_id: DataFileIdentifier
     ) -> bytes:
-        """Decompress and return data for a given data file."""
+        """Decompress and return data for a given data file as a single block of bytes."""
         # Start byte and offset can be found in self._data_file_location
         raise NotImplementedError
 
-    def get_unpacked_data_file(self, data_file_id: DataFileIdentifier) -> Dict[
+    def get_decompressed_files(self, data_file_id: DataFileIdentifier) -> Dict[
         FileIdentifier,
         Tuple[
             FileResourceType,
             FileName,
-            Optional[bytes]
+            bytes
         ]
     ]:
-        """Get the data file unpacked into individual files"""
+        """Get the data file unpacked into its individual files.
+        This is a dictionary that converts from the file id to the metadata and file bytes.
+        Use get_decompressed_files_bytes to get just the bytes."""
         raise NotImplementedError
+
+    def get_decompressed_files_bytes(self, data_file_id: DataFileIdentifier) -> Dict[
+        FileIdentifier,
+        bytes
+    ]:
+        """Get the bytes for each file in a given data file.
+        This is a dictionary that converts from the file id to file bytes."""
+        return {file_id: data[2] for file_id, data in self.get_decompressed_files(data_file_id).items()}
 
     @property
     def path(self) -> str:
