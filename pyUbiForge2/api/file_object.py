@@ -73,10 +73,10 @@ class FileDataWrapper(BytesIO):
 	def read_bytes(self, chr_len: int) -> bytes:
 		return self._read_struct(f'{chr_len}s')[0]
 
-	def read_id(self) -> int:
+	def read_file_id(self) -> int:
 		return self._read_struct(self._game.FileIDType)[0]
 
-	def read_type(self) -> int:
+	def read_resource_type(self) -> int:
 		return self._read_struct(self._game.ResourceType)[0]
 
 	def read_numpy(self, dtype, binary_size: int):
@@ -151,7 +151,7 @@ class FileFormatDataWrapper(FileDataWrapper):
 		)
 		return val
 
-	def read_id(self) -> int:
+	def read_file_id(self) -> int:
 		file_id = self._read_struct(self._game.FileIDType, False)[0]
 		file_location = self._game.find_file(file_id)
 		if file_location is None:
@@ -162,8 +162,8 @@ class FileFormatDataWrapper(FileDataWrapper):
 			self._out_file.write(f'\t\t{file_name}\t{file_type}\n')
 		return file_id
 
-	def read_type(self) -> int:
-		file_type = super().read_type()
+	def read_resource_type(self) -> int:
+		file_type = super().read_resource_type()
 		self._out_file.write(f'{self._indent_count * self.indent_chr}{file_type:08X}\t\t{file_type}\t{self._game.file_types.get(file_type, "Undefined")}\n')
 		return file_type
 
