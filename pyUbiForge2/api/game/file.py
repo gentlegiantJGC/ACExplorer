@@ -1,12 +1,8 @@
-from pyUbiForge2.api.file_object import FileDataWrapper
-
-
 class BaseFile:
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
-            data_wrapper: FileDataWrapper
+            resource_type: int
     ):
         self._file_id = file_id
         self._resource_type = resource_type
