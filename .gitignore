@@ -128,3 +128,4 @@ formatLog.json
 config.json
 *.forge_db
 *.tmpbin
+**/temp
