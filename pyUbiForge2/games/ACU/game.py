@@ -31,4 +31,4 @@ class ACUGame(BaseGame):
         if resource_id in FileReaders:
             with file.indent:
                 return FileReaders[resource_id](file_id, resource_id, file)
-        raise NotImplementedError(resource_id)
+        raise NotImplementedError(f"{resource_id:08X}")
