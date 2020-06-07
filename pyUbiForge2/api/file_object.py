@@ -17,6 +17,9 @@ class Indent:
 	def __exit__(self, exc_type, exc_val, exc_tb):
 		pass
 
+	def __call__(self, count: int = 1):
+		pass
+
 
 class FileDataWrapper(BytesIO):
 	def __init__(
@@ -114,6 +117,9 @@ class FormatIndent:
 
 	def __exit__(self, exc_type, exc_val, exc_tb):
 		self._wrapper.indent_count -= 1
+
+	def __call__(self, count: int = 1):
+		self._wrapper.indent_count += count
 
 
 class FileFormatDataWrapper(FileDataWrapper):
