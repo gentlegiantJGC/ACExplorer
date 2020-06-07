@@ -33,7 +33,7 @@ class FileCache:
 
         if self._cache_size > self._cache_size_limit:
             for _ in range(len(self._cache)//4):
-                file_triplet, file = self._cache.pop(False)
+                file_triplet, file = self._cache.popitem(False)
                 self._cache_size -= len(file)
 
     def contains(
