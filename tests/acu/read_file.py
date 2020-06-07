@@ -1,5 +1,6 @@
 import unittest
 import os
+import traceback
 
 from pyUbiForge2.api import log
 from tests.acu import GamePath, Game
@@ -17,16 +18,22 @@ class ReadTestCase(unittest.TestCase):
         count = 0
         success = 0
         fail = 0
+
+        def save_file_bytes():
+            with open(path, 'wb') as f:
+                f.write(
+                    self._game.get_file_bytes(file_id, forge_file_name, data_file_id)
+                )
+
         for forge_file_name, forge_file in self._game.forge_files.items():
             for data_file_id, data_file in forge_file.data_files.items():
                 for file_id, (resource_id_, file_name) in data_file.files.items():
                     if resource_id == resource_id_:
                         path = os.path.join("temp", f"{resource_id:08X}", file_name)
                         os.makedirs(os.path.dirname(path), exist_ok=True)
-                        file = self._game.get_file_bytes(file_id, forge_file_name, data_file_id)
                         if FormatFile:
-                            with open(path, 'wb') as f:
-                                f.write(file)
+                            save_file_bytes()
+
                         try:
                             if FormatFile:
                                 self._game.get_file(file_id, forge_file_name, data_file_id, path + ".format")
@@ -35,8 +42,13 @@ class ReadTestCase(unittest.TestCase):
                             success += 1
                         except Exception as e:
                             log.error(f"{file_name}: {e}")
-                            import traceback
                             traceback.print_exc()
+                            save_file_bytes()
+                            if not FormatFile:
+                                try:
+                                    self._game.get_file(file_id, forge_file_name, data_file_id, path + ".format")
+                                except:
+                                    pass
                             fail += 1
                         count += 1
                         if count > max_count:
@@ -45,6 +57,9 @@ class ReadTestCase(unittest.TestCase):
 
     def test_mesh(self):
         self._read_file(int("415D9568", 16))
+
+    def test_entity(self):
+        self._read_file(int("0984415E", 16), 10000)
 
 
 if __name__ == '__main__':
