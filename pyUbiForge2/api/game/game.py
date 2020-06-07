@@ -147,9 +147,11 @@ class BaseGame:
             os.makedirs(os.path.dirname(format_file_path), exist_ok=True)
             with open(format_file_path, 'w') as f:
                 file_wrapper = FileFormatDataWrapper(file, self, f)
+                assert file_wrapper.read_uint_8() == 1, "Expected the first byte to be 1"
                 return self.read_file(file_wrapper)
         else:
             file_wrapper = FileDataWrapper(file, self)
+            assert file_wrapper.read_uint_8() == 1, "Expected the first byte to be 1"
             return self.read_file(file_wrapper)
 
     def read_file(self, file: FileDataWrapper) -> "BaseFile":
