@@ -10,7 +10,7 @@ from .forge import ACUForge
 
 FileReaders: Dict[int, Type[BaseFile]] = {}
 with open(os.path.join(os.path.dirname(__file__), "resource_types.json")) as f:
-    ResourceTypes = json.load(f)
+    ResourceTypes = {int(_key, 16): _value for _key, _value in json.load(f).items()}
 
 
 def register_file_reader(file_id: str):
