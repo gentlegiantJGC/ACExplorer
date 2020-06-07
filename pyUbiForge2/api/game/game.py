@@ -69,7 +69,11 @@ class BaseGame:
             log.info(f"Loaded {forge_name}")
             progress += forge_progress_step
 
-        # TODO: populate file finder
+        log.info("Populating file finder")
+        for forge_file_name, forge_file in self.forge_files.items():
+            for data_file_id, data_file in forge_file.data_files.items():
+                self._file_finder.add_data_file(forge_file_name, data_file_id, data_file.file_ids)
+        log.info("Finished populating file finder")
 
     @property
     def game_directory(self):
