@@ -1,0 +1,17 @@
+AC1Path = None
+PoPPath = None
+SWPath = None
+AC2Path = None
+PoPFSPath = None
+AC2BPath = None
+AC2RPath = None
+AC3Path = None
+AC3LPath = None
+AC4BFPath = None
+AC4FCPath = None
+ACRPath = None
+ACUPath = None
+ACSPath = None
+ACOPath = None
+ACOdPath = None
+ACVPath = None
