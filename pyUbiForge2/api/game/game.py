@@ -1,4 +1,4 @@
-from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type
+from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, List
 import glob
 import os
 
@@ -43,6 +43,7 @@ class BaseGame:
         self._forge_files: ForgeStorage = {}  # storage for forge classes
         self._file_cache = FileCache(cache_megabytes)  # store raw data for files
         self._file_finder = FileFinder()  # find where a given file is stored
+        self._call_stack: List[str] = []
 
         if init:
             self.init()
@@ -142,17 +143,32 @@ class BaseGame:
         """Get the python class representation of a given file id.
         Will return None if the file does not exist.
         May throw an exception if parsing the file failed."""
-        file = self.get_file_bytes(file_id, forge_file, data_file_id)
-        if isinstance(format_file_path, str):
-            os.makedirs(os.path.dirname(format_file_path), exist_ok=True)
-            with open(format_file_path, 'w') as f:
-                file_wrapper = FileFormatDataWrapper(file, self, f)
-                assert file_wrapper.read_uint_8() == 1, "Expected the first byte to be 1"
-                return self.read_file(file_wrapper)
-        else:
-            file_wrapper = FileDataWrapper(file, self)
+        file_bytes = self.get_file_bytes(file_id, forge_file, data_file_id)
+        self._call_stack.clear()
+
+        def read_file():
             assert file_wrapper.read_uint_8() == 1, "Expected the first byte to be 1"
-            return self.read_file(file_wrapper)
+            try:
+                file = self.read_file(file_wrapper)
+            except Exception as e:
+                file_wrapper.clever_format()
+                raise e
+            if file_wrapper.clever_format():
+                raise Exception("More of file remaining")
+            return file
+
+        try:
+            if isinstance(format_file_path, str):
+                os.makedirs(os.path.dirname(format_file_path), exist_ok=True)
+                with open(format_file_path, 'w') as f:
+                    file_wrapper = FileFormatDataWrapper(file_bytes, self, f)
+                    return read_file()
+            else:
+                file_wrapper = FileDataWrapper(file_bytes, self)
+                return read_file()
+        except Exception as e:
+            log.error(f"Call Stack: {' > '.join(self._call_stack)}  ---> reason ---> {e}")
+            raise e
 
     def read_file(self, file: FileDataWrapper) -> "BaseFile":
         """Read a file id, resource type and the file payload and return the data packed into a class."""
