@@ -21,7 +21,7 @@ VertTableTypes = {
 
 @register_file_reader('415D9568')
 class Reader(BaseMesh, BaseFile):
-    def __init____init__(
+    def __init__(
             self,
             file_id: int,
             resource_type: int,
@@ -30,7 +30,6 @@ class Reader(BaseMesh, BaseFile):
         BaseMesh.__init__(self)
         BaseFile.__init__(self, file_id, resource_type)
 
-        model_file.out_file_write('\n')
         model_file.read_bytes(1)  # skip an empty byte
         self.type = model_file.read_bytes(4)
         model_file.read_bytes(1)
@@ -44,10 +43,7 @@ class Reader(BaseMesh, BaseFile):
         if a_count > 0:
             model_file.read_bytes(1)
 
-        bone_count = model_file.read_uint_32()
-        self._bones = []
-        for _ in range(bone_count):
-            self._bones.append(model_file.read_file())
+        self._bones = [model_file.read_file() for _ in range(model_file.read_uint_32())]
 
         self.bounding_box = model_file.read_numpy(numpy.float32, 32).reshape(2, 4)
         model_file.out_file_write(f'{self.bounding_box}\n')
@@ -58,11 +54,13 @@ class Reader(BaseMesh, BaseFile):
         if model_file.read_resource_type() == int("FC9E1595", 16):  # this part should get moved to a different file technically
             model_file.read_bytes(4)
             model_file.out_file_write('Typeswitch\n')
-            self.type_switch = model_file.read_bytes(1)
+            type_switch = model_file.read_uint_8()
             use_blocks = 0
-            if self.type_switch == b'\x00':
+            face_table = None
+            mesh_face_blocks = None
+            if type_switch == 0:
                 model_file.read_file_id()
-                model_file.read_resource_type()
+                model_file.read_resource_type()  # C351EE43
                 model_file.read_bytes(5)
                 model_file.out_file_write('Vert table width\n')
                 vert_table_width = model_file.read_uint_32()
@@ -102,7 +100,7 @@ class Reader(BaseMesh, BaseFile):
 
                 model_file.out_file_write('Face table\n')
                 face_table_length = model_file.read_uint_32()
-                self._faces = model_file.read_numpy(numpy.uint16, face_table_length).reshape(-1, 3)
+                face_table = model_file.read_numpy(numpy.uint16, face_table_length).reshape(-1, 3)
                 # self._faces = numpy.split(face_table, numpy.cumsum(mesh_face_blocks * 64)[:-1])
                 #
                 #
@@ -117,7 +115,7 @@ class Reader(BaseMesh, BaseFile):
                     model_file.read_bytes(count)
 
             model_file.read_file_id()
-            model_file.read_resource_type()
+            model_file.read_resource_type()  # 0645ABB5
             model_file.read_bytes(3)
             model_file.out_file_write('Mesh Table\n')
             mesh_count = model_file.read_uint_32()
@@ -132,15 +130,15 @@ class Reader(BaseMesh, BaseFile):
                 ('', numpy.uint32)
             ], 36 * mesh_count)
 
-            if self._faces is not None:
+            if face_table is not None:
                 if use_blocks == 1:
-                    self._faces = numpy.split(self._faces, numpy.cumsum(mesh_face_blocks * 64)[:-1])
+                    self._faces = numpy.split(face_table, numpy.cumsum(mesh_face_blocks * 64)[:-1])
                     for index in range(len(self._faces)):
                         self._faces[index] = self._faces[index][:self.meshes['face_count'][index]]  # strip the end of the block
                         if index >= 1:
-                            self._faces[index] += self._faces[index - 1].max() + 1  # add the vertex offset (each block starts from 0)
+                            self._faces[index] += numpy.max(self._faces[index - 1]) + 1  # add the vertex offset (each block starts from 0)
                 else:
-                    faces = self._faces
+                    faces = face_table
                     self._faces = []
                     for faces_used_x3, face_count, verts_used in zip(self.meshes['faces_used_x3'], self.meshes['face_count'], self.meshes['verts_used']):
                         self._faces.append(faces[int(faces_used_x3 / 3):int(faces_used_x3 / 3) + face_count] + verts_used)
@@ -162,9 +160,8 @@ class Reader(BaseMesh, BaseFile):
 
             for index in range(2):
                 count = model_file.read_uint_32()
-                model_file.indent()
-                model_file.read_bytes(count)
-                model_file.indent(-1)
+                with model_file.indent:
+                    model_file.read_bytes(count)
 
             model_file.out_file_write('Skin Data Table\n')
             skin_count = model_file.read_uint_32()
