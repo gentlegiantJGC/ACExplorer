@@ -27,8 +27,8 @@ class FileDataWrapper(BytesIO):
 			file: bytes,
 			game: "BaseGame"
 	):
-		assert isinstance(file, bytes)
-		assert game.endianness in ('<', '>')
+		assert isinstance(file, bytes), "File must be bytes"
+		assert game.endianness in ('<', '>'), "Endianness marker must be \"<\" or \">\""
 		super().__init__(file)
 		self._game = game
 		self._endianness = game.endianness
@@ -105,7 +105,7 @@ class FileDataWrapper(BytesIO):
 		return self.read()
 
 	def clever_format(self):
-		pass
+		return self.read()
 
 
 class FormatIndent:
@@ -210,29 +210,35 @@ class FileFormatDataWrapper(FileDataWrapper):
 			self._out_file.write(f'{self.indent_count * self.indent_chr}{hex_string(binary)}\n')
 		return binary
 
-	# def clever_format(self):
-	# 	if self._out_file is not None:
-	# 		hex_str = []
-	# 		might_be_a_file_type = ''.join(f'{b:02X}' for b in self.read(4)[::-1])
-	# 		while len(might_be_a_file_type) == 8:
-	# 			if might_be_a_file_type in pyUbiForge.game_functions.resource_types:
-	# 				self._out_file.write(f'{self._indent_count * self.indent_chr}{" ".join(hex_str)}\n')
-	# 				self._out_file.write(f'{self._indent_count * self.indent_chr}{might_be_a_file_type}\t\t{pyUbiForge.game_functions.resource_types.get(might_be_a_file_type)}\n')
-	# 				hex_str = []
-	# 				might_be_a_file_type = ''.join(f'{b:02X}' for b in self.read(4)[::-1])
-	# 			else:
-	# 				hex_str.append(might_be_a_file_type[6:])
-	# 				next_chr = self.read(1)
-	# 				if next_chr == b'':
-	# 					might_be_a_file_type = might_be_a_file_type[:6]
-	# 				else:
-	# 					might_be_a_file_type = f'{next_chr[0]:02X}{might_be_a_file_type[:6]}'
-	#
-	# 		while might_be_a_file_type != '':
-	# 			hex_str.append(might_be_a_file_type[-2:])
-	# 			might_be_a_file_type = might_be_a_file_type[:-2]
-	# 		self._out_file.write(f'{self._indent_count * self.indent_chr}{" ".join(hex_str)}\n')
-	# 	return
+	def clever_format(self):
+		hex_str = []
+		file_bytes = [self.read(4)]
+		might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
+		while len(might_be_a_file_type) == 8:
+			if int(might_be_a_file_type, 16) in self._game.resource_types:
+				self._out_file.write(f'{self.indent_count * self.indent_chr}{" ".join(hex_str[:-8])}\n')
+				hex_str.clear()
+				super().seek(-12, 1)
+				try:
+					self.read_file()
+				except:
+					pass
+				file_bytes.append(self.read(4))
+				might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
+			else:
+				hex_str.append(might_be_a_file_type[6:])
+				next_chr = self.read(1)
+				if next_chr:
+					file_bytes.append(next_chr)
+					might_be_a_file_type = f'{next_chr[0]:02X}{might_be_a_file_type[:6]}'
+				else:
+					might_be_a_file_type = might_be_a_file_type[:6]
+
+		while might_be_a_file_type:
+			hex_str.append(might_be_a_file_type[-2:])
+			might_be_a_file_type = might_be_a_file_type[:-2]
+		self._out_file.write(f'{self.indent_count * self.indent_chr}{" ".join(hex_str)}\n')
+		return b"".join(file_bytes)
 
 
 def hex_string(binary: bytes) -> str:
