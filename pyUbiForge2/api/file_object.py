@@ -96,7 +96,7 @@ class FileDataWrapper(BytesIO):
 		binary = self.read(binary_size)
 		if len(binary) != binary_size:
 			raise EOFError('Reached End Of File')
-		return numpy.frombuffer(binary, dtype)
+		return numpy.copy(numpy.frombuffer(binary, dtype))
 
 	def read_rest(self) -> bytes:
 		return self.read()
