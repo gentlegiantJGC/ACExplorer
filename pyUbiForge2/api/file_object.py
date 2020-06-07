@@ -189,7 +189,7 @@ class FileFormatDataWrapper(FileDataWrapper):
 
 	def read_resource_type(self) -> int:
 		file_type = super().read_resource_type()
-		self._out_file.write(f'{self.indent_count * self.indent_chr}{file_type:08X}\t\t{file_type}\t{self._game.file_types.get(file_type, "Undefined")}\n')
+		self._out_file.write(f'{self.indent_count * self.indent_chr}{file_type:08X}\t\t{file_type}\t{self._game.resource_types.get(file_type, "Undefined")}\n')
 		return file_type
 
 	def read_numpy(self, dtype, binary_size: int):
@@ -209,9 +209,9 @@ class FileFormatDataWrapper(FileDataWrapper):
 	# 		hex_str = []
 	# 		might_be_a_file_type = ''.join(f'{b:02X}' for b in self.read(4)[::-1])
 	# 		while len(might_be_a_file_type) == 8:
-	# 			if might_be_a_file_type in pyUbiForge.game_functions.file_types:
+	# 			if might_be_a_file_type in pyUbiForge.game_functions.resource_types:
 	# 				self._out_file.write(f'{self._indent_count * self.indent_chr}{" ".join(hex_str)}\n')
-	# 				self._out_file.write(f'{self._indent_count * self.indent_chr}{might_be_a_file_type}\t\t{pyUbiForge.game_functions.file_types.get(might_be_a_file_type)}\n')
+	# 				self._out_file.write(f'{self._indent_count * self.indent_chr}{might_be_a_file_type}\t\t{pyUbiForge.game_functions.resource_types.get(might_be_a_file_type)}\n')
 	# 				hex_str = []
 	# 				might_be_a_file_type = ''.join(f'{b:02X}' for b in self.read(4)[::-1])
 	# 			else:

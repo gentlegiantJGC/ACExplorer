@@ -95,7 +95,7 @@ class BaseGame:
         return self._forge_files[forge_file]
 
     @property
-    def file_types(self) -> Dict[int, str]:
+    def resource_types(self) -> Dict[int, str]:
         """A dictionary mapping resource type to a prettier name"""
         # implement this in subclasses
         return {}
