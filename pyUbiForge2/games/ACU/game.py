@@ -32,10 +32,13 @@ class ACUGame(BaseGame):
     def read_file(self, file: FileDataWrapper) -> BaseFile:
         file_id = file.read_file_id()
         resource_id = file.read_resource_type()
+        self._call_stack.append(f"{resource_id:08X}")
         if resource_id in FileReaders:
             with file.indent:
-                return FileReaders[resource_id](file_id, resource_id, file)
-        raise NotImplementedError(f"{resource_id:08X}")
+                file_cls = FileReaders[resource_id](file_id, resource_id, file)
+                self._call_stack.pop()
+                return file_cls
+        raise NotImplementedError(f"Not implemented {resource_id:08X}")
 
     @property
     def resource_types(self) -> Dict[int, str]:
