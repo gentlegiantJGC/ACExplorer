@@ -1,15 +1,14 @@
 import unittest
 import time
 
-from tests import ACUPath
-from pyUbiForge2.games import ACUGame
+from tests.acu import GamePath, Game
 from pyUbiForge2.api import log
 
 
-@unittest.skipIf(ACUPath is None, reason="ACU Path not defined.")
+@unittest.skipIf(GamePath is None, reason=f"{Game.GameIdentifier} Path not defined.")
 class DecompressWithCacheTestCase(unittest.TestCase):
     def setUp(self) -> None:
-        self._game = ACUGame(ACUPath)
+        self._game = Game(GamePath)
 
     def test_decompress(self):
         start_time = time.time()
