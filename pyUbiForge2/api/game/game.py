@@ -25,7 +25,7 @@ class BaseGame:
     ResourceType: str = None
     endianness = "<"
 
-    def __init__(self, game_directory: str, cache_megabytes: int = 1000):
+    def __init__(self, game_directory: str, cache_megabytes: int = 1000, init=True):
         if self.__class__ is BaseGame:
             raise Exception("BaseGame must be subclassed")
         for attr, attr_name in (
@@ -43,6 +43,9 @@ class BaseGame:
         self._forge_files: ForgeStorage = {}  # storage for forge classes
         self._file_cache = FileCache(cache_megabytes)  # store raw data for files
         self._file_finder = FileFinder()  # find where a given file is stored
+
+        if init:
+            self.init()
 
     def init(self):
         """Load the forge file classes and metadata"""
