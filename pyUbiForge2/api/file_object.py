@@ -194,23 +194,22 @@ class FileFormatDataWrapper(FileDataWrapper):
 		return file_id
 
 	def read_resource_type(self) -> int:
-		file_type = super().read_resource_type()
-		self._out_file.write(f'{self.indent_count * self.indent_chr}{file_type:08X}\t\t{file_type}\t{self._game.resource_types.get(file_type, "Undefined")}\n')
+		file_type = self._read_struct(self._game.ResourceType, False)[0]
+		self._out_file.write(f'\t\t{file_type:08X}\t\t{self._game.resource_types.get(file_type, "Undefined")}\n')
 		return file_type
 
 	def read_numpy(self, dtype, binary_size: int):
 		val = super().read_numpy(dtype, binary_size)
-		if self._out_file is not None:
-			self._out_file.write(f'{self.indent_count * self.indent_chr}\t\t{val}\n')
+		self._out_file.write(f'{self.indent_count * self.indent_chr}\t\t{val}\n')
 		return val
 
 	def read_rest(self) -> bytes:
 		binary = self.read()
-		if self._out_file is not None:
-			self._out_file.write(f'{self.indent_count * self.indent_chr}{hex_string(binary)}\n')
+		self._out_file.write(f'{self.indent_count * self.indent_chr}{hex_string(binary)}\n')
 		return binary
 
 	def clever_format(self):
+		self.out_file_write("Initiate clever format\n")
 		hex_str = []
 		file_bytes = [self.read(4)]
 		might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
