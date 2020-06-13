@@ -24,20 +24,15 @@ class Reader(BaseFile):
         file.out_file_write('\n')
         count1 = file.read_uint_32()
         if count1 > 10000:
-            logging.warning('error reading entity file')
-            # convert to an actual logger
-            raise Exception
+            raise Exception('error reading entity file')
 
         self.nested_files = []
 
         for _ in range(count1):
             file.out_file_write('\n')
-            file.indent()
-            if file.read_bytes(2) not in [b'\x04\x00', b'\x00\x01']:  # 04 00
-                raise Exception
-            file.indent(-1)
-
-            self.nested_files.append(file.read_file())
+            with file.indent:
+                file.read_bytes(2)  # usually in [b'\x04\x00', b'\x00\x01'] but not always
+                self.nested_files.append(file.read_file())
 
         # float * 7
 

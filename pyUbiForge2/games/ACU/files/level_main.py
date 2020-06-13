@@ -12,7 +12,7 @@ class Reader(BaseFile):
     ):
         BaseFile.__init__(self, file_id, resource_type)
         for _ in range(2):
-            file.read_file()
+            file.read_file()  # 7DB083ED
 
         file.read_bytes(2)
         self.fakes = file.read_file_id()

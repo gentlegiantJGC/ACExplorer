@@ -178,7 +178,7 @@ class Reader(BaseMesh, BaseFile):
             model_file.out_file_write(f'{skin_table}\n')
 
             model_file.read_bytes(8)
-            model_file.out_file_write('Model Scale?\n')
+            model_file.out_file_write('Model Scale\n')
             model_scale = model_file.read_float_32()  # model scale? (looks to be the magnitude of sc in the vert table)
             self._vertices *= model_scale
             model_file.out_file_write('Material Table\n')
@@ -191,7 +191,7 @@ class Reader(BaseMesh, BaseFile):
             model_file.out_file_write(f'{material_table}\n')
             self._materials = material_table['file_id']
 
-            model_file.read_rest()
+            model_file.read_rest()  # doesn't seem to contain anything useful
 
         else:
             raise Exception("Error reading model file!")
