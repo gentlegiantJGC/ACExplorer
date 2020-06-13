@@ -6,6 +6,7 @@ from pyUbiForge2.api import BaseGame, BaseFile
 from pyUbiForge2.api.file_object import FileDataWrapper
 
 from .forge import ACUForge
+from pyUbiForge2.api import log
 
 
 FileReaders: Dict[int, Type[BaseFile]] = {}
@@ -28,6 +29,12 @@ class ACUGame(BaseGame):
     GameIdentifier = "ACU"
     FileIDType = "Q"
     ResourceType = "I"
+
+    def __init__(self, game_directory: str, cache_megabytes: int = 1000, init=True):
+        super().__init__(game_directory, cache_megabytes, init)
+        for file_type in FileReaders:
+            if file_type not in ResourceTypes:
+                log.info(f"No registered name for file type {file_type:08X}")
 
     def read_file(self, file: FileDataWrapper) -> BaseFile:
         file_id = file.read_file_id()
