@@ -13,3 +13,4 @@ class Reader(BaseFile):
         BaseFile.__init__(self, file_id, resource_type)
         for _ in range(2):
             file.read_file()
+        file.read_bytes(1)

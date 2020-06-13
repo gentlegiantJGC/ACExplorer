@@ -61,7 +61,7 @@ class Reader(BaseTexture, BaseFile):
         unk8 = texture_file.read_uint_32()  # seems to always be 0
 
         texture_file.read_file_id()
-        texture_file.read_type()
+        texture_file.read_resource_type()
         one = texture_file.read_uint_32()  # always 1
         seven = texture_file.read_uint_32()  # always 7
         dwWidth = texture_file.read_bytes(4)

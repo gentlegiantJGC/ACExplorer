@@ -11,3 +11,5 @@ class Reader(BaseFile):
             file: FileDataWrapper
     ):
         BaseFile.__init__(self, file_id, resource_type)
+        file.read_bytes(3)
+        file.read_file()  # 1B478101

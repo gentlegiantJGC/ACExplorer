@@ -11,7 +11,7 @@ class Reader(BaseFile):
             file: FileDataWrapper
     ):
         BaseFile.__init__(self, file_id, resource_type)
-        self.bone_id = file.read_type()
+        self.bone_id = file.read_resource_type()
 
         self.parent = None
 
@@ -19,21 +19,22 @@ class Reader(BaseFile):
             self.parent = file.read_file_id()
 
         if file.read_uint_8() != 3:
-            file.read_file_id()  # perhaps child id
+            file.read_file_id()  # reflected file id. The 
 
-        file.read_bytes(64)  # trm mtx?
+        transform = file.read_numpy("float32", 16*4)
 
         file.read_bytes(5)
         count = file.read_uint_32()
         for _ in range(count):
-            file.indent()
-            file.read_bytes(1)
-            file.read_file()
-            file.indent(-1)
+            with file.indent:
+                file.read_bytes(1)
+                file.read_file()
         count = file.read_uint_32()
         for _ in range(count):
-            file.indent()
-            file.read_type()
-            file.indent(-1)
-        # check = file.read_bytes(1)
-        file.read_bytes(13)
+            with file.indent:
+                file.read_resource_type()
+        assert file.read_uint_32() == 7, "this should be 7"
+        assert file.read_float_32() == 1, "this should be 1"  # scale factor?
+        file.read_uint_16()
+        file.read_uint_16()
+        file.read_uint_8()  # this may be in the parent file 24AECB7C. Usually 0 but 2 at the end sometimes

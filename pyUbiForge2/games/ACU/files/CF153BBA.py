@@ -13,6 +13,10 @@ class Reader(BaseFile):
         BaseFile.__init__(self, file_id, resource_type)
         file.read_bytes(1)
         file.read_file_id()  # same as the top level parent
-        assert file.read_uint_32() == 3, "expected 3"
+        count = file.read_uint_32()
+        assert count in (1, 3), "expected 1 or 3"
         file.read_numpy("float32", 396)
-        file.read_bytes(2)
+        if count == 1:
+            file.read_bytes(1)
+        elif count == 3:
+            file.read_bytes(2)

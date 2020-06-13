@@ -16,7 +16,7 @@ class Reader(BaseFile):
         for _ in range(count1):
             file.read_bytes(2)
             file.read_file_id()
-            file.read_type()
+            file.read_resource_type()
             file.read_bytes(4)
             file.out_file_write('\n')
         file.out_file_write('\n')

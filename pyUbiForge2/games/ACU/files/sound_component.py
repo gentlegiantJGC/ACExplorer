@@ -12,6 +12,9 @@ class Reader(BaseFile):
     ):
         BaseFile.__init__(self, file_id, resource_type)
         file.read_bytes(2)
-        for _ in range(3):
+        # for _ in range(3):
+        for _ in range(2):
             file.read_file()
+            # SoundComponent
+            # EventSwitchDependencies
         file.read_bytes(10)  # wrong but needs more examples
