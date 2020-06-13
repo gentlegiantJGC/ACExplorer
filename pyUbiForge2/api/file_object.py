@@ -200,7 +200,9 @@ class FileFormatDataWrapper(FileDataWrapper):
 
 	def read_numpy(self, dtype, binary_size: int):
 		val = super().read_numpy(dtype, binary_size)
-		self._out_file.write(f'{self.indent_count * self.indent_chr}\t\t{val}\n')
+		indent = self.indent_count * self.indent_chr
+		newline = "\n"
+		self._out_file.write(f'{indent}{str(val).replace(newline, indent)}\n')
 		return val
 
 	def read_rest(self) -> bytes:
@@ -220,8 +222,8 @@ class FileFormatDataWrapper(FileDataWrapper):
 				super().seek(-12, 1)
 				try:
 					self.read_file()
-				except:
-					pass
+				except Exception as e:
+					self.out_file_write(f"Failed reading file type {might_be_a_file_type.upper()} {e}\n")
 				file_bytes.append(self.read(4))
 				might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
 			else:
