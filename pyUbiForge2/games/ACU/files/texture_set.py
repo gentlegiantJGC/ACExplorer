@@ -1,6 +1,6 @@
 from pyUbiForge2 import BaseFile, FileDataWrapper
 from pyUbiForge2.games.ACU import register_file_reader
-from pyUbiForge.misc import Material
+from pyUbiForge2.api.files.texture import Material
 import logging
 
 

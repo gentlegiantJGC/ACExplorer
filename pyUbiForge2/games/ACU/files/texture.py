@@ -1,5 +1,5 @@
 import struct
-from pyUbiForge.misc import BaseTexture
+from pyUbiForge2.api.files.texture import BaseTexture
 from pyUbiForge2.games.ACU import register_file_reader
 from pyUbiForge2 import BaseFile, FileDataWrapper
 
