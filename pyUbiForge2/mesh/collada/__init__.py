@@ -1,0 +1,1 @@
+from .collada import Collada
