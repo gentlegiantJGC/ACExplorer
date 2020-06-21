@@ -2,7 +2,7 @@ from pyUbiForge2 import BaseFile, FileDataWrapper
 from pyUbiForge2.games.ACU import register_file_reader
 
 
-@register_file_reader('1B478101')
+@register_file_reader('59327905')
 class Reader(BaseFile):
     def __init__(
             self,
@@ -11,8 +11,8 @@ class Reader(BaseFile):
             file: FileDataWrapper
     ):
         BaseFile.__init__(self, file_id, resource_type)
-        count1 = file.read_uint_32()
-        with file.indent:
-            for _ in range(count1):
-                file.read_bytes(1)
-                file.read_file()  # 6290D74A SoundBank
+        assert file.read_uint_8() == 0, "check byte failed"
+        file.read_file_id()
+        for _ in range(file.read_uint_32()):
+            file.read_file()
+        file.read_bytes(20)

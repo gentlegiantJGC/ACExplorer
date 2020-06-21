@@ -12,10 +12,13 @@ class Reader(BaseFile):
     ):
         BaseFile.__init__(self, file_id, resource_type)
         type_id_or_something = file.read_uint_32()
-        assert file.read_uint_8() == 0, "check byte should be 0"
+        assert 0 <= file.read_uint_8() <= 1, "check byte should be 0 or 1"
         file_name_size = file.read_uint_32()
-        file_name = file.read_bytes(file_name_size)
-        assert file.read_uint_8() == 0, "check byte should be 0"
+        if file_name_size:
+            file_name = file.read_bytes(file_name_size)
+            assert file.read_uint_8() == 0, "check byte should be 0"
+        # assert file.read_uint_8() == 0, "check byte should be 0"
+
         # more stuff after this
         # file.read_bytes(34)
         # count1 = file.read_uint_32()

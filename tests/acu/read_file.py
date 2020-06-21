@@ -14,7 +14,7 @@ class ReadTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self._game = Game(GamePath)
 
-    def _read_file(self, resource_id: FileResourceType, max_count=100):
+    def _read_file(self, resource_id: FileResourceType, max_count=100, start_count=0):
         count = 0
         success = 0
         fail = 0
@@ -29,7 +29,11 @@ class ReadTestCase(unittest.TestCase):
             for data_file_id, data_file in forge_file.data_files.items():
                 for file_id, (resource_id_, file_name) in data_file.files.items():
                     if resource_id == resource_id_:
-                        path = os.path.join("temp", f"{resource_id:08X}", file_name)
+                        if count < start_count:
+                            count += 1
+                            continue
+                        log.info(f"{forge_file_name}, {data_file_id}, {file_id}-{file_name}")
+                        path = os.path.join("temp", f"{resource_id:08X}", forge_file_name, file_name)
                         os.makedirs(os.path.dirname(path), exist_ok=True)
                         if FormatFile:
                             save_file_bytes()
@@ -51,7 +55,7 @@ class ReadTestCase(unittest.TestCase):
                                     pass
                             fail += 1
                         count += 1
-                        if count > max_count:
+                        if count >= max_count:
                             log.info(f"{100*success/max_count}% succeeded, {100*fail/max_count}% failed")
                             return
 
@@ -60,6 +64,12 @@ class ReadTestCase(unittest.TestCase):
 
     def test_entity(self):
         self._read_file(int("0984415E", 16), 10000)
+
+    def test_level_main(self):
+        self._read_file(int("FBB63E47", 16), 1, 15)
+
+    def test_skeleton(self):
+        self._read_file(int("24AECB7C", 16), 300)
 
 
 if __name__ == '__main__':
