@@ -16,21 +16,30 @@ struct {
         byte unk1;
         int32 fileVersion;
         uint64 fileDataHeaderOffset;
-        int64 unk2;
+        if (fileVersion < 27){
+            int32 unk2;
+        } else {
+            int64 unk2;
+        }
         byte unk3;
-        char unused[fileDataHeaderOffset-FTell()];
+        byte unused[fileDataHeaderOffset-FTell()];
     } Header;
     struct {
         int32 fileCount;
-        int32 unk1[4];
-        int64 unk2;
+        int32 unk1[2];
+        if (Header.fileVersion < 27){  // this and the above may be the other way around
+            int32 zerosUnk1;
+        } else {
+            int64 zerosUnk1;
+        }
+        int32 unk2[2];
         int32 maxFiles;
         int32 unk3;
         int64 fileDataOffset;
         if (fileDataOffset-FTell() > 0){
-            char offset[fileDataOffset-FTell()];
+            byte offset[fileDataOffset-FTell()];
         }
-    } FileDataHeader1;
+    } fileDataHeader;
     struct {
         struct {
             int32 indexCount;
@@ -47,7 +56,11 @@ struct {
         }
         struct {
             int64 rawDataTableOffset;
-            int64 fileID;
+            if (Header.fileVersion < 27){
+                int32 fileID;
+            } else {
+                int64 fileID;
+            }
             int32 rawDataSize;
         } IndexTable[FileData2.indexCount];
         byte nameTableOffset[FileData2.nameTableOffset-FTell()];
@@ -62,20 +75,46 @@ struct {
             int32 unk3;
             time_t timestamp;
             byte fileString[128];
-            int32 unk4[5];
+            if (Header.fileVersion < 27){
+                int32 unk4[4];
+            } else {
+                int32 unk4[5];
+            }
         } NameTable[FileData2.indexCount];
         byte rawDataTableOffset[FileData2.rawDataTableOffset-FTell()];
+        if (IndexTable[0].rawDataTableOffset - FTell() > 0){
+            byte rawDataOffset[IndexTable[0].rawDataTableOffset - FTell()];
+        }
         struct {
             local int i;
             for (i=0; i<FileData2.indexCount; i++){
-                if (IndexTable[i].rawDataTableOffset - FTell() > 0){
-                    struct {
-                        byte rawDataOffset[IndexTable[i].rawDataTableOffset - FTell()];
-                    } RawDataOffset;
+                if (IndexTable[i].rawDataTableOffset < FileSize()){
+                    FSeek(IndexTable[i].rawDataTableOffset);
+                    if (Header.fileVersion < 27){
+                        struct {
+                            struct {
+                                char FILEDATA[8];
+                                byte fileName[128];
+                                byte comment[255];
+                                int32 fileID;
+                                int32 rawSize;
+                                int64 fileDataID;
+                                int32 unk2[6];
+                                if (rawSize != IndexTable[i].rawDataSize) {
+                                    Printf("data sizes do not match. Index %d %d %d", i, rawSize, IndexTable[i].rawDataSize);
+                                }
+                                time_t timestamp;
+                                byte unk3[5];
+                            } FileHeader;
+                            byte rawData[FileHeader.rawSize];
+                            //byte padding[Ceil((double)FTell()/2048)*2048-FTell()];  // The padding only exists in AC1 and AC2
+                        } File;
+                    } else {
+                        struct {
+                            byte rawData[IndexTable[i].rawDataSize];
+                        } File;
+                    }
                 }
-                struct {
-                    byte rawData[IndexTable[i].rawDataSize];
-                } RawData;
             }
         } RawDataTable;
     } FileData;
@@ -83,3 +122,4 @@ struct {
         byte EOF[FileSize()-FTell()];
     } end;
 } Forge;
+// file is a multiple of 32,768 bytes (32kB)
