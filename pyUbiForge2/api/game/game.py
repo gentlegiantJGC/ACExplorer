@@ -37,8 +37,6 @@ class BaseGame:
                 raise Exception(f"{attr_name} has not been set in {self.__class__.__name__}")
         if self.ForgeClass is None:
             raise Exception("ForgeClass attribute has not been overwritten.")
-        if self.GameIdentifier != self.ForgeClass.GameIdentifier:
-            raise Exception("ForgeClass game identifier does not match Game game identifier")
         self._game_directory = game_directory
         self._forge_files: ForgeStorage = {}  # storage for forge classes
         self._file_cache = FileCache(cache_megabytes)  # store raw data for files

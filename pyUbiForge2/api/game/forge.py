@@ -3,8 +3,11 @@ from typing import Tuple, Generator, Dict, Optional
 import gzip
 import pickle
 import traceback
+import numpy
+import struct
 
 from pyUbiForge2 import CACHE_DIR
+from pyUbiForge2.api import log
 from pyUbiForge2.api.data_types import (
     DataFileIdentifier,
     FileIdentifier,
@@ -15,20 +18,18 @@ from pyUbiForge2.api.data_types import (
     DataFileByteLocations,
     DataFileMetadata
 )
-from .data_file import DataFile
+from pyUbiForge2.api.game.data_file import DataFile
 
 
 class BaseForge:
     """The base API for a forge file. Each game should build from this."""
 
-    GameIdentifier = None  # string identifier to match the one used in the game class
     NonContainerDataFiles = set()
 
-    def __init__(self, path: str):
+    def __init__(self, game_identifier: str, path: str):
         if self.__class__ is BaseForge:
             raise Exception("BaseForge must be subclassed")
-        if self.GameIdentifier is None:
-            raise Exception(f"GameIdentifier has not been set in {self.__class__.__name__}")
+        self._game_identifier = game_identifier
         self._path = path
         self._file_name = os.path.basename(path)
         self._forge_name = os.path.splitext(self._file_name)[0]
@@ -39,7 +40,7 @@ class BaseForge:
         self._data_files: DataFileStorage = {}
 
     def __repr__(self):
-        return f"{self.GameIdentifier}:{self.file_name}"
+        return f"{self.game_identifier}:{self.file_name}"
 
     def init_iter(self) -> Generator[float, None, None]:
         """Load the metadata and populate DataFile classes.
@@ -49,7 +50,7 @@ class BaseForge:
         metadata, byte_locations = self._parse_forge()
         self._data_file_location.update(byte_locations)
 
-        database_path = os.path.join(CACHE_DIR, self.GameIdentifier, f"{self.forge_name}.forge_db")
+        database_path = os.path.join(CACHE_DIR, self.game_identifier, f"{self.forge_name}.forge_db")
         database: Optional[SerialisedMetadata]
 
         # load the saved database if it exists.
@@ -100,9 +101,67 @@ class BaseForge:
         DataFileMetadata,
         DataFileByteLocations
     ]:
-
         """Parse the forge file to load metadata and data file locations."""
-        raise NotImplementedError
+        log.info(f'Building file tree for {self.forge_name}')
+
+        with open(self.path, 'rb') as forge_file:
+            # header
+            if forge_file.read(8) != b'scimitar':
+                return {}, {}
+            forge_file.seek(1, 1)
+            forge_file_version, file_data_header_offset = struct.unpack('<iQ', forge_file.read(12))
+            if not 25 <= forge_file_version <= 27:
+                raise Exception(f'Unsupported Forge file format : "{forge_file_version}"')
+            if forge_file_version < 27:
+                forge_file.seek(file_data_header_offset + 32)
+            else:
+                forge_file.seek(file_data_header_offset + 36)
+            file_data_offset = struct.unpack('<q', forge_file.read(8))[0]
+            forge_file.seek(file_data_offset)
+            # File Data
+            index_count, index_table_offset, file_data_offset2, name_table_offset, raw_data_table_offset = struct.unpack('<i4x2q8x2q', forge_file.read(48))
+            forge_file.seek(index_table_offset)
+            index_table: numpy.ndarray = numpy.fromfile(
+                forge_file,
+                [
+                    ('raw_data_offset', numpy.uint64),
+                    ('file_id', numpy.uint64 if forge_file_version >= 27 else numpy.uint32),
+                    ('raw_data_size', numpy.uint32)
+                ],
+                index_count
+            )
+            if forge_file_version == 25:
+                # there is a header here with not that much useful data
+                index_table["raw_data_offset"] += 440
+
+            forge_file.seek(name_table_offset)
+            name_table: numpy.ndarray = numpy.fromfile(
+                forge_file,
+                [
+                    ('raw_data_size', numpy.uint32),
+                    ('', numpy.uint64),
+                    ('', numpy.uint32),
+                    ('file_type', numpy.uint32),
+                    ('', numpy.uint64),
+                    ('', numpy.uint32),  # next file count
+                    ('', numpy.uint32),  # previous file count
+                    ('', numpy.uint32),
+                    ('', numpy.uint32),  # timestamp
+                    ('file_name', 'S128'),
+                    ('', numpy.uint32) * (5 if forge_file_version >= 27 else 4)
+                ],
+                index_count
+            )
+            assert numpy.array_equal(index_table['raw_data_size'], name_table['raw_data_size']), "The duplicated raw data sizes do not match"
+
+            file_names = name_table["file_name"].astype(str)
+            return dict(zip(
+                index_table["file_id"],
+                zip(name_table["file_type"].tolist(), file_names)
+            )), dict(zip(
+                index_table["file_id"],
+                index_table[["raw_data_offset", "raw_data_size"]].tolist()
+            ))
 
     def get_compressed_data_file(
             self,
@@ -141,6 +200,11 @@ class BaseForge:
         """Get the bytes for each file in a given data file.
         This is a dictionary that converts from the file id to file bytes."""
         return {file_id: data[2] for file_id, data in self.get_decompressed_files(data_file_id).items()}
+
+    @property
+    def game_identifier(self):
+        """The identifier for the game this forge file is associated with."""
+        return self._game_identifier
 
     @property
     def path(self) -> str:
