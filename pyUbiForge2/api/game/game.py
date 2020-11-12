@@ -56,7 +56,7 @@ class BaseGame:
         Yields a float in the range 0.0 to 1.0 to give an indicator of progress."""
         memory_sum = 0
         for forge_file_path in glob.glob(os.path.join(self._game_directory, "*.forge")):
-            forge_file = self.ForgeClass(forge_file_path)
+            forge_file = self.ForgeClass(self.GameIdentifier, forge_file_path)
             memory_sum += forge_file.file_size
             self._forge_files[forge_file.forge_name] = forge_file
 

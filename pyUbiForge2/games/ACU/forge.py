@@ -57,13 +57,10 @@ class ACUForge(BaseForge):
 
         return format_version, uncompressed_data_list
 
-    def get_decompressed_data_file(self, data_file_id: DataFileIdentifier) -> bytes:
-        """Get the decompressed bytes of the datafile.
-        Use get_decompressed_files to have the data unpacked into individual files.
-        """
+    def _decompress_data_file(self, compressed_bytes: bytes) -> bytes:
         uncompressed_data_list = []
 
-        raw_data_chunk = BytesIO(self.get_compressed_data_file(data_file_id))
+        raw_data_chunk = BytesIO(compressed_bytes)
         header = raw_data_chunk.read(8)
         if header == CompressionMarker:  # if compressed
             format_version, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
@@ -83,46 +80,37 @@ class ACUForge(BaseForge):
 
         return b''.join(uncompressed_data_list)
 
-    def get_decompressed_files(self, data_file_id: DataFileIdentifier) -> Dict[
+    def _unpack_decompressed_data_file(self, decompressed_bytes: bytes) -> Dict[
         FileIdentifier,
         Tuple[
             FileResourceType,
             FileName,
-            Optional[bytes]
+            bytes
         ]
     ]:
-        """Get the data file unpacked into individual files"""
-        uncompressed_data = self.get_decompressed_data_file(data_file_id)
-        if data_file_id in self.NonContainerDataFiles:
-            data_file = self.get_data_file(data_file_id)
-            return {
-                data_file_id: (data_file.resource_type, data_file.name, uncompressed_data)
-            }
+        files = {}
+        uncompressed_data = BytesIO(decompressed_bytes)
 
-        else:
-            files = {}
-            uncompressed_data = BytesIO(uncompressed_data)
+        file_count = struct.unpack("<H", uncompressed_data.read(2))[0]
+        index_table = []
+        for _ in range(file_count):
+            index_table.append(
+                struct.unpack('<QIH', uncompressed_data.read(14))
+            )  # file_id, data_size (file_size + header), extra16_count (for next line)
+            uncompressed_data.seek(index_table[-1][2] * 2, 1)
+        for index in range(file_count):
+            file_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
+            file_id = index_table[index][0]
+            file_name = uncompressed_data.read(file_name_size).decode("utf-8")
+            check_byte = ord(uncompressed_data.read(1))
+            if check_byte == 1:
+                uncompressed_data.seek(3, 1)
+                unk_count = struct.unpack("<I", uncompressed_data.read(4))[0]
+                uncompressed_data.seek(12 * unk_count, 1)
+            elif check_byte != 0:
+                raise Exception('Either something has gone wrong or a new value has been found here')
 
-            file_count = struct.unpack("<H", uncompressed_data.read(2))[0]
-            index_table = []
-            for _ in range(file_count):
-                index_table.append(
-                    struct.unpack('<QIH', uncompressed_data.read(14))
-                )  # file_id, data_size (file_size + header), extra16_count (for next line)
-                uncompressed_data.seek(index_table[-1][2] * 2, 1)
-            for index in range(file_count):
-                file_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
-                file_id = index_table[index][0]
-                file_name = uncompressed_data.read(file_name_size).decode("utf-8")
-                check_byte = ord(uncompressed_data.read(1))
-                if check_byte == 1:
-                    uncompressed_data.seek(3, 1)
-                    unk_count = struct.unpack("<I", uncompressed_data.read(4))[0]
-                    uncompressed_data.seek(12 * unk_count, 1)
-                elif check_byte != 0:
-                    raise Exception('Either something has gone wrong or a new value has been found here')
+            raw_file = uncompressed_data.read(file_size)
 
-                raw_file = uncompressed_data.read(file_size)
-
-                files[file_id] = (file_type, file_name, raw_file)
-            return files
+            files[file_id] = (file_type, file_name, raw_file)
+        return files

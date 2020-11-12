@@ -148,8 +148,7 @@ class BaseForge:
                     ('', numpy.uint32),
                     ('', numpy.uint32),  # timestamp
                     ('file_name', 'S128'),
-                    ('', numpy.uint32) * (5 if forge_file_version >= 27 else 4)
-                ],
+                ] + [('', numpy.uint32)] * (5 if forge_file_version >= 27 else 4),
                 index_count
             )
             assert numpy.array_equal(index_table['raw_data_size'], name_table['raw_data_size']), "The duplicated raw data sizes do not match"
@@ -167,17 +166,44 @@ class BaseForge:
             self,
             data_file_id: DataFileIdentifier
     ) -> bytes:
+        """Get the compressed packaged binary data of the data file as it appears on disk.
+
+        :param data_file_id: The numerical id of the data file
+        :return: The bytes as they appear on disk
+        """
         offset, size = self._data_file_location[data_file_id]
         with open(self.path, 'rb') as f:
             f.seek(offset)
             return f.read(size)
 
+    def _decompress_data_file(self, compressed_bytes: bytes) -> bytes:
+        """Decompress the raw data file bytes.
+
+        :param compressed_bytes: The bytes of the data file as they appear on disk
+        :return: The decompressed bytes of the data file
+        """
+        raise NotImplementedError
+
     def get_decompressed_data_file(
             self,
             data_file_id: DataFileIdentifier
     ) -> bytes:
-        """Decompress and return data for a given data file as a single block of bytes."""
+        """Decompress and return data for a given data file as a single block of bytes.
+
+        :param data_file_id: The numerical id of the data file
+        :return: The decompressed bytes
+        """
         # Start byte and offset can be found in self._data_file_location
+        return self._decompress_data_file(self.get_compressed_data_file(data_file_id))
+
+    def _unpack_decompressed_data_file(self, decompressed_bytes: bytes) -> Dict[
+        FileIdentifier,
+        Tuple[
+            FileResourceType,
+            FileName,
+            bytes
+        ]
+    ]:
         raise NotImplementedError
 
     def get_decompressed_files(self, data_file_id: DataFileIdentifier) -> Dict[
@@ -190,8 +216,20 @@ class BaseForge:
     ]:
         """Get the data file unpacked into its individual files.
         This is a dictionary that converts from the file id to the metadata and file bytes.
-        Use get_decompressed_files_bytes to get just the bytes."""
-        raise NotImplementedError
+        Use get_decompressed_files_bytes to get just the bytes.
+
+        :param data_file_id:
+        :return:
+        """
+        decompressed_data = self.get_decompressed_data_file(data_file_id)
+        if data_file_id in self.NonContainerDataFiles:
+            data_file = self.get_data_file(data_file_id)
+            return {
+                data_file_id: (data_file.resource_type, data_file.name, decompressed_data)
+            }
+
+        else:
+            return self._unpack_decompressed_data_file(decompressed_data)
 
     def get_decompressed_files_bytes(self, data_file_id: DataFileIdentifier) -> Dict[
         FileIdentifier,
