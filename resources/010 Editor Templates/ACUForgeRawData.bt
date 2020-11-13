@@ -13,43 +13,48 @@
 local int i;
 struct {
     struct {
-        byte compressedChunkMarker[8];
-        int16 unk1;
-        byte compressionType;
-        uint16 minSize;
-        uint16 maxSize;
-        int32 compressedBlockCount;
-    } RawChunkHeader1;
-    struct {
-        uint16 uncompressedSize;
-        uint16 compressedSize;
-    } BlockIndex1[RawChunkHeader1.compressedBlockCount];
-    struct {
-        for ( i = 0; i < RawChunkHeader1.compressedBlockCount; i++ ){
+        struct {
+            byte compressedChunkMarker[8];  // 33 AA FB 57 99 FA 04 10
+            int16 unk1;
+            byte compressionType;
+            uint16 minSize;
+            uint16 maxSize;
+        } RawChunkHeader;
+        if (RawChunkHeader.maxSize > 0){
             struct {
-                int32 checksumPossibly;
-                byte compressedData[BlockIndex1[i].compressedSize];
-            } CompressedDataChunk;
-        }
-    } CompressedDataChunks1;
-    struct {
-        char compressedChunkMarker[8];
-        int16 unk1;
-        byte compressionType;
-        uint16 minSize;
-        uint16 maxSize;
-        int32 compressedBlockCount;
-    } RawChunkHeader2;
-    struct {
-        uint16 uncompressedSize;
-        uint16 compressedSize;
-    } BlockIndex2[RawChunkHeader2.compressedBlockCount];
-    struct {
-        for ( i = 0; i < RawChunkHeader2.compressedBlockCount; i++ ){
+                int32 compressedBlockCount;
+                struct {
+                    uint16 uncompressedSize;
+                    uint16 compressedSize;
+                } BlockIndex[compressedBlockCount];
+                for ( i = 0; i < compressedBlockCount; i++ ){
+                    struct {
+                        int32 checksumPossibly;
+                        byte compressedData[BlockIndex[i].compressedSize];
+                    } CompressedDataChunk;
+                }
+            } CompressedData;
+        } else {
             struct {
-                int32 checksumPossibly;
-                byte compressedData[BlockIndex2[i].compressedSize];
-            } CompressedDataChunk;
+                byte compressed;
+                if (compressed == 0){
+                    struct {
+                        int32 size;
+                        byte data[size];
+                    } DataChunk;  // not compressed
+                } else if (compressed == 1){
+                    struct {
+                        int32 compressedSize;
+                        int32 uncompressedSize;
+                        int32 unk;
+                        byte compressedData[compressedSize];
+                    } CompressedDataChunk;
+                } else {
+                    Exit(11);
+                }
+            } CompressedData[500] <optimize=false>;
         }
-    } CompressedDataChunks2;
+    } ForgeRawDataSection;
 } ForgeRawData;
+
+// if maxSize > 0 read another ForgeRawData
