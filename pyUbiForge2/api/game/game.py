@@ -81,7 +81,7 @@ class BaseGame:
     @property
     def forge_files(self) -> ForgeStorage:
         """A dictionary of forge file ids and the corresponding ForgeFile class."""
-        return self._forge_files
+        return self._forge_files.copy()
 
     @property
     def forge_file_names(self) -> Tuple[ForgeFileName, ...]:

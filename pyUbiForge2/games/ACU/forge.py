@@ -1,84 +1,19 @@
-from typing import Tuple, Dict, Optional, List
-import logging
+from typing import Tuple, Dict, List
 import struct
 import numpy
 from io import BytesIO
 
 from pyUbiForge2.api import BaseForge
 from pyUbiForge2.api.data_types import (
-    DataFileMetadata,
-    DataFileByteLocations,
-    DataFileIdentifier,
     FileIdentifier,
     FileResourceType,
     FileName,
 )
 from pyUbiForge2.util.compression import decompress
 
-CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
-
 
 class ACUForge(BaseForge):
     NonContainerDataFiles = {16, 145}
-
-    @staticmethod
-    def _read_compressed_data_section(raw_data_chunk: BytesIO) -> Tuple[int, List[bytes]]:
-        """This is a helper function used in decompression"""
-        raw_data_chunk.seek(2, 1)  # 01 00
-        compression_type = ord(raw_data_chunk.read(1))
-        raw_data_chunk.seek(3, 1)  # 00 80 00
-        format_version = ord(raw_data_chunk.read(1))
-        if format_version == 0:
-            uncompressed_data_list = []
-            extra_metadata = b"\x01"
-            while extra_metadata:
-                extra_metadata = raw_data_chunk.read(1)
-                if not extra_metadata:
-                    continue
-                if extra_metadata == b"\x00":
-                    compressed_size = struct.unpack("<I", raw_data_chunk.read(4))[0]
-                    # uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
-                    uncompressed_data_list.append(raw_data_chunk.read(compressed_size))  # TODO check if this is actually compressed
-                elif extra_metadata == b"\x01":
-                    compressed_size, uncompressed_size, _ = struct.unpack("<3I", raw_data_chunk.read(12))
-                    uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
-                else:
-                    raise Exception(f"Extra metadata byte {extra_metadata} is not recognised")
-
-        elif format_version == 128:
-            comp_block_count = struct.unpack("<I", raw_data_chunk.read(4))[0]
-            size_table = numpy.frombuffer(raw_data_chunk.read(comp_block_count * 2 * 2), '<u2').reshape(-1, 2).tolist()  # 'uncompressed_size', 'compressed_size'
-            uncompressed_data_list = []
-            for uncompressed_size, compressed_size in size_table:
-                raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
-                uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
-        else:
-            raise Exception('Format version not known. Please let the creator know where you found this.')
-
-        return format_version, uncompressed_data_list
-
-    def _decompress_data_file(self, compressed_bytes: bytes) -> bytes:
-        uncompressed_data_list = []
-
-        raw_data_chunk = BytesIO(compressed_bytes)
-        header = raw_data_chunk.read(8)
-        if header == CompressionMarker:  # if compressed
-            format_version, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
-            if format_version == 128:
-                if raw_data_chunk.read(8) == CompressionMarker:
-                    _, uncompressed_data_list_ = self._read_compressed_data_section(raw_data_chunk)
-                    uncompressed_data_list += uncompressed_data_list_
-                else:
-                    raise Exception('Compression Issue. Second compression block not found')
-            if raw_data_chunk.read():
-                raise Exception('Compression Issue. More data found')
-        else:
-            raw_data_chunk_rest = header + raw_data_chunk.read()
-            if CompressionMarker in raw_data_chunk_rest:
-                raise Exception('Compression Issue')
-            uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
-
-        return b''.join(uncompressed_data_list)
 
     def _unpack_decompressed_data_file(self, decompressed_bytes: bytes) -> Dict[
         FileIdentifier,

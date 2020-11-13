@@ -1,10 +1,11 @@
 import os
-from typing import Tuple, Generator, Dict, Optional
+from typing import Tuple, Generator, Dict, Optional, List
 import gzip
 import pickle
 import traceback
 import numpy
 import struct
+from io import BytesIO
 
 from pyUbiForge2 import CACHE_DIR
 from pyUbiForge2.api import log
@@ -19,12 +20,14 @@ from pyUbiForge2.api.data_types import (
     DataFileMetadata
 )
 from pyUbiForge2.api.game.data_file import DataFile
+from pyUbiForge2.util.compression import decompress
 
 
 class BaseForge:
     """The base API for a forge file. Each game should build from this."""
 
     NonContainerDataFiles = set()
+    CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
 
     def __init__(self, game_identifier: str, path: str):
         if self.__class__ is BaseForge:
@@ -176,13 +179,66 @@ class BaseForge:
             f.seek(offset)
             return f.read(size)
 
+    @staticmethod
+    def _read_compressed_data_section(raw_data_chunk: BytesIO) -> Tuple[int, List[bytes]]:
+        """This is a helper function used in decompression"""
+        raw_data_chunk.seek(2, 1)  # 01 00
+        compression_type = ord(raw_data_chunk.read(1))
+        raw_data_chunk.seek(2, 1)  # 00 80
+        max_size = struct.unpack("<H", raw_data_chunk.read(2))[0]
+        uncompressed_data_list = []
+        if max_size:
+            comp_block_count = struct.unpack("<I", raw_data_chunk.read(4))[0]
+            size_table = numpy.frombuffer(raw_data_chunk.read(comp_block_count * 2 * 2), '<u2').reshape(-1, 2).tolist()  # 'uncompressed_size', 'compressed_size'
+            for uncompressed_size, compressed_size in size_table:
+                raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
+                uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
+        else:
+            pointer = raw_data_chunk.tell()
+            end_pointer = raw_data_chunk.seek(0, 2)
+            raw_data_chunk.seek(pointer)
+
+            while pointer < end_pointer:
+                compressed = raw_data_chunk.read(1)
+                if compressed == b"\x00":
+                    size = struct.unpack("<I", raw_data_chunk.read(4))[0]
+                    uncompressed_data_list.append(raw_data_chunk.read(size))
+                elif compressed == b"\x01":
+                    compressed_size, uncompressed_size, _ = struct.unpack("<3I", raw_data_chunk.read(12))
+                    uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
+                else:
+                    raise Exception(f"Extra metadata byte {compressed} is not recognised")
+                pointer = raw_data_chunk.tell()
+
+        return max_size, uncompressed_data_list
+
     def _decompress_data_file(self, compressed_bytes: bytes) -> bytes:
         """Decompress the raw data file bytes.
 
         :param compressed_bytes: The bytes of the data file as they appear on disk
         :return: The decompressed bytes of the data file
         """
-        raise NotImplementedError
+        uncompressed_data_list = []
+
+        raw_data_chunk = BytesIO(compressed_bytes)
+        header = raw_data_chunk.read(8)
+        if header == self.CompressionMarker:  # if compressed
+            max_size, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
+            if max_size:
+                if raw_data_chunk.read(8) == self.CompressionMarker:
+                    _, uncompressed_data_list_ = self._read_compressed_data_section(raw_data_chunk)
+                    uncompressed_data_list += uncompressed_data_list_
+                else:
+                    raise Exception('Compression Issue. Second compression block not found')
+            if raw_data_chunk.read():
+                raise Exception('Compression Issue. More data found')
+        else:
+            raw_data_chunk_rest = header + raw_data_chunk.read()
+            if self.CompressionMarker in raw_data_chunk_rest:
+                raise Exception('Compression Issue')
+            uncompressed_data_list.append(raw_data_chunk_rest)  # The file is not compressed
+
+        return b''.join(uncompressed_data_list)
 
     def get_decompressed_data_file(
             self,
