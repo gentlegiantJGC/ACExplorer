@@ -180,7 +180,7 @@ class BaseForge:
             return f.read(size)
 
     @staticmethod
-    def _read_compressed_data_section(raw_data_chunk: BytesIO) -> Tuple[int, List[bytes]]:
+    def _read_compressed_data_section(raw_data_chunk: BytesIO, exhaust=True) -> Tuple[int, List[bytes]]:
         """This is a helper function used in decompression"""
         raw_data_chunk.seek(2, 1)  # 01 00
         compression_type = ord(raw_data_chunk.read(1))
@@ -208,6 +208,8 @@ class BaseForge:
                     uncompressed_data_list.append(decompress(compression_type, raw_data_chunk.read(compressed_size), uncompressed_size))
                 else:
                     raise Exception(f"Extra metadata byte {compressed} is not recognised")
+                if not exhaust:
+                    break
                 pointer = raw_data_chunk.tell()
 
         return max_size, uncompressed_data_list
