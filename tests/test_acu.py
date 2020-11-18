@@ -5,10 +5,13 @@ from pyUbiForge2.games import ACUGame as Game
 
 
 @unittest.skipIf(GamePath is None, reason=f"{Game.GameIdentifier} Path not defined.")
-class ACUTestCase(unittest.TestCase, BaseGameTestCase):
+class ACUTestCase(BaseGameTestCase.BaseGameTestCase):
     @classmethod
     def setUpClass(cls):
         return cls.setUpGame(Game, GamePath)
+
+    def test_decompress(self):
+        super().test_decompress()
 
 
 if __name__ == '__main__':
