@@ -1,0 +1,98 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+local int i;
+local byte checkByte;
+struct {
+    uint32 count;
+    struct {
+        struct {
+            uint64 dataFileID;
+            byte tmp[8];
+        } DataFileEntry[count];
+    } DataFileTable;
+    byte unk[4];  // may be a count
+    while (FTell() < FileSize()){
+        checkByte = ReadByte();
+        if (checkByte == 51){
+            struct {
+                struct {
+                    struct {
+                        byte compressedChunkMarker[8];  // 33 AA FB 57 99 FA 04 10
+                        int16 unk1;
+                        byte compressionType;
+                        uint16 minSize;
+                        uint16 maxSize;
+                    } RawChunkHeader;
+                    if (RawChunkHeader.maxSize > 0){
+                        struct {
+                            int32 compressedBlockCount;
+                            struct {
+                                uint16 uncompressedSize;
+                                uint16 compressedSize;
+                            } BlockIndex[compressedBlockCount];
+                            for ( i = 0; i < compressedBlockCount; i++ ){
+                                struct {
+                                    int32 checksumPossibly;
+                                    byte compressedData[BlockIndex[i].compressedSize];
+                                } CompressedDataChunk;
+                            }
+                        } CompressedData;
+                    } else {
+                        struct {
+                            byte compressed;
+                            if (compressed == 0){
+                                struct {
+                                    int32 size;
+                                    byte data[size];
+                                } DataChunk;  // not compressed
+                            } else if (compressed == 1){
+                                struct {
+                                    int32 compressedSize;
+                                    int32 uncompressedSize;
+                                    int32 unk;
+                                    byte compressedData[compressedSize];
+                                } CompressedDataChunk;
+                            } else {
+                                Exit(11);
+                            }
+                        } CompressedData;
+                    }
+                } ForgeRawDataSection;
+            } ForgeRawData;
+        } else {
+            struct {
+                uint16 count2;
+                if (count2 > 0){
+                    struct{
+                        uint16 dataCount;
+                        struct{
+                            byte null[1];
+                            uint64 fileID;
+                        } FileID[dataCount] <optimize=false>;
+                    } Data0[count2] <optimize=false>;
+                }
+                uint16 count3;
+                if (count3 > 0){
+                    struct{
+                        uint64 fileID;
+                        byte unk[1];
+                        uint16 count4;
+                        if (count4 > 0){
+                            uint16 unk2[count4];
+                        }
+                    } Data[count3] <optimize=false>;
+                }
+            } UnkTableEntry;
+        }
+    }
+} DataFile145;

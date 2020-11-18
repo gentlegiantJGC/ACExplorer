@@ -35,24 +35,26 @@ struct {
                 }
             } CompressedData;
         } else {
-            struct {
-                byte compressed;
-                if (compressed == 0){
-                    struct {
-                        int32 size;
-                        byte data[size];
-                    } DataChunk;  // not compressed
-                } else if (compressed == 1){
-                    struct {
-                        int32 compressedSize;
-                        int32 uncompressedSize;
-                        int32 unk;
-                        byte compressedData[compressedSize];
-                    } CompressedDataChunk;
-                } else {
-                    Exit(11);
-                }
-            } CompressedData[500] <optimize=false>;
+            while (FTell() != FileSize() && ReadByte() != 51){
+                struct {
+                    byte compressed;
+                    if (compressed == 0){
+                        struct {
+                            int32 size;
+                            byte data[size];
+                        } DataChunk;  // not compressed
+                    } else if (compressed == 1){
+                        struct {
+                            int32 compressedSize;
+                            int32 uncompressedSize;
+                            int32 unk;
+                            byte compressedData[compressedSize];
+                        } CompressedDataChunk;
+                    } else {
+                        Exit(11);
+                    }
+                } CompressedData;
+            }
         }
     } ForgeRawDataSection;
 } ForgeRawData;
