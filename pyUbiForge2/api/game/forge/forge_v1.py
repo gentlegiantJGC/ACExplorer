@@ -25,13 +25,10 @@ from pyUbiForge2.util.compression import decompress
 class BaseForgeV1(BaseForge):
     """The base API for a forge file. Each game should build from this."""
 
-    NonContainerDataFiles = set()
+    NonContainerDataFiles = {16, 145}
     CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
-
-    def __init__(self, game_identifier: str, path: str):
-        if self.__class__ is BaseForgeV1:
-            raise Exception("BaseForgeV1 must be subclassed")
-        super().__init__(game_identifier, path)
+    DataFilePrefixByteCount = 0
+    DataFileCompressedBlockCountDType = "<H"
 
     def init_iter(self) -> Generator[float, None, None]:
         """Load the metadata and populate DataFile classes.
@@ -153,8 +150,7 @@ class BaseForgeV1(BaseForge):
                 index_table[["raw_data_offset", "raw_data_size"]].tolist()
             ))
 
-    @staticmethod
-    def _read_compressed_data_section(raw_data_chunk: BytesIO, exhaust=True) -> Tuple[int, List[bytes]]:
+    def _read_compressed_data_section(self, raw_data_chunk: BytesIO, exhaust=True) -> Tuple[int, List[bytes]]:
         """This is a helper function used in decompression"""
         raw_data_chunk.seek(2, 1)  # 01 00
         compression_type = ord(raw_data_chunk.read(1))
@@ -175,7 +171,14 @@ class BaseForgeV1(BaseForge):
             while pointer < end_pointer:
                 compressed = raw_data_chunk.read(1)
                 if compressed == b"\x00":
-                    size = struct.unpack("<I", raw_data_chunk.read(4))[0]
+                    size = struct.unpack(
+                        self.DataFileCompressedBlockCountDType,
+                        raw_data_chunk.read(
+                            struct.calcsize(
+                                self.DataFileCompressedBlockCountDType
+                            )
+                        )
+                    )[0]
                     uncompressed_data_list.append(raw_data_chunk.read(size))
                 elif compressed == b"\x01":
                     compressed_size, uncompressed_size, _ = struct.unpack("<3I", raw_data_chunk.read(12))
@@ -197,6 +200,7 @@ class BaseForgeV1(BaseForge):
         uncompressed_data_list = []
 
         raw_data_chunk = BytesIO(compressed_bytes)
+        raw_data_chunk.seek(self.DataFilePrefixByteCount)
         header = raw_data_chunk.read(8)
         if header == self.CompressionMarker:  # if compressed
             max_size, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
@@ -250,3 +254,26 @@ class BaseForgeV1(BaseForge):
 
             files[file_id] = (file_type, file_name, raw_file)
         return files
+
+
+class ForgeV1a(BaseForgeV1):
+    """Used in AC1"""
+    DataFilePrefixByteCount = 0
+    DataFileCompressedBlockCountDType = "<H"
+
+
+class ForgeV1b(BaseForgeV1):
+    """Used in AC2 to ?"""
+    DataFilePrefixByteCount = 4
+    DataFileCompressedBlockCountDType = "<H"
+
+
+class ForgeV1c(BaseForgeV1):
+    """Used in ?"""
+    DataFilePrefixByteCount = 8
+    DataFileCompressedBlockCountDType = "<H"
+
+
+class ForgeV1d(BaseForgeV1):
+    DataFilePrefixByteCount = 0
+    DataFileCompressedBlockCountDType = "<I"

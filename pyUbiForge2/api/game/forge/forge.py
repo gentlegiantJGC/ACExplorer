@@ -17,7 +17,6 @@ class BaseForge:
     """The base API for a forge file. Each game should build from this."""
 
     NonContainerDataFiles = set()
-    CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
 
     def __init__(self, game_identifier: str, path: str):
         if self.__class__ is BaseForge:
