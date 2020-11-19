@@ -1,9 +1,9 @@
 from pyUbiForge2.api import BaseGame
-from .forge import AC3LForge
+from pyUbiForge2.api.game.forge.forge_v1 import ForgeV1c
 
 
 class AC3LGame(BaseGame):
-    ForgeClass = AC3LForge
+    ForgeClass = ForgeV1c
     GameIdentifier = "AC3L"
     FileIDType = "Q"
     ResourceType = "I"

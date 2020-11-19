@@ -5,7 +5,7 @@ import json
 from pyUbiForge2.api import BaseGame, BaseFile
 from pyUbiForge2.api.file_object import FileDataWrapper
 
-from .forge import ACUForge
+from pyUbiForge2.api.game.forge.forge_v1 import ForgeV1d
 from pyUbiForge2.api import log
 
 
@@ -25,7 +25,7 @@ def register_file_reader(file_id: str):
 
 
 class ACUGame(BaseGame):
-    ForgeClass = ACUForge
+    ForgeClass = ForgeV1d
     GameIdentifier = "ACU"
     FileIDType = "Q"
     ResourceType = "I"
