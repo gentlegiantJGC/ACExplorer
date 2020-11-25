@@ -14,9 +14,10 @@ from pyUbiForge2.api.data_types import (
     FileIdentifier,
     FileResourceType,
     FileName,
+    FileStorage,
     SerialisedMetadata,
     DataFileByteLocations,
-    DataFileMetadata
+    DataFileMetadata,
 )
 from pyUbiForge2.api.game.data_file import DataFile
 from pyUbiForge2.util.compression import decompress
@@ -35,8 +36,7 @@ class BaseForgeV1(BaseForge):
         Yield back the progress on a scale from 0.0 to 1.0."""
 
         # get the data file metadata
-        metadata, byte_locations = self._parse_forge()
-        self._data_file_location.update(byte_locations)
+        metadata, self._data_file_location = self._parse_forge()
 
         database_path = os.path.join(CACHE_DIR, self.game_identifier, f"{self.forge_name}.forge_db")
         database: Optional[SerialisedMetadata]
@@ -53,34 +53,46 @@ class BaseForgeV1(BaseForge):
 
         # if it doesn't exist, decompile everything to build it
         if database is None:
+            log.info(f"Decompressing {self.forge_name}")
             database = {}
-            index = 0
+            index = 1
             for data_file_id, (data_file_resource_type, data_file_name) in metadata.items():
-                index += 1
-                data_file = self._data_files[data_file_id] = DataFile(data_file_id, data_file_resource_type, data_file_name)
+                # data_file = self._data_files[data_file_id] = DataFile(data_file_id, data_file_resource_type, data_file_name)
                 try:
                     files = self.get_decompressed_files(data_file_id)
                 except:
                     traceback.print_exc()
                     print(f"Error loading {self.file_name} {data_file_id} {data_file_name}")
-                    files = {}
-                database[data_file_id] = data_file.files = {
+                    continue
+                assert data_file_id in files
+                # in some cases the info will be in the index but not the data file (non archive formats)
+                # and in some cases the info will be in the data file but not the index (Brotherhood is the first game I can see with data file id in the index)
+                data_file_resource_type = data_file_resource_type or files[data_file_id][0]
+                data_file_name = data_file_name or files[data_file_id][1]
+                file_storage: FileStorage = {
                     file_id: (file_resource_type, file_name) for file_id, (file_resource_type, file_name, _) in files.items()
                 }
+                file_storage[data_file_id] = (data_file_resource_type, data_file_name)
+
+                database[data_file_id] = (
+                    data_file_resource_type,
+                    data_file_name,
+                    file_storage
+                )
                 yield index / len(metadata)
+                index += 1
             os.makedirs(os.path.dirname(database_path), exist_ok=True)
             with gzip.open(database_path, 'wb') as f:
                 pickle.dump(database, f)
 
-        else:
-            for data_file_id, (data_file_resource_type, data_file_name) in metadata.items():
-                files = database.get(data_file_id, {})
-                self._data_files[data_file_id] = DataFile(
-                    data_file_id,
-                    data_file_resource_type,
-                    data_file_name,
-                    files
-                )
+        log.info(f"Setting up database for {self.forge_name}")
+        for data_file_id, (data_file_resource_type, data_file_name, file_storage) in database.items():
+            self._data_files[data_file_id] = DataFile(
+                data_file_id,
+                data_file_resource_type,
+                data_file_name,
+                file_storage
+            )
 
         # populate
         yield 1.0
@@ -90,7 +102,7 @@ class BaseForgeV1(BaseForge):
         DataFileByteLocations
     ]:
         """Parse the forge file to load metadata and data file locations."""
-        log.info(f'Building file tree for {self.forge_name}')
+        log.info(f'Reading metadata from {self.forge_name}')
 
         with open(self.path, 'rb') as forge_file:
             # header
@@ -129,22 +141,22 @@ class BaseForgeV1(BaseForge):
                     ('raw_data_size', numpy.uint32),
                     ('', numpy.uint64),
                     ('', numpy.uint32),
-                    ('file_type', numpy.uint32),
+                    ('file_type', numpy.uint32),  # sometimes file type
                     ('', numpy.uint64),
                     ('', numpy.uint32),  # next file count
                     ('', numpy.uint32),  # previous file count
                     ('', numpy.uint32),
                     ('', numpy.uint32),  # timestamp
-                    ('file_name', 'S128'),
+                    ('data_file_name', 'S128'),  # usually data file name
                 ] + [('', numpy.uint32)] * (5 if forge_file_version >= 27 else 4),
                 index_count
             )
             assert numpy.array_equal(index_table['raw_data_size'], name_table['raw_data_size']), "The duplicated raw data sizes do not match"
 
-            file_names = name_table["file_name"].astype(str)
+            data_file_names = name_table["data_file_name"].astype(str)
             return dict(zip(
                 index_table["file_id"],
-                zip(name_table["file_type"].tolist(), file_names)
+                zip(name_table["file_type"].tolist(), data_file_names)
             )), dict(zip(
                 index_table["file_id"],
                 index_table[["raw_data_offset", "raw_data_size"]].tolist()

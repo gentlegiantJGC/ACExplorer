@@ -28,9 +28,14 @@ FileStorage = Dict[
     FileIdentifier,
     FileMetadata
 ]
+SerialisedDataFile = Tuple[
+    DataFileResourceType,
+    DataFileName,
+    FileStorage
+]
 SerialisedMetadata = Dict[
     DataFileIdentifier,
-    FileStorage
+    SerialisedDataFile
 ]
 
 DataFileMetadata = Dict[

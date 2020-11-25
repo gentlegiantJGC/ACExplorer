@@ -11,17 +11,30 @@ from pyUbiForge2.api.data_types import (
 
 
 class DataFile:
+    __slots__ = ("_data_file_id", "_resource_type", "_name", "_files")
     def __init__(
             self,
             data_file_id: DataFileIdentifier,
             resource_type: DataFileResourceType,
             name: DataFileName,
-            files: FileStorage = None
+            files: FileStorage
     ):
-        self.data_file_id = data_file_id
-        self.resource_type = resource_type
-        self.name = name
-        self._files: FileStorage = files or {}
+        self._data_file_id = data_file_id
+        self._resource_type = resource_type
+        self._name = name
+        self._files: FileStorage = files
+
+    @property
+    def data_file_id(self) -> DataFileIdentifier:
+        return self._data_file_id
+
+    @property
+    def resource_type(self) -> DataFileResourceType:
+        return self._resource_type
+
+    @property
+    def name(self) -> DataFileName:
+        return self._name
 
     def __repr__(self):
         return f"{self.name} {self.data_file_id} {self.resource_type:08X}"
@@ -31,11 +44,7 @@ class DataFile:
 
     @property
     def files(self) -> FileStorage:
-        return self._files
-
-    @files.setter
-    def files(self, files: FileStorage):
-        self._files = files
+        return self._files.copy()
 
     @property
     def file_ids(self) -> Tuple[FileIdentifier, ...]:

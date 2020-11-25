@@ -8,7 +8,6 @@ from pyUbiForge2.api.data_types import (
     FileName,
     DataFileStorage,
     DataFileByteLocations,
-    DataFileMetadata
 )
 from pyUbiForge2.api.game.data_file import DataFile
 
@@ -39,10 +38,7 @@ class BaseForge:
         Yield back the progress on a scale from 0.0 to 1.0."""
         raise NotImplementedError
 
-    def _parse_forge(self) -> Tuple[
-        DataFileMetadata,
-        DataFileByteLocations
-    ]:
+    def _parse_forge(self) -> DataFileByteLocations:
         """Parse the forge file to load metadata and data file locations."""
         raise NotImplementedError
 
@@ -107,11 +103,9 @@ class BaseForge:
         """
         decompressed_data = self.get_decompressed_data_file(data_file_id)
         if data_file_id in self.NonContainerDataFiles:
-            data_file = self.get_data_file(data_file_id)
             return {
-                data_file_id: (data_file.resource_type, data_file.name, decompressed_data)
+                data_file_id: (0, "", decompressed_data)
             }
-
         else:
             return self._unpack_decompressed_data_file(decompressed_data)
 
