@@ -111,7 +111,7 @@ struct {
                         } File;
                     } else {
                         struct {
-                            byte rawData[IndexTable[i].rawDataSize];
+                            byte rawData[NameTable[i].rawDataSize];
                         } File;
                     }
                 }
