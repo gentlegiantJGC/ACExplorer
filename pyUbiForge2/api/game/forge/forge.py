@@ -101,12 +101,13 @@ class BaseForge:
         :param data_file_id:
         :return:
         """
-        decompressed_data = self.get_decompressed_data_file(data_file_id)
         if data_file_id in self.NonContainerDataFiles:
+            raw_data = self.get_compressed_data_file(data_file_id)
             return {
-                data_file_id: (0, "", decompressed_data)
+                data_file_id: (0, "", raw_data)
             }
         else:
+            decompressed_data = self.get_decompressed_data_file(data_file_id)
             return self._unpack_decompressed_data_file(decompressed_data)
 
     def get_decompressed_files_bytes(self, data_file_id: DataFileIdentifier) -> Dict[

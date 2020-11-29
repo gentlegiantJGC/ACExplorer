@@ -235,7 +235,7 @@ class BaseForgeV1(BaseForge):
             for _ in range(count):
                 count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
                 for _ in range(count2):
-                    assert raw_data_chunk.read(1) == b"\x00"
+                    assert ord(raw_data_chunk.read(1)) <= 1
                     raw_data_chunk.seek(8, 1)  # (data?) file id
 
             count = struct.unpack("<H", raw_data_chunk.read(2))[0]
