@@ -28,8 +28,7 @@ class BaseForgeV1(BaseForge):
 
     NonContainerDataFiles = {16, 145}
     CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
-    DataFilePrefixByteCount = 0
-    DataFileCompressedBlockCountDType = "<H"
+    DataFileFormat = 0  # 0=[AC1], 1=[AC2, AC2B, AC2R, ?], 3=[AC3L, ACRo], 4=[ACU]
 
     def init_iter(self) -> Generator[float, None, None]:
         """Load the metadata and populate DataFile classes.
@@ -53,7 +52,7 @@ class BaseForgeV1(BaseForge):
 
         # if it doesn't exist, decompile everything to build it
         if database is None:
-            log.info(f"Decompressing {self.forge_name}")
+            log.info(f"Decompressing {self.forge_name}.")
             database = {}
             index = 1
             for data_file_id, (data_file_resource_type, data_file_name) in metadata.items():
@@ -84,8 +83,9 @@ class BaseForgeV1(BaseForge):
             os.makedirs(os.path.dirname(database_path), exist_ok=True)
             with gzip.open(database_path, 'wb') as f:
                 pickle.dump(database, f)
+            log.info(f"Finished decompressing {len(metadata)} data files.")
 
-        log.info(f"Setting up database for {self.forge_name}")
+        log.info(f"Setting up database for {self.forge_name}.")
         for data_file_id, (data_file_resource_type, data_file_name, file_storage) in database.items():
             self._data_files[data_file_id] = DataFile(
                 data_file_id,
@@ -102,7 +102,7 @@ class BaseForgeV1(BaseForge):
         DataFileByteLocations
     ]:
         """Parse the forge file to load metadata and data file locations."""
-        log.info(f'Reading metadata from {self.forge_name}')
+        log.info(f'Reading metadata from {self.forge_name}.')
 
         with open(self.path, 'rb') as forge_file:
             # header
@@ -138,7 +138,7 @@ class BaseForgeV1(BaseForge):
             name_table: numpy.ndarray = numpy.fromfile(
                 forge_file,
                 [
-                    ('raw_data_size', numpy.uint32),
+                    ('raw_data_size', numpy.uint32),  # This is sometimes larger than the other size. The format of these is slightly different
                     ('', numpy.uint64),
                     ('', numpy.uint32),
                     ('file_type', numpy.uint32),  # sometimes file type
@@ -151,7 +151,8 @@ class BaseForgeV1(BaseForge):
                 ] + [('', numpy.uint32)] * (5 if forge_file_version >= 27 else 4),
                 index_count
             )
-            assert numpy.array_equal(index_table['raw_data_size'], name_table['raw_data_size']), "The duplicated raw data sizes do not match"
+            # assert numpy.array_equal(index_table['raw_data_size'], name_table['raw_data_size']), "The duplicated raw data sizes do not match"
+            # TODO: the above sometimes do not match in games before Unity (they all match in Unity). There seems to be more compressed data after this if that is the case.
 
             data_file_names = name_table["data_file_name"].astype(str)
             return dict(zip(
@@ -159,7 +160,10 @@ class BaseForgeV1(BaseForge):
                 zip(name_table["file_type"].tolist(), data_file_names)
             )), dict(zip(
                 index_table["file_id"],
-                index_table[["raw_data_offset", "raw_data_size"]].tolist()
+                zip(
+                    index_table["raw_data_offset"].tolist(),
+                    index_table["raw_data_size"].tolist()
+                )
             ))
 
     def _read_compressed_data_section(self, raw_data_chunk: BytesIO, exhaust=True) -> Tuple[int, List[bytes]]:
@@ -170,7 +174,16 @@ class BaseForgeV1(BaseForge):
         max_size = struct.unpack("<H", raw_data_chunk.read(2))[0]
         uncompressed_data_list = []
         if max_size:
-            comp_block_count = struct.unpack("<I", raw_data_chunk.read(4))[0]
+            if self.DataFileFormat <= 2:
+                comp_block_count = struct.unpack(
+                    "<H",
+                    raw_data_chunk.read(2)
+                )[0]
+            else:
+                comp_block_count = struct.unpack(
+                    "<I",
+                    raw_data_chunk.read(4)
+                )[0]
             size_table = numpy.frombuffer(raw_data_chunk.read(comp_block_count * 2 * 2), '<u2').reshape(-1, 2).tolist()  # 'uncompressed_size', 'compressed_size'
             for uncompressed_size, compressed_size in size_table:
                 raw_data_chunk.seek(4, 1)  # I think this is the hash of the data
@@ -183,14 +196,16 @@ class BaseForgeV1(BaseForge):
             while pointer < end_pointer:
                 compressed = raw_data_chunk.read(1)
                 if compressed == b"\x00":
-                    size = struct.unpack(
-                        self.DataFileCompressedBlockCountDType,
-                        raw_data_chunk.read(
-                            struct.calcsize(
-                                self.DataFileCompressedBlockCountDType
-                            )
-                        )
-                    )[0]
+                    if self.DataFileFormat <= 2:  # this might be wrong
+                        size = struct.unpack(
+                            "<H",
+                            raw_data_chunk.read(2)
+                        )[0]
+                    else:
+                        size = struct.unpack(
+                            "<I",
+                            raw_data_chunk.read(4)
+                        )[0]
                     uncompressed_data_list.append(raw_data_chunk.read(size))
                 elif compressed == b"\x01":
                     compressed_size, uncompressed_size, _ = struct.unpack("<3I", raw_data_chunk.read(12))
@@ -212,7 +227,24 @@ class BaseForgeV1(BaseForge):
         uncompressed_data_list = []
 
         raw_data_chunk = BytesIO(compressed_bytes)
-        raw_data_chunk.seek(self.DataFilePrefixByteCount)
+        if self.DataFileFormat == 1:
+            raw_data_chunk.seek(4, 1)
+        elif self.DataFileFormat == 2:
+            raw_data_chunk.seek(4, 1)
+            count = struct.unpack("<H", raw_data_chunk.read(2))[0]
+            for _ in range(count):
+                count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
+                for _ in range(count2):
+                    assert raw_data_chunk.read(1) == b"\x00"
+                    raw_data_chunk.seek(8, 1)  # (data?) file id
+
+            count = struct.unpack("<H", raw_data_chunk.read(2))[0]
+            for _ in range(count):
+                raw_data_chunk.seek(8, 1)  # (data?) file id
+                raw_data_chunk.seek(1, 1)
+                count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
+                raw_data_chunk.seek(count2 * 2, 1)
+
         header = raw_data_chunk.read(8)
         if header == self.CompressionMarker:  # if compressed
             max_size, uncompressed_data_list = self._read_compressed_data_section(raw_data_chunk)
@@ -222,7 +254,8 @@ class BaseForgeV1(BaseForge):
                     uncompressed_data_list += uncompressed_data_list_
                 else:
                     raise Exception('Compression Issue. Second compression block not found')
-            if raw_data_chunk.read():
+            extra = raw_data_chunk.read()
+            if extra:
                 raise Exception('Compression Issue. More data found')
         else:
             raw_data_chunk_rest = header + raw_data_chunk.read()
@@ -244,12 +277,22 @@ class BaseForgeV1(BaseForge):
         uncompressed_data = BytesIO(decompressed_bytes)
 
         file_count = struct.unpack("<H", uncompressed_data.read(2))[0]
-        index_table = []
-        for _ in range(file_count):
-            index_table.append(
-                struct.unpack('<QIH', uncompressed_data.read(14))
-            )  # file_id, data_size (file_size + header), extra16_count (for next line)
-            uncompressed_data.seek(index_table[-1][2] * 2, 1)
+        if self.DataFileFormat == 0:
+            index_table = [struct.unpack('<II', uncompressed_data.read(8)) for _ in range(file_count)]
+        else:
+            if self.DataFileFormat == 1:
+                fmt = "<IIH"
+            elif 2 <= self.DataFileFormat <= 3:
+                fmt = "<QIH"
+            else:
+                raise Exception
+            fmt_len = struct.calcsize(fmt)
+            index_table = []
+            for _ in range(file_count):
+                index_table.append(
+                    struct.unpack(fmt, uncompressed_data.read(fmt_len))
+                )  # file_id, data_size (file_size + header), extra16_count (for next line)
+                uncompressed_data.seek(index_table[-1][2] * 2, 1)
         for index in range(file_count):
             file_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
             file_id = index_table[index][0]
@@ -270,22 +313,18 @@ class BaseForgeV1(BaseForge):
 
 class ForgeV1a(BaseForgeV1):
     """Used in AC1"""
-    DataFilePrefixByteCount = 0
-    DataFileCompressedBlockCountDType = "<H"
+    DataFileFormat = 0
 
 
 class ForgeV1b(BaseForgeV1):
     """Used in AC2 to ?"""
-    DataFilePrefixByteCount = 4
-    DataFileCompressedBlockCountDType = "<H"
+    DataFileFormat = 1
 
 
 class ForgeV1c(BaseForgeV1):
     """Used in ?"""
-    DataFilePrefixByteCount = 8
-    DataFileCompressedBlockCountDType = "<H"
+    DataFileFormat = 2
 
 
 class ForgeV1d(BaseForgeV1):
-    DataFilePrefixByteCount = 0
-    DataFileCompressedBlockCountDType = "<I"
+    DataFileFormat = 3
