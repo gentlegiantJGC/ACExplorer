@@ -11,10 +11,13 @@ class BaseGameTestCase:
             cls._game = game_class(game_path)
             return cls
 
-        def test_decompress(self):
-            start_time = time.time()
-            for forge_file in self._game.forge_files.values():
-                for data_file_id in forge_file.data_file_ids:
-                    forge_file.get_decompressed_files(data_file_id)
-                log.info(f"Finished decompressing {forge_file.file_name}")
-            log.info(f"Finished decompressing all forge files in {round(time.time()-start_time)} seconds")
+        def test_setup(self):
+            pass
+
+        # def test_decompress(self):
+        #     start_time = time.time()
+        #     for forge_file in self._game.forge_files.values():
+        #         for data_file_id in forge_file.data_file_ids:
+        #             forge_file.get_decompressed_files(data_file_id)
+        #         log.info(f"Finished decompressing {forge_file.file_name}")
+        #     log.info(f"Finished decompressing all forge files in {round(time.time()-start_time)} seconds")
