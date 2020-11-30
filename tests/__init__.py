@@ -1,25 +1,28 @@
-AC1Path = None
-PoPPath = None
-SWPath = None
-AC2Path = None
-PoPFSPath = None
-AC2BPath = None
-AC2RPath = None
-AC3Path = None
-AC3LPath = None
-AC4Path = None
-AC4FCPath = None
-ACRoPath = None
-ACUPath = None
-ACSPath = None
-TCSSPath = None
-StPath = None
-FHPath = None
-TCWPath = None
-ACOPath = None
-ACDTEPath = None
-ACOdPath = None
-ACDTGPath = None
-TCBPath = None
-HSPath = None
-ACVPath = None
+from .game_paths import (
+    AC1Path,
+    PoPPath,
+    SWPath,
+    AC2Path,
+    PoPFSPath,
+    AC2BPath,
+    AC2RPath,
+    AC3Path,
+    AC3MPPath,
+    AC3LPath,
+    AC4Path,
+    AC4FCPath,
+    ACRoPath,
+    ACUPath,
+    ACSPath,
+    TCSSPath,
+    StPath,
+    FHPath,
+    TCWPath,
+    ACOPath,
+    ACDTEPath,
+    ACOdPath,
+    ACDTGPath,
+    TCBPath,
+    HSPath,
+    ACVPath,
+)
