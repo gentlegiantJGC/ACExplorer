@@ -28,7 +28,7 @@ class BaseForgeV1(BaseForge):
 
     NonContainerDataFiles = {16, 145}
     CompressionMarker = b'\x33\xAA\xFB\x57\x99\xFA\x04\x10'
-    DataFileFormat = 0  # 0=[AC1], 1=[AC2, AC2B, AC2R, ?], 3=[AC3L, ACRo], 4=[ACU]
+    DataFileFormat = 0  # 0=[AC1], 1=[AC2, AC2B, AC2R, AC3MP, AC4MP], 2=[AC3, AC3L, ACRo], 3=[ACU]
 
     def init_iter(self) -> Generator[float, None, None]:
         """Load the metadata and populate DataFile classes.
@@ -227,10 +227,9 @@ class BaseForgeV1(BaseForge):
         uncompressed_data_list = []
 
         raw_data_chunk = BytesIO(compressed_bytes)
-        if self.DataFileFormat == 1:
+        if self.DataFileFormat <= 2:
             raw_data_chunk.seek(4, 1)
-        elif self.DataFileFormat == 2:
-            raw_data_chunk.seek(4, 1)
+        if self.DataFileFormat == 2:
             count = struct.unpack("<H", raw_data_chunk.read(2))[0]
             for _ in range(count):
                 count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
