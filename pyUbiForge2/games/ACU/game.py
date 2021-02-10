@@ -27,8 +27,6 @@ def register_file_reader(file_id: str):
 class ACUGame(BaseGame):
     ForgeClass = ForgeV1d
     GameIdentifier = "ACU"
-    FileIDType = "Q"
-    ResourceType = "I"
 
     def __init__(self, game_directory: str, cache_megabytes: int = 1000, init=True):
         super().__init__(game_directory, cache_megabytes, init)
