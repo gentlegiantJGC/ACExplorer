@@ -7,10 +7,9 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         count = file.read_uint_32()
         # for _ in range(count):  # the above looks like a count but there is only 1 of the below
         file.read_file()

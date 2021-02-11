@@ -12,11 +12,10 @@ class Reader(BaseTexture, BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             texture_file: FileDataWrapper
     ):
 
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         BaseTexture.__init__(self)
         self.dwSize = b'\x7C\x00\x00\x00'  # 124
         DDSD_CAPS = DDSD_HEIGHT = DDSD_WIDTH = DDSD_PIXELFORMAT = True

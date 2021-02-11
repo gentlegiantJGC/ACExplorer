@@ -7,9 +7,8 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         block_size = file.read_uint_32()
         self.compressed_block = file.read_bytes(block_size)

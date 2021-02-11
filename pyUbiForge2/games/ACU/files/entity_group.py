@@ -9,10 +9,9 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         check_byte = file.read_uint_8()  # checkbyte 03 to continue (other stuff to not? have seen 00 with data after)
         if check_byte == 0:
             for _ in range(2):

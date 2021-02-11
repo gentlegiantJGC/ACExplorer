@@ -8,10 +8,9 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         file.read_bytes(5)  # zeros
     # count = file.read_uint_8()
     # if count > 0:

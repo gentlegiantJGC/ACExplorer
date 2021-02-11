@@ -8,10 +8,9 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         self.bounding_box = file.read_numpy(numpy.float32, 24).reshape((3, 2))
         file.read_uint_32()
         file.out_file_write('\n')

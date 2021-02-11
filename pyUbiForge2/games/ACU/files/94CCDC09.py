@@ -7,10 +7,9 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         file.read_bytes(33)
         for _ in range(file.read_uint_32()):
             assert file.read_uint_8() == 0, "check byte failed"

@@ -9,11 +9,10 @@ class Reader(BaseFile, Material):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
 
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         Material.__init__(self, None)
 
         texture_table = file.read_numpy([('', '<u2'), ('texture_id', '<u8')], 120)

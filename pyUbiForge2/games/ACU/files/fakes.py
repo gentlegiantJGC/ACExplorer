@@ -9,10 +9,9 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         fake_count = file.read_uint_32()
         self.fakes: List[Fake] = []
         for _ in range(fake_count):

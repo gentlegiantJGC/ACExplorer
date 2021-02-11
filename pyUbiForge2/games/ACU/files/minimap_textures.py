@@ -7,11 +7,10 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
 
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         count1 = file.read_uint_32()
         self.width = self.height = int(count1 ** 0.5)
         self.image_ids = []

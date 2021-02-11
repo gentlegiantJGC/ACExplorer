@@ -9,11 +9,10 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
 
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         count1 = file.read_uint_32()  # possibly a count
         if count1 != 0:
             logging.warning('"2D675BA2" count1 is not 0')

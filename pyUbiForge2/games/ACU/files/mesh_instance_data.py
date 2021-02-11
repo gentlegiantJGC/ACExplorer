@@ -9,10 +9,9 @@ class Reader(BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         file.read_bytes(1)
         self.mesh_id = file.read_file_id()
         file.read_bytes(40)  # contains a compiled mesh instance 4368101B

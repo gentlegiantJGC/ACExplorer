@@ -24,11 +24,10 @@ class Reader(BaseMesh, BaseFile):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             model_file: FileDataWrapper
     ):
         BaseMesh.__init__(self)
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
 
         model_file.read_bytes(1)  # skip an empty byte
         self.type = model_file.read_bytes(4)

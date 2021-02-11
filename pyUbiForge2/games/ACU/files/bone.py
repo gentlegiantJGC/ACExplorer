@@ -8,10 +8,9 @@ class Reader(Bone):
     def __init__(
             self,
             file_id: int,
-            resource_type: int,
             file: FileDataWrapper
     ):
-        BaseFile.__init__(self, file_id, resource_type)
+        BaseFile.__init__(self, file_id)
         self.bone_id = file.read_resource_type()
 
         if file.read_uint_8() != 3:
