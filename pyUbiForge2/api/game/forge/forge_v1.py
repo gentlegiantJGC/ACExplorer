@@ -57,6 +57,8 @@ class BaseForgeV1(BaseForge):
             index = 1
             for data_file_id, (data_file_resource_type, data_file_name) in metadata.items():
                 # data_file = self._data_files[data_file_id] = DataFile(data_file_id, data_file_resource_type, data_file_name)
+                if data_file_resource_type == 0:
+                    continue
                 try:
                     files = self.get_decompressed_files(data_file_id)
                 except:
@@ -112,7 +114,8 @@ class BaseForgeV1(BaseForge):
             forge_file_version, file_data_header_offset = struct.unpack('<iQ', forge_file.read(12))
             if not 25 <= forge_file_version <= 27:
                 raise Exception(f'Unsupported Forge file format : "{forge_file_version}"')
-            if forge_file_version < 27:
+            self._forge_version = forge_file_version
+            if forge_file_version <= 26:
                 forge_file.seek(file_data_header_offset + 32)
             else:
                 forge_file.seek(file_data_header_offset + 36)
@@ -130,7 +133,7 @@ class BaseForgeV1(BaseForge):
                 ],
                 index_count
             )
-            if forge_file_version == 25:
+            if 25 <= forge_file_version <= 26:
                 # there is a header here with not that much useful data
                 index_table["raw_data_offset"] += 440
 
@@ -224,25 +227,35 @@ class BaseForgeV1(BaseForge):
         :param compressed_bytes: The bytes of the data file as they appear on disk
         :return: The decompressed bytes of the data file
         """
+        if not compressed_bytes:
+            # there are some files that have zero length
+            return compressed_bytes
+
         uncompressed_data_list = []
 
         raw_data_chunk = BytesIO(compressed_bytes)
-        if self.DataFileFormat <= 2:
-            raw_data_chunk.seek(4, 1)
-        if self.DataFileFormat == 2:
-            count = struct.unpack("<H", raw_data_chunk.read(2))[0]
-            for _ in range(count):
-                count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
-                for _ in range(count2):
-                    assert ord(raw_data_chunk.read(1)) <= 1
-                    raw_data_chunk.seek(8, 1)  # (data?) file id
-
-            count = struct.unpack("<H", raw_data_chunk.read(2))[0]
-            for _ in range(count):
-                raw_data_chunk.seek(8, 1)  # (data?) file id
-                raw_data_chunk.seek(1, 1)
-                count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
-                raw_data_chunk.seek(count2 * 2, 1)
+        if self.DataFileFormat == 1:
+            count = struct.unpack("<I", raw_data_chunk.read(4))[0]
+            if count:
+                raw_data_chunk.seek(count * 8, 1)
+        elif self.DataFileFormat == 2:
+            bcount = struct.unpack("<I", raw_data_chunk.read(4))[0]
+            if bcount:
+                raw_data_chunk.seek(bcount, 1)
+            # if self.DataFileFormat == 2:
+            #     count = struct.unpack("<H", raw_data_chunk.read(2))[0]
+            #     for _ in range(count):
+            #         count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
+            #         for _ in range(count2):
+            #             assert ord(raw_data_chunk.read(1)) <= 1
+            #             raw_data_chunk.seek(8, 1)  # (data?) file id
+            #
+            #     count = struct.unpack("<H", raw_data_chunk.read(2))[0]
+            #     for _ in range(count):
+            #         raw_data_chunk.seek(8, 1)  # (data?) file id
+            #         raw_data_chunk.seek(1, 1)
+            #         count2 = struct.unpack("<H", raw_data_chunk.read(2))[0]
+            #         raw_data_chunk.seek(count2 * 2, 1)
 
         header = raw_data_chunk.read(8)
         if header == self.CompressionMarker:  # if compressed
@@ -273,16 +286,21 @@ class BaseForgeV1(BaseForge):
         ]
     ]:
         files = {}
+
+        if not decompressed_bytes:
+            return files
+
         uncompressed_data = BytesIO(decompressed_bytes)
 
-        file_count = struct.unpack("<H", uncompressed_data.read(2))[0]
+        data = uncompressed_data.read(2)
+        file_count = struct.unpack("<H", data)[0]
         if self.DataFileFormat == 0:
             index_table = [struct.unpack('<II', uncompressed_data.read(8)) for _ in range(file_count)]
         else:
             if self.DataFileFormat == 1:
-                fmt = "<IIH"
+                fmt = "<IIh"
             elif 2 <= self.DataFileFormat <= 3:
-                fmt = "<QIH"
+                fmt = "<QIh"
             else:
                 raise Exception
             fmt_len = struct.calcsize(fmt)
@@ -291,11 +309,32 @@ class BaseForgeV1(BaseForge):
                 index_table.append(
                     struct.unpack(fmt, uncompressed_data.read(fmt_len))
                 )  # file_id, data_size (file_size + header), extra16_count (for next line)
-                uncompressed_data.seek(index_table[-1][2] * 2, 1)
+                if self.DataFileFormat >= 2:
+                    # this may only apply to unity
+                    extra16_count = index_table[-1][2]
+                    if extra16_count > 0:
+                        uncompressed_data.seek(extra16_count * 2, 1)
+            if self._forge_version == 26:
+                # AC4MP
+                extra32 = struct.unpack('<I', uncompressed_data.read(4))[0]
+                if extra32:
+                    uncompressed_data.seek(extra32, 1)
+
+        if self.DataFileFormat == 1:
+            bcount = struct.unpack('<I', uncompressed_data.read(4))[0]
+            uncompressed_data.seek(bcount, 1)
         for index in range(file_count):
-            file_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
+            try:
+                resource_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
+            except Exception as e:
+                print("hi")
+                raise e
             file_id = index_table[index][0]
-            file_name = uncompressed_data.read(file_name_size).decode("utf-8")
+            try:
+                file_name = uncompressed_data.read(file_name_size).decode("utf-8")
+            except Exception as e:
+                print("hi2")
+                raise e
             check_byte = ord(uncompressed_data.read(1))
             if check_byte == 1:
                 uncompressed_data.seek(3, 1)
@@ -306,7 +345,7 @@ class BaseForgeV1(BaseForge):
 
             raw_file = uncompressed_data.read(file_size)
 
-            files[file_id] = (file_type, file_name, raw_file)
+            files[file_id] = (resource_type, file_name, raw_file)
         return files
 
 

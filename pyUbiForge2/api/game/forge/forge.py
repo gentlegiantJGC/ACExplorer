@@ -29,6 +29,7 @@ class BaseForge:
 
         self._data_file_location: DataFileByteLocations = {}
         self._data_files: DataFileStorage = {}
+        self._forge_version = 0
 
     def __repr__(self):
         return f"{self.game_identifier}:{self.file_name}"
