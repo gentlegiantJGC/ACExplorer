@@ -63,7 +63,7 @@ class BaseForgeV1(BaseForge):
                     files = self.get_decompressed_files(data_file_id)
                 except:
                     traceback.print_exc()
-                    print(f"Error loading {self.file_name} {data_file_id} {data_file_name}")
+                    log.error(f"Error loading {self.file_name} {data_file_id} {data_file_name}")
                     continue
                 assert data_file_id in files
                 # in some cases the info will be in the index but not the data file (non archive formats)
@@ -324,17 +324,9 @@ class BaseForgeV1(BaseForge):
             bcount = struct.unpack('<I', uncompressed_data.read(4))[0]
             uncompressed_data.seek(bcount, 1)
         for index in range(file_count):
-            try:
-                resource_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
-            except Exception as e:
-                print("hi")
-                raise e
+            resource_type, file_size, file_name_size = struct.unpack('<3I', uncompressed_data.read(12))
             file_id = index_table[index][0]
-            try:
-                file_name = uncompressed_data.read(file_name_size).decode("utf-8")
-            except Exception as e:
-                print("hi2")
-                raise e
+            file_name = uncompressed_data.read(file_name_size).decode("utf-8")
             check_byte = ord(uncompressed_data.read(1))
             if check_byte == 1:
                 uncompressed_data.seek(3, 1)
