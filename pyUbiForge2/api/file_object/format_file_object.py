@@ -99,7 +99,7 @@ class FileFormatDataWrapper(FileDataWrapper):
         return file_id
 
     def read_resource_type(self) -> int:
-        file_type = self._read_struct(self._game.ResourceType, False)[0]
+        file_type = self._read_struct(self._game.ResourceDType, False)[0]
         self._out_file.write(f'\t\t{file_type:08X}\t\t{self._game.resource_types.get(file_type, "Undefined")}\n')
         return file_type
 
