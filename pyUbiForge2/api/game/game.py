@@ -1,4 +1,4 @@
-from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, List
+from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, List, Union
 import glob
 import os
 
@@ -12,6 +12,7 @@ from pyUbiForge2.api.data_types import (
     DataFileIdentifier,
     FileIdentifier,
 )
+from pyUbiForge2.api.errors import FileNotExhaustedError, FileParserNotFound
 
 if TYPE_CHECKING:
     from pyUbiForge2.api.game import BaseFile
@@ -22,7 +23,7 @@ class BaseGame:
     ForgeClass: Type["BaseForge"] = None
     GameIdentifier: str = None
     FileIDType: str = None
-    ResourceType: str = None
+    ResourceDType: str = None
     endianness = "<"
 
     def __init__(self, game_directory: str, cache_megabytes: int = 1000, init=True):
@@ -31,12 +32,13 @@ class BaseGame:
         for attr, attr_name in (
                 (self.GameIdentifier, "GameIdentifier"),
                 (self.FileIDType, "FileIDType"),
-                (self.ResourceType, "ResourceType")
+                (self.ResourceDType, "ResourceDType")
         ):
             if attr is None:
                 raise Exception(f"{attr_name} has not been set in {self.__class__.__name__}")
         if self.ForgeClass is None:
             raise Exception("ForgeClass attribute has not been overwritten.")
+        self._file_readers: Dict[int, Type["BaseFile"]] = {}
         self._game_directory = game_directory
         self._forge_files: ForgeStorage = {}  # storage for forge classes
         self._file_cache = FileCache(cache_megabytes)  # store raw data for files
@@ -145,14 +147,13 @@ class BaseGame:
         self._call_stack.clear()
 
         def read_file():
-            assert file_wrapper.read_uint_8() == 1, "Expected the first byte to be 1"
             try:
-                file = self.read_file(file_wrapper)
+                file = self.read_main_file(file_wrapper)
             except Exception as e:
                 file_wrapper.clever_format()
                 raise e
             if file_wrapper.clever_format():
-                raise Exception("More of file remaining")
+                raise FileNotExhaustedError("More of file remaining")
             return file
 
         try:
@@ -168,6 +169,47 @@ class BaseGame:
             log.error(f"Call Stack: {' > '.join(self._call_stack)}  ---> reason ---> {e}")
             raise e
 
+    def read_main_file(self, file: FileDataWrapper) -> "BaseFile":
+        assert file.read_uint_8() == 1, "Expected the first byte to be 1"
+        return file.read_file()
+
+    def read_header_file(self, file: FileDataWrapper) -> "BaseFile":
+        """Read a file with an extra byte before."""
+        switch = file.read_uint_8()
+        if switch == 0:
+            return file.read_file()
+        elif switch == 1:
+            count = file.read_uint_32()
+            raise NotImplementedError  # might be nothing
+        elif switch == 2:
+            raise NotImplementedError
+            # return
+        else:
+            raise NotImplementedError
+
+    def read_file_switch(self, file: FileDataWrapper) -> Union["BaseFile", int]:
+        switch = file.read_uint_8()
+        if switch == 0:
+            return file.read_header_file()
+        elif 1 <= switch <= 2:
+            return file.read_file_id()
+        elif switch == 3:
+            return 0
+        elif switch == 4:
+            return file.read_header_file()
+        elif switch == 5:
+            return file.read_file_id()
+        raise Exception("I am not quite sure what to do here.")
+
     def read_file(self, file: FileDataWrapper) -> "BaseFile":
         """Read a file id, resource type and the file payload and return the data packed into a class."""
-        raise NotImplementedError
+        file_id = file.read_file_id()
+        resource_type = file.read_resource_type()
+        return self.read_file_data(file, file_id, resource_type)
+
+    def read_file_data(self, file: FileDataWrapper, file_id: int, resource_type: int) -> "BaseFile":
+        """Read the file payload for a given resource type."""
+        if resource_type in self._file_readers:
+            return self._file_readers[resource_type](file_id, file)
+        else:
+            raise FileParserNotFound(f"{resource_type:08X}")

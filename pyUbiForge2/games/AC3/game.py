@@ -6,4 +6,4 @@ class AC3Game(AC2RGame):
     ForgeClass = ForgeV1c
     GameIdentifier = "AC3"
     FileIDType = "Q"
-    ResourceType = "I"
+    ResourceDType = "I"

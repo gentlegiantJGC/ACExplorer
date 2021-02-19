@@ -7,6 +7,7 @@ from pyUbiForge2.api.file_object import FileDataWrapper
 
 from pyUbiForge2.api.game.forge.forge_v1 import ForgeV1d
 from pyUbiForge2.api import log
+from ..AC4FC import AC4FCGame
 
 
 FileReaders: Dict[int, Type[BaseFile]] = {}
@@ -24,7 +25,7 @@ def register_file_reader(file_id: str):
     return register_
 
 
-class ACUGame(BaseGame):
+class ACUGame(AC4FCGame):
     ForgeClass = ForgeV1d
     GameIdentifier = "ACU"
 

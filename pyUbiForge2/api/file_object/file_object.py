@@ -1,7 +1,9 @@
 import struct
 import numpy
-from typing import Tuple, Any, TYPE_CHECKING
+from typing import Tuple, Any, TYPE_CHECKING, Union
 from io import BytesIO
+
+from pyUbiForge2.api.errors import FileOverflowError
 
 if TYPE_CHECKING:
     from pyUbiForge2 import BaseGame, BaseFile
@@ -43,7 +45,7 @@ class FileDataWrapper(BytesIO):
         num_len = struct.calcsize(fmt)
         binary = self.read(num_len)
         if len(binary) != num_len:
-            raise EOFError('Reached End Of File')
+            raise FileOverflowError('Reached End Of File')
         return struct.unpack(fmt, binary)
 
     def read_struct(self, data_types: str) -> Tuple[Any]:
@@ -87,15 +89,24 @@ class FileDataWrapper(BytesIO):
         return self._read_struct(self._game.FileIDType)[0]
 
     def read_resource_type(self) -> int:
-        return self._read_struct(self._game.ResourceType)[0]
+        return self._read_struct(self._game.ResourceDType)[0]
+
+    def read_header_file(self) -> "BaseFile":
+        return self._game.read_header_file(self)
+
+    def read_file_switch(self) -> Union["BaseFile", int]:
+        return self._game.read_file_switch(self)
 
     def read_file(self) -> "BaseFile":
         return self._game.read_file(self)
 
+    def read_file_data(self, file_id: int, resource_type: int):
+        return self._game.read_file_data(self, file_id, resource_type)
+
     def read_numpy(self, dtype, binary_size: int) -> numpy.ndarray:
         binary = self.read(binary_size)
         if len(binary) != binary_size:
-            raise EOFError('Reached End Of File')
+            raise FileOverflowError('Reached End Of File')
         return numpy.copy(numpy.frombuffer(binary, dtype))
 
     def read_rest(self) -> bytes:

@@ -1,10 +1,12 @@
 import os
 import json
 
+PathsFile = os.path.join(os.path.dirname(__file__), "game_paths.json")
+
 _game_paths = {}
-if os.path.isfile("game_paths.json"):
+if os.path.isfile(PathsFile):
     try:
-        with open("game_paths.json") as f:
+        with open(PathsFile) as f:
             _game_paths = json.load(f)
     except:
         pass

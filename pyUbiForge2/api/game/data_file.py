@@ -44,6 +44,11 @@ class DataFile:
 
     @property
     def files(self) -> FileStorage:
+        """{file_id(int): (resource_type(int), file_name)}
+        A dictionary converting file_id to a tuple of resource type and file name
+
+        :return:
+        """
         return self._files.copy()
 
     @property

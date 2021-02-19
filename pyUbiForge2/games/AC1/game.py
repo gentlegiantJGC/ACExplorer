@@ -6,4 +6,4 @@ class AC1Game(BaseGame):
     ForgeClass = ForgeV1a
     GameIdentifier = "AC1"
     FileIDType = "I"
-    ResourceType = "I"
+    ResourceDType = "I"

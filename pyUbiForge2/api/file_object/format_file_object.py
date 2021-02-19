@@ -1,9 +1,10 @@
 import struct
-from typing import TextIO, Tuple, Any, TYPE_CHECKING
+from typing import TextIO, Tuple, Any, TYPE_CHECKING, Union
 from .file_object import FileDataWrapper, Indent
+from pyUbiForge2.api.errors import FileOverflowError
 
 if TYPE_CHECKING:
-    from pyUbiForge2 import BaseGame
+    from pyUbiForge2 import BaseGame, BaseFile
 
 NEWLINE = "\n"
 
@@ -79,7 +80,7 @@ class FileFormatDataWrapper(FileDataWrapper):
         num_len = struct.calcsize(fmt)
         binary = self.read(num_len)
         if len(binary) != num_len:
-            raise EOFError('Reached End Of File')
+            raise FileOverflowError('Reached End Of File')
         val = struct.unpack(fmt, binary)
         self._out_file.write(
             f'{self.indent_count * self.indent_chr}{self._hex_string(binary)}\t\t{val}{NEWLINE * trailing_newline}'
@@ -101,6 +102,22 @@ class FileFormatDataWrapper(FileDataWrapper):
         file_type = self._read_struct(self._game.ResourceType, False)[0]
         self._out_file.write(f'\t\t{file_type:08X}\t\t{self._game.resource_types.get(file_type, "Undefined")}\n')
         return file_type
+
+    def read_header_file(self) -> "BaseFile":
+        with self.indent:
+            return super().read_header_file()
+
+    def read_file_switch(self) -> Union["BaseFile", int]:
+        with self.indent:
+            return super().read_file_switch()
+
+    def read_file(self) -> "BaseFile":
+        with self.indent:
+            return super().read_file()
+
+    def read_file_data(self, file_id: int, resource_type: int):
+        with self.indent:
+            return super().read_file_data(file_id, resource_type)
 
     def read_numpy(self, dtype, binary_size: int):
         val = super().read_numpy(dtype, binary_size)

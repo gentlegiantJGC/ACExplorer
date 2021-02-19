@@ -6,4 +6,4 @@ class AC3MPGame(BaseGame):
     ForgeClass = ForgeV1b
     GameIdentifier = "AC3MP"
     FileIDType = "Q"
-    ResourceType = "I"
+    ResourceDType = "I"

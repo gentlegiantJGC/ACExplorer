@@ -6,4 +6,4 @@ class AC4MPGame(BaseGame):
     ForgeClass = ForgeV1b
     GameIdentifier = "AC4MP"
     FileIDType = "I"
-    ResourceType = "I"
+    ResourceDType = "I"
