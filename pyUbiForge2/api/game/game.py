@@ -1,4 +1,4 @@
-from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, List, Union
+from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, List, Union, KeysView
 import glob
 import os
 
@@ -96,10 +96,16 @@ class BaseGame:
         return self._forge_files[forge_file]
 
     @property
-    def resource_types(self) -> Dict[int, str]:
+    def resource_types(self) -> KeysView[int]:
         """A dictionary mapping resource type to a prettier name"""
         # implement this in subclasses
-        return {}
+        return self._file_readers.keys()
+
+    def get_parser_name(self, resource_type: int) -> str:
+        if resource_type in self._file_readers:
+            return self._file_readers[resource_type].__class__.__name__
+        else:
+            return "No Parser Found"
 
     def find_file(
             self,

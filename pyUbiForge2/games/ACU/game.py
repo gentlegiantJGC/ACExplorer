@@ -45,9 +45,3 @@ class ACUGame(AC4FCGame):
                 self._call_stack.pop()
                 return file_cls
         raise NotImplementedError(f"Not implemented {resource_id:08X}")
-
-    @property
-    def resource_types(self) -> Dict[int, str]:
-        """A dictionary mapping resource type to a prettier name"""
-        # implement this in subclasses
-        return ResourceTypes
