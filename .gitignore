@@ -130,3 +130,5 @@ config.json
 *.tmpbin
 **/temp
 tests/game_paths.json
+tests/error_format
+pyUbiForge2/games
