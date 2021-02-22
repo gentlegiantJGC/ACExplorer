@@ -1,6 +1,6 @@
 import struct
 import numpy
-from typing import Tuple, Any, TYPE_CHECKING, Union
+from typing import Tuple, Any, TYPE_CHECKING, Union, List
 from io import BytesIO
 
 from pyUbiForge2.api.errors import FileOverflowError
@@ -31,11 +31,16 @@ class FileDataWrapper(BytesIO):
         super().__init__(file)
         self._game = game
         self._endianness = game.endianness
+        self._call_stack: List[int] = []
 
     @property
     def indent(self):
         """with file.indent:"""
         return Indent()
+
+    @property
+    def call_stack(self) -> List[int]:
+        return self._call_stack
 
     def out_file_write(self, val: str):
         pass
@@ -91,7 +96,7 @@ class FileDataWrapper(BytesIO):
     def read_resource_type(self) -> int:
         return self._read_struct(self._game.ResourceDType)[0]
 
-    def read_header_file(self) -> "BaseFile":
+    def read_header_file(self) -> Union["BaseFile", int]:
         return self._game.read_header_file(self)
 
     def read_file_switch(self) -> Union["BaseFile", int]:

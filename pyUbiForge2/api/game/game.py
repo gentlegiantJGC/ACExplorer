@@ -43,7 +43,6 @@ class BaseGame:
         self._forge_files: ForgeStorage = {}  # storage for forge classes
         self._file_cache = FileCache(cache_megabytes)  # store raw data for files
         self._file_finder = FileFinder()  # find where a given file is stored
-        self._call_stack: List[str] = []
 
         if init:
             self.init()
@@ -150,7 +149,6 @@ class BaseGame:
         Will return None if the file does not exist.
         May throw an exception if parsing the file failed."""
         file_bytes = self.get_file_bytes(file_id, forge_file, data_file_id)
-        self._call_stack.clear()
 
         def read_file():
             try:
@@ -215,7 +213,10 @@ class BaseGame:
 
     def read_file_data(self, file: FileDataWrapper, file_id: int, resource_type: int) -> "BaseFile":
         """Read the file payload for a given resource type."""
+        file.call_stack.append(resource_type)
         if resource_type in self._file_readers:
-            return self._file_readers[resource_type](file_id, file)
+            ret = self._file_readers[resource_type](file_id, file)
         else:
             raise FileParserNotFound(f"{resource_type:08X}")
+        file.call_stack.pop()
+        return ret
