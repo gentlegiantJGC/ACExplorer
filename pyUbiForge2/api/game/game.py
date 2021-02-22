@@ -150,7 +150,15 @@ class BaseGame:
         May throw an exception if parsing the file failed."""
         file_bytes = self.get_file_bytes(file_id, forge_file, data_file_id)
 
-        def read_file():
+        if isinstance(format_file_path, str):
+            os.makedirs(os.path.dirname(format_file_path), exist_ok=True)
+            f = open(format_file_path, 'w')
+            file_wrapper = FileFormatDataWrapper(file_bytes, self, f)
+        else:
+            f = None
+            file_wrapper = FileDataWrapper(file_bytes, self)
+
+        try:
             try:
                 file = self.read_main_file(file_wrapper)
             except Exception as e:
@@ -159,37 +167,30 @@ class BaseGame:
             if file_wrapper.clever_format():
                 raise FileNotExhaustedError("More of file remaining")
             return file
-
-        try:
-            if isinstance(format_file_path, str):
-                os.makedirs(os.path.dirname(format_file_path), exist_ok=True)
-                with open(format_file_path, 'w') as f:
-                    file_wrapper = FileFormatDataWrapper(file_bytes, self, f)
-                    return read_file()
-            else:
-                file_wrapper = FileDataWrapper(file_bytes, self)
-                return read_file()
         except Exception as e:
-            log.error(f"Call Stack: {' > '.join(self._call_stack)}  ---> reason ---> {e}")
+            stack = " > ".join(f"{rt:08X}" for rt in file_wrapper.call_stack)
+            log.error(f"Call Stack: {stack}  ---> reason ---> {e}")
             raise e
+        finally:
+            if f is not None:
+                f.close()
 
     def read_main_file(self, file: FileDataWrapper) -> "BaseFile":
         assert file.read_uint_8() == 1, "Expected the first byte to be 1"
         return file.read_file()
 
-    def read_header_file(self, file: FileDataWrapper) -> "BaseFile":
+    def read_header_file(self, file: FileDataWrapper) -> Union["BaseFile", int]:
         """Read a file with an extra byte before."""
         switch = file.read_uint_8()
         if switch == 0:
             return file.read_file()
-        elif switch == 1:
-            count = file.read_uint_32()
-            raise NotImplementedError  # might be nothing
         elif switch == 2:
-            raise NotImplementedError
-            # return
+            count = file.read_uint_32()
+            raise NotImplementedError("Header switch == 2")  # might be nothing
+        elif switch == 3:
+            return 0
         else:
-            raise NotImplementedError
+            raise NotImplementedError(f"Header switch == {switch}")
 
     def read_file_switch(self, file: FileDataWrapper) -> Union["BaseFile", int]:
         switch = file.read_uint_8()
