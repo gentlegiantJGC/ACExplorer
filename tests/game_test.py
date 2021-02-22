@@ -29,7 +29,7 @@ class BaseGameTestCase:
                             except:
                                 failures += 1
                                 sane_file_name = "".join([c for c in file_name if c.isalpha() or c.isdigit() or c==' ']).rstrip()
-                                path = f"./error_format/{self._game.GameIdentifier}/{forge_name}/{data_file_id:X}/{file_id:X}{sane_file_name}.bin"
+                                path = f"./error_format/{resource_type}/{self._game.GameIdentifier}/{forge_name}/{data_file_id:X}/{file_id:X}{sane_file_name}.bin"
                                 os.makedirs(os.path.dirname(path), exist_ok=True)
                                 try:
                                     self._game.get_file(file_id, forge_name, data_file_id, path)
@@ -39,8 +39,22 @@ class BaseGameTestCase:
                                     raise Exception(f"Success {success}, Failure {failures}")
             print(f"Success {success}, Failure {failures}")
 
+        @unittest.skip
         def test_mesh(self):
             self._test_file(0x415D9568)
+
+        def test_entity(self):
+            self._test_file(0x0984415E)
+
+        def test_get_file_counts(self):
+            files = {}
+            for forge_file in self._game.forge_files.values():
+                for data_file in forge_file.data_files.values():
+                    for resource_type, _ in data_file.files.values():
+                        files.setdefault(resource_type, 0)
+                        files[resource_type] += 1
+            for resource_type, count in files.items():
+                print(f"{resource_type:08X}", count)
 
         @unittest.skip
         def test_decompress(self):
