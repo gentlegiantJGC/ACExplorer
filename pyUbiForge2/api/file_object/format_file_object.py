@@ -131,33 +131,33 @@ class FileFormatDataWrapper(FileDataWrapper):
         self._out_file.write(f'{self.indent_count * self.indent_chr}{self._hex_string(binary)}\n')
         return binary
 
-    def clever_format(self):
-        self.out_file_write("Initiate clever format\n")
-        hex_str = []
-        file_bytes = [self.read(4)]
-        might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
-        while len(might_be_a_file_type) == 8:
-            if int(might_be_a_file_type, 16) in self._game.resource_types:
-                self._out_file.write(f'{self.indent_count * self.indent_chr}{" ".join(hex_str[:-8])}\n')
-                hex_str.clear()
-                super().seek(-12, 1)
-                try:
-                    self.read_file()
-                except Exception as e:
-                    self.out_file_write(f"Failed reading file type {might_be_a_file_type.upper()} {e}\n")
-                file_bytes.append(self.read(4))
-                might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
-            else:
-                hex_str.append(might_be_a_file_type[6:])
-                next_chr = self.read(1)
-                if next_chr:
-                    file_bytes.append(next_chr)
-                    might_be_a_file_type = f'{next_chr[0]:02X}{might_be_a_file_type[:6]}'
-                else:
-                    might_be_a_file_type = might_be_a_file_type[:6]
-
-        while might_be_a_file_type:
-            hex_str.append(might_be_a_file_type[-2:])
-            might_be_a_file_type = might_be_a_file_type[:-2]
-        self._out_file.write(f'{self.indent_count * self.indent_chr}{" ".join(hex_str)}\n')
-        return b"".join(file_bytes)
+    # def clever_format(self):
+    #     self.out_file_write("Initiate clever format\n")
+    #     hex_str = []
+    #     file_bytes = [self.read(4)]
+    #     might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
+    #     while len(might_be_a_file_type) == 8:
+    #         if int(might_be_a_file_type, 16) in self._game.resource_types:
+    #             self._out_file.write(f'{self.indent_count * self.indent_chr}{" ".join(hex_str[:-8])}\n')
+    #             hex_str.clear()
+    #             super().seek(-12, 1)
+    #             try:
+    #                 self.read_file()
+    #             except Exception as e:
+    #                 self.out_file_write(f"Failed reading file type {might_be_a_file_type.upper()} {e}\n")
+    #             file_bytes.append(self.read(4))
+    #             might_be_a_file_type = ''.join(f'{b:02X}' for b in file_bytes[-1][::-1])
+    #         else:
+    #             hex_str.append(might_be_a_file_type[6:])
+    #             next_chr = self.read(1)
+    #             if next_chr:
+    #                 file_bytes.append(next_chr)
+    #                 might_be_a_file_type = f'{next_chr[0]:02X}{might_be_a_file_type[:6]}'
+    #             else:
+    #                 might_be_a_file_type = might_be_a_file_type[:6]
+    #
+    #     while might_be_a_file_type:
+    #         hex_str.append(might_be_a_file_type[-2:])
+    #         might_be_a_file_type = might_be_a_file_type[:-2]
+    #     self._out_file.write(f'{self.indent_count * self.indent_chr}{" ".join(hex_str)}\n')
+    #     return b"".join(file_bytes)
