@@ -131,7 +131,8 @@ class FileFormatDataWrapper(FileDataWrapper):
         self._out_file.write(f'{self.indent_count * self.indent_chr}{self._hex_string(binary)}\n')
         return binary
 
-    # def clever_format(self):
+    def clever_format(self):
+        self.read_rest()
     #     self.out_file_write("Initiate clever format\n")
     #     hex_str = []
     #     file_bytes = [self.read(4)]

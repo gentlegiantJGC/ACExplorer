@@ -102,7 +102,7 @@ class BaseGame:
 
     def get_parser_name(self, resource_type: int) -> str:
         if resource_type in self._file_readers:
-            return self._file_readers[resource_type].__class__.__name__
+            return self._file_readers[resource_type].__name__
         else:
             return "No Parser Found"
 
@@ -169,7 +169,7 @@ class BaseGame:
             return file
         except Exception as e:
             stack = " > ".join(f"{rt:08X}" for rt in file_wrapper.call_stack)
-            log.error(f"Call Stack: {stack}  ---> reason ---> {e}")
+            log.error(f"{file_id:016X} Call Stack: {stack}  ---> reason ---> {e}")
             raise e
         finally:
             if f is not None:
@@ -184,9 +184,12 @@ class BaseGame:
         switch = file.read_uint_8()
         if switch == 0:
             return file.read_file()
+        elif switch == 1:
+            # from ParseHeaderFile_nested
+            return file.read_file()
         elif switch == 2:
             count = file.read_uint_32()
-            raise NotImplementedError("Header switch == 2")  # might be nothing
+            # raise NotImplementedError("Header switch == 2")  # might be nothing
         elif switch == 3:
             return 0
         else:
@@ -206,6 +209,21 @@ class BaseGame:
             return file.read_file_id()
         raise Exception("I am not quite sure what to do here.")
 
+    def read_switch(self, file: FileDataWrapper):
+        switch = file.read_uint_8()
+        if switch == 0:
+            file.read_uint_8()  # may be unused
+            file.read_uint_32()
+            file.read_uint_32()
+            raise NotImplementedError
+            # code
+        elif switch == 1:
+            file.read_uint_8()
+            file.read_uint_32()
+        else:
+            file.read_uint_8()  # may be unused
+            file.read_uint_32()
+
     def read_file(self, file: FileDataWrapper) -> "BaseFile":
         """Read a file id, resource type and the file payload and return the data packed into a class."""
         file_id = file.read_file_id()
@@ -218,6 +236,6 @@ class BaseGame:
         if resource_type in self._file_readers:
             ret = self._file_readers[resource_type](file_id, file)
         else:
-            raise FileParserNotFound(f"{resource_type:08X}")
+            raise FileParserNotFound(f"No parser found for file type {resource_type:08X}")
         file.call_stack.pop()
         return ret
