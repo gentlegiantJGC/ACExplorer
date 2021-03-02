@@ -1,6 +1,6 @@
 import time
 import unittest
-from typing import Type
+from typing import Type, Dict
 import os
 
 from pyUbiForge2.api import log, BaseGame
@@ -19,6 +19,7 @@ class BaseGameTestCase:
         def _test_file(self, resource_type: int):
             failures = 0
             success = 0
+            failure_reasons: Dict[str, int] = {}
             for forge_name, forge_file in self._game.forge_files.items():
                 for data_file_id, data_file in forge_file.data_files.items():
                     for file_id, (resource_type_, file_name) in data_file.files.items():
@@ -26,7 +27,9 @@ class BaseGameTestCase:
                             try:
                                 self._game.get_file(file_id, forge_name, data_file_id)
                                 success += 1
-                            except:
+                            except Exception as e:
+                                failure_reasons.setdefault(str(e), 0)
+                                failure_reasons[str(e)] += 1
                                 failures += 1
                                 sane_file_name = "".join([c for c in file_name if c.isalpha() or c.isdigit() or c==' ']).rstrip()
                                 path = f"./error_format/{resource_type}/{self._game.GameIdentifier}/{forge_name}/{data_file_id:X}/{file_id:X}{sane_file_name}.bin"
@@ -35,9 +38,15 @@ class BaseGameTestCase:
                                     self._game.get_file(file_id, forge_name, data_file_id, path)
                                 except:
                                     pass
-                                if failures >= 100:
+                                if failures >= 300:
+                                    time.sleep(0.1)
+                                    for reason, count in sorted(failure_reasons.items(), key=lambda x: x[1], reverse=True):
+                                        print(reason, count)
                                     raise Exception(f"Success {success}, Failure {failures}")
             print(f"Success {success}, Failure {failures}")
+            time.sleep(0.1)
+            for reason, count in sorted(failure_reasons.items(), key=lambda x: x[1], reverse=True):
+                print(reason, count)
 
         @unittest.skip
         def test_mesh(self):
