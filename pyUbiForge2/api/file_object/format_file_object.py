@@ -24,16 +24,11 @@ class FormatIndent(Indent):
 
 
 class FileFormatDataWrapper(FileDataWrapper):
-    def __init__(
-            self,
-            file: bytes,
-            game: "BaseGame",
-            out_file: TextIO
-    ):
+    def __init__(self, file: bytes, game: "BaseGame", out_file: TextIO):
         super().__init__(file, game)
         self._out_file = out_file
         self.indent_count = 0
-        self.indent_chr = '\t'
+        self.indent_chr = "\t"
 
     @property
     def indent(self):
@@ -41,7 +36,7 @@ class FileFormatDataWrapper(FileDataWrapper):
 
     @staticmethod
     def _hex_string(binary: bytes) -> str:
-        return ' '.join(f'{b:02X}' for b in binary)
+        return " ".join(f"{b:02X}" for b in binary)
 
     def close(self):
         super().close()
@@ -51,15 +46,19 @@ class FileFormatDataWrapper(FileDataWrapper):
         if whence == 0:  # absolute
             count = offset - self.tell()
             if count > 0:
-                self._out_file.write(f'{self.indent_count * self.indent_chr}{self._hex_string(self.read(count))}\n')
+                self._out_file.write(
+                    f"{self.indent_count * self.indent_chr}{self._hex_string(self.read(count))}\n"
+                )
             elif count < 0:
-                self._out_file.write(f'Skipped back {abs(count)} bytes\n')
+                self._out_file.write(f"Skipped back {abs(count)} bytes\n")
                 super().seek(offset, whence)
         elif whence == 1:  # relative
             if offset > 0:
-                self._out_file.write(f'{self.indent_count * self.indent_chr}{self._hex_string(self.read(offset))}\n')
+                self._out_file.write(
+                    f"{self.indent_count * self.indent_chr}{self._hex_string(self.read(offset))}\n"
+                )
             elif offset < 0:
-                self._out_file.write(f'Skipped back {abs(offset)} bytes\n')
+                self._out_file.write(f"Skipped back {abs(offset)} bytes\n")
                 super().seek(offset, whence)
         elif whence == 2:  # relative to end
             file_pointer = self.tell()
@@ -67,23 +66,25 @@ class FileFormatDataWrapper(FileDataWrapper):
             count = self.tell() - file_pointer
             super().seek(file_pointer)
             if count > 0:
-                self._out_file.write(f'{self.indent_count * self.indent_chr}{self._hex_string(self.read(count))}\n')
+                self._out_file.write(
+                    f"{self.indent_count * self.indent_chr}{self._hex_string(self.read(count))}\n"
+                )
             elif count < 0:
-                self._out_file.write(f'Skipped back {abs(count)} bytes\n')
+                self._out_file.write(f"Skipped back {abs(count)} bytes\n")
                 super().seek(offset, whence)
 
     def out_file_write(self, val: str):
-        self._out_file.write(f'{self.indent_count * self.indent_chr}{val}')
+        self._out_file.write(f"{self.indent_count * self.indent_chr}{val}")
 
     def _read_struct(self, data_type: str, trailing_newline: bool = True) -> Tuple[Any]:
-        fmt = f'{self._endianness}{data_type}'
+        fmt = f"{self._endianness}{data_type}"
         num_len = struct.calcsize(fmt)
         binary = self.read(num_len)
         if len(binary) != num_len:
-            raise FileOverflowError('Reached End Of File')
+            raise FileOverflowError("Reached End Of File")
         val = struct.unpack(fmt, binary)
         self._out_file.write(
-            f'{self.indent_count * self.indent_chr}{self._hex_string(binary)}\t\t{val}{NEWLINE * trailing_newline}'
+            f"{self.indent_count * self.indent_chr}{self._hex_string(binary)}\t\t{val}{NEWLINE * trailing_newline}"
         )
         return val
 
@@ -91,17 +92,21 @@ class FileFormatDataWrapper(FileDataWrapper):
         file_id = self._read_struct(self._game.FileIDType, False)[0]
         file_location = self._game.find_file(file_id)
         if file_location is None:
-            self._out_file.write('\t\tUnknown File ID\n')
+            self._out_file.write("\t\tUnknown File ID\n")
         else:
             forge_file, data_file = file_location
-            file_type, file_name = self._game.get_forge_file(forge_file).get_data_file(data_file).get_file(file_id)
-            self._out_file.write(f'\t\t{file_name}\t{file_type}\n')
+            file_type, file_name = (
+                self._game.get_forge_file(forge_file)
+                .get_data_file(data_file)
+                .get_file(file_id)
+            )
+            self._out_file.write(f"\t\t{file_name}\t{file_type}\n")
         return file_id
 
     def read_resource_type(self) -> int:
         file_type = self._read_struct(self._game.ResourceDType, False)[0]
         resource_parser = self._game.get_parser_name(file_type)
-        self._out_file.write(f'\t\t{file_type:08X}\t\t{resource_parser}\n')
+        self._out_file.write(f"\t\t{file_type:08X}\t\t{resource_parser}\n")
         return file_type
 
     def read_header_file(self) -> "BaseFile":
@@ -123,16 +128,19 @@ class FileFormatDataWrapper(FileDataWrapper):
     def read_numpy(self, dtype, binary_size: int):
         val = super().read_numpy(dtype, binary_size)
         indent = self.indent_count * self.indent_chr
-        self._out_file.write(f'{indent}{str(val).replace(NEWLINE, indent)}\n')
+        self._out_file.write(f"{indent}{str(val).replace(NEWLINE, indent)}\n")
         return val
 
     def read_rest(self) -> bytes:
         binary = self.read()
-        self._out_file.write(f'{self.indent_count * self.indent_chr}{self._hex_string(binary)}\n')
+        self._out_file.write(
+            f"{self.indent_count * self.indent_chr}{self._hex_string(binary)}\n"
+        )
         return binary
 
     def clever_format(self):
         self.read_rest()
+
     #     self.out_file_write("Initiate clever format\n")
     #     hex_str = []
     #     file_bytes = [self.read(4)]

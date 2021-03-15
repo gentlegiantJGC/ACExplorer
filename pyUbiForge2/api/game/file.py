@@ -6,19 +6,11 @@ class BaseFile(ABC):
     ResourceType: int = None
     _file_id: int
 
-    def __init__(
-            self,
-            file_id: int,
-            file: FileDataWrapper
-    ):
+    def __init__(self, file_id: int, file: FileDataWrapper):
         self._file_id = file_id
 
     @classmethod
-    def from_data(
-            cls,
-            file_id: int,
-            file: FileDataWrapper
-    ):
+    def from_data(cls, file_id: int, file: FileDataWrapper):
         self = cls(file_id, file)
         self.load_from(file)
 
@@ -41,11 +33,7 @@ class SubclassBaseFile(BaseFile, ABC):
     ParentResourceType: int = None
     _parent: BaseFile
 
-    def __init__(
-            self,
-            file_id: int,
-            file: FileDataWrapper
-    ):
+    def __init__(self, file_id: int, file: FileDataWrapper):
         super().__init__(file_id, file)
         self._parent = file.get_parser(self.ParentResourceType)(file_id, file)
 

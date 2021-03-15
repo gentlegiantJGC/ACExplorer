@@ -9,37 +9,35 @@ from pyUbiForge2.api.data_types import (
 )
 
 FileLookupKeyType = Union[
-                Tuple[None, None, FileIdentifier],
-                Tuple[ForgeFileName, None, FileIdentifier],
-                FileIdentifierTriplet,
-            ]
+    Tuple[None, None, FileIdentifier],
+    Tuple[ForgeFileName, None, FileIdentifier],
+    FileIdentifierTriplet,
+]
 
-FileLookupType = Dict[
-            FileLookupKeyType,
-            DataFileIdentifierDoublet
-        ]
+FileLookupType = Dict[FileLookupKeyType, DataFileIdentifierDoublet]
 
 
 class FileFinder:
     """A class to help find the forge file and data file any given file is stored in."""
+
     def __init__(self):
         """A class to help find the forge file and data file any given file is stored in."""
         self._file_lookup: FileLookupType = {}
 
     def contains(
-            self,
-            file_id: FileIdentifier,
-            forge_file: Optional[ForgeFileName] = None,
-            data_file_id: Optional[DataFileIdentifier] = None
+        self,
+        file_id: FileIdentifier,
+        forge_file: Optional[ForgeFileName] = None,
+        data_file_id: Optional[DataFileIdentifier] = None,
     ) -> bool:
         """Does the file exist."""
         return (forge_file, data_file_id, file_id) in self._file_lookup
 
     def add_data_file(
-            self,
-            forge_file: ForgeFileName,
-            data_file_id: DataFileIdentifier,
-            files: Sequence[FileIdentifier]
+        self,
+        forge_file: ForgeFileName,
+        data_file_id: DataFileIdentifier,
+        files: Sequence[FileIdentifier],
     ):
         """Populate the database for a data file and its files."""
         # if this key is already present the data file has been added before
@@ -51,13 +49,11 @@ class FileFinder:
                 self._file_lookup[(forge_file, data_file_id, file_id)] = data_file_key
 
     def find(
-            self,
-            file_id: FileIdentifier,
-            forge_file: Optional[ForgeFileName] = None,
-            data_file_id: Optional[DataFileIdentifier] = None
-    ) -> Optional[
-        Tuple[ForgeFileName, DataFileIdentifier]
-    ]:
+        self,
+        file_id: FileIdentifier,
+        forge_file: Optional[ForgeFileName] = None,
+        data_file_id: Optional[DataFileIdentifier] = None,
+    ) -> Optional[Tuple[ForgeFileName, DataFileIdentifier]]:
         """Returns the forge file and data file where a file can be found.
         None if the file cannot be found"""
         location = self._file_lookup.get((forge_file, data_file_id, file_id))

@@ -27,7 +27,8 @@ bl_info = {
     "warning": "",
     "wiki_url": "",
     "tracker_url": "",
-    "category": "Import-Export"}
+    "category": "Import-Export",
+}
 
 
 import bpy
@@ -35,26 +36,28 @@ import os
 
 from bpy_extras.io_utils import ImportHelper
 
-from bpy.props import (BoolProperty,
-                       FloatProperty,
-                       StringProperty,
-                       EnumProperty,
-                       CollectionProperty
-                       )
+from bpy.props import (
+    BoolProperty,
+    FloatProperty,
+    StringProperty,
+    EnumProperty,
+    CollectionProperty,
+)
 
 
 class ImportMultipleObjs(bpy.types.Operator, ImportHelper):
     """This appears in the tooltip of the operator and in the generated docs"""
+
     bl_idname = "import_scene.multiple_objs"
     bl_label = "Import multiple OBJ's"
-    bl_options = {'PRESET', 'UNDO'}
+    bl_options = {"PRESET", "UNDO"}
 
     # ImportHelper mixin class uses this
     filename_ext = ".obj"
 
     filter_glob: StringProperty(
         default="*.obj",
-        options={'HIDDEN'},
+        options={"HIDDEN"},
     )
 
     # Selected files
@@ -93,60 +96,65 @@ class ImportMultipleObjs(bpy.types.Operator, ImportHelper):
     image_search_setting: BoolProperty(
         name="Image Search",
         description="Search subdirs for any associated images "
-                    "(Warning, may be slow)",
-        default=False
+        "(Warning, may be slow)",
+        default=False,
     )
 
     split_mode_setting: EnumProperty(
         name="Split",
-        items=(('ON', "Split", "Split geometry, omits unused verts"),
-               ('OFF', "Keep Vert Order", "Keep vertex order from file"),),
+        items=(
+            ("ON", "Split", "Split geometry, omits unused verts"),
+            ("OFF", "Keep Vert Order", "Keep vertex order from file"),
+        ),
     )
 
     clamp_size_setting: FloatProperty(
         name="Clamp Size",
         description="Clamp bounds under this value (zero to disable)",
-        min=0.0, max=1000.0,
-        soft_min=0.0, soft_max=1000.0,
+        min=0.0,
+        max=1000.0,
+        soft_min=0.0,
+        soft_max=1000.0,
         default=0.0,
     )
 
     axis_forward_setting: EnumProperty(
         name="Forward",
-        items=(('X', "X Forward", ""),
-               ('Y', "Y Forward", ""),
-               ('Z', "Z Forward", ""),
-               ('-X', "-X Forward", ""),
-               ('-Y', "-Y Forward", ""),
-               ('-Z', "-Z Forward", ""),
-               ),
-        default='Y',
+        items=(
+            ("X", "X Forward", ""),
+            ("Y", "Y Forward", ""),
+            ("Z", "Z Forward", ""),
+            ("-X", "-X Forward", ""),
+            ("-Y", "-Y Forward", ""),
+            ("-Z", "-Z Forward", ""),
+        ),
+        default="Y",
     )
 
     axis_up_setting: EnumProperty(
         name="Up",
-        items=(('X', "X Up", ""),
-               ('Y', "Y Up", ""),
-               ('Z', "Z Up", ""),
-               ('-X', "-X Up", ""),
-               ('-Y', "-Y Up", ""),
-               ('-Z', "-Z Up", ""),
-               ),
-        default='Z',
+        items=(
+            ("X", "X Up", ""),
+            ("Y", "Y Up", ""),
+            ("Z", "Z Up", ""),
+            ("-X", "-X Up", ""),
+            ("-Y", "-Y Up", ""),
+            ("-Z", "-Z Up", ""),
+        ),
+        default="Z",
     )
 
     scale_setting: FloatProperty(
         name="Size",
         description="Scale objects",
-        min=0.0, max=1000.0,
-        soft_min=0.0, soft_max=1000.0,
+        min=0.0,
+        max=1000.0,
+        soft_min=0.0,
+        soft_max=1000.0,
         default=1,
     )
 
-    center_origin: BoolProperty(
-        name="Center Origin",
-        default=True
-    )
+    center_origin: BoolProperty(name="Center Origin", default=True)
 
     def draw(self, context):
         layout = self.layout
@@ -160,7 +168,7 @@ class ImportMultipleObjs(bpy.types.Operator, ImportHelper):
         row.prop(self, "split_mode_setting", expand=True)
 
         row = box.row()
-        if self.split_mode_setting == 'ON':
+        if self.split_mode_setting == "ON":
             row.label(text="Split by:")
             row.prop(self, "split_objects_setting")
             row.prop(self, "split_groups_setting")
@@ -181,69 +189,75 @@ class ImportMultipleObjs(bpy.types.Operator, ImportHelper):
     def execute(self, context):
 
         # get the folder
-        folder = (os.path.dirname(self.filepath))
-        
+        folder = os.path.dirname(self.filepath)
+
         start_material_count = len(bpy.data.materials)
 
         # iterate through the selected files
         for j, i in enumerate(self.files):
 
             # generate full path to file
-            path_to_file = (os.path.join(folder, i.name))
+            path_to_file = os.path.join(folder, i.name)
 
             # call obj operator and assign ui values
-            bpy.ops.import_scene.obj(filepath=path_to_file,
-                                     axis_forward=self.axis_forward_setting,
-                                     axis_up=self.axis_up_setting,
-                                     use_edges=self.edges_setting,
-                                     use_smooth_groups=self.smooth_groups_setting,
-                                     use_split_objects=self.split_objects_setting,
-                                     use_split_groups=self.split_groups_setting,
-                                     use_groups_as_vgroups=self.groups_as_vgroups_setting,
-                                     use_image_search=self.image_search_setting,
-                                     split_mode=self.split_mode_setting,
-                                     global_clight_size=self.clamp_size_setting)
+            bpy.ops.import_scene.obj(
+                filepath=path_to_file,
+                axis_forward=self.axis_forward_setting,
+                axis_up=self.axis_up_setting,
+                use_edges=self.edges_setting,
+                use_smooth_groups=self.smooth_groups_setting,
+                use_split_objects=self.split_objects_setting,
+                use_split_groups=self.split_groups_setting,
+                use_groups_as_vgroups=self.groups_as_vgroups_setting,
+                use_image_search=self.image_search_setting,
+                split_mode=self.split_mode_setting,
+                global_clight_size=self.clamp_size_setting,
+            )
 
             if self.center_origin:
-                bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
-            bpy.ops.transform.resize(value=(self.scale_setting, self.scale_setting, self.scale_setting), constraint_axis=(False, False, False))
+                bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="BOUNDS")
+            bpy.ops.transform.resize(
+                value=(self.scale_setting, self.scale_setting, self.scale_setting),
+                constraint_axis=(False, False, False),
+            )
             bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-            
+
         # modify the shaders to flip the normal
         for shader in bpy.data.materials[start_material_count:]:
             nodes = shader.node_tree.nodes
             links = shader.node_tree.links
-            
+
             normal_texture = nodes.get("Image Texture.002")
             normal = nodes.get("Normal Map")
             if normal is None or normal_texture is None:
                 continue
-            
-            
+
             split = nodes.new(type="ShaderNodeSeparateRGB")
             invert = nodes.new(type="ShaderNodeInvert")
             combine = nodes.new(type="ShaderNodeCombineRGB")
-            
+
             links.new(normal_texture.outputs[0], split.inputs[0])
             links.new(split.outputs[0], combine.inputs[0])
             links.new(split.outputs[1], combine.inputs[1])
             links.new(split.outputs[2], invert.inputs[1])
             links.new(invert.outputs[0], combine.inputs[2])
             links.new(combine.outputs[0], normal.inputs[1])
-            
+
             # alpha = nodes.get("Image Texture.001")
             # bsdf = nodes.get("Principled BSDF")
             # links.new(alpha.outputs[1], bsdf.inputs[18])
-            
+
         # for ob in bpy.context.selected_objects:
-            # ob.material_slots[ob.active_material_index].material.blend_method = "BLEND"
-            
-        return {'FINISHED'}
+        # ob.material_slots[ob.active_material_index].material.blend_method = "BLEND"
+
+        return {"FINISHED"}
 
 
 # Only needed if you want to add into a dynamic menu
 def menu_func_import(self, context):
-    self.layout.operator(ImportMultipleObjs.bl_idname, text="Import multiple ACExplorer (.obj)")
+    self.layout.operator(
+        ImportMultipleObjs.bl_idname, text="Import multiple ACExplorer (.obj)"
+    )
 
 
 def register():

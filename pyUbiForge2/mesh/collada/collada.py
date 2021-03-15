@@ -19,8 +19,8 @@ class Collada:
             {
                 "xmlns": "http://www.collada.org/2005/11/COLLADASchema",
                 "version": "1.4.1",
-                "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
-            }
+                "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            },
         )
         self._collada.append(XML.fromstring(ASSET))
         self._dae = ElementTree(self._collada)
@@ -39,5 +39,5 @@ class Collada:
         self._dae.write(path, "unicode")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(Collada().to_string())

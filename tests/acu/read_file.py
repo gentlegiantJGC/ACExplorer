@@ -20,7 +20,7 @@ class ReadTestCase(unittest.TestCase):
         fail = 0
 
         def save_file_bytes():
-            with open(path, 'wb') as f:
+            with open(path, "wb") as f:
                 f.write(
                     self._game.get_file_bytes(file_id, forge_file_name, data_file_id)
                 )
@@ -32,15 +32,24 @@ class ReadTestCase(unittest.TestCase):
                         if count < start_count:
                             count += 1
                             continue
-                        log.info(f"{forge_file_name}, {data_file_id}, {file_id}-{file_name}")
-                        path = os.path.join("temp", f"{resource_id:08X}", forge_file_name, file_name)
+                        log.info(
+                            f"{forge_file_name}, {data_file_id}, {file_id}-{file_name}"
+                        )
+                        path = os.path.join(
+                            "temp", f"{resource_id:08X}", forge_file_name, file_name
+                        )
                         os.makedirs(os.path.dirname(path), exist_ok=True)
                         if FormatFile:
                             save_file_bytes()
 
                         try:
                             if FormatFile:
-                                self._game.get_file(file_id, forge_file_name, data_file_id, path + ".format")
+                                self._game.get_file(
+                                    file_id,
+                                    forge_file_name,
+                                    data_file_id,
+                                    path + ".format",
+                                )
                             else:
                                 self._game.get_file(file_id, forge_file_name)
                             success += 1
@@ -50,13 +59,20 @@ class ReadTestCase(unittest.TestCase):
                             save_file_bytes()
                             if not FormatFile:
                                 try:
-                                    self._game.get_file(file_id, forge_file_name, data_file_id, path + ".format")
+                                    self._game.get_file(
+                                        file_id,
+                                        forge_file_name,
+                                        data_file_id,
+                                        path + ".format",
+                                    )
                                 except:
                                     pass
                             fail += 1
                         count += 1
                         if count >= max_count:
-                            log.info(f"{100*success/max_count}% succeeded, {100*fail/max_count}% failed")
+                            log.info(
+                                f"{100*success/max_count}% succeeded, {100*fail/max_count}% failed"
+                            )
                             return
 
     def test_mesh(self):
@@ -72,5 +88,5 @@ class ReadTestCase(unittest.TestCase):
         self._read_file(int("24AECB7C", 16), 300)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

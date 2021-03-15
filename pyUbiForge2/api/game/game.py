@@ -1,4 +1,13 @@
-from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, Union, KeysView
+from typing import (
+    Generator,
+    Tuple,
+    Optional,
+    Dict,
+    TYPE_CHECKING,
+    Type,
+    Union,
+    KeysView,
+)
 import glob
 import os
 
@@ -30,12 +39,14 @@ class BaseGame:
         if self.__class__ is BaseGame:
             raise Exception("BaseGame must be subclassed")
         for attr, attr_name in (
-                (self.GameIdentifier, "GameIdentifier"),
-                (self.FileIDType, "FileIDType"),
-                (self.ResourceDType, "ResourceDType")
+            (self.GameIdentifier, "GameIdentifier"),
+            (self.FileIDType, "FileIDType"),
+            (self.ResourceDType, "ResourceDType"),
         ):
             if attr is None:
-                raise Exception(f"{attr_name} has not been set in {self.__class__.__name__}")
+                raise Exception(
+                    f"{attr_name} has not been set in {self.__class__.__name__}"
+                )
         if self.ForgeClass is None:
             raise Exception("ForgeClass attribute has not been overwritten.")
         self._file_readers: Dict[int, Type["BaseFile"]] = {}
@@ -63,7 +74,9 @@ class BaseGame:
 
         progress = 0
         for forge_name, forge in self.forge_files.items():
-            forge_progress_step = forge.file_size / memory_sum  # the amount this forge file contributes to the whole loading.
+            forge_progress_step = (
+                forge.file_size / memory_sum
+            )  # the amount this forge file contributes to the whole loading.
             for forge_progress in forge.init_iter():
                 yield progress + forge_progress * forge_progress_step, forge_progress
             log.info(f"Loaded {forge_name}")
@@ -72,7 +85,9 @@ class BaseGame:
         log.info("Populating file finder")
         for forge_file_name, forge_file in self.forge_files.items():
             for data_file_id, data_file in forge_file.data_files.items():
-                self._file_finder.add_data_file(forge_file_name, data_file_id, data_file.file_ids)
+                self._file_finder.add_data_file(
+                    forge_file_name, data_file_id, data_file.file_ids
+                )
         log.info("Finished populating file finder")
 
     @property
@@ -104,7 +119,9 @@ class BaseGame:
         if resource_type in self._file_readers:
             return self._file_readers[resource_type]
         else:
-            raise FileParserNotFound(f"No parser found for file type {resource_type:08X}")
+            raise FileParserNotFound(
+                f"No parser found for file type {resource_type:08X}"
+            )
 
     def get_parser_name(self, resource_type: int) -> str:
         if resource_type in self._file_readers:
@@ -113,22 +130,20 @@ class BaseGame:
             return "No Parser Found"
 
     def find_file(
-            self,
-            file_id: FileIdentifier,
-            forge_file: Optional[ForgeFileName] = None,
-            data_file_id: Optional[DataFileIdentifier] = None
-    ) -> Optional[
-        Tuple[ForgeFileName, DataFileIdentifier]
-    ]:
+        self,
+        file_id: FileIdentifier,
+        forge_file: Optional[ForgeFileName] = None,
+        data_file_id: Optional[DataFileIdentifier] = None,
+    ) -> Optional[Tuple[ForgeFileName, DataFileIdentifier]]:
         """Find the forge file name and data file id for a given file id.
         Will return None if the file does not exist."""
         return self._file_finder.find(file_id, forge_file, data_file_id)
 
     def get_file_bytes(
-            self,
-            file_id: FileIdentifier,
-            forge_file: Optional[ForgeFileName] = None,
-            data_file_id: Optional[DataFileIdentifier] = None
+        self,
+        file_id: FileIdentifier,
+        forge_file: Optional[ForgeFileName] = None,
+        data_file_id: Optional[DataFileIdentifier] = None,
     ) -> Optional[bytes]:
         """Get the binary representation of a given file id.
         Will return None if the file does not exist."""
@@ -140,16 +155,18 @@ class BaseGame:
             if self._file_cache.contains(forge_file, data_file_id, file_id):
                 return self._file_cache.get_file(forge_file, data_file_id, file_id)
             else:
-                files = self.get_forge_file(forge_file).get_decompressed_files_bytes(data_file_id)
+                files = self.get_forge_file(forge_file).get_decompressed_files_bytes(
+                    data_file_id
+                )
                 self._file_cache.add_data_file(forge_file, data_file_id, files)
                 return files[file_id]
 
     def get_file(
-            self,
-            file_id: FileIdentifier,
-            forge_file: Optional[ForgeFileName] = None,
-            data_file_id: Optional[DataFileIdentifier] = None,
-            format_file_path: str = None
+        self,
+        file_id: FileIdentifier,
+        forge_file: Optional[ForgeFileName] = None,
+        data_file_id: Optional[DataFileIdentifier] = None,
+        format_file_path: str = None,
     ):
         """Get the python class representation of a given file id.
         Will return None if the file does not exist.
@@ -158,7 +175,7 @@ class BaseGame:
 
         if isinstance(format_file_path, str):
             os.makedirs(os.path.dirname(format_file_path), exist_ok=True)
-            f = open(format_file_path, 'w')
+            f = open(format_file_path, "w")
             file_wrapper = FileFormatDataWrapper(file_bytes, self, f)
         else:
             f = None
@@ -240,7 +257,9 @@ class BaseGame:
         resource_type = file.read_resource_type()
         return self.read_file_data(file, file_id, resource_type)
 
-    def read_file_data(self, file: FileDataWrapper, file_id: int, resource_type: int) -> "BaseFile":
+    def read_file_data(
+        self, file: FileDataWrapper, file_id: int, resource_type: int
+    ) -> "BaseFile":
         """Read the file payload for a given resource type."""
         file.call_stack.append(resource_type)
         ret = self.get_parser(resource_type)(file_id, file)

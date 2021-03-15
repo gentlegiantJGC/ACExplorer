@@ -12,12 +12,13 @@ from pyUbiForge2.api.data_types import (
 
 class DataFile:
     __slots__ = ("_data_file_id", "_resource_type", "_name", "_files")
+
     def __init__(
-            self,
-            data_file_id: DataFileIdentifier,
-            resource_type: DataFileResourceType,
-            name: DataFileName,
-            files: FileStorage
+        self,
+        data_file_id: DataFileIdentifier,
+        resource_type: DataFileResourceType,
+        name: DataFileName,
+        files: FileStorage,
     ):
         self._data_file_id = data_file_id
         self._resource_type = resource_type

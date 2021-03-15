@@ -3,7 +3,7 @@ from typing import List
 
 
 class BaseMesh:
-    _name: str = 'unknown'
+    _name: str = "unknown"
     _vertices: numpy.ndarray = numpy.array((0, 3), numpy.float)
     _texture_vertices: numpy.ndarray = numpy.array((0, 3), numpy.float)
     _normals: numpy.ndarray = numpy.array((0, 3), numpy.float)

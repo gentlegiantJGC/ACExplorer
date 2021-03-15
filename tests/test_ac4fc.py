@@ -11,5 +11,5 @@ class AC4FCTestCase(BaseGameTestCase.BaseGameTestCase):
         return cls.setUpGame(Game, GamePath)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

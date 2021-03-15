@@ -43,17 +43,14 @@ class BaseForge:
         """Parse the forge file to load metadata and data file locations."""
         raise NotImplementedError
 
-    def get_compressed_data_file(
-            self,
-            data_file_id: DataFileIdentifier
-    ) -> bytes:
+    def get_compressed_data_file(self, data_file_id: DataFileIdentifier) -> bytes:
         """Get the compressed packaged binary data of the data file as it appears on disk.
 
         :param data_file_id: The numerical id of the data file
         :return: The bytes as they appear on disk
         """
         offset, size = self._data_file_location[data_file_id]
-        with open(self.path, 'rb') as f:
+        with open(self.path, "rb") as f:
             f.seek(offset)
             return f.read(size)
 
@@ -65,10 +62,7 @@ class BaseForge:
         """
         raise NotImplementedError
 
-    def get_decompressed_data_file(
-            self,
-            data_file_id: DataFileIdentifier
-    ) -> bytes:
+    def get_decompressed_data_file(self, data_file_id: DataFileIdentifier) -> bytes:
         """Decompress and return data for a given data file as a single block of bytes.
 
         :param data_file_id: The numerical id of the data file
@@ -77,24 +71,14 @@ class BaseForge:
         # Start byte and offset can be found in self._data_file_location
         return self._decompress_data_file(self.get_compressed_data_file(data_file_id))
 
-    def _unpack_decompressed_data_file(self, decompressed_bytes: bytes) -> Dict[
-        FileIdentifier,
-        Tuple[
-            FileResourceType,
-            FileName,
-            bytes
-        ]
-    ]:
+    def _unpack_decompressed_data_file(
+        self, decompressed_bytes: bytes
+    ) -> Dict[FileIdentifier, Tuple[FileResourceType, FileName, bytes]]:
         raise NotImplementedError
 
-    def get_decompressed_files(self, data_file_id: DataFileIdentifier) -> Dict[
-        FileIdentifier,
-        Tuple[
-            FileResourceType,
-            FileName,
-            bytes
-        ]
-    ]:
+    def get_decompressed_files(
+        self, data_file_id: DataFileIdentifier
+    ) -> Dict[FileIdentifier, Tuple[FileResourceType, FileName, bytes]]:
         """Get the data file unpacked into its individual files.
         This is a dictionary that converts from the file id to the metadata and file bytes.
         Use get_decompressed_files_bytes to get just the bytes.
@@ -104,20 +88,20 @@ class BaseForge:
         """
         if data_file_id in self.NonContainerDataFiles:
             raw_data = self.get_compressed_data_file(data_file_id)
-            return {
-                data_file_id: (0, "", raw_data)
-            }
+            return {data_file_id: (0, "", raw_data)}
         else:
             decompressed_data = self.get_decompressed_data_file(data_file_id)
             return self._unpack_decompressed_data_file(decompressed_data)
 
-    def get_decompressed_files_bytes(self, data_file_id: DataFileIdentifier) -> Dict[
-        FileIdentifier,
-        bytes
-    ]:
+    def get_decompressed_files_bytes(
+        self, data_file_id: DataFileIdentifier
+    ) -> Dict[FileIdentifier, bytes]:
         """Get the bytes for each file in a given data file.
         This is a dictionary that converts from the file id to file bytes."""
-        return {file_id: data[2] for file_id, data in self.get_decompressed_files(data_file_id).items()}
+        return {
+            file_id: data[2]
+            for file_id, data in self.get_decompressed_files(data_file_id).items()
+        }
 
     @property
     def game_identifier(self):
