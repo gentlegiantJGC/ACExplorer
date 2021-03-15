@@ -262,6 +262,6 @@ class BaseGame:
     ) -> "BaseFile":
         """Read the file payload for a given resource type."""
         file.call_stack.append(resource_type)
-        ret = self.get_parser(resource_type)(file_id, file)
+        ret = self.get_parser(resource_type).from_data(file_id, file)
         file.call_stack.pop()
         return ret

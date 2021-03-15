@@ -13,6 +13,7 @@ class BaseFile(ABC):
     def from_data(cls, file_id: int, file: FileDataWrapper):
         self = cls(file_id, file)
         self.load_from(file)
+        return self
 
     @abstractmethod
     def load_from(self, file: FileDataWrapper):
