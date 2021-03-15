@@ -1,0 +1,6 @@
+from pyUbiForge2 import BaseFile
+
+
+class NavMesh(BaseFile):
+    ResourceType = 0x5C7B52BE
+
