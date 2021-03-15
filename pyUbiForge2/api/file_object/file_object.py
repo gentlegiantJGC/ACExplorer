@@ -1,6 +1,6 @@
 import struct
 import numpy
-from typing import Tuple, Any, TYPE_CHECKING, Union, List
+from typing import Tuple, Any, TYPE_CHECKING, Union, List, Type
 from io import BytesIO
 
 from pyUbiForge2.api.errors import FileOverflowError
@@ -96,6 +96,9 @@ class FileDataWrapper(BytesIO):
     def read_resource_type(self) -> int:
         return self._read_struct(self._game.ResourceDType)[0]
 
+    def get_object_ref(self):
+        self._game.get_object_ref(self)
+
     def read_header_file(self) -> Union["BaseFile", int]:
         return self._game.read_header_file(self)
 
@@ -104,6 +107,9 @@ class FileDataWrapper(BytesIO):
 
     def read_switch(self):
         return self._game.read_switch(self)
+
+    def get_parser(self, resource_type: int) -> Type["BaseFile"]:
+        return self._game.get_parser(resource_type)
 
     def read_file(self) -> "BaseFile":
         return self._game.read_file(self)

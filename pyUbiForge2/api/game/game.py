@@ -1,4 +1,4 @@
-from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, List, Union, KeysView
+from typing import Generator, Tuple, Optional, Dict, TYPE_CHECKING, Type, Union, KeysView
 import glob
 import os
 
@@ -100,6 +100,12 @@ class BaseGame:
         # implement this in subclasses
         return self._file_readers.keys()
 
+    def get_parser(self, resource_type: int) -> Type["BaseFile"]:
+        if resource_type in self._file_readers:
+            return self._file_readers[resource_type]
+        else:
+            raise FileParserNotFound(f"No parser found for file type {resource_type:08X}")
+
     def get_parser_name(self, resource_type: int) -> str:
         if resource_type in self._file_readers:
             return self._file_readers[resource_type].__name__
@@ -175,6 +181,10 @@ class BaseGame:
             if f is not None:
                 f.close()
 
+    def get_object_ref(self, file: FileDataWrapper):
+        file.read_uint_8()
+        file.read_uint_32()
+
     def read_main_file(self, file: FileDataWrapper) -> "BaseFile":
         assert file.read_uint_8() == 1, "Expected the first byte to be 1"
         return file.read_file()
@@ -233,9 +243,6 @@ class BaseGame:
     def read_file_data(self, file: FileDataWrapper, file_id: int, resource_type: int) -> "BaseFile":
         """Read the file payload for a given resource type."""
         file.call_stack.append(resource_type)
-        if resource_type in self._file_readers:
-            ret = self._file_readers[resource_type](file_id, file)
-        else:
-            raise FileParserNotFound(f"No parser found for file type {resource_type:08X}")
+        ret = self.get_parser(resource_type)(file_id, file)
         file.call_stack.pop()
         return ret
