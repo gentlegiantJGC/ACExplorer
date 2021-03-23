@@ -6,4 +6,3 @@ class RepulsionZoneClip(SubclassBaseFile):
     ResourceType = 0xD2677661
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

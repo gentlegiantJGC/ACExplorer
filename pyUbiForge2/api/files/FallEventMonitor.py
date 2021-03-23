@@ -6,4 +6,3 @@ class FallEventMonitor(SubclassBaseFile):
     ResourceType = 0xDE161ABE
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

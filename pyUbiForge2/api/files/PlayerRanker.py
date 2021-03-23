@@ -6,4 +6,3 @@ class PlayerRanker(SubclassBaseFile):
     ResourceType = 0x40573183
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

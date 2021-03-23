@@ -6,4 +6,3 @@ class PadInputReader(SubclassBaseFile):
     ResourceType = 0x1ACF70EF
     ParentResourceType = _InputReader2.ResourceType
     parent: _InputReader2
-

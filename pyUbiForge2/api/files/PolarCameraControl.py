@@ -6,4 +6,3 @@ class PolarCameraControl(SubclassBaseFile):
     ResourceType = 0x4AD57894
     ParentResourceType = _CameraControl.ResourceType
     parent: _CameraControl
-

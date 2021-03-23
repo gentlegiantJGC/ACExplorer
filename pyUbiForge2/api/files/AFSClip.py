@@ -6,4 +6,3 @@ class AFSClip(SubclassBaseFile):
     ResourceType = 0xF5F4999C
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

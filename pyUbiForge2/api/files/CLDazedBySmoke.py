@@ -6,4 +6,3 @@ class CLDazedBySmoke(SubclassBaseFile):
     ResourceType = 0x7B49300B
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

@@ -6,4 +6,3 @@ class ProgressStringClip(SubclassBaseFile):
     ResourceType = 0x3B6DF5ED
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class HumanWallingData(SubclassBaseFile):
     ResourceType = 0xD79FB15B
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

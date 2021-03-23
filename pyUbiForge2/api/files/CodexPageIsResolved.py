@@ -6,4 +6,3 @@ class CodexPageIsResolved(SubclassBaseFile):
     ResourceType = 0xA6E4339C
     ParentResourceType = _ItemCriteria.ResourceType
     parent: _ItemCriteria
-

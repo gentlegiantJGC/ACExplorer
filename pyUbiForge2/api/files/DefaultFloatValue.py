@@ -6,4 +6,3 @@ class DefaultFloatValue(SubclassBaseFile):
     ResourceType = 0x9609ECDD
     ParentResourceType = _DefaultValue.ResourceType
     parent: _DefaultValue
-

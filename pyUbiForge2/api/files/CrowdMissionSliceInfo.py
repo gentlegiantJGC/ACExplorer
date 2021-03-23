@@ -6,4 +6,3 @@ class CrowdMissionSliceInfo(SubclassBaseFile):
     ResourceType = 0xB706A0A0
     ParentResourceType = _AdditionalSliceInfo.ResourceType
     parent: _AdditionalSliceInfo
-

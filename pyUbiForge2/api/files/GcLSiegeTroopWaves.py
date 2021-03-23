@@ -6,4 +6,3 @@ class GcLSiegeTroopWaves(SubclassBaseFile):
     ResourceType = 0xDF8FD2E3
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

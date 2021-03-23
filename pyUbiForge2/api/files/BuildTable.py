@@ -6,4 +6,3 @@ class BuildTable(SubclassBaseFile):
     ResourceType = 0x22ECBE63
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class ActivateEvent(SubclassBaseFile):
     ResourceType = 0xB0011C8A
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

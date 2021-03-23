@@ -6,4 +6,3 @@ class VillaCodexPageSettingUpdateEvent(SubclassBaseFile):
     ResourceType = 0x051FFCC2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

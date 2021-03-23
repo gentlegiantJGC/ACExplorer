@@ -6,4 +6,3 @@ class CannonControlDoLeaveEvent(SubclassBaseFile):
     ResourceType = 0xF7CF56EF
     ParentResourceType = _CannonControlDoEvent.ResourceType
     parent: _CannonControlDoEvent
-

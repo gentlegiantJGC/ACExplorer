@@ -6,4 +6,3 @@ class CrowdCompositionClip(SubclassBaseFile):
     ResourceType = 0xA61632B9
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

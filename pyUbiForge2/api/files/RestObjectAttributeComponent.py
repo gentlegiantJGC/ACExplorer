@@ -6,4 +6,3 @@ class RestObjectAttributeComponent(SubclassBaseFile):
     ResourceType = 0x19BC53F5
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

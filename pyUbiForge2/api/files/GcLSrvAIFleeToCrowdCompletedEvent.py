@@ -6,4 +6,3 @@ class GcLSrvAIFleeToCrowdCompletedEvent(SubclassBaseFile):
     ResourceType = 0xA760455F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

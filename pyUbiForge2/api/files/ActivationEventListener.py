@@ -6,4 +6,3 @@ class ActivationEventListener(SubclassBaseFile):
     ResourceType = 0x143E5904
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

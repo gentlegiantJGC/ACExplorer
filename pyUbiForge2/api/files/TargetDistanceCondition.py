@@ -6,4 +6,3 @@ class TargetDistanceCondition(SubclassBaseFile):
     ResourceType = 0xAD7466F6
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

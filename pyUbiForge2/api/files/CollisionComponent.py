@@ -6,4 +6,3 @@ class CollisionComponent(SubclassBaseFile):
     ResourceType = 0xAA95E301
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

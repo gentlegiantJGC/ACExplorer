@@ -6,4 +6,3 @@ class RegionCellData(SubclassBaseFile):
     ResourceType = 0xB6F1472B
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

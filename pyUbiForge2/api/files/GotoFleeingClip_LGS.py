@@ -6,4 +6,3 @@ class GotoFleeingClip_LGS(SubclassBaseFile):
     ResourceType = 0xC7B59DE6
     ParentResourceType = _CharacterLogicClip.ResourceType
     parent: _CharacterLogicClip
-

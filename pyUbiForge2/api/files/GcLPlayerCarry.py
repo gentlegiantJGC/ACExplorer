@@ -6,4 +6,3 @@ class GcLPlayerCarry(SubclassBaseFile):
     ResourceType = 0x58F55D34
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

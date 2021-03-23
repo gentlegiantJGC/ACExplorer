@@ -6,4 +6,3 @@ class DynamicActionBlockPusher(SubclassBaseFile):
     ResourceType = 0x1C6A7627
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

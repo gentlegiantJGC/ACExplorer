@@ -6,4 +6,3 @@ class PresentationEvent(SubclassBaseFile):
     ResourceType = 0x8F4EC70D
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

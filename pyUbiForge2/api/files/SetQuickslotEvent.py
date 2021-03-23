@@ -6,4 +6,3 @@ class SetQuickslotEvent(SubclassBaseFile):
     ResourceType = 0xC825EE34
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

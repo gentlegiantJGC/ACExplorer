@@ -6,4 +6,3 @@ class NotTrigger(SubclassBaseFile):
     ResourceType = 0x808367C5
     ParentResourceType = _StartTrigger.ResourceType
     parent: _StartTrigger
-

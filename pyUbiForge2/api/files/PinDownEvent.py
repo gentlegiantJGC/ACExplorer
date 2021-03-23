@@ -6,4 +6,3 @@ class PinDownEvent(SubclassBaseFile):
     ResourceType = 0x0A42778C
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

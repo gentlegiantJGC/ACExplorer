@@ -6,4 +6,3 @@ class VectorOutput(SubclassBaseFile):
     ResourceType = 0x1603ED4D
     ParentResourceType = _LinkableOutput.ResourceType
     parent: _LinkableOutput
-

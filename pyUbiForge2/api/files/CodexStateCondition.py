@@ -6,4 +6,3 @@ class CodexStateCondition(SubclassBaseFile):
     ResourceType = 0x9D09D195
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

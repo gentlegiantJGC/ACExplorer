@@ -6,4 +6,3 @@ class PortalSelectionStrategyNearestToMainCharacter(SubclassBaseFile):
     ResourceType = 0x96AD54B8
     ParentResourceType = _PortalSelectionStrategy.ResourceType
     parent: _PortalSelectionStrategy
-

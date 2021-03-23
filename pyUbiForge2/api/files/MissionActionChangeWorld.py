@@ -6,4 +6,3 @@ class MissionActionChangeWorld(SubclassBaseFile):
     ResourceType = 0x076BFF2D
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

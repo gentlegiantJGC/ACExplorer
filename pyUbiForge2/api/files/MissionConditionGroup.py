@@ -6,4 +6,3 @@ class MissionConditionGroup(SubclassBaseFile):
     ResourceType = 0x67405E69
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

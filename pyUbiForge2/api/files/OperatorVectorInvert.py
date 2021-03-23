@@ -6,4 +6,3 @@ class OperatorVectorInvert(SubclassBaseFile):
     ResourceType = 0xC5371D3D
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

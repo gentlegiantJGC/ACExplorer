@@ -6,4 +6,3 @@ class TextureMapSpec(SubclassBaseFile):
     ResourceType = 0x989DC6B2
     ParentResourceType = _TextureBase.ResourceType
     parent: _TextureBase
-

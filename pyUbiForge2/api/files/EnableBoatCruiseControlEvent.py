@@ -6,4 +6,3 @@ class EnableBoatCruiseControlEvent(SubclassBaseFile):
     ResourceType = 0x900F793D
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

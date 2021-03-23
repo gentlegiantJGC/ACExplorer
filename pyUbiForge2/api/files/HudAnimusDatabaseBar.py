@@ -6,4 +6,3 @@ class HudAnimusDatabaseBar(SubclassBaseFile):
     ResourceType = 0x00D4029F
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

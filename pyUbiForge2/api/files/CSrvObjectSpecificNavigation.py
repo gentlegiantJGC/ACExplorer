@@ -6,4 +6,3 @@ class CSrvObjectSpecificNavigation(SubclassBaseFile):
     ResourceType = 0x7603E962
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

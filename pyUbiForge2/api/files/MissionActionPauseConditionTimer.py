@@ -6,4 +6,3 @@ class MissionActionPauseConditionTimer(SubclassBaseFile):
     ResourceType = 0x3C953EB6
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

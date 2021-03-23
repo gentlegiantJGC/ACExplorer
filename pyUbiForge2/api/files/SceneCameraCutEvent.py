@@ -6,4 +6,3 @@ class SceneCameraCutEvent(SubclassBaseFile):
     ResourceType = 0xB0B357D4
     ParentResourceType = _SceneEvent.ResourceType
     parent: _SceneEvent
-

@@ -6,4 +6,3 @@ class DetectionZone(SubclassBaseFile):
     ResourceType = 0x1663A759
     ParentResourceType = _Zone.ResourceType
     parent: _Zone
-

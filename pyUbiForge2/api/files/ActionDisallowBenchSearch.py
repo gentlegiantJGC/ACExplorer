@@ -6,4 +6,3 @@ class ActionDisallowBenchSearch(SubclassBaseFile):
     ResourceType = 0x8EF3F710
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

@@ -6,4 +6,3 @@ class MissionActionChase(SubclassBaseFile):
     ResourceType = 0x8669358C
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

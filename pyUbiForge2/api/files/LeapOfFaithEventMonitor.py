@@ -6,4 +6,3 @@ class LeapOfFaithEventMonitor(SubclassBaseFile):
     ResourceType = 0xD204A3ED
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

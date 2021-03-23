@@ -6,4 +6,3 @@ class CameraTrajectoryPoint(SubclassBaseFile):
     ResourceType = 0xBA00422E
     ParentResourceType = _TrajectoryPoint.ResourceType
     parent: _TrajectoryPoint
-

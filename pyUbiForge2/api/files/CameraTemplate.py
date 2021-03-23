@@ -6,4 +6,3 @@ class CameraTemplate(SubclassBaseFile):
     ResourceType = 0x1AE89D54
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class SpaceReferenceOverrideClip(SubclassBaseFile):
     ResourceType = 0xF7489A2C
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

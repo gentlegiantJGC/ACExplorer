@@ -6,4 +6,3 @@ class HumanGliderPilotData(SubclassBaseFile):
     ResourceType = 0xB61807B4
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

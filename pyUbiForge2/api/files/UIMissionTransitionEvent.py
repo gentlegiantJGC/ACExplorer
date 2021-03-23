@@ -6,4 +6,3 @@ class UIMissionTransitionEvent(SubclassBaseFile):
     ResourceType = 0x2339121E
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

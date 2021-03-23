@@ -6,4 +6,3 @@ class ConstantValue(SubclassBaseFile):
     ResourceType = 0xAA890185
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

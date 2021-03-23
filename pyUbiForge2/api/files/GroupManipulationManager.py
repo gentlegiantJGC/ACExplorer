@@ -6,4 +6,3 @@ class GroupManipulationManager(SubclassBaseFile):
     ResourceType = 0xCD81133E
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

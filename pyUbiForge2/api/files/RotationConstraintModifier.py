@@ -6,4 +6,3 @@ class RotationConstraintModifier(SubclassBaseFile):
     ResourceType = 0xA2A0524C
     ParentResourceType = _BoneModifier.ResourceType
     parent: _BoneModifier
-

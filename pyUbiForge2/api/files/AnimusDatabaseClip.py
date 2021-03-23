@@ -6,4 +6,3 @@ class AnimusDatabaseClip(SubclassBaseFile):
     ResourceType = 0x6A45A972
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class WagonRollOverFinishedEvent(SubclassBaseFile):
     ResourceType = 0x88925BBC
     ParentResourceType = _WagonEvent.ResourceType
     parent: _WagonEvent
-

@@ -6,4 +6,3 @@ class CollectibleDistrictInfo(SubclassBaseFile):
     ResourceType = 0x530E8350
     ParentResourceType = _MemoryInfo.ResourceType
     parent: _MemoryInfo
-

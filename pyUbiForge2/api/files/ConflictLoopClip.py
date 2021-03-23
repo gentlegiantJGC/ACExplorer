@@ -6,4 +6,3 @@ class ConflictLoopClip(SubclassBaseFile):
     ResourceType = 0xAA5F263C
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class SwitchableTargetTracker(SubclassBaseFile):
     ResourceType = 0x849648F4
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

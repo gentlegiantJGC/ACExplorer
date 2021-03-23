@@ -6,4 +6,3 @@ class ActionSetPlayerRank(SubclassBaseFile):
     ResourceType = 0x1145936D
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

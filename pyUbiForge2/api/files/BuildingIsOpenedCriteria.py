@@ -6,4 +6,3 @@ class BuildingIsOpenedCriteria(SubclassBaseFile):
     ResourceType = 0xE7DFB756
     ParentResourceType = _BuildingCriteria.ResourceType
     parent: _BuildingCriteria
-

@@ -6,4 +6,3 @@ class ProvokeMode(SubclassBaseFile):
     ResourceType = 0x50C3E32E
     ParentResourceType = _ConfrontationMode.ResourceType
     parent: _ConfrontationMode
-

@@ -6,4 +6,3 @@ class AccomplishmentEventMonitor(SubclassBaseFile):
     ResourceType = 0xDE912BC9
     ParentResourceType = _AccomplishmentMonitor.ResourceType
     parent: _AccomplishmentMonitor
-

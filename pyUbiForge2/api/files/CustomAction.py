@@ -6,4 +6,3 @@ class CustomAction(SubclassBaseFile):
     ResourceType = 0x116446A9
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

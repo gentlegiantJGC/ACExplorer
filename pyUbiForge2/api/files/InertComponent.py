@@ -6,4 +6,3 @@ class InertComponent(SubclassBaseFile):
     ResourceType = 0x0E5A450A
     ParentResourceType = _PhysicComponent.ResourceType
     parent: _PhysicComponent
-

@@ -6,4 +6,3 @@ class GameMenu(SubclassBaseFile):
     ResourceType = 0x7270FDC4
     ParentResourceType = _FireItem.ResourceType
     parent: _FireItem
-

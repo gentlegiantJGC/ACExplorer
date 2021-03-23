@@ -6,4 +6,3 @@ class BaseReactionPack(SubclassBaseFile):
     ResourceType = 0x6E46192C
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

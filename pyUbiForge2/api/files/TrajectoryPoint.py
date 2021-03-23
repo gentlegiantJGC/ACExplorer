@@ -6,4 +6,3 @@ class TrajectoryPoint(SubclassBaseFile):
     ResourceType = 0x917C611D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

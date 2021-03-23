@@ -6,4 +6,3 @@ class HorseGameplayCoordinatorWorldComponent(SubclassBaseFile):
     ResourceType = 0x9311BE24
     ParentResourceType = _MandatoryWorldComponent.ResourceType
     parent: _MandatoryWorldComponent
-

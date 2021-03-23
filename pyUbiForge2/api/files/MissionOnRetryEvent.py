@@ -6,4 +6,3 @@ class MissionOnRetryEvent(SubclassBaseFile):
     ResourceType = 0xCCBE9F9A
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

@@ -6,4 +6,3 @@ class ConflictStateChangedUIEvent(SubclassBaseFile):
     ResourceType = 0xE6B18123
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

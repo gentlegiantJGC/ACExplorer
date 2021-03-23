@@ -6,4 +6,3 @@ class HumanPushableContextData(SubclassBaseFile):
     ResourceType = 0x0BF8A26C
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

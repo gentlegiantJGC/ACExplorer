@@ -6,4 +6,3 @@ class HumanLadderData(SubclassBaseFile):
     ResourceType = 0x3E5C9DDB
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

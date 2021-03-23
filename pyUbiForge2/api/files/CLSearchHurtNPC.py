@@ -6,4 +6,3 @@ class CLSearchHurtNPC(SubclassBaseFile):
     ResourceType = 0x0280E016
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

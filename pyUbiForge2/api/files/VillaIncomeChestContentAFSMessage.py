@@ -6,4 +6,3 @@ class VillaIncomeChestContentAFSMessage(SubclassBaseFile):
     ResourceType = 0x33A2CC12
     ParentResourceType = _ActionAFSMessage.ResourceType
     parent: _ActionAFSMessage
-

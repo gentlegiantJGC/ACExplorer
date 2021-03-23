@@ -6,4 +6,3 @@ class CameraRelevanceExecutionPolicy(SubclassBaseFile):
     ResourceType = 0xC280CDB3
     ParentResourceType = _IExecutionPolicy.ResourceType
     parent: _IExecutionPolicy
-

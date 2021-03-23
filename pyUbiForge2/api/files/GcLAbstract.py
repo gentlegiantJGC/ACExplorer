@@ -6,4 +6,3 @@ class GcLAbstract(SubclassBaseFile):
     ResourceType = 0x7FE3107E
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

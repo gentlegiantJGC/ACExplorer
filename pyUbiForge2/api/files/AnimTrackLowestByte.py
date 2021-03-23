@@ -6,4 +6,3 @@ class AnimTrackLowestByte(SubclassBaseFile):
     ResourceType = 0x89F1B891
     ParentResourceType = _AnimTrackByte.ResourceType
     parent: _AnimTrackByte
-

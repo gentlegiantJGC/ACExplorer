@@ -6,4 +6,3 @@ class CLAbstractReaction(SubclassBaseFile):
     ResourceType = 0x8F94BD8E
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

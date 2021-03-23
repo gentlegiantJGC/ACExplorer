@@ -6,4 +6,3 @@ class SetPlayerRankClip(SubclassBaseFile):
     ResourceType = 0xB9938679
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

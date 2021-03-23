@@ -6,4 +6,3 @@ class VillaInventoryItemComponent(SubclassBaseFile):
     ResourceType = 0xCBD98F8B
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

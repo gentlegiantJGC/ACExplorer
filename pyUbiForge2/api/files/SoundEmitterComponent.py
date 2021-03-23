@@ -6,4 +6,3 @@ class SoundEmitterComponent(SubclassBaseFile):
     ResourceType = 0x056F86AB
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class BipedComponent(SubclassBaseFile):
     ResourceType = 0x08C9B2F3
     ParentResourceType = _CharacterController.ResourceType
     parent: _CharacterController
-

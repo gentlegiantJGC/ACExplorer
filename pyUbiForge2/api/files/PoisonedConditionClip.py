@@ -6,4 +6,3 @@ class PoisonedConditionClip(SubclassBaseFile):
     ResourceType = 0xC6FA16A1
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

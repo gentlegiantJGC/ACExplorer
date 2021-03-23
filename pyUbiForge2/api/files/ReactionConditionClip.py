@@ -6,4 +6,3 @@ class ReactionConditionClip(SubclassBaseFile):
     ResourceType = 0xB83324E0
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

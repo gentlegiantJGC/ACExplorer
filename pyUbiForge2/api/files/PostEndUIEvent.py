@@ -6,4 +6,3 @@ class PostEndUIEvent(SubclassBaseFile):
     ResourceType = 0x1F78B8DD
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

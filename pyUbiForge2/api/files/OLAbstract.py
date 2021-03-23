@@ -6,4 +6,3 @@ class OLAbstract(SubclassBaseFile):
     ResourceType = 0x5DFC26D6
     ParentResourceType = _ELAbstract.ResourceType
     parent: _ELAbstract
-

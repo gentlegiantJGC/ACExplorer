@@ -6,4 +6,3 @@ class TitleMenu(SubclassBaseFile):
     ResourceType = 0xCCA336D1
     ParentResourceType = _GameMenu.ResourceType
     parent: _GameMenu
-

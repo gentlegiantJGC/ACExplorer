@@ -6,4 +6,3 @@ class MetaThumbnail(SubclassBaseFile):
     ResourceType = 0x9255529B
     ParentResourceType = _MetaDataItem.ResourceType
     parent: _MetaDataItem
-

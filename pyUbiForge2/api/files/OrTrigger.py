@@ -6,4 +6,3 @@ class OrTrigger(SubclassBaseFile):
     ResourceType = 0x41EDA72A
     ParentResourceType = _StartTrigger.ResourceType
     parent: _StartTrigger
-

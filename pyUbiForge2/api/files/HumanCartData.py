@@ -6,4 +6,3 @@ class HumanCartData(SubclassBaseFile):
     ResourceType = 0x8939F73C
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

@@ -6,4 +6,3 @@ class FollowBoneModifier(SubclassBaseFile):
     ResourceType = 0x13AE4B43
     ParentResourceType = _BoneModifier.ResourceType
     parent: _BoneModifier
-

@@ -6,4 +6,3 @@ class MissionStepGroup(SubclassBaseFile):
     ResourceType = 0x0C403B8C
     ParentResourceType = _MissionStep.ResourceType
     parent: _MissionStep
-

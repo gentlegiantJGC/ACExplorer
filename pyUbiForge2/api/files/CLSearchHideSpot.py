@@ -6,4 +6,3 @@ class CLSearchHideSpot(SubclassBaseFile):
     ResourceType = 0xFAC2641B
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

@@ -6,4 +6,3 @@ class GSrvTargeting(SubclassBaseFile):
     ResourceType = 0x5EAE8454
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

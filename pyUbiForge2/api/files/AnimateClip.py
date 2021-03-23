@@ -6,4 +6,3 @@ class AnimateClip(SubclassBaseFile):
     ResourceType = 0xC8B7556B
     ParentResourceType = _TimedClip.ResourceType
     parent: _TimedClip
-

@@ -6,4 +6,3 @@ class CSrvTargeting(SubclassBaseFile):
     ResourceType = 0x9E17EEC2
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

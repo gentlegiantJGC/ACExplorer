@@ -6,4 +6,3 @@ class AnimTrackLinearByte(SubclassBaseFile):
     ResourceType = 0x5841BD2B
     ParentResourceType = _AnimTrackByte.ResourceType
     parent: _AnimTrackByte
-

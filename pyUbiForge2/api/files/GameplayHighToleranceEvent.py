@@ -6,4 +6,3 @@ class GameplayHighToleranceEvent(SubclassBaseFile):
     ResourceType = 0x7F23DA38
     ParentResourceType = _GameplayEvent.ResourceType
     parent: _GameplayEvent
-

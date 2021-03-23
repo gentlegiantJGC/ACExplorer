@@ -6,4 +6,3 @@ class VehicleLeonardoWarningEvent(SubclassBaseFile):
     ResourceType = 0xDF229183
     ParentResourceType = _VehicleEvent.ResourceType
     parent: _VehicleEvent
-

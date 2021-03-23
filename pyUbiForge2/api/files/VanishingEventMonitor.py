@@ -6,4 +6,3 @@ class VanishingEventMonitor(SubclassBaseFile):
     ResourceType = 0x5976F65F
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

@@ -6,4 +6,3 @@ class WangTextureTile(SubclassBaseFile):
     ResourceType = 0xB91F3891
     ParentResourceType = _WangTile.ResourceType
     parent: _WangTile
-

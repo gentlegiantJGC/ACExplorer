@@ -6,4 +6,3 @@ class MissionActionGlobalMapMarker(SubclassBaseFile):
     ResourceType = 0x31ABA02E
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

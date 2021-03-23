@@ -6,4 +6,3 @@ class ExecutionSet(SubclassBaseFile):
     ResourceType = 0xF73B28B0
     ParentResourceType = _IExecution.ResourceType
     parent: _IExecution
-

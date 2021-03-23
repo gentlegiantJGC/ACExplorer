@@ -6,4 +6,3 @@ class Clip(SubclassBaseFile):
     ResourceType = 0x0D12BB59
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

@@ -6,4 +6,3 @@ class VigilantesBlockingEventMonitor(SubclassBaseFile):
     ResourceType = 0xBDA88B49
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

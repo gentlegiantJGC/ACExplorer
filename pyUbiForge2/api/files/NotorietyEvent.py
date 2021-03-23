@@ -6,4 +6,3 @@ class NotorietyEvent(SubclassBaseFile):
     ResourceType = 0x044ABAA2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

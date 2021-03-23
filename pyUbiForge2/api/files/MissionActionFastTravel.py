@@ -6,4 +6,3 @@ class MissionActionFastTravel(SubclassBaseFile):
     ResourceType = 0x2DF1490A
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

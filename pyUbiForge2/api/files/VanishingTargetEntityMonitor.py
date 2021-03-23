@@ -6,4 +6,3 @@ class VanishingTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0xAC09012C
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

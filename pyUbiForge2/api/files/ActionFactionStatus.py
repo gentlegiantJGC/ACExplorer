@@ -6,4 +6,3 @@ class ActionFactionStatus(SubclassBaseFile):
     ResourceType = 0x983E4E0C
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

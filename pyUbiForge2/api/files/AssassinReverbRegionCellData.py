@@ -6,4 +6,3 @@ class AssassinReverbRegionCellData(SubclassBaseFile):
     ResourceType = 0xAE94D868
     ParentResourceType = _ReverbRegionCellData.ResourceType
     parent: _ReverbRegionCellData
-

@@ -6,4 +6,3 @@ class AdditionalSliceInfo(SubclassBaseFile):
     ResourceType = 0x13649EC1
     ParentResourceType = _SliceInfo.ResourceType
     parent: _SliceInfo
-

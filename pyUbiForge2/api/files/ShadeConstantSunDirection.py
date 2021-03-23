@@ -6,4 +6,3 @@ class ShadeConstantSunDirection(SubclassBaseFile):
     ResourceType = 0xBE260850
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

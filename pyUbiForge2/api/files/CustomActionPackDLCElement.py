@@ -6,4 +6,3 @@ class CustomActionPackDLCElement(SubclassBaseFile):
     ResourceType = 0xAB9D5E69
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

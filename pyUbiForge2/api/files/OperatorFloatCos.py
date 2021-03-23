@@ -6,4 +6,3 @@ class OperatorFloatCos(SubclassBaseFile):
     ResourceType = 0xD8ECC03F
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

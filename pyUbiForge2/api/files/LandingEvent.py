@@ -6,4 +6,3 @@ class LandingEvent(SubclassBaseFile):
     ResourceType = 0x88A81931
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

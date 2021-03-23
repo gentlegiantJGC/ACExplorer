@@ -6,4 +6,3 @@ class PlayerInConflictUIEvent(SubclassBaseFile):
     ResourceType = 0xCBA5E396
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

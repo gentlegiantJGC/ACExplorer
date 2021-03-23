@@ -6,4 +6,3 @@ class CLArcherDetectNPC(SubclassBaseFile):
     ResourceType = 0x36F8BFDC
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

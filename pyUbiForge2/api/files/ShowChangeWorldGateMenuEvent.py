@@ -6,4 +6,3 @@ class ShowChangeWorldGateMenuEvent(SubclassBaseFile):
     ResourceType = 0x7F30E564
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

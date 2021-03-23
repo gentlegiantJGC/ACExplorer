@@ -6,4 +6,3 @@ class MissionGameplayInteractEvent(SubclassBaseFile):
     ResourceType = 0xC83931A7
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

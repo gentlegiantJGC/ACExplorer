@@ -6,4 +6,3 @@ class ActionFilterConditionClip(SubclassBaseFile):
     ResourceType = 0x6925E8FB
     ParentResourceType = _WatchActorConditionClip.ResourceType
     parent: _WatchActorConditionClip
-

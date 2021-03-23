@@ -6,4 +6,3 @@ class CarryEntityClip(SubclassBaseFile):
     ResourceType = 0x18106FCC
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

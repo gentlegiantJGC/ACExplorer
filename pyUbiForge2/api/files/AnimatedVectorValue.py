@@ -6,4 +6,3 @@ class AnimatedVectorValue(SubclassBaseFile):
     ResourceType = 0x67631517
     ParentResourceType = _AnimatedValue.ResourceType
     parent: _AnimatedValue
-

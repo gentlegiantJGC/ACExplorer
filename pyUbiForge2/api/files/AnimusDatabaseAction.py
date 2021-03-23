@@ -6,4 +6,3 @@ class AnimusDatabaseAction(SubclassBaseFile):
     ResourceType = 0xC5A962D2
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

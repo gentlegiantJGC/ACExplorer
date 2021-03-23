@@ -6,4 +6,3 @@ class OperatorFloatClamp(SubclassBaseFile):
     ResourceType = 0x0F229EB9
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class GraphRuleBook(SubclassBaseFile):
     ResourceType = 0x4A77CEFE
     ParentResourceType = _IGraphRule.ResourceType
     parent: _IGraphRule
-

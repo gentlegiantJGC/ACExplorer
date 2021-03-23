@@ -6,4 +6,3 @@ class TargetMainBehaviorEntityMonitor(SubclassBaseFile):
     ResourceType = 0x7D6FE251
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

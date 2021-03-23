@@ -6,4 +6,3 @@ class MissionActionAFSMessage(SubclassBaseFile):
     ResourceType = 0xB7E532B1
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

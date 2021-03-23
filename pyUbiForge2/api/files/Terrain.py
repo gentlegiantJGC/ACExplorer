@@ -6,4 +6,3 @@ class Terrain(SubclassBaseFile):
     ResourceType = 0x07CB6A2D
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

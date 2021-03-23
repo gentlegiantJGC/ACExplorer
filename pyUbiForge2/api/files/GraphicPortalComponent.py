@@ -6,4 +6,3 @@ class GraphicPortalComponent(SubclassBaseFile):
     ResourceType = 0xD5E907BD
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

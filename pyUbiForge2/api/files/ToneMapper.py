@@ -6,4 +6,3 @@ class ToneMapper(SubclassBaseFile):
     ResourceType = 0x429BD18B
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

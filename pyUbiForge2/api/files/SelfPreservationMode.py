@@ -6,4 +6,3 @@ class SelfPreservationMode(SubclassBaseFile):
     ResourceType = 0x3FBC8C9D
     ParentResourceType = _ReactionMode.ResourceType
     parent: _ReactionMode
-

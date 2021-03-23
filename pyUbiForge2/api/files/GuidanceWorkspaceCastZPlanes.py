@@ -6,4 +6,3 @@ class GuidanceWorkspaceCastZPlanes(SubclassBaseFile):
     ResourceType = 0x2AF50E8A
     ParentResourceType = _GuidanceTask.ResourceType
     parent: _GuidanceTask
-

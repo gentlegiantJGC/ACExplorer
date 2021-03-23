@@ -6,4 +6,3 @@ class CollectibleComponent(SubclassBaseFile):
     ResourceType = 0x4EC96943
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class LGSSolvedAction(SubclassBaseFile):
     ResourceType = 0x1E128D7D
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

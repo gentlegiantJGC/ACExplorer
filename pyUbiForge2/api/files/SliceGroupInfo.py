@@ -6,4 +6,3 @@ class SliceGroupInfo(SubclassBaseFile):
     ResourceType = 0x94216457
     ParentResourceType = _MemoryInfo.ResourceType
     parent: _MemoryInfo
-

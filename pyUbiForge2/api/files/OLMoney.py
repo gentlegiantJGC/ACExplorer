@@ -6,4 +6,3 @@ class OLMoney(SubclassBaseFile):
     ResourceType = 0xE789DB04
     ParentResourceType = _OLAbstract.ResourceType
     parent: _OLAbstract
-

@@ -6,4 +6,3 @@ class FightCameraSettings(SubclassBaseFile):
     ResourceType = 0x3967237E
     ParentResourceType = _SweetCameraSettings.ResourceType
     parent: _SweetCameraSettings
-

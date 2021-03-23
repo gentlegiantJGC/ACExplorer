@@ -6,4 +6,3 @@ class ShopItemSettings(SubclassBaseFile):
     ResourceType = 0xE0E2E1D1
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

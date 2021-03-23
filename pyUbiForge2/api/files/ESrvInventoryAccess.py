@@ -6,4 +6,3 @@ class ESrvInventoryAccess(SubclassBaseFile):
     ResourceType = 0xE32A8929
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

@@ -6,4 +6,3 @@ class SplineCamera2(SubclassBaseFile):
     ResourceType = 0xDCBDF3EB
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

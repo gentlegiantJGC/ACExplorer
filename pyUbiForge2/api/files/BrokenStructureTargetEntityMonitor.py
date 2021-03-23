@@ -6,4 +6,3 @@ class BrokenStructureTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0xE44D7331
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

@@ -6,4 +6,3 @@ class CameraAfterSwitchEvent(SubclassBaseFile):
     ResourceType = 0xD45B6EC2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

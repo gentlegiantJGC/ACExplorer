@@ -6,4 +6,3 @@ class TriggerComponent(SubclassBaseFile):
     ResourceType = 0xADF1D5E6
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

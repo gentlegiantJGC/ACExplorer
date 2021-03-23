@@ -6,4 +6,3 @@ class AnimusCameraSettings(SubclassBaseFile):
     ResourceType = 0xD5402DD9
     ParentResourceType = _FixedCameraSettings.ResourceType
     parent: _FixedCameraSettings
-

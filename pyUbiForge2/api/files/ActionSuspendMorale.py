@@ -6,4 +6,3 @@ class ActionSuspendMorale(SubclassBaseFile):
     ResourceType = 0x0E8205E8
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

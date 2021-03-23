@@ -6,4 +6,3 @@ class VillaBuildingComponent(SubclassBaseFile):
     ResourceType = 0xC681FDB3
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

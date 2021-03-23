@@ -6,4 +6,3 @@ class VectorInput(SubclassBaseFile):
     ResourceType = 0x656931BC
     ParentResourceType = _LinkableInput.ResourceType
     parent: _LinkableInput
-

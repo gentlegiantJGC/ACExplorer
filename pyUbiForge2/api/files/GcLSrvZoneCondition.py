@@ -6,4 +6,3 @@ class GcLSrvZoneCondition(SubclassBaseFile):
     ResourceType = 0xC09A97A9
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

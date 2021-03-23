@@ -6,4 +6,3 @@ class NonRepetitionPolicy(SubclassBaseFile):
     ResourceType = 0x701D1811
     ParentResourceType = _IExecutionPolicy.ResourceType
     parent: _IExecutionPolicy
-

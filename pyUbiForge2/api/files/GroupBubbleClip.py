@@ -6,4 +6,3 @@ class GroupBubbleClip(SubclassBaseFile):
     ResourceType = 0x4A4E5340
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

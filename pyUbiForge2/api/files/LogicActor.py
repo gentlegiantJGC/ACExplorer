@@ -6,4 +6,3 @@ class LogicActor(SubclassBaseFile):
     ResourceType = 0xED2092AD
     ParentResourceType = _SceneActor.ResourceType
     parent: _SceneActor
-

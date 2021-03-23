@@ -6,4 +6,3 @@ class CutCameraTransition(SubclassBaseFile):
     ResourceType = 0xD8196FAE
     ParentResourceType = _ICameraTransition.ResourceType
     parent: _ICameraTransition
-

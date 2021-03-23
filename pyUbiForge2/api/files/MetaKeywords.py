@@ -6,4 +6,3 @@ class MetaKeywords(SubclassBaseFile):
     ResourceType = 0x762BF26F
     ParentResourceType = _MetaDataItem.ResourceType
     parent: _MetaDataItem
-

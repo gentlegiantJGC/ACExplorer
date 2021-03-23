@@ -6,4 +6,3 @@ class TimeOfDayConditionClip(SubclassBaseFile):
     ResourceType = 0xEADEB281
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

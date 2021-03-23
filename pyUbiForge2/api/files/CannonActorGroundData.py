@@ -6,4 +6,3 @@ class CannonActorGroundData(SubclassBaseFile):
     ResourceType = 0x4B330A8F
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

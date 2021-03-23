@@ -6,4 +6,3 @@ class TeleportHelper(SubclassBaseFile):
     ResourceType = 0x428339E2
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

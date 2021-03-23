@@ -6,4 +6,3 @@ class ShadeConstantEntityToCameraDistance(SubclassBaseFile):
     ResourceType = 0xD6004EC3
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

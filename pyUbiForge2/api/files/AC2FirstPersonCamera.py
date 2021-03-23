@@ -6,4 +6,3 @@ class AC2FirstPersonCamera(SubclassBaseFile):
     ResourceType = 0xE2AE5A1F
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

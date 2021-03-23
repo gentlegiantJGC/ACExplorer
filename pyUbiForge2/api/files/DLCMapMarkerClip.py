@@ -6,4 +6,3 @@ class DLCMapMarkerClip(SubclassBaseFile):
     ResourceType = 0xA3B3ACDC
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

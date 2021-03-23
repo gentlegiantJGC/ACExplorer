@@ -6,4 +6,3 @@ class CharacterLowMoraleFleeEvent(SubclassBaseFile):
     ResourceType = 0x5ED51062
     ParentResourceType = _CharacterFleeEvent.ResourceType
     parent: _CharacterFleeEvent
-

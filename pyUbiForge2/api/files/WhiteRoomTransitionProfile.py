@@ -6,4 +6,3 @@ class WhiteRoomTransitionProfile(SubclassBaseFile):
     ResourceType = 0x1756B2BA
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

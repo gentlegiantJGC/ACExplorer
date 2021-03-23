@@ -6,4 +6,3 @@ class SkeletonComponent(SubclassBaseFile):
     ResourceType = 0x71FDA747
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

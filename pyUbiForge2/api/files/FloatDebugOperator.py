@@ -6,4 +6,3 @@ class FloatDebugOperator(SubclassBaseFile):
     ResourceType = 0x2C5703CC
     ParentResourceType = _DebugOperator.ResourceType
     parent: _DebugOperator
-

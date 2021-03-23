@@ -6,4 +6,3 @@ class MissionStepSequenceScheduler(SubclassBaseFile):
     ResourceType = 0x0F3CCC46
     ParentResourceType = _MissionStepScheduler.ResourceType
     parent: _MissionStepScheduler
-

@@ -6,4 +6,3 @@ class FreeCinematicCamera(SubclassBaseFile):
     ResourceType = 0x4F7817C7
     ParentResourceType = _Camera.ResourceType
     parent: _Camera
-

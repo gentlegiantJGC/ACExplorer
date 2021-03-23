@@ -6,4 +6,3 @@ class VillaIncomeChestContentAFSClip(SubclassBaseFile):
     ResourceType = 0xFE8DF8C2
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

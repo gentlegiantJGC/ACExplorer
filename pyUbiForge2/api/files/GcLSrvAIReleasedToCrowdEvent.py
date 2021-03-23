@@ -6,4 +6,3 @@ class GcLSrvAIReleasedToCrowdEvent(SubclassBaseFile):
     ResourceType = 0x871C19ED
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

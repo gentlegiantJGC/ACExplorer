@@ -6,4 +6,3 @@ class RopeCutClip(SubclassBaseFile):
     ResourceType = 0x0D193622
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

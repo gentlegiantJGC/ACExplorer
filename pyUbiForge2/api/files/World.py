@@ -6,4 +6,3 @@ class World(SubclassBaseFile):
     ResourceType = 0xFBB63E47
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

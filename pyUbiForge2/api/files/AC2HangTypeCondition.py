@@ -6,4 +6,3 @@ class AC2HangTypeCondition(SubclassBaseFile):
     ResourceType = 0xCD15CEFF
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

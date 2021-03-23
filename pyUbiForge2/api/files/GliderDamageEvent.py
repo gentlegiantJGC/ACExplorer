@@ -6,4 +6,3 @@ class GliderDamageEvent(SubclassBaseFile):
     ResourceType = 0x93746F1C
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

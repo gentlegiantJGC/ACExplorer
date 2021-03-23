@@ -6,4 +6,3 @@ class TargetLockingModifier(SubclassBaseFile):
     ResourceType = 0x74F8F798
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

@@ -6,4 +6,3 @@ class PlayerAttributesBuilderLevelClip(SubclassBaseFile):
     ResourceType = 0x8BCD0854
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

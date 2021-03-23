@@ -6,4 +6,3 @@ class PickpocketTrackingEvent(SubclassBaseFile):
     ResourceType = 0x7E69A3D1
     ParentResourceType = _CameraEvent.ResourceType
     parent: _CameraEvent
-

@@ -6,4 +6,3 @@ class EjectRiderEvent(SubclassBaseFile):
     ResourceType = 0xC807B79A
     ParentResourceType = _HorseEvent.ResourceType
     parent: _HorseEvent
-

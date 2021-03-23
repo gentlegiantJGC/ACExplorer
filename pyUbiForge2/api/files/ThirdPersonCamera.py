@@ -6,4 +6,3 @@ class ThirdPersonCamera(SubclassBaseFile):
     ResourceType = 0x32FFA863
     ParentResourceType = _PolarCamera.ResourceType
     parent: _PolarCamera
-

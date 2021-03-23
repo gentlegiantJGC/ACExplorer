@@ -6,4 +6,3 @@ class UIParams(SubclassBaseFile):
     ResourceType = 0x90D7B807
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

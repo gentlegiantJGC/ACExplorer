@@ -6,4 +6,3 @@ class GcLBodyGuard(SubclassBaseFile):
     ResourceType = 0x7014E9BB
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

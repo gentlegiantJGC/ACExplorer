@@ -6,4 +6,3 @@ class CharacterHasLogicConditionClip(SubclassBaseFile):
     ResourceType = 0x76C906A8
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

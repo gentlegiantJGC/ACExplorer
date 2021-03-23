@@ -6,4 +6,3 @@ class WatchMode(SubclassBaseFile):
     ResourceType = 0xC5C21AFD
     ParentResourceType = _ObservationMode.ResourceType
     parent: _ObservationMode
-

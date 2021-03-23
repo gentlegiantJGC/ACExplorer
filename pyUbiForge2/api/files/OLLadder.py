@@ -6,4 +6,3 @@ class OLLadder(SubclassBaseFile):
     ResourceType = 0x97E70895
     ParentResourceType = _OLAbstract.ResourceType
     parent: _OLAbstract
-

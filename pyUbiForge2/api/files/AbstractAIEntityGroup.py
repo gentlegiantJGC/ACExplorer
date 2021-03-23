@@ -6,4 +6,3 @@ class AbstractAIEntityGroup(SubclassBaseFile):
     ResourceType = 0xC8AEE147
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class CSrvPlayerHealth(SubclassBaseFile):
     ResourceType = 0xFA21FFCF
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

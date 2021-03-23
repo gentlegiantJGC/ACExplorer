@@ -6,4 +6,3 @@ class CSrvGroupMember(SubclassBaseFile):
     ResourceType = 0x06A717F0
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

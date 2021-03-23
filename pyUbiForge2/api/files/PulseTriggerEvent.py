@@ -6,4 +6,3 @@ class PulseTriggerEvent(SubclassBaseFile):
     ResourceType = 0x511A8DED
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

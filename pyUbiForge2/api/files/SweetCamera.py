@@ -6,4 +6,3 @@ class SweetCamera(SubclassBaseFile):
     ResourceType = 0x85E440B4
     ParentResourceType = _ThirdPersonCamera.ResourceType
     parent: _ThirdPersonCamera
-

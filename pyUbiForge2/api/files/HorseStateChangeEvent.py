@@ -6,4 +6,3 @@ class HorseStateChangeEvent(SubclassBaseFile):
     ResourceType = 0xF40AD66B
     ParentResourceType = _HorseEvent.ResourceType
     parent: _HorseEvent
-

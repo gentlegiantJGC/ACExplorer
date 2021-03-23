@@ -6,4 +6,3 @@ class TestEvent(SubclassBaseFile):
     ResourceType = 0x20C2FDD4
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

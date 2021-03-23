@@ -6,4 +6,3 @@ class UIVillaItemListParams(SubclassBaseFile):
     ResourceType = 0x286E65BE
     ParentResourceType = _UIParams.ResourceType
     parent: _UIParams
-

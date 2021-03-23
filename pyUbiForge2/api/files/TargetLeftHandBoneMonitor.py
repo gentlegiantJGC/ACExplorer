@@ -6,4 +6,3 @@ class TargetLeftHandBoneMonitor(SubclassBaseFile):
     ResourceType = 0xA0B06F2E
     ParentResourceType = _TargetBoneMonitor.ResourceType
     parent: _TargetBoneMonitor
-

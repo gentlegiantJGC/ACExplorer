@@ -6,4 +6,3 @@ class OptionsMenu(SubclassBaseFile):
     ResourceType = 0xB794729C
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

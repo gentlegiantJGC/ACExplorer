@@ -6,4 +6,3 @@ class AttackClip(SubclassBaseFile):
     ResourceType = 0x76B211E7
     ParentResourceType = _CharacterLogicClip.ResourceType
     parent: _CharacterLogicClip
-

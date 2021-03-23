@@ -6,4 +6,3 @@ class LoadOnDemandeDLCElement(SubclassBaseFile):
     ResourceType = 0xA3ADFCAC
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

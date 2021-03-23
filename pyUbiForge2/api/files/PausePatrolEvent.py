@@ -6,4 +6,3 @@ class PausePatrolEvent(SubclassBaseFile):
     ResourceType = 0x3D005C8D
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class DepthBufferSource(SubclassBaseFile):
     ResourceType = 0xAF63E32A
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

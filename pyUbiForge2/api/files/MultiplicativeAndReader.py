@@ -6,4 +6,3 @@ class MultiplicativeAndReader(SubclassBaseFile):
     ResourceType = 0x426075E2
     ParentResourceType = _InputReader2.ResourceType
     parent: _InputReader2
-

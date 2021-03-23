@@ -6,4 +6,3 @@ class MissionActionCrowdBlob(SubclassBaseFile):
     ResourceType = 0x3E33EFE9
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

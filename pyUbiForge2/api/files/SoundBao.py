@@ -6,4 +6,3 @@ class SoundBao(SubclassBaseFile):
     ResourceType = 0xD8295DCB
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

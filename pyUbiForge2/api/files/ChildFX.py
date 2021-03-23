@@ -6,4 +6,3 @@ class ChildFX(SubclassBaseFile):
     ResourceType = 0x65B73293
     ParentResourceType = _FXElement.ResourceType
     parent: _FXElement
-

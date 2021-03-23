@@ -6,4 +6,3 @@ class CannonControlEvent(SubclassBaseFile):
     ResourceType = 0x6DC12313
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

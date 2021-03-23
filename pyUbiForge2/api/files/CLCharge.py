@@ -6,4 +6,3 @@ class CLCharge(SubclassBaseFile):
     ResourceType = 0xA29E05CB
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

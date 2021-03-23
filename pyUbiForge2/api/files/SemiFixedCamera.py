@@ -6,4 +6,3 @@ class SemiFixedCamera(SubclassBaseFile):
     ResourceType = 0x8E999133
     ParentResourceType = _TargetEulerCamera.ResourceType
     parent: _TargetEulerCamera
-

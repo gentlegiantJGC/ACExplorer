@@ -6,4 +6,3 @@ class GameFix(SubclassBaseFile):
     ResourceType = 0x2CC42429
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

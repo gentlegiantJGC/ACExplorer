@@ -6,4 +6,3 @@ class WorldDataLayerManager(SubclassBaseFile):
     ResourceType = 0xECEF6DDB
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

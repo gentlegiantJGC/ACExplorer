@@ -6,4 +6,3 @@ class UIClip(SubclassBaseFile):
     ResourceType = 0x9434669A
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

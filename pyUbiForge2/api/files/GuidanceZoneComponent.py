@@ -6,4 +6,3 @@ class GuidanceZoneComponent(SubclassBaseFile):
     ResourceType = 0xA6225373
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

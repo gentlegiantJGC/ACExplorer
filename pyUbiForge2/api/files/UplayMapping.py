@@ -6,4 +6,3 @@ class UplayMapping(SubclassBaseFile):
     ResourceType = 0x09C4884A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

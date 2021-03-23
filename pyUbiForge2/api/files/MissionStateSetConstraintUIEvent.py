@@ -6,4 +6,3 @@ class MissionStateSetConstraintUIEvent(SubclassBaseFile):
     ResourceType = 0x2F41D879
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

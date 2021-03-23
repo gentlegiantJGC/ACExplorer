@@ -6,4 +6,3 @@ class VillaItemSettingUpdateEvent(SubclassBaseFile):
     ResourceType = 0xECE2261B
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

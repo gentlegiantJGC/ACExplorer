@@ -6,4 +6,3 @@ class MissionStateClearConstraintUIEvent(SubclassBaseFile):
     ResourceType = 0xBDDA9025
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

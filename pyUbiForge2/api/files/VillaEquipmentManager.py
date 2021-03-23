@@ -6,4 +6,3 @@ class VillaEquipmentManager(SubclassBaseFile):
     ResourceType = 0xCB10913B
     ParentResourceType = _VillaItemsManager.ResourceType
     parent: _VillaItemsManager
-

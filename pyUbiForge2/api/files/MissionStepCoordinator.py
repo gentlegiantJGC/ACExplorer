@@ -6,4 +6,3 @@ class MissionStepCoordinator(SubclassBaseFile):
     ResourceType = 0xE26735FC
     ParentResourceType = _MissionStepGameplay.ResourceType
     parent: _MissionStepGameplay
-

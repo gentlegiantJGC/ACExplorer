@@ -6,4 +6,3 @@ class ActionDataLayer(SubclassBaseFile):
     ResourceType = 0x30533CDC
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

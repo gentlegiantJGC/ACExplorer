@@ -6,4 +6,3 @@ class UIVideoSet(SubclassBaseFile):
     ResourceType = 0xC30B8B5B
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

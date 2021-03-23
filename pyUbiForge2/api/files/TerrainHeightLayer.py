@@ -6,4 +6,3 @@ class TerrainHeightLayer(SubclassBaseFile):
     ResourceType = 0x6A646E9C
     ParentResourceType = _TerrainLayer.ResourceType
     parent: _TerrainLayer
-

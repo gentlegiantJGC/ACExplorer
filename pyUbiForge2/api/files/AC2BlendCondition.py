@@ -6,4 +6,3 @@ class AC2BlendCondition(SubclassBaseFile):
     ResourceType = 0xF77741D9
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

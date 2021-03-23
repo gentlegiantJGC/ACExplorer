@@ -6,4 +6,3 @@ class WorldAreaParticleData(SubclassBaseFile):
     ResourceType = 0x4346995A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

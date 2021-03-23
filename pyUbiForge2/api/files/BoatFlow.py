@@ -6,4 +6,3 @@ class BoatFlow(SubclassBaseFile):
     ResourceType = 0x6F281A57
     ParentResourceType = _NavFlow.ResourceType
     parent: _NavFlow
-

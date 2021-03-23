@@ -6,4 +6,3 @@ class HudWeaponSelect(SubclassBaseFile):
     ResourceType = 0xFA1F3765
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

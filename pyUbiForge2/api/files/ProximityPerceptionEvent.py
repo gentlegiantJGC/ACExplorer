@@ -6,4 +6,3 @@ class ProximityPerceptionEvent(SubclassBaseFile):
     ResourceType = 0xC650220C
     ParentResourceType = _ProximityEvent.ResourceType
     parent: _ProximityEvent
-

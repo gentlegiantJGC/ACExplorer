@@ -6,4 +6,3 @@ class CLSearchArcher(SubclassBaseFile):
     ResourceType = 0x29BF371D
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

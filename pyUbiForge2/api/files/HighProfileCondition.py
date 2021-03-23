@@ -6,4 +6,3 @@ class HighProfileCondition(SubclassBaseFile):
     ResourceType = 0x92202E75
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

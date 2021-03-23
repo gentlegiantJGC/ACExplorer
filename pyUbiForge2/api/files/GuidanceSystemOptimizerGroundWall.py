@@ -6,4 +6,3 @@ class GuidanceSystemOptimizerGroundWall(SubclassBaseFile):
     ResourceType = 0x4EF5DB67
     ParentResourceType = _GuidanceSystemOptimizer.ResourceType
     parent: _GuidanceSystemOptimizer
-

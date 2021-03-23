@@ -6,4 +6,3 @@ class CLConflictRuleBodyGuard(SubclassBaseFile):
     ResourceType = 0xFCF353B4
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

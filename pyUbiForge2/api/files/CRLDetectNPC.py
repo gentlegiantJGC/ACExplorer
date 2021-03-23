@@ -6,4 +6,3 @@ class CRLDetectNPC(SubclassBaseFile):
     ResourceType = 0xD6B26143
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

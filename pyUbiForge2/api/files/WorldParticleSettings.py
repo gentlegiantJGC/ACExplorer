@@ -6,4 +6,3 @@ class WorldParticleSettings(SubclassBaseFile):
     ResourceType = 0xA9FB5674
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

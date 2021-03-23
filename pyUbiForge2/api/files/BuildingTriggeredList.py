@@ -6,4 +6,3 @@ class BuildingTriggeredList(SubclassBaseFile):
     ResourceType = 0x6A358EAA
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

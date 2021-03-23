@@ -6,4 +6,3 @@ class MissionFailedEvent(SubclassBaseFile):
     ResourceType = 0x16701666
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

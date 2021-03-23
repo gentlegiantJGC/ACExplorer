@@ -6,4 +6,3 @@ class RuleGraphClip(SubclassBaseFile):
     ResourceType = 0x403A13ED
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

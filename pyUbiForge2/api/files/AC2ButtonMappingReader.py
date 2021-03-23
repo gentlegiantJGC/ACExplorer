@@ -6,4 +6,3 @@ class AC2ButtonMappingReader(SubclassBaseFile):
     ResourceType = 0xD3AD3DB9
     ParentResourceType = _PadInputReader.ResourceType
     parent: _PadInputReader
-

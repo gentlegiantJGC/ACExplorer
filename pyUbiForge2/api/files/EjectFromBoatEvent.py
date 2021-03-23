@@ -6,4 +6,3 @@ class EjectFromBoatEvent(SubclassBaseFile):
     ResourceType = 0xD181EA45
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

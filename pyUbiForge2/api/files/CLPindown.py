@@ -6,4 +6,3 @@ class CLPindown(SubclassBaseFile):
     ResourceType = 0x68B3CDE0
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

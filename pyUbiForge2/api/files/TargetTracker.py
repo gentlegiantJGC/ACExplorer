@@ -6,4 +6,3 @@ class TargetTracker(SubclassBaseFile):
     ResourceType = 0x209958F5
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

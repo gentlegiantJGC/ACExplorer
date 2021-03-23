@@ -6,4 +6,3 @@ class DebugAccomplishmentOutput(SubclassBaseFile):
     ResourceType = 0xCC00B08B
     ParentResourceType = _AccomplishmentOutput.ResourceType
     parent: _AccomplishmentOutput
-

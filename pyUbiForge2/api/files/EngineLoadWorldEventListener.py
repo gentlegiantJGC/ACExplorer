@@ -6,4 +6,3 @@ class EngineLoadWorldEventListener(SubclassBaseFile):
     ResourceType = 0x5E7A07C8
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

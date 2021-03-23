@@ -6,4 +6,3 @@ class NotorietyLogic(SubclassBaseFile):
     ResourceType = 0xEB5D07A8
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

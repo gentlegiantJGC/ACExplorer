@@ -6,4 +6,3 @@ class HudMoneyComponent(SubclassBaseFile):
     ResourceType = 0x07BE01FD
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

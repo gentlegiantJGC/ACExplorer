@@ -6,4 +6,3 @@ class NullTargetTracker(SubclassBaseFile):
     ResourceType = 0xFEBCEEA4
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

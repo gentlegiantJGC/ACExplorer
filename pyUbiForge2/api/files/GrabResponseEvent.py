@@ -6,4 +6,3 @@ class GrabResponseEvent(SubclassBaseFile):
     ResourceType = 0xA83BC4B6
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

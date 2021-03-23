@@ -6,4 +6,3 @@ class GcLTail(SubclassBaseFile):
     ResourceType = 0xF2E2984A
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

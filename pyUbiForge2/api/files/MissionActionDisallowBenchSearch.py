@@ -6,4 +6,3 @@ class MissionActionDisallowBenchSearch(SubclassBaseFile):
     ResourceType = 0x2FA15E23
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

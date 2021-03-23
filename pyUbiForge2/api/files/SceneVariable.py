@@ -6,4 +6,3 @@ class SceneVariable(SubclassBaseFile):
     ResourceType = 0x4CB85325
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

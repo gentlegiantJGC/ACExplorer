@@ -6,4 +6,3 @@ class VillaItemSettings(SubclassBaseFile):
     ResourceType = 0xB2B2D090
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

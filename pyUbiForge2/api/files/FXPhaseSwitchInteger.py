@@ -6,4 +6,3 @@ class FXPhaseSwitchInteger(SubclassBaseFile):
     ResourceType = 0x3EDFE09B
     ParentResourceType = _FXPhaseSwitch.ResourceType
     parent: _FXPhaseSwitch
-

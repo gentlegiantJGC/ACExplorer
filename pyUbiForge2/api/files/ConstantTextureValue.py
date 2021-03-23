@@ -6,4 +6,3 @@ class ConstantTextureValue(SubclassBaseFile):
     ResourceType = 0x3203D42D
     ParentResourceType = _ConstantValue.ResourceType
     parent: _ConstantValue
-

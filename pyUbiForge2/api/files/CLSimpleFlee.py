@@ -6,4 +6,3 @@ class CLSimpleFlee(SubclassBaseFile):
     ResourceType = 0x111B4F3E
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

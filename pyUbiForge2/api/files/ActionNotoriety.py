@@ -6,4 +6,3 @@ class ActionNotoriety(SubclassBaseFile):
     ResourceType = 0x806F4B84
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

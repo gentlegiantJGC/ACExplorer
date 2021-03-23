@@ -6,4 +6,3 @@ class MemoryBriefingClip(SubclassBaseFile):
     ResourceType = 0xC5ABAB54
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

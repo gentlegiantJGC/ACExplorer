@@ -6,4 +6,3 @@ class BhvHorseData(SubclassBaseFile):
     ResourceType = 0xABE9D122
     ParentResourceType = _NPCBehaviorData.ResourceType
     parent: _NPCBehaviorData
-

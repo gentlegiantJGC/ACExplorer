@@ -6,4 +6,3 @@ class AverageDampingMethod(SubclassBaseFile):
     ResourceType = 0x7FC40645
     ParentResourceType = _DampingMethod.ResourceType
     parent: _DampingMethod
-

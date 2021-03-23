@@ -6,4 +6,3 @@ class ActionUpdateMapFog(SubclassBaseFile):
     ResourceType = 0x0289627D
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

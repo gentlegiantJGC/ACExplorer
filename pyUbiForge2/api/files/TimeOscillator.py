@@ -6,4 +6,3 @@ class TimeOscillator(SubclassBaseFile):
     ResourceType = 0xB829D5C7
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

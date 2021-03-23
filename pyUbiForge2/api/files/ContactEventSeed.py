@@ -6,4 +6,3 @@ class ContactEventSeed(SubclassBaseFile):
     ResourceType = 0x993AB038
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

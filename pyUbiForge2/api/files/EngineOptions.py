@@ -6,4 +6,3 @@ class EngineOptions(SubclassBaseFile):
     ResourceType = 0xB4E69FA1
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

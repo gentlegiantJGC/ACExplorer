@@ -6,4 +6,3 @@ class NavFlow(SubclassBaseFile):
     ResourceType = 0xEFD4BE98
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class FXMaterialOverlayOperator(SubclassBaseFile):
     ResourceType = 0x1A645DC3
     ParentResourceType = _FXElementOperator.ResourceType
     parent: _FXElementOperator
-

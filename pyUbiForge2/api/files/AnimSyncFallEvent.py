@@ -6,4 +6,3 @@ class AnimSyncFallEvent(SubclassBaseFile):
     ResourceType = 0x8ED28AE9
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

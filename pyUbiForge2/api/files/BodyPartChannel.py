@@ -6,4 +6,3 @@ class BodyPartChannel(SubclassBaseFile):
     ResourceType = 0x58B2578F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

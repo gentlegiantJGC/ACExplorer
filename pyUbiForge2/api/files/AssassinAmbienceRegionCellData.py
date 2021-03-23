@@ -6,4 +6,3 @@ class AssassinAmbienceRegionCellData(SubclassBaseFile):
     ResourceType = 0xF02FBD93
     ParentResourceType = _AmbienceRegionCellData.ResourceType
     parent: _AmbienceRegionCellData
-

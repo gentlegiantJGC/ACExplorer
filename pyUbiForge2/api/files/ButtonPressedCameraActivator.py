@@ -6,4 +6,3 @@ class ButtonPressedCameraActivator(SubclassBaseFile):
     ResourceType = 0xDB192154
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

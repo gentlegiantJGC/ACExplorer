@@ -6,4 +6,3 @@ class SceneOutputEvent(SubclassBaseFile):
     ResourceType = 0x5492F6B2
     ParentResourceType = _SceneEvent.ResourceType
     parent: _SceneEvent
-

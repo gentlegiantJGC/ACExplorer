@@ -6,4 +6,3 @@ class AC2JumpHeightCondition(SubclassBaseFile):
     ResourceType = 0x7DCDBEFF
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

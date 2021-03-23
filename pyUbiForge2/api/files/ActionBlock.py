@@ -6,4 +6,3 @@ class ActionBlock(SubclassBaseFile):
     ResourceType = 0xEF82FCE4
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

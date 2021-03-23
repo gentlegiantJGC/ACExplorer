@@ -6,4 +6,3 @@ class CSrvLadderNavigation(SubclassBaseFile):
     ResourceType = 0xBD54F41A
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

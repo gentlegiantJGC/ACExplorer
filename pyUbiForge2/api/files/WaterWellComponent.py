@@ -6,4 +6,3 @@ class WaterWellComponent(SubclassBaseFile):
     ResourceType = 0xEFACFB68
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

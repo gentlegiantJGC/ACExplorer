@@ -6,4 +6,3 @@ class DataLayerGroup(SubclassBaseFile):
     ResourceType = 0x651B5AA3
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

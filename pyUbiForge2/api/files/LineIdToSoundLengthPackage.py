@@ -6,4 +6,3 @@ class LineIdToSoundLengthPackage(SubclassBaseFile):
     ResourceType = 0xC66CFE99
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

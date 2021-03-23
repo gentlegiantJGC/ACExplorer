@@ -6,4 +6,3 @@ class PlayerInputGroupManipulationEvent(SubclassBaseFile):
     ResourceType = 0x5F004615
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class AnimSyncFallEventSeed(SubclassBaseFile):
     ResourceType = 0x1A6ED566
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

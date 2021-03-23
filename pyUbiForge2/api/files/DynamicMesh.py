@@ -6,4 +6,3 @@ class DynamicMesh(SubclassBaseFile):
     ResourceType = 0xF4BBBB9E
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

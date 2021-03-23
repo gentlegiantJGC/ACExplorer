@@ -6,4 +6,3 @@ class AssassinAccomplishmentEvent(SubclassBaseFile):
     ResourceType = 0x25AC3F0A
     ParentResourceType = _AccomplishmentEvent.ResourceType
     parent: _AccomplishmentEvent
-

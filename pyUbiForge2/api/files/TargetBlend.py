@@ -6,4 +6,3 @@ class TargetBlend(SubclassBaseFile):
     ResourceType = 0x7CFDB751
     ParentResourceType = _Target.ResourceType
     parent: _Target
-

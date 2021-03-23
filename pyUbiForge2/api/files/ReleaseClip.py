@@ -6,4 +6,3 @@ class ReleaseClip(SubclassBaseFile):
     ResourceType = 0x83346214
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

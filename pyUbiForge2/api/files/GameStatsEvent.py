@@ -6,4 +6,3 @@ class GameStatsEvent(SubclassBaseFile):
     ResourceType = 0xFB2526EF
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

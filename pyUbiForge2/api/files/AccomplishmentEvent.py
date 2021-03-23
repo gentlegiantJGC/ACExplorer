@@ -6,4 +6,3 @@ class AccomplishmentEvent(SubclassBaseFile):
     ResourceType = 0x4836F507
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

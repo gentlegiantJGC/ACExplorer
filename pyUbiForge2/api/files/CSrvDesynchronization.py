@@ -6,4 +6,3 @@ class CSrvDesynchronization(SubclassBaseFile):
     ResourceType = 0x4F741E1D
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

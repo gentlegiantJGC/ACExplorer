@@ -6,4 +6,3 @@ class UniverseDLCAddon(SubclassBaseFile):
     ResourceType = 0xA58F3865
     ParentResourceType = _DLCAddon.ResourceType
     parent: _DLCAddon
-

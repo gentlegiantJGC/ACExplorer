@@ -6,4 +6,3 @@ class OperatorFloatMax(SubclassBaseFile):
     ResourceType = 0xDB231933
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

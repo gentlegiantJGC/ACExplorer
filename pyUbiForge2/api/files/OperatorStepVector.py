@@ -6,4 +6,3 @@ class OperatorStepVector(SubclassBaseFile):
     ResourceType = 0x1387B334
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

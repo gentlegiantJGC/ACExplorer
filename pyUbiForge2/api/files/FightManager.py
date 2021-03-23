@@ -6,4 +6,3 @@ class FightManager(SubclassBaseFile):
     ResourceType = 0x4249F2BE
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

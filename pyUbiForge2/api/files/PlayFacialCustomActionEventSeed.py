@@ -6,4 +6,3 @@ class PlayFacialCustomActionEventSeed(SubclassBaseFile):
     ResourceType = 0x60790DD0
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

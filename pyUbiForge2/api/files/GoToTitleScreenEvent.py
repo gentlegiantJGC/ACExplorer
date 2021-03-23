@@ -6,4 +6,3 @@ class GoToTitleScreenEvent(SubclassBaseFile):
     ResourceType = 0x6C2B02DF
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

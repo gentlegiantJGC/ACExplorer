@@ -6,4 +6,3 @@ class OLChest(SubclassBaseFile):
     ResourceType = 0xAB127B57
     ParentResourceType = _OLAbstract.ResourceType
     parent: _OLAbstract
-

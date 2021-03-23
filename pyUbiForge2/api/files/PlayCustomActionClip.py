@@ -6,4 +6,3 @@ class PlayCustomActionClip(SubclassBaseFile):
     ResourceType = 0x92C9F75A
     ParentResourceType = _CharacterLogicClip.ResourceType
     parent: _CharacterLogicClip
-

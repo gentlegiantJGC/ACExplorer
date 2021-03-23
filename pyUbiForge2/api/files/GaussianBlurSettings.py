@@ -6,4 +6,3 @@ class GaussianBlurSettings(SubclassBaseFile):
     ResourceType = 0x6B2C9F07
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

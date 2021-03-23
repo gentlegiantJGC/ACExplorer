@@ -6,4 +6,3 @@ class TextureSelector(SubclassBaseFile):
     ResourceType = 0x7D08460D
     ParentResourceType = _TextureBase.ResourceType
     parent: _TextureBase
-

@@ -6,4 +6,3 @@ class ReferencingConstraintEvent(SubclassBaseFile):
     ResourceType = 0xA045E114
     ParentResourceType = _ReferencingEvent.ResourceType
     parent: _ReferencingEvent
-

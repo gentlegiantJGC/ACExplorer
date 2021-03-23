@@ -6,4 +6,3 @@ class NavigationCameraSettings(SubclassBaseFile):
     ResourceType = 0x388AD28A
     ParentResourceType = _PolarCameraSettings.ResourceType
     parent: _PolarCameraSettings
-

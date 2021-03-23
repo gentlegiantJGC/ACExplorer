@@ -6,4 +6,3 @@ class PlayerBlendedCondition(SubclassBaseFile):
     ResourceType = 0x996E624C
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

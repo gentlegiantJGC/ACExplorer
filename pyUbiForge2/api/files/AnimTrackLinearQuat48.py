@@ -6,4 +6,3 @@ class AnimTrackLinearQuat48(SubclassBaseFile):
     ResourceType = 0x2BC0C051
     ParentResourceType = _AnimTrackQuat48.ResourceType
     parent: _AnimTrackQuat48
-

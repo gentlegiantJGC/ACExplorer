@@ -6,4 +6,3 @@ class LightingDiffuse(SubclassBaseFile):
     ResourceType = 0xF67EAA2B
     ParentResourceType = _LightingOperator.ResourceType
     parent: _LightingOperator
-

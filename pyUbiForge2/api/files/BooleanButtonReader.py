@@ -6,4 +6,3 @@ class BooleanButtonReader(SubclassBaseFile):
     ResourceType = 0xE4A9FE20
     ParentResourceType = _BooleanReader.ResourceType
     parent: _BooleanReader
-

@@ -6,4 +6,3 @@ class StealInfoEvent(SubclassBaseFile):
     ResourceType = 0x803526B6
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

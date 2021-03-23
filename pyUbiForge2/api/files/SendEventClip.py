@@ -6,4 +6,3 @@ class SendEventClip(SubclassBaseFile):
     ResourceType = 0xE425EE6C
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

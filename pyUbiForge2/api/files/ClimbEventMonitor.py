@@ -6,4 +6,3 @@ class ClimbEventMonitor(SubclassBaseFile):
     ResourceType = 0xBE727E36
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

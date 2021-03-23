@@ -6,4 +6,3 @@ class WagonEvent(SubclassBaseFile):
     ResourceType = 0x5A39499A
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

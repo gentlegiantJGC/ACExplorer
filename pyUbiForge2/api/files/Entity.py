@@ -6,4 +6,3 @@ class Entity(SubclassBaseFile):
     ResourceType = 0x0984415E
     ParentResourceType = _BaseEntity.ResourceType
     parent: _BaseEntity
-

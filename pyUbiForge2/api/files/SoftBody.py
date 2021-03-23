@@ -6,4 +6,3 @@ class SoftBody(SubclassBaseFile):
     ResourceType = 0x4B54C698
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

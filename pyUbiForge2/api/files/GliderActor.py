@@ -6,4 +6,3 @@ class GliderActor(SubclassBaseFile):
     ResourceType = 0x27BC81A8
     ParentResourceType = _AIActor.ResourceType
     parent: _AIActor
-

@@ -6,4 +6,3 @@ class PlayerActor(SubclassBaseFile):
     ResourceType = 0xFC17D602
     ParentResourceType = _CharacterActor.ResourceType
     parent: _CharacterActor
-

@@ -6,4 +6,3 @@ class FightSpecialMovesCameraSettings(SubclassBaseFile):
     ResourceType = 0xBF6278DC
     ParentResourceType = _InsertCameraSettings.ResourceType
     parent: _InsertCameraSettings
-

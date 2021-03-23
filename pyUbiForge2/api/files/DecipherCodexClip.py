@@ -6,4 +6,3 @@ class DecipherCodexClip(SubclassBaseFile):
     ResourceType = 0xBE0401C8
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

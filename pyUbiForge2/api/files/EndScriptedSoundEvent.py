@@ -6,4 +6,3 @@ class EndScriptedSoundEvent(SubclassBaseFile):
     ResourceType = 0x3FB505E8
     ParentResourceType = _ScriptedSoundEvent.ResourceType
     parent: _ScriptedSoundEvent
-

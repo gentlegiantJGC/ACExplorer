@@ -6,4 +6,3 @@ class CreditsData(SubclassBaseFile):
     ResourceType = 0x88AEAEB2
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

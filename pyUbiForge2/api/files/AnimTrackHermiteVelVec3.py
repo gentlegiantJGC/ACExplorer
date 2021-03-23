@@ -6,4 +6,3 @@ class AnimTrackHermiteVelVec3(SubclassBaseFile):
     ResourceType = 0x198FE2F6
     ParentResourceType = _AnimTrackVec3.ResourceType
     parent: _AnimTrackVec3
-

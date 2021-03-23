@@ -6,4 +6,3 @@ class MissionConditionDLC(SubclassBaseFile):
     ResourceType = 0xD26AEF58
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

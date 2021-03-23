@@ -6,4 +6,3 @@ class CameraEvent(SubclassBaseFile):
     ResourceType = 0xAB3DA623
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class ActionDecipherCodex(SubclassBaseFile):
     ResourceType = 0xDF8DCE36
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

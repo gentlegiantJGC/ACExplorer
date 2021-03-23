@@ -6,4 +6,3 @@ class LoadingEvent(SubclassBaseFile):
     ResourceType = 0x8FAB8072
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

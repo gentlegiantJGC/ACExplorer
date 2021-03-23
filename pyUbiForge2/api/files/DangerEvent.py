@@ -6,4 +6,3 @@ class DangerEvent(SubclassBaseFile):
     ResourceType = 0xAB86EE9A
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

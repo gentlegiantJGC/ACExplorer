@@ -6,4 +6,3 @@ class PropertySheet(SubclassBaseFile):
     ResourceType = 0xB7BE3A32
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

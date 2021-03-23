@@ -6,4 +6,3 @@ class AC2CurrentWorldCondition(SubclassBaseFile):
     ResourceType = 0x392EC803
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

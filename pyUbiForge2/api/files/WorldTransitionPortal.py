@@ -6,4 +6,3 @@ class WorldTransitionPortal(SubclassBaseFile):
     ResourceType = 0x7C00F6AF
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

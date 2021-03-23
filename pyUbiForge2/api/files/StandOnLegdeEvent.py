@@ -6,4 +6,3 @@ class StandOnLegdeEvent(SubclassBaseFile):
     ResourceType = 0xBA78663D
     ParentResourceType = _PresentationEvent.ResourceType
     parent: _PresentationEvent
-

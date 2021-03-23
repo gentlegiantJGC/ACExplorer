@@ -6,4 +6,3 @@ class DefaultQuaternionValue(SubclassBaseFile):
     ResourceType = 0x7794AB39
     ParentResourceType = _DefaultValue.ResourceType
     parent: _DefaultValue
-

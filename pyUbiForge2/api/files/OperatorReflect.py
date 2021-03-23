@@ -6,4 +6,3 @@ class OperatorReflect(SubclassBaseFile):
     ResourceType = 0xA760E24D
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

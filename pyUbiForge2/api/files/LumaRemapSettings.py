@@ -6,4 +6,3 @@ class LumaRemapSettings(SubclassBaseFile):
     ResourceType = 0xFE9C38DB
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

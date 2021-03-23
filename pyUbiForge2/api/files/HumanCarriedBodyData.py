@@ -6,4 +6,3 @@ class HumanCarriedBodyData(SubclassBaseFile):
     ResourceType = 0x80638A8E
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

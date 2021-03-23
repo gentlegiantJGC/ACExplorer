@@ -6,4 +6,3 @@ class VisualTrailComponent(SubclassBaseFile):
     ResourceType = 0x52AD4779
     ParentResourceType = _Visual.ResourceType
     parent: _Visual
-

@@ -6,4 +6,3 @@ class ExitFightClip(SubclassBaseFile):
     ResourceType = 0xB1350264
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

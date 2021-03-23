@@ -6,4 +6,3 @@ class GSrvGroupManipulation(SubclassBaseFile):
     ResourceType = 0xA84F908F
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

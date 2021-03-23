@@ -6,4 +6,3 @@ class BenchEventMonitor(SubclassBaseFile):
     ResourceType = 0x8E6A8717
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

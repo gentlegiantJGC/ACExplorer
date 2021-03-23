@@ -6,4 +6,3 @@ class AC2SingleEntityTargetTracker(SubclassBaseFile):
     ResourceType = 0x945B6E13
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

@@ -6,4 +6,3 @@ class CSrvHorseFightInteraction(SubclassBaseFile):
     ResourceType = 0x3774E7C6
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

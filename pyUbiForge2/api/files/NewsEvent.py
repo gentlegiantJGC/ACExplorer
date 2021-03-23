@@ -6,4 +6,3 @@ class NewsEvent(SubclassBaseFile):
     ResourceType = 0xF0662190
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

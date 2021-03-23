@@ -6,4 +6,3 @@ class ItemIsInInventoryCriteria(SubclassBaseFile):
     ResourceType = 0xE7784A9F
     ParentResourceType = _ItemCriteria.ResourceType
     parent: _ItemCriteria
-

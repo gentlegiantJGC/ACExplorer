@@ -6,4 +6,3 @@ class EnterGameSoundEvent(SubclassBaseFile):
     ResourceType = 0x8C95EDC2
     ParentResourceType = _SoundLogicEvent.ResourceType
     parent: _SoundLogicEvent
-

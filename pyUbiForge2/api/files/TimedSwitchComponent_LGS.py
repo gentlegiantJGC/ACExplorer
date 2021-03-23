@@ -6,4 +6,3 @@ class TimedSwitchComponent_LGS(SubclassBaseFile):
     ResourceType = 0x2151F1B2
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

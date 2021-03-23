@@ -6,4 +6,3 @@ class PauseFightClip(SubclassBaseFile):
     ResourceType = 0x21ACA0A8
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

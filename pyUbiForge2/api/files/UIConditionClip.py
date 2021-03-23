@@ -6,4 +6,3 @@ class UIConditionClip(SubclassBaseFile):
     ResourceType = 0x300FF782
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

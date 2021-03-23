@@ -6,4 +6,3 @@ class HumanBoatData(SubclassBaseFile):
     ResourceType = 0x90EEFCCA
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

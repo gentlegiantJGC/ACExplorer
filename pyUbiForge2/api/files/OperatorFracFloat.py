@@ -6,4 +6,3 @@ class OperatorFracFloat(SubclassBaseFile):
     ResourceType = 0x1C564647
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

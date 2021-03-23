@@ -6,4 +6,3 @@ class BoatDrivingEventMonitor(SubclassBaseFile):
     ResourceType = 0x097F725C
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

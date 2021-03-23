@@ -6,4 +6,3 @@ class LoadOnDemandFX(SubclassBaseFile):
     ResourceType = 0x084BEC13
     ParentResourceType = _LoadOnDemandObject.ResourceType
     parent: _LoadOnDemandObject
-

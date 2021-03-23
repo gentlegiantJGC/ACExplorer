@@ -6,4 +6,3 @@ class ItemSettingsPriceClip(SubclassBaseFile):
     ResourceType = 0xB78B3B62
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

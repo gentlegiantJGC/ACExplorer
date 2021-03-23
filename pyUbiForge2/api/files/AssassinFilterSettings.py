@@ -6,4 +6,3 @@ class AssassinFilterSettings(SubclassBaseFile):
     ResourceType = 0x661A55D1
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

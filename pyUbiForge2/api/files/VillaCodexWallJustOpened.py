@@ -6,4 +6,3 @@ class VillaCodexWallJustOpened(SubclassBaseFile):
     ResourceType = 0xEE4F8C5D
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

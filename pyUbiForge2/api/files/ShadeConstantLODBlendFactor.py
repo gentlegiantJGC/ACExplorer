@@ -6,4 +6,3 @@ class ShadeConstantLODBlendFactor(SubclassBaseFile):
     ResourceType = 0x2A8456D3
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

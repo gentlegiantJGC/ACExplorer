@@ -6,4 +6,3 @@ class AllowInGameMenuEvent(SubclassBaseFile):
     ResourceType = 0x977032B4
     ParentResourceType = _InGameMenuEvent.ResourceType
     parent: _InGameMenuEvent
-

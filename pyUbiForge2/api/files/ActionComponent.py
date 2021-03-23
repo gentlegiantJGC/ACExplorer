@@ -6,4 +6,3 @@ class ActionComponent(SubclassBaseFile):
     ResourceType = 0xBADD286C
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class FXMainCharacter(SubclassBaseFile):
     ResourceType = 0x71E31236
     ParentResourceType = _FXElement.ResourceType
     parent: _FXElement
-

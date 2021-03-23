@@ -6,4 +6,3 @@ class CustomOperator(SubclassBaseFile):
     ResourceType = 0x90A535BF
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

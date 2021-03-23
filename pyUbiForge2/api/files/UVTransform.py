@@ -6,4 +6,3 @@ class UVTransform(SubclassBaseFile):
     ResourceType = 0xC52E2125
     ParentResourceType = _ICustomShaderSetup.ResourceType
     parent: _ICustomShaderSetup
-

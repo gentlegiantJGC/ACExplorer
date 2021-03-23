@@ -6,4 +6,3 @@ class AnimusDatabaseMissionAction(SubclassBaseFile):
     ResourceType = 0x2409B303
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

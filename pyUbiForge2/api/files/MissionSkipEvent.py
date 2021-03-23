@@ -6,4 +6,3 @@ class MissionSkipEvent(SubclassBaseFile):
     ResourceType = 0x38153C1D
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

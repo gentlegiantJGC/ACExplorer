@@ -6,4 +6,3 @@ class TargettingComponent(SubclassBaseFile):
     ResourceType = 0x40D05488
     ParentResourceType = _DetectionComponent.ResourceType
     parent: _DetectionComponent
-

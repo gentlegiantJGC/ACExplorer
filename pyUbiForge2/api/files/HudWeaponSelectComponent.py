@@ -6,4 +6,3 @@ class HudWeaponSelectComponent(SubclassBaseFile):
     ResourceType = 0x776C6B23
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

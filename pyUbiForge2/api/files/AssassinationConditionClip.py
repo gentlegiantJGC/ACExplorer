@@ -6,4 +6,3 @@ class AssassinationConditionClip(SubclassBaseFile):
     ResourceType = 0x3FF7C7B6
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

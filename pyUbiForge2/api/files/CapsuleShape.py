@@ -6,4 +6,3 @@ class CapsuleShape(SubclassBaseFile):
     ResourceType = 0xB8599052
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

@@ -6,4 +6,3 @@ class MissionStepWhiteRoomActivator(SubclassBaseFile):
     ResourceType = 0x1124EF02
     ParentResourceType = _MissionStepCoordinator.ResourceType
     parent: _MissionStepCoordinator
-

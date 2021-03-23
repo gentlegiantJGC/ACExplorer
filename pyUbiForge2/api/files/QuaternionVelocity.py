@@ -6,4 +6,3 @@ class QuaternionVelocity(SubclassBaseFile):
     ResourceType = 0x3999858F
     ParentResourceType = _ValueVelocity.ResourceType
     parent: _ValueVelocity
-

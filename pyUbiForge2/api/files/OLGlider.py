@@ -6,4 +6,3 @@ class OLGlider(SubclassBaseFile):
     ResourceType = 0xF7DAE43A
     ParentResourceType = _OLAbstract.ResourceType
     parent: _OLAbstract
-

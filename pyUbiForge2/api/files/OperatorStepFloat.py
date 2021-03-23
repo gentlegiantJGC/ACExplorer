@@ -6,4 +6,3 @@ class OperatorStepFloat(SubclassBaseFile):
     ResourceType = 0x4D631CD8
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

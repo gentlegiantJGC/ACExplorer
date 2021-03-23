@@ -6,4 +6,3 @@ class CollidedRequestEvent(SubclassBaseFile):
     ResourceType = 0x07DB36CA
     ParentResourceType = _CollidedEvent.ResourceType
     parent: _CollidedEvent
-

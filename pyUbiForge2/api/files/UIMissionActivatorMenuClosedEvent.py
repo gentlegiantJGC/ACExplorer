@@ -6,4 +6,3 @@ class UIMissionActivatorMenuClosedEvent(SubclassBaseFile):
     ResourceType = 0xF4E66A5D
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

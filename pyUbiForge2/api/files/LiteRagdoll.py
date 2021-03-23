@@ -6,4 +6,3 @@ class LiteRagdoll(SubclassBaseFile):
     ResourceType = 0x891043D5
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

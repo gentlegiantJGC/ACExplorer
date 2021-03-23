@@ -6,4 +6,3 @@ class XLASTMapping(SubclassBaseFile):
     ResourceType = 0x6D0C47CC
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

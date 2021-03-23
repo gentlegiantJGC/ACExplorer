@@ -6,4 +6,3 @@ class AC2GroupManipulationTargetTargetTracker(SubclassBaseFile):
     ResourceType = 0xAB43791F
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

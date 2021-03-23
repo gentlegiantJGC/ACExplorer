@@ -6,4 +6,3 @@ class QuadrupedFootIK(SubclassBaseFile):
     ResourceType = 0xE55857CB
     ParentResourceType = _FootIK.ResourceType
     parent: _FootIK
-

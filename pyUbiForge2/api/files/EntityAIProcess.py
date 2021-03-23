@@ -6,4 +6,3 @@ class EntityAIProcess(SubclassBaseFile):
     ResourceType = 0xC90FE3E6
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

@@ -6,4 +6,3 @@ class EntitySpawnedActor(SubclassBaseFile):
     ResourceType = 0x29289F48
     ParentResourceType = _EntityActor.ResourceType
     parent: _EntityActor
-

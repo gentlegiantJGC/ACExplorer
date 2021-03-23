@@ -6,4 +6,3 @@ class NavigationUpdateEvent(SubclassBaseFile):
     ResourceType = 0xCABB419D
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

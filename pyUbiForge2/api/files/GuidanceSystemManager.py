@@ -6,4 +6,3 @@ class GuidanceSystemManager(SubclassBaseFile):
     ResourceType = 0xB775F71D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

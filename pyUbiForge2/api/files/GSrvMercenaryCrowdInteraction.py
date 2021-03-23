@@ -6,4 +6,3 @@ class GSrvMercenaryCrowdInteraction(SubclassBaseFile):
     ResourceType = 0x39C52427
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

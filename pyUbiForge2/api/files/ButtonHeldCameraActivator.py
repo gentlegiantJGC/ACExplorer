@@ -6,4 +6,3 @@ class ButtonHeldCameraActivator(SubclassBaseFile):
     ResourceType = 0x984BF1FF
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

@@ -6,4 +6,3 @@ class SpringJumpComponent(SubclassBaseFile):
     ResourceType = 0x87A7C1AA
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

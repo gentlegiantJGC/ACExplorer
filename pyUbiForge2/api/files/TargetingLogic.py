@@ -6,4 +6,3 @@ class TargetingLogic(SubclassBaseFile):
     ResourceType = 0xC5E023D9
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

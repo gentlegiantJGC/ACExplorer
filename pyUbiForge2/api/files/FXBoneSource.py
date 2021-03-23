@@ -6,4 +6,3 @@ class FXBoneSource(SubclassBaseFile):
     ResourceType = 0x8A687BDB
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

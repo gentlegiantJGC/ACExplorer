@@ -6,4 +6,3 @@ class FireData(SubclassBaseFile):
     ResourceType = 0xAF43CA83
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

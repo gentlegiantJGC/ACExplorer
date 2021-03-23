@@ -6,4 +6,3 @@ class ConeCapsuleShape(SubclassBaseFile):
     ResourceType = 0x6AAD6AFA
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

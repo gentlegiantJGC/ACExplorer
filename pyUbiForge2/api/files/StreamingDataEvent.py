@@ -6,4 +6,3 @@ class StreamingDataEvent(SubclassBaseFile):
     ResourceType = 0x83E2927F
     ParentResourceType = _ArrowEvent.ResourceType
     parent: _ArrowEvent
-

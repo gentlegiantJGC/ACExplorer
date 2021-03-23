@@ -6,4 +6,3 @@ class AssassinTask(SubclassBaseFile):
     ResourceType = 0xC41BC202
     ParentResourceType = _CharacterTask.ResourceType
     parent: _CharacterTask
-

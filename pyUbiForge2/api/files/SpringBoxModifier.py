@@ -6,4 +6,3 @@ class SpringBoxModifier(SubclassBaseFile):
     ResourceType = 0xF9D25748
     ParentResourceType = _BoneModifier.ResourceType
     parent: _BoneModifier
-

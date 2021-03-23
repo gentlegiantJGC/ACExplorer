@@ -6,4 +6,3 @@ class LightingTranslucency(SubclassBaseFile):
     ResourceType = 0x35A2FE5B
     ParentResourceType = _LightingOperator.ResourceType
     parent: _LightingOperator
-

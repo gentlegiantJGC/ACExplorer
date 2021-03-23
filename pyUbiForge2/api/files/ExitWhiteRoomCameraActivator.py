@@ -6,4 +6,3 @@ class ExitWhiteRoomCameraActivator(SubclassBaseFile):
     ResourceType = 0xCB8260DA
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

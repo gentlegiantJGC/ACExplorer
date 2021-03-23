@@ -6,4 +6,3 @@ class WorldAmbianceEventSeed(SubclassBaseFile):
     ResourceType = 0xF190D936
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

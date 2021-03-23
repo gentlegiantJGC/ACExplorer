@@ -6,4 +6,3 @@ class ActionUnlockHudItem(SubclassBaseFile):
     ResourceType = 0x7686C438
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

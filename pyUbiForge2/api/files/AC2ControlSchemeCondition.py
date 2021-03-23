@@ -6,4 +6,3 @@ class AC2ControlSchemeCondition(SubclassBaseFile):
     ResourceType = 0x05BB887E
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

@@ -6,4 +6,3 @@ class GcLCollect(SubclassBaseFile):
     ResourceType = 0x72E79A7A
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

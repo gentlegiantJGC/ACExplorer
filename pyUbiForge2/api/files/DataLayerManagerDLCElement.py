@@ -6,4 +6,3 @@ class DataLayerManagerDLCElement(SubclassBaseFile):
     ResourceType = 0xD88FDCCD
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

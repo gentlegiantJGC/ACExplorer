@@ -6,4 +6,3 @@ class AccomplishmentLookUpTable(SubclassBaseFile):
     ResourceType = 0x69C04DD8
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

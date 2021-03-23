@@ -6,4 +6,3 @@ class LightingRim(SubclassBaseFile):
     ResourceType = 0xFE00D9F4
     ParentResourceType = _LightingOperator.ResourceType
     parent: _LightingOperator
-

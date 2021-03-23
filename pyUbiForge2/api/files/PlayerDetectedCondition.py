@@ -6,4 +6,3 @@ class PlayerDetectedCondition(SubclassBaseFile):
     ResourceType = 0xDEC0CA0E
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

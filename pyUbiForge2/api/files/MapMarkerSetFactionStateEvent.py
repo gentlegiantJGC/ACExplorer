@@ -6,4 +6,3 @@ class MapMarkerSetFactionStateEvent(SubclassBaseFile):
     ResourceType = 0xAB67F648
     ParentResourceType = _MapMarkerEvent.ResourceType
     parent: _MapMarkerEvent
-

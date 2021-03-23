@@ -6,4 +6,3 @@ class CubeMapInput(SubclassBaseFile):
     ResourceType = 0x3B0B3A1A
     ParentResourceType = _LinkableInput.ResourceType
     parent: _LinkableInput
-

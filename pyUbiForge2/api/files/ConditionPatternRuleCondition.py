@@ -6,4 +6,3 @@ class ConditionPatternRuleCondition(SubclassBaseFile):
     ResourceType = 0x0294E135
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

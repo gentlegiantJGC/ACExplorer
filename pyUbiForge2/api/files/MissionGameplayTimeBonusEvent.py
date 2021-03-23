@@ -6,4 +6,3 @@ class MissionGameplayTimeBonusEvent(SubclassBaseFile):
     ResourceType = 0xA7AF44B2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

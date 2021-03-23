@@ -6,4 +6,3 @@ class BloodSplatterEventSeed(SubclassBaseFile):
     ResourceType = 0x0DDBFECD
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

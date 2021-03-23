@@ -6,4 +6,3 @@ class RandomSource(SubclassBaseFile):
     ResourceType = 0xFE20EBBB
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

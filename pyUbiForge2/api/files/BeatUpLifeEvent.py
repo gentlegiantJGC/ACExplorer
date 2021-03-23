@@ -6,4 +6,3 @@ class BeatUpLifeEvent(SubclassBaseFile):
     ResourceType = 0xCD491BEA
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

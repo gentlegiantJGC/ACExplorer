@@ -6,4 +6,3 @@ class MapManagerDLCAddon(SubclassBaseFile):
     ResourceType = 0x847F8B57
     ParentResourceType = _DLCAddon.ResourceType
     parent: _DLCAddon
-

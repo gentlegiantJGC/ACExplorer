@@ -6,4 +6,3 @@ class SoundActor(SubclassBaseFile):
     ResourceType = 0xDDB970A8
     ParentResourceType = _SceneActor.ResourceType
     parent: _SceneActor
-

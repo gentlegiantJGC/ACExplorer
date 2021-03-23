@@ -6,4 +6,3 @@ class GraphManager(SubclassBaseFile):
     ResourceType = 0xFC1DA7EC
     ParentResourceType = _UniverseComponent.ResourceType
     parent: _UniverseComponent
-

@@ -6,4 +6,3 @@ class EntityTargetTracker(SubclassBaseFile):
     ResourceType = 0x431EF57C
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

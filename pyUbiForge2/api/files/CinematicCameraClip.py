@@ -6,4 +6,3 @@ class CinematicCameraClip(SubclassBaseFile):
     ResourceType = 0x913E0C46
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

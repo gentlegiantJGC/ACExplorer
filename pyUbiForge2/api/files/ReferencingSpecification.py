@@ -6,4 +6,3 @@ class ReferencingSpecification(SubclassBaseFile):
     ResourceType = 0xFFA6D96A
     ParentResourceType = _EntitySpecification.ResourceType
     parent: _EntitySpecification
-

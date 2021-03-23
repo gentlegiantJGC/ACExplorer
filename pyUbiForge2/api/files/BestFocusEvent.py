@@ -6,4 +6,3 @@ class BestFocusEvent(SubclassBaseFile):
     ResourceType = 0xC5FFBF2F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class Camera2(SubclassBaseFile):
     ResourceType = 0xA5396FF0
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

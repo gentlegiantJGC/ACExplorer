@@ -6,4 +6,3 @@ class ICameraRule(SubclassBaseFile):
     ResourceType = 0x4F614733
     ParentResourceType = _IGraphRule.ResourceType
     parent: _IGraphRule
-

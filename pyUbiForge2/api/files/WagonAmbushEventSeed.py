@@ -6,4 +6,3 @@ class WagonAmbushEventSeed(SubclassBaseFile):
     ResourceType = 0xCEF841F6
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

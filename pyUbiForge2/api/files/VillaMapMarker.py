@@ -6,4 +6,3 @@ class VillaMapMarker(SubclassBaseFile):
     ResourceType = 0x25F27357
     ParentResourceType = _MapMarker.ResourceType
     parent: _MapMarker
-

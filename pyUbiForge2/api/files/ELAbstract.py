@@ -6,4 +6,3 @@ class ELAbstract(SubclassBaseFile):
     ResourceType = 0x4ADEB61F
     ParentResourceType = _EntityAIProcess.ResourceType
     parent: _EntityAIProcess
-

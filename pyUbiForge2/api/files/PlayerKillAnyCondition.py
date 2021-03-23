@@ -6,4 +6,3 @@ class PlayerKillAnyCondition(SubclassBaseFile):
     ResourceType = 0xC87BB9E6
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

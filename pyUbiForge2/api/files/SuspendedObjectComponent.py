@@ -6,4 +6,3 @@ class SuspendedObjectComponent(SubclassBaseFile):
     ResourceType = 0xD4A16D1A
     ParentResourceType = _RigidBodyComponent.ResourceType
     parent: _RigidBodyComponent
-

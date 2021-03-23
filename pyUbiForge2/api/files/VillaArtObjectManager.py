@@ -6,4 +6,3 @@ class VillaArtObjectManager(SubclassBaseFile):
     ResourceType = 0xB89F432C
     ParentResourceType = _VillaItemsManager.ResourceType
     parent: _VillaItemsManager
-

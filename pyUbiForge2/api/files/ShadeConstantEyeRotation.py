@@ -6,4 +6,3 @@ class ShadeConstantEyeRotation(SubclassBaseFile):
     ResourceType = 0xFEE8C0BF
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

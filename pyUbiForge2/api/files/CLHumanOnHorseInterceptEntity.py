@@ -6,4 +6,3 @@ class CLHumanOnHorseInterceptEntity(SubclassBaseFile):
     ResourceType = 0x11F262AD
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

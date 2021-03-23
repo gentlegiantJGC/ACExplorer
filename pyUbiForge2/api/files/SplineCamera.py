@@ -6,4 +6,3 @@ class SplineCamera(SubclassBaseFile):
     ResourceType = 0x6494543A
     ParentResourceType = _TargetEulerCamera.ResourceType
     parent: _TargetEulerCamera
-

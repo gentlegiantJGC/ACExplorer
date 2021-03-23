@@ -6,4 +6,3 @@ class IntegerOutput(SubclassBaseFile):
     ResourceType = 0x2C74BF29
     ParentResourceType = _LinkableOutput.ResourceType
     parent: _LinkableOutput
-

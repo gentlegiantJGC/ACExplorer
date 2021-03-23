@@ -6,4 +6,3 @@ class LightingOrenNayar(SubclassBaseFile):
     ResourceType = 0x84A57E2F
     ParentResourceType = _LightingOperator.ResourceType
     parent: _LightingOperator
-

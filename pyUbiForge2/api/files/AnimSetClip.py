@@ -6,4 +6,3 @@ class AnimSetClip(SubclassBaseFile):
     ResourceType = 0x62418E1C
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

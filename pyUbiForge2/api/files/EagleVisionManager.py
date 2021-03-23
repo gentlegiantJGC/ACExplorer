@@ -6,4 +6,3 @@ class EagleVisionManager(SubclassBaseFile):
     ResourceType = 0xBECAA0EC
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

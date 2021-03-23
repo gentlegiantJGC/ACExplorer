@@ -6,4 +6,3 @@ class FXTimeSource(SubclassBaseFile):
     ResourceType = 0x5D4DF41D
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

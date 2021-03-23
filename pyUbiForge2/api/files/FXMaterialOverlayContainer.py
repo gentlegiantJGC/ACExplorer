@@ -6,4 +6,3 @@ class FXMaterialOverlayContainer(SubclassBaseFile):
     ResourceType = 0x5FBD0E5D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class RandomPolicy(SubclassBaseFile):
     ResourceType = 0x51D791DE
     ParentResourceType = _IExecutionPolicy.ResourceType
     parent: _IExecutionPolicy
-

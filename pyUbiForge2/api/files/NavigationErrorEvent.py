@@ -6,4 +6,3 @@ class NavigationErrorEvent(SubclassBaseFile):
     ResourceType = 0x18AA2BF2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

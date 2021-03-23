@@ -6,4 +6,3 @@ class CSrvAssassinAbilities(SubclassBaseFile):
     ResourceType = 0x39227025
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

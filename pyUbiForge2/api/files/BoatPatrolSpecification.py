@@ -6,4 +6,3 @@ class BoatPatrolSpecification(SubclassBaseFile):
     ResourceType = 0x626945CD
     ParentResourceType = _PatrolSpecification.ResourceType
     parent: _PatrolSpecification
-

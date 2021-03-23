@@ -6,4 +6,3 @@ class BodyPartMapping(SubclassBaseFile):
     ResourceType = 0xB3ADF542
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

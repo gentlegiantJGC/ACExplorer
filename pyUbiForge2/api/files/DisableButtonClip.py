@@ -6,4 +6,3 @@ class DisableButtonClip(SubclassBaseFile):
     ResourceType = 0x84ACB000
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class BooleanRuleCondition(SubclassBaseFile):
     ResourceType = 0xB133A7EA
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

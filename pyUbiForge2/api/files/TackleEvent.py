@@ -6,4 +6,3 @@ class TackleEvent(SubclassBaseFile):
     ResourceType = 0x5DC81B4E
     ParentResourceType = _PresentationEvent.ResourceType
     parent: _PresentationEvent
-

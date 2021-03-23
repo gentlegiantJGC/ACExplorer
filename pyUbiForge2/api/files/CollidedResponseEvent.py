@@ -6,4 +6,3 @@ class CollidedResponseEvent(SubclassBaseFile):
     ResourceType = 0xF758C6F2
     ParentResourceType = _CollidedEvent.ResourceType
     parent: _CollidedEvent
-

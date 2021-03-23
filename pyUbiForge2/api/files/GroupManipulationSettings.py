@@ -6,4 +6,3 @@ class GroupManipulationSettings(SubclassBaseFile):
     ResourceType = 0x96AE1370
     ParentResourceType = _UniverseComponent.ResourceType
     parent: _UniverseComponent
-

@@ -6,4 +6,3 @@ class FXTargetEntity(SubclassBaseFile):
     ResourceType = 0x67BA0AC5
     ParentResourceType = _FXElement.ResourceType
     parent: _FXElement
-

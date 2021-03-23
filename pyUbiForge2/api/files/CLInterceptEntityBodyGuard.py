@@ -6,4 +6,3 @@ class CLInterceptEntityBodyGuard(SubclassBaseFile):
     ResourceType = 0xA57A69FD
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

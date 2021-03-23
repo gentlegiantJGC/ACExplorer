@@ -6,4 +6,3 @@ class VectorCumulativeBuffer(SubclassBaseFile):
     ResourceType = 0xCE288DF1
     ParentResourceType = _CumulativeBuffer.ResourceType
     parent: _CumulativeBuffer
-

@@ -6,4 +6,3 @@ class StandOnLedgeTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0xFE163C5A
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

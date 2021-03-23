@@ -6,4 +6,3 @@ class ActionPlayerHealth(SubclassBaseFile):
     ResourceType = 0x9C24E90D
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

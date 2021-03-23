@@ -6,4 +6,3 @@ class CSDanger(SubclassBaseFile):
     ResourceType = 0xD0762DAD
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

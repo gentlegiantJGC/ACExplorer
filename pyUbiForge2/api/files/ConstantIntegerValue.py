@@ -6,4 +6,3 @@ class ConstantIntegerValue(SubclassBaseFile):
     ResourceType = 0xA026AFF2
     ParentResourceType = _ConstantValue.ResourceType
     parent: _ConstantValue
-

@@ -6,4 +6,3 @@ class BuildingCriteria(SubclassBaseFile):
     ResourceType = 0x1BD6EEFD
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

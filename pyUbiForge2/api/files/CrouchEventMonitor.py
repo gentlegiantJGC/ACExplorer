@@ -6,4 +6,3 @@ class CrouchEventMonitor(SubclassBaseFile):
     ResourceType = 0x27423CFF
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

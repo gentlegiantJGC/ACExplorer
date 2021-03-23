@@ -6,4 +6,3 @@ class MainSequenceInfo(SubclassBaseFile):
     ResourceType = 0xF9C2401B
     ParentResourceType = _SliceGroupInfo.ResourceType
     parent: _SliceGroupInfo
-

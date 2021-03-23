@@ -6,4 +6,3 @@ class ActionAbilitySet(SubclassBaseFile):
     ResourceType = 0x89F6B413
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

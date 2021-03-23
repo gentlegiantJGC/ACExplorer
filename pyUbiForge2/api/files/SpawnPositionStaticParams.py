@@ -6,4 +6,3 @@ class SpawnPositionStaticParams(SubclassBaseFile):
     ResourceType = 0x3DC5EFD6
     ParentResourceType = _SpawnPositionParams.ResourceType
     parent: _SpawnPositionParams
-

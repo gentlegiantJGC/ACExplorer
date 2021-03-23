@@ -6,4 +6,3 @@ class WagonActor(SubclassBaseFile):
     ResourceType = 0x25E215C4
     ParentResourceType = _AIActor.ResourceType
     parent: _AIActor
-

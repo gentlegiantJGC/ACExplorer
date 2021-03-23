@@ -6,4 +6,3 @@ class CLTargetReactToCommotion(SubclassBaseFile):
     ResourceType = 0x38112A0A
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

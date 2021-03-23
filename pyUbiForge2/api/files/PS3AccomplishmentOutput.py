@@ -6,4 +6,3 @@ class PS3AccomplishmentOutput(SubclassBaseFile):
     ResourceType = 0x9E457E2D
     ParentResourceType = _AccomplishmentOutput.ResourceType
     parent: _AccomplishmentOutput
-

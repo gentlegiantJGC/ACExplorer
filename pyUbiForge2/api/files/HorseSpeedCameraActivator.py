@@ -6,4 +6,3 @@ class HorseSpeedCameraActivator(SubclassBaseFile):
     ResourceType = 0x08E4A66D
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

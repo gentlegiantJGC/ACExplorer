@@ -6,4 +6,3 @@ class MissionGameplayGroupWaitEvent(SubclassBaseFile):
     ResourceType = 0x31CBFA49
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

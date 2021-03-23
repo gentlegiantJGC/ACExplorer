@@ -6,4 +6,3 @@ class PlayerMapMarker(SubclassBaseFile):
     ResourceType = 0xAD8E3E85
     ParentResourceType = _MapMarker.ResourceType
     parent: _MapMarker
-

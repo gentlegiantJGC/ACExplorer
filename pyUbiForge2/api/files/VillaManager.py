@@ -6,4 +6,3 @@ class VillaManager(SubclassBaseFile):
     ResourceType = 0x4632640E
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

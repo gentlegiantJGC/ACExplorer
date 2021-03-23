@@ -6,4 +6,3 @@ class PersistableDisplayOptions(SubclassBaseFile):
     ResourceType = 0xA6A25173
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class AmbientGrid(SubclassBaseFile):
     ResourceType = 0xAD1D08C3
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

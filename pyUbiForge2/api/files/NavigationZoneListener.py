@@ -6,4 +6,3 @@ class NavigationZoneListener(SubclassBaseFile):
     ResourceType = 0x8D9B73E0
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

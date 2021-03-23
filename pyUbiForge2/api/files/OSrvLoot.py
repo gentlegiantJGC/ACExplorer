@@ -6,4 +6,3 @@ class OSrvLoot(SubclassBaseFile):
     ResourceType = 0x909EEC72
     ParentResourceType = _OSrvAbstract.ResourceType
     parent: _OSrvAbstract
-

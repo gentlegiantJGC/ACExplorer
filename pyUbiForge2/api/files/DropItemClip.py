@@ -6,4 +6,3 @@ class DropItemClip(SubclassBaseFile):
     ResourceType = 0x05895954
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

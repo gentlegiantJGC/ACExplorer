@@ -6,4 +6,3 @@ class CannonFXPack(SubclassBaseFile):
     ResourceType = 0xE37542B7
     ParentResourceType = _FXPack.ResourceType
     parent: _FXPack
-

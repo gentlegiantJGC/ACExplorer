@@ -6,4 +6,3 @@ class GcLPlayerChaseNPC(SubclassBaseFile):
     ResourceType = 0x06FEA849
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

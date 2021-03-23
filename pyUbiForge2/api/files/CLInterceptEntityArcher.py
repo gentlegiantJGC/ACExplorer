@@ -6,4 +6,3 @@ class CLInterceptEntityArcher(SubclassBaseFile):
     ResourceType = 0xFF3190C0
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

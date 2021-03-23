@@ -6,4 +6,3 @@ class FPSCamera(SubclassBaseFile):
     ResourceType = 0x81E8245F
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

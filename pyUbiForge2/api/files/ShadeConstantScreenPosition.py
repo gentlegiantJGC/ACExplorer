@@ -6,4 +6,3 @@ class ShadeConstantScreenPosition(SubclassBaseFile):
     ResourceType = 0x22235BC0
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class OutOfBoundsComponent(SubclassBaseFile):
     ResourceType = 0x3DDBFBF3
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class SpringDampingMethod(SubclassBaseFile):
     ResourceType = 0xCCDE452B
     ParentResourceType = _DampingMethod.ResourceType
     parent: _DampingMethod
-

@@ -6,4 +6,3 @@ class GcLTalkToActivateAbstract(SubclassBaseFile):
     ResourceType = 0x3E20B7AC
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

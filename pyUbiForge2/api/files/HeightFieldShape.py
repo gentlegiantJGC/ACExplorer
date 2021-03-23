@@ -6,4 +6,3 @@ class HeightFieldShape(SubclassBaseFile):
     ResourceType = 0x0F0EECBB
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

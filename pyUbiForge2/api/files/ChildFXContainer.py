@@ -6,4 +6,3 @@ class ChildFXContainer(SubclassBaseFile):
     ResourceType = 0xCC48AB84
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

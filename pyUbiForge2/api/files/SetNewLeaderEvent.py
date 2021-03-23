@@ -6,4 +6,3 @@ class SetNewLeaderEvent(SubclassBaseFile):
     ResourceType = 0x817A7825
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class CollisionEvent(SubclassBaseFile):
     ResourceType = 0xEA436A52
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class CustomActionClip(SubclassBaseFile):
     ResourceType = 0x224792F5
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

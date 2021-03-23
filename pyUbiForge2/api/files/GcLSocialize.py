@@ -6,4 +6,3 @@ class GcLSocialize(SubclassBaseFile):
     ResourceType = 0xDF83AA0B
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

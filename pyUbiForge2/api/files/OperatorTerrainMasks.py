@@ -6,4 +6,3 @@ class OperatorTerrainMasks(SubclassBaseFile):
     ResourceType = 0xAEE026FD
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

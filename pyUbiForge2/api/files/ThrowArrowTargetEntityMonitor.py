@@ -6,4 +6,3 @@ class ThrowArrowTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0x52F8BC39
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

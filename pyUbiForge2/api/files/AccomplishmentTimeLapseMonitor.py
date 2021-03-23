@@ -6,4 +6,3 @@ class AccomplishmentTimeLapseMonitor(SubclassBaseFile):
     ResourceType = 0x086873C8
     ParentResourceType = _AccomplishmentMonitor.ResourceType
     parent: _AccomplishmentMonitor
-

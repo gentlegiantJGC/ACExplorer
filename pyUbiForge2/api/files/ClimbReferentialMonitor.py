@@ -6,4 +6,3 @@ class ClimbReferentialMonitor(SubclassBaseFile):
     ResourceType = 0x31279B8F
     ParentResourceType = _TargetBoneMonitor.ResourceType
     parent: _TargetBoneMonitor
-

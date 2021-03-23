@@ -6,4 +6,3 @@ class HorseHitchActor(SubclassBaseFile):
     ResourceType = 0xE8CF951D
     ParentResourceType = _AIActor.ResourceType
     parent: _AIActor
-

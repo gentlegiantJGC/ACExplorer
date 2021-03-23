@@ -6,4 +6,3 @@ class UVTransformOperator(SubclassBaseFile):
     ResourceType = 0xEADF9820
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

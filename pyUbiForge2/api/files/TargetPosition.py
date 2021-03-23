@@ -6,4 +6,3 @@ class TargetPosition(SubclassBaseFile):
     ResourceType = 0xCD1EA66D
     ParentResourceType = _Target.ResourceType
     parent: _Target
-

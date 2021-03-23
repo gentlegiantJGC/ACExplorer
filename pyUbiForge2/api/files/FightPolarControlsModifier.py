@@ -6,4 +6,3 @@ class FightPolarControlsModifier(SubclassBaseFile):
     ResourceType = 0x42EAA044
     ParentResourceType = _PolarControlsModifier.ResourceType
     parent: _PolarControlsModifier
-

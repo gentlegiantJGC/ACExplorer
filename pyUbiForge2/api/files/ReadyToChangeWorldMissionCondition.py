@@ -6,4 +6,3 @@ class ReadyToChangeWorldMissionCondition(SubclassBaseFile):
     ResourceType = 0xE9B03D18
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

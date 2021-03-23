@@ -6,4 +6,3 @@ class MissionGameplayLocateTargetEvent(SubclassBaseFile):
     ResourceType = 0xD8450D1F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class BipedFootIK(SubclassBaseFile):
     ResourceType = 0xED6B79E4
     ParentResourceType = _FootIKInterface.ResourceType
     parent: _FootIKInterface
-

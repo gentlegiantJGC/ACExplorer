@@ -6,4 +6,3 @@ class AC2SecondaryTargetCondition(SubclassBaseFile):
     ResourceType = 0xCBF5BD29
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

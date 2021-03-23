@@ -6,4 +6,3 @@ class AC2OutOfBoundsCondition(SubclassBaseFile):
     ResourceType = 0xE1E12604
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

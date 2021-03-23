@@ -6,4 +6,3 @@ class InvestigationIconUIEvent(SubclassBaseFile):
     ResourceType = 0x933D0ACD
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

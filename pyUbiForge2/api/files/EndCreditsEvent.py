@@ -6,4 +6,3 @@ class EndCreditsEvent(SubclassBaseFile):
     ResourceType = 0x1629DFA7
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

@@ -6,4 +6,3 @@ class PadR6VCameraControl(SubclassBaseFile):
     ResourceType = 0x907B40E4
     ParentResourceType = _PolarCameraControl.ResourceType
     parent: _PolarCameraControl
-

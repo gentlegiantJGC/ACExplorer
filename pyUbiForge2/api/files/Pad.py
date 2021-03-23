@@ -6,4 +6,3 @@ class Pad(SubclassBaseFile):
     ResourceType = 0xA5C40805
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

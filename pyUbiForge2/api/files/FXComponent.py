@@ -6,4 +6,3 @@ class FXComponent(SubclassBaseFile):
     ResourceType = 0xD2BF93A6
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

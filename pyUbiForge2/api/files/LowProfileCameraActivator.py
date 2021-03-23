@@ -6,4 +6,3 @@ class LowProfileCameraActivator(SubclassBaseFile):
     ResourceType = 0x8F27967C
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

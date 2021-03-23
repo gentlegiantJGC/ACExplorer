@@ -6,4 +6,3 @@ class UIVillaCodexParams(SubclassBaseFile):
     ResourceType = 0x15C8A77F
     ParentResourceType = _UIParams.ResourceType
     parent: _UIParams
-

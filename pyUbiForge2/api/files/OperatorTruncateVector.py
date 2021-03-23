@@ -6,4 +6,3 @@ class OperatorTruncateVector(SubclassBaseFile):
     ResourceType = 0xEF889D0B
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

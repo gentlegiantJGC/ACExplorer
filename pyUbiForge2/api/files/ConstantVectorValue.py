@@ -6,4 +6,3 @@ class ConstantVectorValue(SubclassBaseFile):
     ResourceType = 0x649730E3
     ParentResourceType = _ConstantValue.ResourceType
     parent: _ConstantValue
-

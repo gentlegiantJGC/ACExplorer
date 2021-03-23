@@ -6,4 +6,3 @@ class RagdollConstraints(SubclassBaseFile):
     ResourceType = 0xC89F10F4
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

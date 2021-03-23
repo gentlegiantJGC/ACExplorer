@@ -6,4 +6,3 @@ class SharedDataItem(SubclassBaseFile):
     ResourceType = 0xD743852B
     ParentResourceType = _EntityDataItem.ResourceType
     parent: _EntityDataItem
-

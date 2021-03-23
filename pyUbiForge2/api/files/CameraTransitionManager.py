@@ -6,4 +6,3 @@ class CameraTransitionManager(SubclassBaseFile):
     ResourceType = 0x7D3BB0A2
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class WagonHealthConditionClip(SubclassBaseFile):
     ResourceType = 0xC2CB463F
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

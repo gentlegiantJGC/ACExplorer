@@ -6,4 +6,3 @@ class PlayerDeathEvent(SubclassBaseFile):
     ResourceType = 0x440CEF8A
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class SystemMessageDisplay(SubclassBaseFile):
     ResourceType = 0x0B1216DB
     ParentResourceType = _FireItem.ResourceType
     parent: _FireItem
-

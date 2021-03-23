@@ -6,4 +6,3 @@ class MissionActionCrowdComposition(SubclassBaseFile):
     ResourceType = 0xAFBC0836
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

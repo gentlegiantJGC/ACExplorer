@@ -6,4 +6,3 @@ class WitnessEventSeed(SubclassBaseFile):
     ResourceType = 0xFC27D415
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

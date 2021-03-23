@@ -6,4 +6,3 @@ class MissionActionForceAccomplishmentState(SubclassBaseFile):
     ResourceType = 0x6502A15B
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

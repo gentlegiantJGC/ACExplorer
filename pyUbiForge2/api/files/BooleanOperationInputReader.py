@@ -6,4 +6,3 @@ class BooleanOperationInputReader(SubclassBaseFile):
     ResourceType = 0x175ECE5C
     ParentResourceType = _InputReader2.ResourceType
     parent: _InputReader2
-

@@ -6,4 +6,3 @@ class GcLArcherExotic(SubclassBaseFile):
     ResourceType = 0xA4B3E199
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

@@ -6,4 +6,3 @@ class ShowLogoEvent(SubclassBaseFile):
     ResourceType = 0xF840A48A
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

@@ -6,4 +6,3 @@ class HudControlsManager(SubclassBaseFile):
     ResourceType = 0xD3E42737
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

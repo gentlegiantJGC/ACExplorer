@@ -6,4 +6,3 @@ class FXPhaseSwitchFloat(SubclassBaseFile):
     ResourceType = 0x21B24420
     ParentResourceType = _FXPhaseSwitch.ResourceType
     parent: _FXPhaseSwitch
-

@@ -6,4 +6,3 @@ class VigilantesTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0xB8BFD457
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

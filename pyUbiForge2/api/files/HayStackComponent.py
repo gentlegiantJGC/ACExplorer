@@ -6,4 +6,3 @@ class HayStackComponent(SubclassBaseFile):
     ResourceType = 0xCA59EAD5
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

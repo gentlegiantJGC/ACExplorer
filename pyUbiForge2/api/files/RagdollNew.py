@@ -6,4 +6,3 @@ class RagdollNew(SubclassBaseFile):
     ResourceType = 0xC8DBDE7F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

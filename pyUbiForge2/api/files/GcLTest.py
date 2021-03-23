@@ -6,4 +6,3 @@ class GcLTest(SubclassBaseFile):
     ResourceType = 0x56AA521B
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

@@ -6,4 +6,3 @@ class FamilyTreeMenu(SubclassBaseFile):
     ResourceType = 0xEE19822B
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

@@ -6,4 +6,3 @@ class VillaIncomeChestConditionClip(SubclassBaseFile):
     ResourceType = 0xCA626C9B
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

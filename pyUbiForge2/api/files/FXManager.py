@@ -6,4 +6,3 @@ class FXManager(SubclassBaseFile):
     ResourceType = 0x65B7450B
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

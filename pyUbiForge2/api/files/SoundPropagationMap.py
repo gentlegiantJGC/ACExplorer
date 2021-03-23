@@ -6,4 +6,3 @@ class SoundPropagationMap(SubclassBaseFile):
     ResourceType = 0x97FCF21E
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

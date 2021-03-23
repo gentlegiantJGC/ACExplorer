@@ -6,4 +6,3 @@ class GlobalSoundSet(SubclassBaseFile):
     ResourceType = 0xF96CC120
     ParentResourceType = _SoundSet.ResourceType
     parent: _SoundSet
-

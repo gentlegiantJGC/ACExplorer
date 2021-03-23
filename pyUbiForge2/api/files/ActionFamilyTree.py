@@ -6,4 +6,3 @@ class ActionFamilyTree(SubclassBaseFile):
     ResourceType = 0x2DEF9C36
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

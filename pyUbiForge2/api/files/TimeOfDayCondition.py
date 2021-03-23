@@ -6,4 +6,3 @@ class TimeOfDayCondition(SubclassBaseFile):
     ResourceType = 0x630AE0B9
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

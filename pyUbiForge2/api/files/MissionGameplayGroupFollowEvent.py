@@ -6,4 +6,3 @@ class MissionGameplayGroupFollowEvent(SubclassBaseFile):
     ResourceType = 0xEC7D575B
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

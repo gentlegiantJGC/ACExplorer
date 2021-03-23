@@ -6,4 +6,3 @@ class SceneOutputCondition(SubclassBaseFile):
     ResourceType = 0xC831A06C
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

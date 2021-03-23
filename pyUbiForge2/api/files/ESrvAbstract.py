@@ -6,4 +6,3 @@ class ESrvAbstract(SubclassBaseFile):
     ResourceType = 0xAA2DB0CE
     ParentResourceType = _EntityAIProcess.ResourceType
     parent: _EntityAIProcess
-

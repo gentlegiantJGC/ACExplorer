@@ -6,4 +6,3 @@ class SpawnedTargetEntity(SubclassBaseFile):
     ResourceType = 0x0D2AFCCE
     ParentResourceType = _ITargetEntity.ResourceType
     parent: _ITargetEntity
-

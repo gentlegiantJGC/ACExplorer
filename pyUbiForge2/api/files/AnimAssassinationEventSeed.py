@@ -6,4 +6,3 @@ class AnimAssassinationEventSeed(SubclassBaseFile):
     ResourceType = 0xD4EBDA7D
     ParentResourceType = _AIAnimationEventSeed.ResourceType
     parent: _AIAnimationEventSeed
-

@@ -6,4 +6,3 @@ class AbstractSceneSpawningComponent(SubclassBaseFile):
     ResourceType = 0xA80A0435
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

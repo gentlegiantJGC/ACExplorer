@@ -6,4 +6,3 @@ class AccomplishmentOutputWrapper(SubclassBaseFile):
     ResourceType = 0x5A3BC3A9
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

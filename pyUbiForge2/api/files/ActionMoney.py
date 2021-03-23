@@ -6,4 +6,3 @@ class ActionMoney(SubclassBaseFile):
     ResourceType = 0xDB467822
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

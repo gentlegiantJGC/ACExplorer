@@ -6,4 +6,3 @@ class ShadeConstantWorldTangent(SubclassBaseFile):
     ResourceType = 0x0E64B843
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

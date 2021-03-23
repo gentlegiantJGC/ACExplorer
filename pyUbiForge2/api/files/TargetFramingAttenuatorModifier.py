@@ -6,4 +6,3 @@ class TargetFramingAttenuatorModifier(SubclassBaseFile):
     ResourceType = 0xB37232D7
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

@@ -6,4 +6,3 @@ class TerrainLayer(SubclassBaseFile):
     ResourceType = 0x9A6B1DAA
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

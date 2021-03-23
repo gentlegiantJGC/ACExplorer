@@ -6,4 +6,3 @@ class ObjectPackManager(SubclassBaseFile):
     ResourceType = 0x53F1AA6F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

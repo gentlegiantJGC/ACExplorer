@@ -6,4 +6,3 @@ class AnimusDatabaseCodex(SubclassBaseFile):
     ResourceType = 0x1F659993
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

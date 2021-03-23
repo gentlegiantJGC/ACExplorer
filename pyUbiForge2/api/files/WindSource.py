@@ -6,4 +6,3 @@ class WindSource(SubclassBaseFile):
     ResourceType = 0x1BFEC321
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

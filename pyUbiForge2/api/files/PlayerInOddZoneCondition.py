@@ -6,4 +6,3 @@ class PlayerInOddZoneCondition(SubclassBaseFile):
     ResourceType = 0x3AEDA294
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

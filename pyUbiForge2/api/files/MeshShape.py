@@ -6,4 +6,3 @@ class MeshShape(SubclassBaseFile):
     ResourceType = 0xB22B3E61
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

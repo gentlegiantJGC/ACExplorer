@@ -6,4 +6,3 @@ class CSrvScold(SubclassBaseFile):
     ResourceType = 0xEA0F1096
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

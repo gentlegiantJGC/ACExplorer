@@ -6,4 +6,3 @@ class FileAccomplishmentOutput(SubclassBaseFile):
     ResourceType = 0xF5528193
     ParentResourceType = _AccomplishmentOutput.ResourceType
     parent: _AccomplishmentOutput
-

@@ -6,4 +6,3 @@ class MilitaryOpenConflictEventMonitor(SubclassBaseFile):
     ResourceType = 0x7F6B7AD4
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

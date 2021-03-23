@@ -6,4 +6,3 @@ class AIEntityGroup(SubclassBaseFile):
     ResourceType = 0x96561F07
     ParentResourceType = _AbstractAIEntityGroup.ResourceType
     parent: _AbstractAIEntityGroup
-

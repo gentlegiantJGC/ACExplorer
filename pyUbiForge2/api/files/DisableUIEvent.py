@@ -6,4 +6,3 @@ class DisableUIEvent(SubclassBaseFile):
     ResourceType = 0x50FF8C4F
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

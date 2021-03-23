@@ -6,4 +6,3 @@ class MapMenuComponent(SubclassBaseFile):
     ResourceType = 0xAFB1FCCD
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

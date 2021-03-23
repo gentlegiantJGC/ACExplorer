@@ -6,4 +6,3 @@ class UIAudioEvent(SubclassBaseFile):
     ResourceType = 0x3624EE5B
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

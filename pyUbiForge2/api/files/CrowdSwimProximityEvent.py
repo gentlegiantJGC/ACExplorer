@@ -6,4 +6,3 @@ class CrowdSwimProximityEvent(SubclassBaseFile):
     ResourceType = 0x839A86A1
     ParentResourceType = _ProximityEvent.ResourceType
     parent: _ProximityEvent
-

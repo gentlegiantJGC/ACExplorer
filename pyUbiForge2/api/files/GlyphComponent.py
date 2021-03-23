@@ -6,4 +6,3 @@ class GlyphComponent(SubclassBaseFile):
     ResourceType = 0xC971DD1B
     ParentResourceType = _EagleVisionComponent.ResourceType
     parent: _EagleVisionComponent
-

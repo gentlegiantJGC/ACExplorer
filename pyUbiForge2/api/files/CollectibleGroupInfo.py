@@ -6,4 +6,3 @@ class CollectibleGroupInfo(SubclassBaseFile):
     ResourceType = 0xA275A7FE
     ParentResourceType = _AdditionalGroupInfo.ResourceType
     parent: _AdditionalGroupInfo
-

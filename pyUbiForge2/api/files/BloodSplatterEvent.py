@@ -6,4 +6,3 @@ class BloodSplatterEvent(SubclassBaseFile):
     ResourceType = 0xD84E267F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

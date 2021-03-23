@@ -6,4 +6,3 @@ class GameplayCoordinatorEvent(SubclassBaseFile):
     ResourceType = 0x850D27B0
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

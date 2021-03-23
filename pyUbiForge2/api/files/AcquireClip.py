@@ -6,4 +6,3 @@ class AcquireClip(SubclassBaseFile):
     ResourceType = 0x60B9B956
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

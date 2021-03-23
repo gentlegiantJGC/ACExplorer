@@ -6,4 +6,3 @@ class ExplorationOffsetUserInputMethod(SubclassBaseFile):
     ResourceType = 0x298D8D2C
     ParentResourceType = _ExplorationOffsetMethod.ResourceType
     parent: _ExplorationOffsetMethod
-

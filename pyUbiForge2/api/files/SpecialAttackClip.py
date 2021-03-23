@@ -6,4 +6,3 @@ class SpecialAttackClip(SubclassBaseFile):
     ResourceType = 0x7B66398C
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class CLOrator(SubclassBaseFile):
     ResourceType = 0xB08B39EE
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

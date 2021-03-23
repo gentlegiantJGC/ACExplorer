@@ -6,4 +6,3 @@ class DelayedEvent(SubclassBaseFile):
     ResourceType = 0x2C497788
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

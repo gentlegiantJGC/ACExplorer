@@ -6,4 +6,3 @@ class AbilitySetClip(SubclassBaseFile):
     ResourceType = 0xD5352A62
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class PlayerAttributeRowSelection(SubclassBaseFile):
     ResourceType = 0xEA74F02D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

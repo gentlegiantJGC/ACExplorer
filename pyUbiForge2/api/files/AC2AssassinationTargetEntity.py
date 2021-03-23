@@ -6,4 +6,3 @@ class AC2AssassinationTargetEntity(SubclassBaseFile):
     ResourceType = 0xC8BE892F
     ParentResourceType = _ITargetEntity.ResourceType
     parent: _ITargetEntity
-

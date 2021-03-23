@@ -6,4 +6,3 @@ class AC2AssassinationTargetTracker(SubclassBaseFile):
     ResourceType = 0x441D6851
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

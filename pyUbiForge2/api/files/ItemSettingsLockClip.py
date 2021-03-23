@@ -6,4 +6,3 @@ class ItemSettingsLockClip(SubclassBaseFile):
     ResourceType = 0x2AAF355F
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

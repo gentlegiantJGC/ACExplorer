@@ -6,4 +6,3 @@ class WindMaskCellData(SubclassBaseFile):
     ResourceType = 0xE968EDCD
     ParentResourceType = _RegionCellData.ResourceType
     parent: _RegionCellData
-

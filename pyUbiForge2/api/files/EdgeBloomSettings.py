@@ -6,4 +6,3 @@ class EdgeBloomSettings(SubclassBaseFile):
     ResourceType = 0x9B42511B
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

@@ -6,4 +6,3 @@ class CameraOptionsNonExecutionPolicy(SubclassBaseFile):
     ResourceType = 0x46DE5F80
     ParentResourceType = _IExecutionPolicy.ResourceType
     parent: _IExecutionPolicy
-

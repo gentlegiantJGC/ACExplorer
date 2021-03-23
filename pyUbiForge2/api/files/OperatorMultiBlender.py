@@ -6,4 +6,3 @@ class OperatorMultiBlender(SubclassBaseFile):
     ResourceType = 0xD172F62C
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

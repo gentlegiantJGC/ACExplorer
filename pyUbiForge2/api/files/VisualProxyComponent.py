@@ -6,4 +6,3 @@ class VisualProxyComponent(SubclassBaseFile):
     ResourceType = 0x0CCF4ADB
     ParentResourceType = _Visual.ResourceType
     parent: _Visual
-

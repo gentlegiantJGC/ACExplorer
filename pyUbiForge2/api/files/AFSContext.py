@@ -6,4 +6,3 @@ class AFSContext(SubclassBaseFile):
     ResourceType = 0x545FE9DC
     ParentResourceType = _UiInfoContext.ResourceType
     parent: _UiInfoContext
-

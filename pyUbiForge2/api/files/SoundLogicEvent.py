@@ -6,4 +6,3 @@ class SoundLogicEvent(SubclassBaseFile):
     ResourceType = 0x65BA85CD
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

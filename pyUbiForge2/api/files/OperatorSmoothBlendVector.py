@@ -6,4 +6,3 @@ class OperatorSmoothBlendVector(SubclassBaseFile):
     ResourceType = 0x22242A42
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

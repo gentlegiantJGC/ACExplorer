@@ -6,4 +6,3 @@ class MarketplaceMenuComponent(SubclassBaseFile):
     ResourceType = 0xD8E1022A
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

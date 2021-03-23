@@ -6,4 +6,3 @@ class AntiGravityAction(SubclassBaseFile):
     ResourceType = 0x966DCA55
     ParentResourceType = _UnaryAction.ResourceType
     parent: _UnaryAction
-

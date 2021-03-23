@@ -6,4 +6,3 @@ class CLArcherInvestigate(SubclassBaseFile):
     ResourceType = 0x1E898A16
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

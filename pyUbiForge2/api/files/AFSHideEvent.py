@@ -6,4 +6,3 @@ class AFSHideEvent(SubclassBaseFile):
     ResourceType = 0x0DAEED39
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

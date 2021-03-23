@@ -6,4 +6,3 @@ class FastTravelManagerDLCElement(SubclassBaseFile):
     ResourceType = 0xC0BD1C74
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

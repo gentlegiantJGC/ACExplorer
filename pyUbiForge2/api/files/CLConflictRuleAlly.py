@@ -6,4 +6,3 @@ class CLConflictRuleAlly(SubclassBaseFile):
     ResourceType = 0x93030C2C
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

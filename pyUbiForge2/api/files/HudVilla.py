@@ -6,4 +6,3 @@ class HudVilla(SubclassBaseFile):
     ResourceType = 0xF1227132
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

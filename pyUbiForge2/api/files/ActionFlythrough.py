@@ -6,4 +6,3 @@ class ActionFlythrough(SubclassBaseFile):
     ResourceType = 0xA0FBBDA3
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

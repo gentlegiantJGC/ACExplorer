@@ -6,4 +6,3 @@ class BillboardComponent(SubclassBaseFile):
     ResourceType = 0xF73AA9DF
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class OperatorDot(SubclassBaseFile):
     ResourceType = 0x8547EC07
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

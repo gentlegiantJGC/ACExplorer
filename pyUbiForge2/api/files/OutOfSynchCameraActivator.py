@@ -6,4 +6,3 @@ class OutOfSynchCameraActivator(SubclassBaseFile):
     ResourceType = 0xC335C221
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

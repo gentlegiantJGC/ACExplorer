@@ -6,4 +6,3 @@ class CLReaction(SubclassBaseFile):
     ResourceType = 0x96229E0E
     ParentResourceType = _CLAbstractReaction.ResourceType
     parent: _CLAbstractReaction
-

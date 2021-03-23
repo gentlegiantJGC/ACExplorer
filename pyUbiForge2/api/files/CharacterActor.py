@@ -6,4 +6,3 @@ class CharacterActor(SubclassBaseFile):
     ResourceType = 0x020965A6
     ParentResourceType = _EntityActor.ResourceType
     parent: _EntityActor
-

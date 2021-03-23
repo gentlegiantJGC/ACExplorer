@@ -6,4 +6,3 @@ class ICSrvNavigationEngine(SubclassBaseFile):
     ResourceType = 0x47386BBF
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

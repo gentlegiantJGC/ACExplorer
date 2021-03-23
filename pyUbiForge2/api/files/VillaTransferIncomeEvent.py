@@ -6,4 +6,3 @@ class VillaTransferIncomeEvent(SubclassBaseFile):
     ResourceType = 0xC14AB6B2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class LoadWorldMenuComponent(SubclassBaseFile):
     ResourceType = 0x1FB18A58
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

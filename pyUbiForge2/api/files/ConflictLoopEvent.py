@@ -6,4 +6,3 @@ class ConflictLoopEvent(SubclassBaseFile):
     ResourceType = 0xC710FDE9
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class GcLWagon(SubclassBaseFile):
     ResourceType = 0x88E0EDDD
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

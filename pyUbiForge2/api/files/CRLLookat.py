@@ -6,4 +6,3 @@ class CRLLookat(SubclassBaseFile):
     ResourceType = 0xFA0FC606
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

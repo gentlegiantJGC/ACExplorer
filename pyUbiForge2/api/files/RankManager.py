@@ -6,4 +6,3 @@ class RankManager(SubclassBaseFile):
     ResourceType = 0xC4A59FC7
     ParentResourceType = _AISerializedManager.ResourceType
     parent: _AISerializedManager
-

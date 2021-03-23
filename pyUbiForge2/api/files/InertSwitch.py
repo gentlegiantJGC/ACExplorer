@@ -6,4 +6,3 @@ class InertSwitch(SubclassBaseFile):
     ResourceType = 0x308DEBF6
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

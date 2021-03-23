@@ -6,4 +6,3 @@ class NothingClip(SubclassBaseFile):
     ResourceType = 0x4A805D2B
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

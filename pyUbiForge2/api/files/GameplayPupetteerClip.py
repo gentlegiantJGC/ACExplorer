@@ -6,4 +6,3 @@ class GameplayPupetteerClip(SubclassBaseFile):
     ResourceType = 0x5BF55F5F
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

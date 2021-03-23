@@ -6,4 +6,3 @@ class InventoryTransferEvent(SubclassBaseFile):
     ResourceType = 0xB2BC4010
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

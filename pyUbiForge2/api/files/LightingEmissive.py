@@ -6,4 +6,3 @@ class LightingEmissive(SubclassBaseFile):
     ResourceType = 0x77164BF2
     ParentResourceType = _LightingOperator.ResourceType
     parent: _LightingOperator
-

@@ -6,4 +6,3 @@ class FamilyTreeActionAFSMessage(SubclassBaseFile):
     ResourceType = 0xB005419C
     ParentResourceType = _ActionAFSMessage.ResourceType
     parent: _ActionAFSMessage
-

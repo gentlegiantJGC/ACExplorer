@@ -6,4 +6,3 @@ class SiegeBlastEvent(SubclassBaseFile):
     ResourceType = 0x490E79A2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

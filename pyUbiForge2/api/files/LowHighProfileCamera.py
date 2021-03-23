@@ -6,4 +6,3 @@ class LowHighProfileCamera(SubclassBaseFile):
     ResourceType = 0x2DCF7371
     ParentResourceType = _FreeRoamingCamera.ResourceType
     parent: _FreeRoamingCamera
-

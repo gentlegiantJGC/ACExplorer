@@ -6,4 +6,3 @@ class WeaponSwitchToRightHandEventSeed(SubclassBaseFile):
     ResourceType = 0x4C09BEBD
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

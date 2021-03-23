@@ -6,4 +6,3 @@ class TerrainHabitatTile(SubclassBaseFile):
     ResourceType = 0x1FA641B1
     ParentResourceType = _TerrainTile.ResourceType
     parent: _TerrainTile
-

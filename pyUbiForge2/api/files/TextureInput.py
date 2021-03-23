@@ -6,4 +6,3 @@ class TextureInput(SubclassBaseFile):
     ResourceType = 0x354FE002
     ParentResourceType = _LinkableInput.ResourceType
     parent: _LinkableInput
-

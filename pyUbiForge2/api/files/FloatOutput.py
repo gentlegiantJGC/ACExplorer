@@ -6,4 +6,3 @@ class FloatOutput(SubclassBaseFile):
     ResourceType = 0x63AD2CDD
     ParentResourceType = _LinkableOutput.ResourceType
     parent: _LinkableOutput
-

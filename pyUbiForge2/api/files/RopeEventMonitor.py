@@ -6,4 +6,3 @@ class RopeEventMonitor(SubclassBaseFile):
     ResourceType = 0xCAA1D77B
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

@@ -6,4 +6,3 @@ class MissionStepLanguage(SubclassBaseFile):
     ResourceType = 0xEE8F2182
     ParentResourceType = _MissionStep.ResourceType
     parent: _MissionStep
-

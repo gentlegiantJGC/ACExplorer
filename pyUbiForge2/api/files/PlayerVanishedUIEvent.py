@@ -6,4 +6,3 @@ class PlayerVanishedUIEvent(SubclassBaseFile):
     ResourceType = 0x2EB66767
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

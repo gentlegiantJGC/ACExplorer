@@ -6,4 +6,3 @@ class VictimEvent(SubclassBaseFile):
     ResourceType = 0x3D732C8A
     ParentResourceType = _DangerEvent.ResourceType
     parent: _DangerEvent
-

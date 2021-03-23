@@ -6,4 +6,3 @@ class CameraActionConditionClip(SubclassBaseFile):
     ResourceType = 0xAD57403E
     ParentResourceType = _ZoneConditionClip.ResourceType
     parent: _ZoneConditionClip
-

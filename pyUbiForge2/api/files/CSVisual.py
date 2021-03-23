@@ -6,4 +6,3 @@ class CSVisual(SubclassBaseFile):
     ResourceType = 0x8DAAC5C7
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

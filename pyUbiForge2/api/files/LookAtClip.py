@@ -6,4 +6,3 @@ class LookAtClip(SubclassBaseFile):
     ResourceType = 0x80AC90A6
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

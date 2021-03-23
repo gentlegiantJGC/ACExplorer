@@ -6,4 +6,3 @@ class ColourControlSettings(SubclassBaseFile):
     ResourceType = 0x583F4578
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

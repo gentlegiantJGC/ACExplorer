@@ -6,4 +6,3 @@ class EavesdroppingExitEvent(SubclassBaseFile):
     ResourceType = 0x2B101589
     ParentResourceType = _GameplayEvent.ResourceType
     parent: _GameplayEvent
-

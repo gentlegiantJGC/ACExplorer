@@ -6,4 +6,3 @@ class CRLCustomAction(SubclassBaseFile):
     ResourceType = 0x87B6B545
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

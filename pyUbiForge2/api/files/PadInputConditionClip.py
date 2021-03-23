@@ -6,4 +6,3 @@ class PadInputConditionClip(SubclassBaseFile):
     ResourceType = 0xEA9A4C0B
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

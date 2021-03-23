@@ -6,4 +6,3 @@ class CuriosityMode(SubclassBaseFile):
     ResourceType = 0xF580A25B
     ParentResourceType = _ReactionMode.ResourceType
     parent: _ReactionMode
-

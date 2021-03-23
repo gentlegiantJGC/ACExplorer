@@ -6,4 +6,3 @@ class BeamEventMonitor(SubclassBaseFile):
     ResourceType = 0xEA379A84
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

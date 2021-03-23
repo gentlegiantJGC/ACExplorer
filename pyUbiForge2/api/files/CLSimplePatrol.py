@@ -6,4 +6,3 @@ class CLSimplePatrol(SubclassBaseFile):
     ResourceType = 0x9CCDBEBB
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

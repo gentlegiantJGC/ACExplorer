@@ -6,4 +6,3 @@ class EavesdroppingDataEvent(SubclassBaseFile):
     ResourceType = 0x0A8D45EC
     ParentResourceType = _CameraEvent.ResourceType
     parent: _CameraEvent
-

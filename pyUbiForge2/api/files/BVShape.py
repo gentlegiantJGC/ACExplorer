@@ -6,4 +6,3 @@ class BVShape(SubclassBaseFile):
     ResourceType = 0x4EFC7705
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

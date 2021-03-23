@@ -6,4 +6,3 @@ class BlockActorResponseEvent(SubclassBaseFile):
     ResourceType = 0xD2F9B32F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

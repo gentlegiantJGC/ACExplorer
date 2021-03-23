@@ -6,4 +6,3 @@ class Scene(SubclassBaseFile):
     ResourceType = 0x18B8C0DE
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

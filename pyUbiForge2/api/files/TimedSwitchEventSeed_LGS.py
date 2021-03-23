@@ -6,4 +6,3 @@ class TimedSwitchEventSeed_LGS(SubclassBaseFile):
     ResourceType = 0xA9DB545D
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

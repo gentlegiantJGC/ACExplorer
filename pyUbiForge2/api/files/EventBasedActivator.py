@@ -6,4 +6,3 @@ class EventBasedActivator(SubclassBaseFile):
     ResourceType = 0xFF103AE9
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

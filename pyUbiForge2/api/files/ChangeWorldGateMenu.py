@@ -6,4 +6,3 @@ class ChangeWorldGateMenu(SubclassBaseFile):
     ResourceType = 0x89A3E5A4
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

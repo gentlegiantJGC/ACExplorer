@@ -6,4 +6,3 @@ class GhostCameraEventMonitor(SubclassBaseFile):
     ResourceType = 0x9FC8336A
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

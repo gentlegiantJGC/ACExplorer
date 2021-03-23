@@ -6,4 +6,3 @@ class CameraGraphRuleBook(SubclassBaseFile):
     ResourceType = 0xE487F4CC
     ParentResourceType = _GraphRuleBook.ResourceType
     parent: _GraphRuleBook
-

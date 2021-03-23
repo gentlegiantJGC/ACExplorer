@@ -6,4 +6,3 @@ class ToleranceCameraActivator(SubclassBaseFile):
     ResourceType = 0x7E5B2799
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

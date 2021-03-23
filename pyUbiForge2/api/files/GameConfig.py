@@ -6,4 +6,3 @@ class GameConfig(SubclassBaseFile):
     ResourceType = 0x2470BC89
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

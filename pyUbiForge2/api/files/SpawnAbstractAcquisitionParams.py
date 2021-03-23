@@ -6,4 +6,3 @@ class SpawnAbstractAcquisitionParams(SubclassBaseFile):
     ResourceType = 0xB906E397
     ParentResourceType = _SpawnStrategyParams.ResourceType
     parent: _SpawnStrategyParams
-

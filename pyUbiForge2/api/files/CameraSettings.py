@@ -6,4 +6,3 @@ class CameraSettings(SubclassBaseFile):
     ResourceType = 0x68CD2212
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class TriggerEnterEventSeed(SubclassBaseFile):
     ResourceType = 0xFDFEFA9F
     ParentResourceType = _TriggerEventSeed.ResourceType
     parent: _TriggerEventSeed
-

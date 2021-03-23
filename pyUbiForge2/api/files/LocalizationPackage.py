@@ -6,4 +6,3 @@ class LocalizationPackage(SubclassBaseFile):
     ResourceType = 0x6E3C9C6F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

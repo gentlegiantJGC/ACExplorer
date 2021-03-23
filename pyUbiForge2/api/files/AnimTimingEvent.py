@@ -6,4 +6,3 @@ class AnimTimingEvent(SubclassBaseFile):
     ResourceType = 0xA9264210
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

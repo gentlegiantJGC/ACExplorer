@@ -6,4 +6,3 @@ class VisualPropertyNodeSolver(SubclassBaseFile):
     ResourceType = 0x1D6F0AE7
     ParentResourceType = _PropertyPathNodeSolver.ResourceType
     parent: _PropertyPathNodeSolver
-

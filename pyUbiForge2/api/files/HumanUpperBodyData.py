@@ -6,4 +6,3 @@ class HumanUpperBodyData(SubclassBaseFile):
     ResourceType = 0xFBCDE9D7
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

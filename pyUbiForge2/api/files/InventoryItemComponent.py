@@ -6,4 +6,3 @@ class InventoryItemComponent(SubclassBaseFile):
     ResourceType = 0xE3D738DD
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

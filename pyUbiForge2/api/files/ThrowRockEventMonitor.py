@@ -6,4 +6,3 @@ class ThrowRockEventMonitor(SubclassBaseFile):
     ResourceType = 0xC1E0486C
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

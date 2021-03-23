@@ -6,4 +6,3 @@ class HumanDeadData(SubclassBaseFile):
     ResourceType = 0x8A9BEA05
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

@@ -6,4 +6,3 @@ class ThrowArrowEventMonitor(SubclassBaseFile):
     ResourceType = 0x6367AAFF
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

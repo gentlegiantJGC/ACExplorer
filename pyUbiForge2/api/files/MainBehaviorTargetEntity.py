@@ -6,4 +6,3 @@ class MainBehaviorTargetEntity(SubclassBaseFile):
     ResourceType = 0x3573F547
     ParentResourceType = _ITargetEntity.ResourceType
     parent: _ITargetEntity
-

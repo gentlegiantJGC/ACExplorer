@@ -6,4 +6,3 @@ class ItemHasBeenFoundCriteria(SubclassBaseFile):
     ResourceType = 0xF59BDB27
     ParentResourceType = _ItemCriteria.ResourceType
     parent: _ItemCriteria
-

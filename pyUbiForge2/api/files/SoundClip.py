@@ -6,4 +6,3 @@ class SoundClip(SubclassBaseFile):
     ResourceType = 0x6857FF64
     ParentResourceType = _TimedClip.ResourceType
     parent: _TimedClip
-

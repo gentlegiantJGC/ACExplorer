@@ -6,4 +6,3 @@ class BoatController(SubclassBaseFile):
     ResourceType = 0x45C649DA
     ParentResourceType = _VehicleComponent.ResourceType
     parent: _VehicleComponent
-

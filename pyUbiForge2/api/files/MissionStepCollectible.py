@@ -6,4 +6,3 @@ class MissionStepCollectible(SubclassBaseFile):
     ResourceType = 0xEA86ACF8
     ParentResourceType = _MissionStep.ResourceType
     parent: _MissionStep
-

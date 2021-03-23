@@ -6,4 +6,3 @@ class SelectiveExecutionSet(SubclassBaseFile):
     ResourceType = 0x9B1EC562
     ParentResourceType = _ExecutionSet.ResourceType
     parent: _ExecutionSet
-

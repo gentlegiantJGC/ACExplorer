@@ -6,4 +6,3 @@ class PlayerAttributeSelectors(SubclassBaseFile):
     ResourceType = 0x36F84077
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

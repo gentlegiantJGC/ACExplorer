@@ -6,4 +6,3 @@ class SunLight(SubclassBaseFile):
     ResourceType = 0x5EDC3E04
     ParentResourceType = _DirectionalLight.ResourceType
     parent: _DirectionalLight
-

@@ -6,4 +6,3 @@ class FXMaterialOverlayPropertyMapping(SubclassBaseFile):
     ResourceType = 0x71704EA6
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

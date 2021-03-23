@@ -6,4 +6,3 @@ class ReferenceListShape(SubclassBaseFile):
     ResourceType = 0x2D675BA2
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

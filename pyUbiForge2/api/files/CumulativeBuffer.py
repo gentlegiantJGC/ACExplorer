@@ -6,4 +6,3 @@ class CumulativeBuffer(SubclassBaseFile):
     ResourceType = 0xC5CF88C1
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

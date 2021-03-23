@@ -6,4 +6,3 @@ class OperatorVectorFloatMultiply(SubclassBaseFile):
     ResourceType = 0x78FB1B01
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

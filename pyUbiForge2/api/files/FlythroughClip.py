@@ -6,4 +6,3 @@ class FlythroughClip(SubclassBaseFile):
     ResourceType = 0x308AB956
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

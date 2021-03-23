@@ -6,4 +6,3 @@ class OLCannon(SubclassBaseFile):
     ResourceType = 0xEA756B37
     ParentResourceType = _OLAbstract.ResourceType
     parent: _OLAbstract
-

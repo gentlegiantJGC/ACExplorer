@@ -6,4 +6,3 @@ class ExitDangerVictimEvent(SubclassBaseFile):
     ResourceType = 0xF4315A4F
     ParentResourceType = _VictimEvent.ResourceType
     parent: _VictimEvent
-

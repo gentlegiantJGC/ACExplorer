@@ -6,4 +6,3 @@ class ClipOperator(SubclassBaseFile):
     ResourceType = 0xF0455141
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class WalkthroughTrigger(SubclassBaseFile):
     ResourceType = 0x2B4970B6
     ParentResourceType = _StartTrigger.ResourceType
     parent: _StartTrigger
-

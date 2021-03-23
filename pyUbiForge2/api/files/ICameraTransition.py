@@ -6,4 +6,3 @@ class ICameraTransition(SubclassBaseFile):
     ResourceType = 0x237EC0C7
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

@@ -6,4 +6,3 @@ class UniqueEventObjectEvent(SubclassBaseFile):
     ResourceType = 0x9E50C696
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

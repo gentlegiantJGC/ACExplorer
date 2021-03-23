@@ -6,4 +6,3 @@ class SpecialAttackResponseEvent(SubclassBaseFile):
     ResourceType = 0x7F403534
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

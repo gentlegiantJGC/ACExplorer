@@ -6,4 +6,3 @@ class PSPConnectionDoneCondition(SubclassBaseFile):
     ResourceType = 0x14F70B09
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

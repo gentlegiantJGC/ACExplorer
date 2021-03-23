@@ -6,4 +6,3 @@ class SingleEntityPresentationEvent(SubclassBaseFile):
     ResourceType = 0x0A582FB0
     ParentResourceType = _PresentationEvent.ResourceType
     parent: _PresentationEvent
-

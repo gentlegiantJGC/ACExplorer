@@ -6,4 +6,3 @@ class HumanHayStackData(SubclassBaseFile):
     ResourceType = 0x5C389244
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

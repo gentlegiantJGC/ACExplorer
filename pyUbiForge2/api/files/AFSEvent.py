@@ -6,4 +6,3 @@ class AFSEvent(SubclassBaseFile):
     ResourceType = 0x1199F5BE
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

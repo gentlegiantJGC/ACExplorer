@@ -6,4 +6,3 @@ class DesaturateSettings(SubclassBaseFile):
     ResourceType = 0xC16A13E0
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

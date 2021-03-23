@@ -6,4 +6,3 @@ class DLCAlternateIconCoordinatorEvent(SubclassBaseFile):
     ResourceType = 0xC0E1DEC8
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

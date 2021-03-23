@@ -6,4 +6,3 @@ class EngineLoadWorldEvent(SubclassBaseFile):
     ResourceType = 0x56F6A62D
     ParentResourceType = _EngineEvent.ResourceType
     parent: _EngineEvent
-

@@ -6,4 +6,3 @@ class PerPlayerLineOfSight(SubclassBaseFile):
     ResourceType = 0xECD9430C
     ParentResourceType = _Perception.ResourceType
     parent: _Perception
-

@@ -6,4 +6,3 @@ class LinkedValue(SubclassBaseFile):
     ResourceType = 0xD3785D86
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

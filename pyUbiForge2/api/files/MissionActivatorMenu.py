@@ -6,4 +6,3 @@ class MissionActivatorMenu(SubclassBaseFile):
     ResourceType = 0xC57B6B4A
     ParentResourceType = _GameMenu.ResourceType
     parent: _GameMenu
-

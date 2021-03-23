@@ -6,4 +6,3 @@ class UIFastTravelItem(SubclassBaseFile):
     ResourceType = 0xF2C62610
     ParentResourceType = _UIInventoryItem.ResourceType
     parent: _UIInventoryItem
-

@@ -6,4 +6,3 @@ class ClimbTopLedgeEventMonitor(SubclassBaseFile):
     ResourceType = 0xEA9B545E
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

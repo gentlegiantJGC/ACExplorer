@@ -6,4 +6,3 @@ class GcLSrvReactionPropagation(SubclassBaseFile):
     ResourceType = 0x9D3069D1
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

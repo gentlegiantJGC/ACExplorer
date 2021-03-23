@@ -6,4 +6,3 @@ class SceneSkipEvent(SubclassBaseFile):
     ResourceType = 0x536A5F14
     ParentResourceType = _SceneEvent.ResourceType
     parent: _SceneEvent
-

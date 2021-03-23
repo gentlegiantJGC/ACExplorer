@@ -6,4 +6,3 @@ class CameraSecondaryTargetManager(SubclassBaseFile):
     ResourceType = 0x1D9546FE
     ParentResourceType = _AISerializedManager.ResourceType
     parent: _AISerializedManager
-

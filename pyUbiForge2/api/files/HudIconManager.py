@@ -6,4 +6,3 @@ class HudIconManager(SubclassBaseFile):
     ResourceType = 0x564FAF5E
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

@@ -6,4 +6,3 @@ class ParticleSystem(SubclassBaseFile):
     ResourceType = 0xCAAA7EE8
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

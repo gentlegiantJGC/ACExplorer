@@ -6,4 +6,3 @@ class EventListener(SubclassBaseFile):
     ResourceType = 0x2E8B5553
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

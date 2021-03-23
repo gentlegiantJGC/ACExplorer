@@ -6,4 +6,3 @@ class WeaponHandSwitchEvent(SubclassBaseFile):
     ResourceType = 0xCE8C718B
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

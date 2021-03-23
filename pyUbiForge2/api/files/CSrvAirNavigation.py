@@ -6,4 +6,3 @@ class CSrvAirNavigation(SubclassBaseFile):
     ResourceType = 0x0C967B89
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

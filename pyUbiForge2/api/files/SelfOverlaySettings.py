@@ -6,4 +6,3 @@ class SelfOverlaySettings(SubclassBaseFile):
     ResourceType = 0xBE81DF9F
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

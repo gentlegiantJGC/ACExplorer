@@ -6,4 +6,3 @@ class LightingSpecular(SubclassBaseFile):
     ResourceType = 0x791945CF
     ParentResourceType = _LightingOperator.ResourceType
     parent: _LightingOperator
-

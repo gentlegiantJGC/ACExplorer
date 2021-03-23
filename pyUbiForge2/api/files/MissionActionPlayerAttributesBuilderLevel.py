@@ -6,4 +6,3 @@ class MissionActionPlayerAttributesBuilderLevel(SubclassBaseFile):
     ResourceType = 0x6C884ACC
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

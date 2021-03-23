@@ -6,4 +6,3 @@ class CLShopkeeper(SubclassBaseFile):
     ResourceType = 0x7D28B3BB
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

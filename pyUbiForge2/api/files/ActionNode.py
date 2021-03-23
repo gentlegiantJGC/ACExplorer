@@ -6,4 +6,3 @@ class ActionNode(SubclassBaseFile):
     ResourceType = 0xA1DF3794
     ParentResourceType = _DoneNode.ResourceType
     parent: _DoneNode
-

@@ -6,4 +6,3 @@ class EngineLoadWorldEventSeed(SubclassBaseFile):
     ResourceType = 0xABF6A8F3
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

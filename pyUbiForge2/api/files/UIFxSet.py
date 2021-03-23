@@ -6,4 +6,3 @@ class UIFxSet(SubclassBaseFile):
     ResourceType = 0x9CF6DD7E
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

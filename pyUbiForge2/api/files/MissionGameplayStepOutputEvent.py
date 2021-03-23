@@ -6,4 +6,3 @@ class MissionGameplayStepOutputEvent(SubclassBaseFile):
     ResourceType = 0x1AE67962
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

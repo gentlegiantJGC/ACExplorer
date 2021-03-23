@@ -6,4 +6,3 @@ class CLGuardPost(SubclassBaseFile):
     ResourceType = 0x228DFEAF
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

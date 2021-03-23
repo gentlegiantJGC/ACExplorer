@@ -6,4 +6,3 @@ class ExitShopMenuEvent(SubclassBaseFile):
     ResourceType = 0xAF7BAF95
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

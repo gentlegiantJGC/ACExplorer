@@ -6,4 +6,3 @@ class StrValueTrigger(SubclassBaseFile):
     ResourceType = 0x821EEB2D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class NotorietyManager(SubclassBaseFile):
     ResourceType = 0x4C325D94
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

@@ -6,4 +6,3 @@ class CSrvBoatDriverCrowdInteraction(SubclassBaseFile):
     ResourceType = 0x4FF543F9
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

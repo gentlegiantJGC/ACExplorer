@@ -6,4 +6,3 @@ class FadeEffectSettings(SubclassBaseFile):
     ResourceType = 0xD80EFA50
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

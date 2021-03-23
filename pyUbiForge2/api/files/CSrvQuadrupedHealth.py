@@ -6,4 +6,3 @@ class CSrvQuadrupedHealth(SubclassBaseFile):
     ResourceType = 0x0ED54777
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

@@ -6,4 +6,3 @@ class HasSecondaryTargetCameraActivator(SubclassBaseFile):
     ResourceType = 0xD502412B
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

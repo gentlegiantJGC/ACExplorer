@@ -6,4 +6,3 @@ class UIVillaTrophyParams(SubclassBaseFile):
     ResourceType = 0x89FB5083
     ParentResourceType = _UIParams.ResourceType
     parent: _UIParams
-

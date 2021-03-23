@@ -6,4 +6,3 @@ class CLSimpleWander(SubclassBaseFile):
     ResourceType = 0xA62733D3
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

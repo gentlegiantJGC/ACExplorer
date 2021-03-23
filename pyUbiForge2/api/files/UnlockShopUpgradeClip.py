@@ -6,4 +6,3 @@ class UnlockShopUpgradeClip(SubclassBaseFile):
     ResourceType = 0x5B9463CA
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

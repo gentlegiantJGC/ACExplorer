@@ -6,4 +6,3 @@ class WorldFog(SubclassBaseFile):
     ResourceType = 0xACF73D89
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

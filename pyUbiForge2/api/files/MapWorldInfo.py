@@ -6,4 +6,3 @@ class MapWorldInfo(SubclassBaseFile):
     ResourceType = 0x8F7EBC62
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

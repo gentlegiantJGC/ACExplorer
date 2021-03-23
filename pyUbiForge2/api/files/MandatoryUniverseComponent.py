@@ -6,4 +6,3 @@ class MandatoryUniverseComponent(SubclassBaseFile):
     ResourceType = 0xC62E24DD
     ParentResourceType = _UniverseComponent.ResourceType
     parent: _UniverseComponent
-

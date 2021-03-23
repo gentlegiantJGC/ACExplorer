@@ -6,4 +6,3 @@ class MissionActionSetPlayerRank(SubclassBaseFile):
     ResourceType = 0xC0E59FC0
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

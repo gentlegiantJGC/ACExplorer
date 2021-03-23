@@ -6,4 +6,3 @@ class OperatorSaturateFloat(SubclassBaseFile):
     ResourceType = 0x584B953A
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

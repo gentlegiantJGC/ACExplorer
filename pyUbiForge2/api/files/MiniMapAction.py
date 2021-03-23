@@ -6,4 +6,3 @@ class MiniMapAction(SubclassBaseFile):
     ResourceType = 0x4128CF13
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

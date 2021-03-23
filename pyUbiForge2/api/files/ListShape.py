@@ -6,4 +6,3 @@ class ListShape(SubclassBaseFile):
     ResourceType = 0x86EBFD8D
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

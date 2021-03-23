@@ -6,4 +6,3 @@ class DamageEvent(SubclassBaseFile):
     ResourceType = 0x67F2E868
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

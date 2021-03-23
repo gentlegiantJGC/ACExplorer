@@ -6,4 +6,3 @@ class AssassinationEventMonitor(SubclassBaseFile):
     ResourceType = 0x36246A62
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

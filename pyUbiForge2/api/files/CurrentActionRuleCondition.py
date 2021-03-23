@@ -6,4 +6,3 @@ class CurrentActionRuleCondition(SubclassBaseFile):
     ResourceType = 0x6D8397B0
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

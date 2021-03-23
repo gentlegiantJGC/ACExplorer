@@ -6,4 +6,3 @@ class TargetCamera(SubclassBaseFile):
     ResourceType = 0x1212475B
     ParentResourceType = _Camera.ResourceType
     parent: _Camera
-

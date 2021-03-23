@@ -6,4 +6,3 @@ class PerFight(SubclassBaseFile):
     ResourceType = 0x89297F68
     ParentResourceType = _Perception.ResourceType
     parent: _Perception
-

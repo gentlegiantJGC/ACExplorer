@@ -6,4 +6,3 @@ class TargetChaseEventMonitor(SubclassBaseFile):
     ResourceType = 0x0A4DD6AE
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

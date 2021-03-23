@@ -6,4 +6,3 @@ class ConditionTimerClip(SubclassBaseFile):
     ResourceType = 0x4FCFF42B
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

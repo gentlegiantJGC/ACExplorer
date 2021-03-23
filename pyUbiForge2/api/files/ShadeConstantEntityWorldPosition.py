@@ -6,4 +6,3 @@ class ShadeConstantEntityWorldPosition(SubclassBaseFile):
     ResourceType = 0x818F8014
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

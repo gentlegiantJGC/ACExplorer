@@ -6,4 +6,3 @@ class AccomplishmentAccumulator(SubclassBaseFile):
     ResourceType = 0xDD28B05B
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class CLAmbushWagon(SubclassBaseFile):
     ResourceType = 0xAAD91C01
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

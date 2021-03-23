@@ -6,4 +6,3 @@ class ActionTransfertIncomeToTheBank(SubclassBaseFile):
     ResourceType = 0xEC446F0D
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

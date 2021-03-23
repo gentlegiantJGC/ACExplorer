@@ -6,4 +6,3 @@ class AmbienceRegionCellData(SubclassBaseFile):
     ResourceType = 0xD9386B33
     ParentResourceType = _RegionCellData.ResourceType
     parent: _RegionCellData
-

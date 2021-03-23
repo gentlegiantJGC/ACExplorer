@@ -6,4 +6,3 @@ class SceneEventSeed(SubclassBaseFile):
     ResourceType = 0x609C4E1F
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

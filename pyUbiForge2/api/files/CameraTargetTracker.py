@@ -6,4 +6,3 @@ class CameraTargetTracker(SubclassBaseFile):
     ResourceType = 0x8E6962C7
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

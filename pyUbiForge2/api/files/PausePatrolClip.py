@@ -6,4 +6,3 @@ class PausePatrolClip(SubclassBaseFile):
     ResourceType = 0xB5C32122
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

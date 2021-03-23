@@ -6,4 +6,3 @@ class PlayerHealthChangeEvent(SubclassBaseFile):
     ResourceType = 0x5B2ADE22
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class GuidanceSystemBarrel(SubclassBaseFile):
     ResourceType = 0x79D2CBD7
     ParentResourceType = _GuidanceSystemComponent.ResourceType
     parent: _GuidanceSystemComponent
-

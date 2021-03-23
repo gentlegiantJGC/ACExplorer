@@ -6,4 +6,3 @@ class NavigationCameraActivator(SubclassBaseFile):
     ResourceType = 0xD8893D35
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

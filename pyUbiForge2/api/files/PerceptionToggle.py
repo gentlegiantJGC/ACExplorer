@@ -6,4 +6,3 @@ class PerceptionToggle(SubclassBaseFile):
     ResourceType = 0xED146E66
     ParentResourceType = _Perception.ResourceType
     parent: _Perception
-

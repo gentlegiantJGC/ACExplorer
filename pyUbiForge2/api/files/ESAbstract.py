@@ -6,4 +6,3 @@ class ESAbstract(SubclassBaseFile):
     ResourceType = 0x39A73BBF
     ParentResourceType = _EntityAIProcess.ResourceType
     parent: _EntityAIProcess
-

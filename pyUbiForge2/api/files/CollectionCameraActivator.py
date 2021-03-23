@@ -6,4 +6,3 @@ class CollectionCameraActivator(SubclassBaseFile):
     ResourceType = 0x415A8C2B
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

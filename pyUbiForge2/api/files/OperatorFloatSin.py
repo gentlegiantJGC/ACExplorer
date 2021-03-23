@@ -6,4 +6,3 @@ class OperatorFloatSin(SubclassBaseFile):
     ResourceType = 0xF196A810
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

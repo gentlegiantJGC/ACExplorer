@@ -6,4 +6,3 @@ class VideoData(SubclassBaseFile):
     ResourceType = 0x38C20200
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

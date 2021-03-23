@@ -6,4 +6,3 @@ class GliderActorInAirData(SubclassBaseFile):
     ResourceType = 0x0ED8B620
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

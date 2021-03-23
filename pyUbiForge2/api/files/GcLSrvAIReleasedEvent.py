@@ -6,4 +6,3 @@ class GcLSrvAIReleasedEvent(SubclassBaseFile):
     ResourceType = 0x84103F00
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

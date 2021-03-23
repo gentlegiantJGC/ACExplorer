@@ -6,4 +6,3 @@ class MissionExclusiveCondition(SubclassBaseFile):
     ResourceType = 0x939F04C0
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

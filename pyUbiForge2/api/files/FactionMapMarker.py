@@ -6,4 +6,3 @@ class FactionMapMarker(SubclassBaseFile):
     ResourceType = 0xB2CCE631
     ParentResourceType = _MapMarker.ResourceType
     parent: _MapMarker
-

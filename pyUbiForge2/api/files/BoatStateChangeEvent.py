@@ -6,4 +6,3 @@ class BoatStateChangeEvent(SubclassBaseFile):
     ResourceType = 0x588C54DC
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

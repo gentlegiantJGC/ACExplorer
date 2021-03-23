@@ -6,4 +6,3 @@ class DepthOfFieldSettings(SubclassBaseFile):
     ResourceType = 0x6579DF3E
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

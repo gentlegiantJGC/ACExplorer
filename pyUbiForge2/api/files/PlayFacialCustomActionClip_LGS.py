@@ -6,4 +6,3 @@ class PlayFacialCustomActionClip_LGS(SubclassBaseFile):
     ResourceType = 0x637B4989
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

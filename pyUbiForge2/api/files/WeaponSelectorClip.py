@@ -6,4 +6,3 @@ class WeaponSelectorClip(SubclassBaseFile):
     ResourceType = 0x8D95D2CE
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

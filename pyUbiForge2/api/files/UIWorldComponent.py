@@ -6,4 +6,3 @@ class UIWorldComponent(SubclassBaseFile):
     ResourceType = 0xEEC2D4C7
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

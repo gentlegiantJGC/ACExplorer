@@ -6,4 +6,3 @@ class WagonActorData(SubclassBaseFile):
     ResourceType = 0xC94F01BE
     ParentResourceType = _AIActorData.ResourceType
     parent: _AIActorData
-

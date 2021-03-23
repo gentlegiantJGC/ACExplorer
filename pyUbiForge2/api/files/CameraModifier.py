@@ -6,4 +6,3 @@ class CameraModifier(SubclassBaseFile):
     ResourceType = 0x26375B2A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

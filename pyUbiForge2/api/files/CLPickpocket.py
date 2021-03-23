@@ -6,4 +6,3 @@ class CLPickpocket(SubclassBaseFile):
     ResourceType = 0x4CC89D01
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

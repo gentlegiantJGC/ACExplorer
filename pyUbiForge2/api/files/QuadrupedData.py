@@ -6,4 +6,3 @@ class QuadrupedData(SubclassBaseFile):
     ResourceType = 0xE054DBC9
     ParentResourceType = _AIActorData.ResourceType
     parent: _AIActorData
-

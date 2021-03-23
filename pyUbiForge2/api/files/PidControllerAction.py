@@ -6,4 +6,3 @@ class PidControllerAction(SubclassBaseFile):
     ResourceType = 0xDFE31AFD
     ParentResourceType = _UnaryAction.ResourceType
     parent: _UnaryAction
-

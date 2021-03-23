@@ -6,4 +6,3 @@ class CLSimpleGoTo(SubclassBaseFile):
     ResourceType = 0x8D6978AE
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

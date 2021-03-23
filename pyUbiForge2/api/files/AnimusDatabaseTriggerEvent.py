@@ -6,4 +6,3 @@ class AnimusDatabaseTriggerEvent(SubclassBaseFile):
     ResourceType = 0xE0D55B98
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

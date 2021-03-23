@@ -6,4 +6,3 @@ class WeaponSoundSet(SubclassBaseFile):
     ResourceType = 0x37DF4185
     ParentResourceType = _SoundSet.ResourceType
     parent: _SoundSet
-

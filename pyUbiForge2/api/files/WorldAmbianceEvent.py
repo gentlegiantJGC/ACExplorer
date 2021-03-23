@@ -6,4 +6,3 @@ class WorldAmbianceEvent(SubclassBaseFile):
     ResourceType = 0xCEFFEF0F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

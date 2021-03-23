@@ -6,4 +6,3 @@ class PushStateChartParams(SubclassBaseFile):
     ResourceType = 0x951B2BBA
     ParentResourceType = _ReactionParams.ResourceType
     parent: _ReactionParams
-

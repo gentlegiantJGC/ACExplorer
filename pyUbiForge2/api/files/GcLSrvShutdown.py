@@ -6,4 +6,3 @@ class GcLSrvShutdown(SubclassBaseFile):
     ResourceType = 0xEA305F35
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

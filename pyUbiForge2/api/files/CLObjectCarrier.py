@@ -6,4 +6,3 @@ class CLObjectCarrier(SubclassBaseFile):
     ResourceType = 0xE424F64B
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

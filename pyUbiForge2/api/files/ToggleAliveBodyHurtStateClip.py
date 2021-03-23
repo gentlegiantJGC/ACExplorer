@@ -6,4 +6,3 @@ class ToggleAliveBodyHurtStateClip(SubclassBaseFile):
     ResourceType = 0xFCC94600
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

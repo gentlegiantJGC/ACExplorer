@@ -6,4 +6,3 @@ class SpawningSpecification(SubclassBaseFile):
     ResourceType = 0xFC668456
     ParentResourceType = _EntitySpecification.ResourceType
     parent: _EntitySpecification
-

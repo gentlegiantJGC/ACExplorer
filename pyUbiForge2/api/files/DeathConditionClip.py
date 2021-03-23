@@ -6,4 +6,3 @@ class DeathConditionClip(SubclassBaseFile):
     ResourceType = 0x40D54702
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

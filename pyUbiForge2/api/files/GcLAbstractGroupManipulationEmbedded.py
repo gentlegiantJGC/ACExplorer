@@ -6,4 +6,3 @@ class GcLAbstractGroupManipulationEmbedded(SubclassBaseFile):
     ResourceType = 0xFFCF0FD6
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

@@ -6,4 +6,3 @@ class MetaOperator(SubclassBaseFile):
     ResourceType = 0x0BD2E0B0
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

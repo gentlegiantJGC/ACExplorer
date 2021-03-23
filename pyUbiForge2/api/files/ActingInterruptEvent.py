@@ -6,4 +6,3 @@ class ActingInterruptEvent(SubclassBaseFile):
     ResourceType = 0x12058FEE
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

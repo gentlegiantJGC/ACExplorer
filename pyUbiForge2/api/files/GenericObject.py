@@ -6,4 +6,3 @@ class GenericObject(SubclassBaseFile):
     ResourceType = 0xFF7BB1A1
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

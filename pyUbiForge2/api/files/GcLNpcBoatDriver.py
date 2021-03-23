@@ -6,4 +6,3 @@ class GcLNpcBoatDriver(SubclassBaseFile):
     ResourceType = 0x17DFF5F3
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

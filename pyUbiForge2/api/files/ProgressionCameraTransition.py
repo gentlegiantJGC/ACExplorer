@@ -6,4 +6,3 @@ class ProgressionCameraTransition(SubclassBaseFile):
     ResourceType = 0x8300E0FB
     ParentResourceType = _ICameraTransition.ResourceType
     parent: _ICameraTransition
-

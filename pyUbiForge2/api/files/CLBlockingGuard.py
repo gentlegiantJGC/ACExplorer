@@ -6,4 +6,3 @@ class CLBlockingGuard(SubclassBaseFile):
     ResourceType = 0x1977CBBD
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

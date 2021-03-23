@@ -6,4 +6,3 @@ class SpawnPositionBlobParams(SubclassBaseFile):
     ResourceType = 0x0B6FBC0D
     ParentResourceType = _SpawnPositionParams.ResourceType
     parent: _SpawnPositionParams
-

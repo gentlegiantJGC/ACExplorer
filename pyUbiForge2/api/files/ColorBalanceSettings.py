@@ -6,4 +6,3 @@ class ColorBalanceSettings(SubclassBaseFile):
     ResourceType = 0xA8820575
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

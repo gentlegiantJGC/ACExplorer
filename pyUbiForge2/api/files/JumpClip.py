@@ -6,4 +6,3 @@ class JumpClip(SubclassBaseFile):
     ResourceType = 0x02C166CE
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

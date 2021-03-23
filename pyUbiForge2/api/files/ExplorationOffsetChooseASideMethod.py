@@ -6,4 +6,3 @@ class ExplorationOffsetChooseASideMethod(SubclassBaseFile):
     ResourceType = 0xF0C7D826
     ParentResourceType = _ExplorationOffsetMethod.ResourceType
     parent: _ExplorationOffsetMethod
-

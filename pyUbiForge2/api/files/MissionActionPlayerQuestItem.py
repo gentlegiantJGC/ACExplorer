@@ -6,4 +6,3 @@ class MissionActionPlayerQuestItem(SubclassBaseFile):
     ResourceType = 0x4CD1620A
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

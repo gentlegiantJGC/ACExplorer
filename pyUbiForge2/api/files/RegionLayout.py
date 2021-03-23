@@ -6,4 +6,3 @@ class RegionLayout(SubclassBaseFile):
     ResourceType = 0x17FB5AA8
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

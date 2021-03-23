@@ -6,4 +6,3 @@ class MissionActionCrowdDensity(SubclassBaseFile):
     ResourceType = 0x8BD2444B
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

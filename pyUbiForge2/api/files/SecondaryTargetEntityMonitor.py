@@ -6,4 +6,3 @@ class SecondaryTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0x4063917E
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

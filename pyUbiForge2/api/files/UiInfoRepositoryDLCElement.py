@@ -6,4 +6,3 @@ class UiInfoRepositoryDLCElement(SubclassBaseFile):
     ResourceType = 0x76EB4A1E
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

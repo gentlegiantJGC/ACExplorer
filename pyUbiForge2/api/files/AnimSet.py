@@ -6,4 +6,3 @@ class AnimSet(SubclassBaseFile):
     ResourceType = 0x31984F55
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

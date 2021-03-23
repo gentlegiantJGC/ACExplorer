@@ -6,4 +6,3 @@ class AIAction(SubclassBaseFile):
     ResourceType = 0xA02405B7
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

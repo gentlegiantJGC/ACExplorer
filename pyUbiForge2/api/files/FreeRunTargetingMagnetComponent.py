@@ -6,4 +6,3 @@ class FreeRunTargetingMagnetComponent(SubclassBaseFile):
     ResourceType = 0x4108D49C
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

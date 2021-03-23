@@ -6,4 +6,3 @@ class SaveGameMenuComponent(SubclassBaseFile):
     ResourceType = 0x00782DCB
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

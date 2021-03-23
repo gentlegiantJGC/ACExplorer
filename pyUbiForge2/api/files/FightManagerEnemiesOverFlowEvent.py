@@ -6,4 +6,3 @@ class FightManagerEnemiesOverFlowEvent(SubclassBaseFile):
     ResourceType = 0x4DDEA9BB
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class VectorToFloat(SubclassBaseFile):
     ResourceType = 0xADAF4ED2
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

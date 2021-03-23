@@ -6,4 +6,3 @@ class MissionStateUpdateEvent(SubclassBaseFile):
     ResourceType = 0x8DA67054
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class GlitcherSettings(SubclassBaseFile):
     ResourceType = 0x45603FBE
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

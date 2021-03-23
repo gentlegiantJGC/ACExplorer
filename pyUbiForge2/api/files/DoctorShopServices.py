@@ -6,4 +6,3 @@ class DoctorShopServices(SubclassBaseFile):
     ResourceType = 0x61CA47A5
     ParentResourceType = _AbstractShopServices.ResourceType
     parent: _AbstractShopServices
-

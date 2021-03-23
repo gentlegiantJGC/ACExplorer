@@ -6,4 +6,3 @@ class ConstraintComponent(SubclassBaseFile):
     ResourceType = 0xD0345546
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class OperatorPerlinNoise3D(SubclassBaseFile):
     ResourceType = 0x679CC020
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

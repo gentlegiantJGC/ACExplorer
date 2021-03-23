@@ -6,4 +6,3 @@ class TargetingCameraStateEvent(SubclassBaseFile):
     ResourceType = 0x01025425
     ParentResourceType = _CameraEvent.ResourceType
     parent: _CameraEvent
-

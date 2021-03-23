@@ -6,4 +6,3 @@ class WalkthroughGPUCondition(SubclassBaseFile):
     ResourceType = 0x487E1EB6
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

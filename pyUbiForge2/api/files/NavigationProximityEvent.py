@@ -6,4 +6,3 @@ class NavigationProximityEvent(SubclassBaseFile):
     ResourceType = 0x25454394
     ParentResourceType = _ProximityEvent.ResourceType
     parent: _ProximityEvent
-

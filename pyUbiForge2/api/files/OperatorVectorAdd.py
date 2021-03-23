@@ -6,4 +6,3 @@ class OperatorVectorAdd(SubclassBaseFile):
     ResourceType = 0x61A0FD1C
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

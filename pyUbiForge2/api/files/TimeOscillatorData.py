@@ -6,4 +6,3 @@ class TimeOscillatorData(SubclassBaseFile):
     ResourceType = 0xECE5D96C
     ParentResourceType = _ICustomShaderSetup.ResourceType
     parent: _ICustomShaderSetup
-

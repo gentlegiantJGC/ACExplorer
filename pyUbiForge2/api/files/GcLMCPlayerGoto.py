@@ -6,4 +6,3 @@ class GcLMCPlayerGoto(SubclassBaseFile):
     ResourceType = 0xDE0BFC13
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

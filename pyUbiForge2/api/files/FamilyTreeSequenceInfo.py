@@ -6,4 +6,3 @@ class FamilyTreeSequenceInfo(SubclassBaseFile):
     ResourceType = 0x88C9C903
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

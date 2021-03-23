@@ -6,4 +6,3 @@ class ObservationMode(SubclassBaseFile):
     ResourceType = 0x7AF5A5AD
     ParentResourceType = _ReactionMode.ResourceType
     parent: _ReactionMode
-

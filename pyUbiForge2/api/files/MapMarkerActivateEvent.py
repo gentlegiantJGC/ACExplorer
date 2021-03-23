@@ -6,4 +6,3 @@ class MapMarkerActivateEvent(SubclassBaseFile):
     ResourceType = 0xC7F9DFC8
     ParentResourceType = _MapMarkerEvent.ResourceType
     parent: _MapMarkerEvent
-

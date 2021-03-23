@@ -6,4 +6,3 @@ class CSRVDetectionPersistence(SubclassBaseFile):
     ResourceType = 0x875C3444
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

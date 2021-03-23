@@ -6,4 +6,3 @@ class HumanCustomActionData(SubclassBaseFile):
     ResourceType = 0x13AEF6C5
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

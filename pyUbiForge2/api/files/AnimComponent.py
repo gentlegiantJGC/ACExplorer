@@ -6,4 +6,3 @@ class AnimComponent(SubclassBaseFile):
     ResourceType = 0x8C8AA19D
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

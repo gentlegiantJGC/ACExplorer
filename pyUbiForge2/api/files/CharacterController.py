@@ -6,4 +6,3 @@ class CharacterController(SubclassBaseFile):
     ResourceType = 0xEFE71078
     ParentResourceType = _PhysicComponent.ResourceType
     parent: _PhysicComponent
-

@@ -6,4 +6,3 @@ class CLSurrender(SubclassBaseFile):
     ResourceType = 0x51AD32A0
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

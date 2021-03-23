@@ -6,4 +6,3 @@ class SecurityCamera(SubclassBaseFile):
     ResourceType = 0x97509CDD
     ParentResourceType = _ThirdPersonCamera.ResourceType
     parent: _ThirdPersonCamera
-

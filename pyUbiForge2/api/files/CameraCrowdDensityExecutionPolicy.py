@@ -6,4 +6,3 @@ class CameraCrowdDensityExecutionPolicy(SubclassBaseFile):
     ResourceType = 0xF0E41576
     ParentResourceType = _IExecutionPolicy.ResourceType
     parent: _IExecutionPolicy
-

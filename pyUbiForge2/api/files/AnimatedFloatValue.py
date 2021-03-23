@@ -6,4 +6,3 @@ class AnimatedFloatValue(SubclassBaseFile):
     ResourceType = 0xE6B2ABE6
     ParentResourceType = _AnimatedValue.ResourceType
     parent: _AnimatedValue
-

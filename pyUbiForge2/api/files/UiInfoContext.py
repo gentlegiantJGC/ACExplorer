@@ -6,4 +6,3 @@ class UiInfoContext(SubclassBaseFile):
     ResourceType = 0x5A3FAE75
     ParentResourceType = _UiInfoRepositoryEntry.ResourceType
     parent: _UiInfoRepositoryEntry
-

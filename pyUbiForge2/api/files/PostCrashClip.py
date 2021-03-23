@@ -6,4 +6,3 @@ class PostCrashClip(SubclassBaseFile):
     ResourceType = 0xE8535A42
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

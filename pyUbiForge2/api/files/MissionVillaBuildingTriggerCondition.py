@@ -6,4 +6,3 @@ class MissionVillaBuildingTriggerCondition(SubclassBaseFile):
     ResourceType = 0x1196817C
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

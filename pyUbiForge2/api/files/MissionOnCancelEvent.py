@@ -6,4 +6,3 @@ class MissionOnCancelEvent(SubclassBaseFile):
     ResourceType = 0xE298511F
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

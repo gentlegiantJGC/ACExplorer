@@ -6,4 +6,3 @@ class WorldGateMapMarker(SubclassBaseFile):
     ResourceType = 0x8C69BE21
     ParentResourceType = _MapMarker.ResourceType
     parent: _MapMarker
-

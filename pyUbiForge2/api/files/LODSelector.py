@@ -6,4 +6,3 @@ class LODSelector(SubclassBaseFile):
     ResourceType = 0x51DC6B80
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

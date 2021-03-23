@@ -6,4 +6,3 @@ class MenuChoiceMadeEvent(SubclassBaseFile):
     ResourceType = 0x1A775B68
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

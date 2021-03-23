@@ -6,4 +6,3 @@ class ForceAccomplishmentStateClip(SubclassBaseFile):
     ResourceType = 0x2A72C102
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

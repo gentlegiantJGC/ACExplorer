@@ -6,4 +6,3 @@ class VolumetricSoundComponent(SubclassBaseFile):
     ResourceType = 0x09734394
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class CLAbstract(SubclassBaseFile):
     ResourceType = 0x47C0C658
     ParentResourceType = _ELAbstract.ResourceType
     parent: _ELAbstract
-

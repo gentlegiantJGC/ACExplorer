@@ -6,4 +6,3 @@ class QuadrupedDebugData(SubclassBaseFile):
     ResourceType = 0xF92DF930
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

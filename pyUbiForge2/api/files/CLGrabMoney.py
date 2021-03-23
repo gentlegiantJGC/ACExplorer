@@ -6,4 +6,3 @@ class CLGrabMoney(SubclassBaseFile):
     ResourceType = 0x2CECF3F2
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

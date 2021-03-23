@@ -6,4 +6,3 @@ class BaseCustomActionPack(SubclassBaseFile):
     ResourceType = 0x1C2A363F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

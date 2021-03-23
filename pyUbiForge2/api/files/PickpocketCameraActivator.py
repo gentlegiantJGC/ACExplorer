@@ -6,4 +6,3 @@ class PickpocketCameraActivator(SubclassBaseFile):
     ResourceType = 0xE6A58285
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

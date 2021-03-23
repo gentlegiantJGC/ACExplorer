@@ -6,4 +6,3 @@ class RHPAfsClip(SubclassBaseFile):
     ResourceType = 0xC0F2000A
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

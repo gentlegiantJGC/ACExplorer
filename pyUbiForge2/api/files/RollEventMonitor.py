@@ -6,4 +6,3 @@ class RollEventMonitor(SubclassBaseFile):
     ResourceType = 0x017370D2
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

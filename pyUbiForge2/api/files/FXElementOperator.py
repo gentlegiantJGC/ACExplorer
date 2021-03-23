@@ -6,4 +6,3 @@ class FXElementOperator(SubclassBaseFile):
     ResourceType = 0x7AB22DED
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

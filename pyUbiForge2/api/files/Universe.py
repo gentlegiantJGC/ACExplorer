@@ -6,4 +6,3 @@ class Universe(SubclassBaseFile):
     ResourceType = 0x98435A63
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class CameraZone(SubclassBaseFile):
     ResourceType = 0x8C5AD508
     ParentResourceType = _TriggerComponent.ResourceType
     parent: _TriggerComponent
-

@@ -6,4 +6,3 @@ class CSrvGroundObjectNavigation(SubclassBaseFile):
     ResourceType = 0xA1F16084
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

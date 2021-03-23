@@ -6,4 +6,3 @@ class RealTreeMesh(SubclassBaseFile):
     ResourceType = 0xCD0D35E6
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

@@ -6,4 +6,3 @@ class CLHorseCasual(SubclassBaseFile):
     ResourceType = 0x6DF50CC0
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

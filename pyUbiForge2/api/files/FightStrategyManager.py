@@ -6,4 +6,3 @@ class FightStrategyManager(SubclassBaseFile):
     ResourceType = 0x5977F59D
     ParentResourceType = _UniverseComponent.ResourceType
     parent: _UniverseComponent
-

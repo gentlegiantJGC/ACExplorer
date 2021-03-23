@@ -6,4 +6,3 @@ class PolarControlsModifier(SubclassBaseFile):
     ResourceType = 0x8C86BA80
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

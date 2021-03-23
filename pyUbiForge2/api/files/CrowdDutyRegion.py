@@ -6,4 +6,3 @@ class CrowdDutyRegion(SubclassBaseFile):
     ResourceType = 0x5B8B9990
     ParentResourceType = _CrowdRegion.ResourceType
     parent: _CrowdRegion
-

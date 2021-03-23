@@ -6,4 +6,3 @@ class PlayerFleeingEvent(SubclassBaseFile):
     ResourceType = 0xB9225970
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

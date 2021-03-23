@@ -6,4 +6,3 @@ class DropObjectEvent(SubclassBaseFile):
     ResourceType = 0x46D8B31E
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

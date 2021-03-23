@@ -6,4 +6,3 @@ class AnimatedQuaternionValue(SubclassBaseFile):
     ResourceType = 0x41922A2D
     ParentResourceType = _AnimatedValue.ResourceType
     parent: _AnimatedValue
-

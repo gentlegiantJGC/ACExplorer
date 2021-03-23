@@ -6,4 +6,3 @@ class NukeClip(SubclassBaseFile):
     ResourceType = 0xF8D293DB
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

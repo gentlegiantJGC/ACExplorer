@@ -6,4 +6,3 @@ class TauntedByAssassinEvent(SubclassBaseFile):
     ResourceType = 0x6F82842E
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

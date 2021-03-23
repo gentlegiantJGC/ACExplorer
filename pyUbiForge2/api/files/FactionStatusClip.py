@@ -6,4 +6,3 @@ class FactionStatusClip(SubclassBaseFile):
     ResourceType = 0xE7F72BC5
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

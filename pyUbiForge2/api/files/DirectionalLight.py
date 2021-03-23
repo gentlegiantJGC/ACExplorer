@@ -6,4 +6,3 @@ class DirectionalLight(SubclassBaseFile):
     ResourceType = 0x7E15FD50
     ParentResourceType = _Light.ResourceType
     parent: _Light
-

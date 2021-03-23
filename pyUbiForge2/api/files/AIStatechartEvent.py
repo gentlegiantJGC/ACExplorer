@@ -6,4 +6,3 @@ class AIStatechartEvent(SubclassBaseFile):
     ResourceType = 0x4FA4F690
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

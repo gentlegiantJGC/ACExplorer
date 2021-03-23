@@ -6,4 +6,3 @@ class AnvilScript(SubclassBaseFile):
     ResourceType = 0x198B47F1
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class ZoneMapMarker(SubclassBaseFile):
     ResourceType = 0xB85E8693
     ParentResourceType = _MapMarker.ResourceType
     parent: _MapMarker
-

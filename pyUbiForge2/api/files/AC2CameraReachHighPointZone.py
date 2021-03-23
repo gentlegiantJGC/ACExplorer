@@ -6,4 +6,3 @@ class AC2CameraReachHighPointZone(SubclassBaseFile):
     ResourceType = 0x6319DCF7
     ParentResourceType = _TriggerComponent.ResourceType
     parent: _TriggerComponent
-

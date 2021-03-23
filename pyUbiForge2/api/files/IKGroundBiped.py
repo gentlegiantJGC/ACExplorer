@@ -6,4 +6,3 @@ class IKGroundBiped(SubclassBaseFile):
     ResourceType = 0x346DDDD0
     ParentResourceType = _IKGround.ResourceType
     parent: _IKGround
-

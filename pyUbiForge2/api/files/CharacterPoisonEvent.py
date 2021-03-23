@@ -6,4 +6,3 @@ class CharacterPoisonEvent(SubclassBaseFile):
     ResourceType = 0x5ABC0BD4
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

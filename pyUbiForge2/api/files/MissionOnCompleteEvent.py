@@ -6,4 +6,3 @@ class MissionOnCompleteEvent(SubclassBaseFile):
     ResourceType = 0xF18109F3
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

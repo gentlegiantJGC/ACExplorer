@@ -6,4 +6,3 @@ class StartupVideoManager(SubclassBaseFile):
     ResourceType = 0x86508902
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

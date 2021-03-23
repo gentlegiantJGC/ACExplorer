@@ -6,4 +6,3 @@ class MissionManagerDLCElement(SubclassBaseFile):
     ResourceType = 0xBB13C1E1
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

@@ -6,4 +6,3 @@ class GotoClip(SubclassBaseFile):
     ResourceType = 0x9C03E39F
     ParentResourceType = _CharacterLogicClip.ResourceType
     parent: _CharacterLogicClip
-

@@ -6,4 +6,3 @@ class OperatorCross(SubclassBaseFile):
     ResourceType = 0x6A1ABA5C
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

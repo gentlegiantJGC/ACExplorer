@@ -6,4 +6,3 @@ class SaveGameComponent(SubclassBaseFile):
     ResourceType = 0x99123179
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

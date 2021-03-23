@@ -6,4 +6,3 @@ class FXWorldOperator(SubclassBaseFile):
     ResourceType = 0x22577E49
     ParentResourceType = _FXElementOperator.ResourceType
     parent: _FXElementOperator
-

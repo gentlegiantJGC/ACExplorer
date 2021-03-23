@@ -6,4 +6,3 @@ class PropertyControllerData(SubclassBaseFile):
     ResourceType = 0x3255221E
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

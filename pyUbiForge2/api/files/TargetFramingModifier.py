@@ -6,4 +6,3 @@ class TargetFramingModifier(SubclassBaseFile):
     ResourceType = 0x4DDED612
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

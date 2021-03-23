@@ -6,4 +6,3 @@ class CSPushInteraction(SubclassBaseFile):
     ResourceType = 0x35014361
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

@@ -6,4 +6,3 @@ class GroupTargetObjectMonitor(SubclassBaseFile):
     ResourceType = 0xC749EA9F
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

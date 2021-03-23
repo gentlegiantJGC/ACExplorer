@@ -6,4 +6,3 @@ class SceneActorSource(SubclassBaseFile):
     ResourceType = 0x0972779D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

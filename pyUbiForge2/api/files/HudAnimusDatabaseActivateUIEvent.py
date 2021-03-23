@@ -6,4 +6,3 @@ class HudAnimusDatabaseActivateUIEvent(SubclassBaseFile):
     ResourceType = 0xF604EE92
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

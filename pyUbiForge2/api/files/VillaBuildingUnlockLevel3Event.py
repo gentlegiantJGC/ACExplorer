@@ -6,4 +6,3 @@ class VillaBuildingUnlockLevel3Event(SubclassBaseFile):
     ResourceType = 0x5FFBE09F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

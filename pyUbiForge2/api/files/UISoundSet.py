@@ -6,4 +6,3 @@ class UISoundSet(SubclassBaseFile):
     ResourceType = 0x8060D72B
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

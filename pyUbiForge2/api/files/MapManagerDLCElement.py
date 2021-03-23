@@ -6,4 +6,3 @@ class MapManagerDLCElement(SubclassBaseFile):
     ResourceType = 0xE17F5C13
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

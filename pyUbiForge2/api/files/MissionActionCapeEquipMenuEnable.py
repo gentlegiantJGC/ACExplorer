@@ -6,4 +6,3 @@ class MissionActionCapeEquipMenuEnable(SubclassBaseFile):
     ResourceType = 0xC56E23D1
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

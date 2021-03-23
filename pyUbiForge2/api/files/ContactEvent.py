@@ -6,4 +6,3 @@ class ContactEvent(SubclassBaseFile):
     ResourceType = 0x97840CBF
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

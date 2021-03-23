@@ -6,4 +6,3 @@ class SetAIDataClip(SubclassBaseFile):
     ResourceType = 0xDED600BF
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

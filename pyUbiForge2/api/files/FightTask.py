@@ -6,4 +6,3 @@ class FightTask(SubclassBaseFile):
     ResourceType = 0xF1C9C7E7
     ParentResourceType = _CharacterTask.ResourceType
     parent: _CharacterTask
-

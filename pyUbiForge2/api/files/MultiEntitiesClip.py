@@ -6,4 +6,3 @@ class MultiEntitiesClip(SubclassBaseFile):
     ResourceType = 0x076FC097
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

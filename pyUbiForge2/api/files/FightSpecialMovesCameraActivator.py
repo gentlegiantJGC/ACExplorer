@@ -6,4 +6,3 @@ class FightSpecialMovesCameraActivator(SubclassBaseFile):
     ResourceType = 0x5A06215E
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

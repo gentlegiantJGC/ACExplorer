@@ -6,4 +6,3 @@ class FightStrategyPerformActionEvent(SubclassBaseFile):
     ResourceType = 0xDE929C02
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

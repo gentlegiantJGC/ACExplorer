@@ -6,4 +6,3 @@ class AC2FightCamera(SubclassBaseFile):
     ResourceType = 0x480E2F63
     ParentResourceType = _FightCamera2.ResourceType
     parent: _FightCamera2
-

@@ -6,4 +6,3 @@ class UIMissionFailedBoxClosedEvent(SubclassBaseFile):
     ResourceType = 0x9422E51C
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

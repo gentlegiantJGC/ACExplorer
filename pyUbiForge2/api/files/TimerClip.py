@@ -6,4 +6,3 @@ class TimerClip(SubclassBaseFile):
     ResourceType = 0x1B0FDB62
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class ContactTypeTableHorse(SubclassBaseFile):
     ResourceType = 0xD6CB8DB8
     ParentResourceType = _ContactTypeTableBase.ResourceType
     parent: _ContactTypeTableBase
-

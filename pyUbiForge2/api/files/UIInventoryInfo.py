@@ -6,4 +6,3 @@ class UIInventoryInfo(SubclassBaseFile):
     ResourceType = 0x6692B46F
     ParentResourceType = _UiInfoRepositoryEntry.ResourceType
     parent: _UiInfoRepositoryEntry
-

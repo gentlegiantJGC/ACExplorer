@@ -6,4 +6,3 @@ class ThrowRockTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0x33F0D71D
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

@@ -6,4 +6,3 @@ class CLFollow(SubclassBaseFile):
     ResourceType = 0x9FC1E58F
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

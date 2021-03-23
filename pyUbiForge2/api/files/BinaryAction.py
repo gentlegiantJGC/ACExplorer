@@ -6,4 +6,3 @@ class BinaryAction(SubclassBaseFile):
     ResourceType = 0x6E05CD8B
     ParentResourceType = _PhysicsAction.ResourceType
     parent: _PhysicsAction
-

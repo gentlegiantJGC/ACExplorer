@@ -6,4 +6,3 @@ class OperatorQuaternionMul(SubclassBaseFile):
     ResourceType = 0xE940B7BD
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class ValueVelocity(SubclassBaseFile):
     ResourceType = 0x6B3A6B17
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

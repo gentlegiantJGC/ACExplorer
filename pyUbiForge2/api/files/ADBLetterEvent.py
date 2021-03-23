@@ -6,4 +6,3 @@ class ADBLetterEvent(SubclassBaseFile):
     ResourceType = 0x6181E98B
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

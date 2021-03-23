@@ -6,4 +6,3 @@ class AC2FightAdjustmentModifier(SubclassBaseFile):
     ResourceType = 0xF4CC13E4
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

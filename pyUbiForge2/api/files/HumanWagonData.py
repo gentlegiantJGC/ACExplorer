@@ -6,4 +6,3 @@ class HumanWagonData(SubclassBaseFile):
     ResourceType = 0x5B4F4659
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

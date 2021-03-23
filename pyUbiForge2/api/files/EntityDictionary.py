@@ -6,4 +6,3 @@ class EntityDictionary(SubclassBaseFile):
     ResourceType = 0x7C2089BA
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

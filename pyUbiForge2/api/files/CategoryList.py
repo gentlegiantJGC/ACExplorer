@@ -6,4 +6,3 @@ class CategoryList(SubclassBaseFile):
     ResourceType = 0x9462387E
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

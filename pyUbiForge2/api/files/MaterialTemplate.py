@@ -6,4 +6,3 @@ class MaterialTemplate(SubclassBaseFile):
     ResourceType = 0xBCFB3C7A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

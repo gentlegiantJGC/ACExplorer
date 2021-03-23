@@ -6,4 +6,3 @@ class CLWagonPassenger(SubclassBaseFile):
     ResourceType = 0xFA7F1428
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

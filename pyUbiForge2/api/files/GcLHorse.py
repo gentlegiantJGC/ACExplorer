@@ -6,4 +6,3 @@ class GcLHorse(SubclassBaseFile):
     ResourceType = 0xE1C77FF3
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

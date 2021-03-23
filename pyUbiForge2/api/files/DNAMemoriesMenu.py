@@ -6,4 +6,3 @@ class DNAMemoriesMenu(SubclassBaseFile):
     ResourceType = 0xBF826BEB
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

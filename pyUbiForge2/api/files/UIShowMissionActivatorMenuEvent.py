@@ -6,4 +6,3 @@ class UIShowMissionActivatorMenuEvent(SubclassBaseFile):
     ResourceType = 0x96B0A802
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

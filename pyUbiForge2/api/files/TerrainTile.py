@@ -6,4 +6,3 @@ class TerrainTile(SubclassBaseFile):
     ResourceType = 0x77CFA409
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

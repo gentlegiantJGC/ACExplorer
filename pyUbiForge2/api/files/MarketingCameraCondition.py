@@ -6,4 +6,3 @@ class MarketingCameraCondition(SubclassBaseFile):
     ResourceType = 0xD57A1B06
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

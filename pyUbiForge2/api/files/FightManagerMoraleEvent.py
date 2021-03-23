@@ -6,4 +6,3 @@ class FightManagerMoraleEvent(SubclassBaseFile):
     ResourceType = 0xE535674B
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

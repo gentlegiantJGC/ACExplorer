@@ -6,4 +6,3 @@ class NotorietyMissionStep(SubclassBaseFile):
     ResourceType = 0x03A532E4
     ParentResourceType = _MissionStep.ResourceType
     parent: _MissionStep
-

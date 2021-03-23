@@ -6,4 +6,3 @@ class EnterMainMenuSoundEvent(SubclassBaseFile):
     ResourceType = 0x4B9554C5
     ParentResourceType = _SoundLogicEvent.ResourceType
     parent: _SoundLogicEvent
-

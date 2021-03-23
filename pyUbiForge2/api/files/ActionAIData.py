@@ -6,4 +6,3 @@ class ActionAIData(SubclassBaseFile):
     ResourceType = 0x79673ACB
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

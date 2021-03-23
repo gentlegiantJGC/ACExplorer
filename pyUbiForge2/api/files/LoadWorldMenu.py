@@ -6,4 +6,3 @@ class LoadWorldMenu(SubclassBaseFile):
     ResourceType = 0xB02B7BEE
     ParentResourceType = _GameMenu.ResourceType
     parent: _GameMenu
-

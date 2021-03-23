@@ -6,4 +6,3 @@ class TextureData(SubclassBaseFile):
     ResourceType = 0x72A206E3
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

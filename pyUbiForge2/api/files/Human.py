@@ -6,4 +6,3 @@ class Human(SubclassBaseFile):
     ResourceType = 0xA0A43252
     ParentResourceType = _AIActor.ResourceType
     parent: _AIActor
-

@@ -6,4 +6,3 @@ class LabelNode(SubclassBaseFile):
     ResourceType = 0x4AA21909
     ParentResourceType = _NodeInterface.ResourceType
     parent: _NodeInterface
-

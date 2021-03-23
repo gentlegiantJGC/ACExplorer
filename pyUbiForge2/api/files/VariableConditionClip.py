@@ -6,4 +6,3 @@ class VariableConditionClip(SubclassBaseFile):
     ResourceType = 0xA1D7BCF6
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

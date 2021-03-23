@@ -6,4 +6,3 @@ class MoneyClip(SubclassBaseFile):
     ResourceType = 0x9B3B0D43
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class ChasedTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0x4A44FA04
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

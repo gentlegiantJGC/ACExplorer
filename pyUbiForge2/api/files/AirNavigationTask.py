@@ -6,4 +6,3 @@ class AirNavigationTask(SubclassBaseFile):
     ResourceType = 0xA2F9597B
     ParentResourceType = _GlobalNavigationTask.ResourceType
     parent: _GlobalNavigationTask
-

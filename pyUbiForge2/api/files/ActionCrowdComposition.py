@@ -6,4 +6,3 @@ class ActionCrowdComposition(SubclassBaseFile):
     ResourceType = 0x047F2A30
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

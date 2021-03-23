@@ -6,4 +6,3 @@ class SpawnEntityParams(SubclassBaseFile):
     ResourceType = 0x423C7BFE
     ParentResourceType = _SpawningSpecParams.ResourceType
     parent: _SpawningSpecParams
-

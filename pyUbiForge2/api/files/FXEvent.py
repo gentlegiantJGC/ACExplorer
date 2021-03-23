@@ -6,4 +6,3 @@ class FXEvent(SubclassBaseFile):
     ResourceType = 0x6627C719
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

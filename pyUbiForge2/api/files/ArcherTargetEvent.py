@@ -6,4 +6,3 @@ class ArcherTargetEvent(SubclassBaseFile):
     ResourceType = 0xFBEA7CE1
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

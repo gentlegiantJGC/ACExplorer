@@ -6,4 +6,3 @@ class TextureOverlaySettings(SubclassBaseFile):
     ResourceType = 0x720F4B4E
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

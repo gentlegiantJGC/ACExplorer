@@ -6,4 +6,3 @@ class WorldGateMapMarkerComponent(SubclassBaseFile):
     ResourceType = 0xEAA5AC14
     ParentResourceType = _MapMarkerComponent.ResourceType
     parent: _MapMarkerComponent
-

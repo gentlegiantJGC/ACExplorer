@@ -6,4 +6,3 @@ class UIFightTutorialItem(SubclassBaseFile):
     ResourceType = 0xC7D41F2A
     ParentResourceType = _UIInventoryItem.ResourceType
     parent: _UIInventoryItem
-

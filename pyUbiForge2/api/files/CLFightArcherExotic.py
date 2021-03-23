@@ -6,4 +6,3 @@ class CLFightArcherExotic(SubclassBaseFile):
     ResourceType = 0x658D226E
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

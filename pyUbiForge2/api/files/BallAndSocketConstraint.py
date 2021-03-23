@@ -6,4 +6,3 @@ class BallAndSocketConstraint(SubclassBaseFile):
     ResourceType = 0x86C2BFF9
     ParentResourceType = _Constraint.ResourceType
     parent: _Constraint
-

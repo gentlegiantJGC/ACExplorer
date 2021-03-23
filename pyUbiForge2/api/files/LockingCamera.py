@@ -6,4 +6,3 @@ class LockingCamera(SubclassBaseFile):
     ResourceType = 0x64762F98
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

@@ -6,4 +6,3 @@ class SoundSet(SubclassBaseFile):
     ResourceType = 0x2BC49864
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

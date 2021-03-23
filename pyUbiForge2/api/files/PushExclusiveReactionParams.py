@@ -6,4 +6,3 @@ class PushExclusiveReactionParams(SubclassBaseFile):
     ResourceType = 0x4F4D2620
     ParentResourceType = _PushStateChartParams.ResourceType
     parent: _PushStateChartParams
-

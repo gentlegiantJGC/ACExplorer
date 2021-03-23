@@ -6,4 +6,3 @@ class CityRegionCellData(SubclassBaseFile):
     ResourceType = 0x3970BD2D
     ParentResourceType = _RegionCellData.ResourceType
     parent: _RegionCellData
-

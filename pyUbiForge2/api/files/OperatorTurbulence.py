@@ -6,4 +6,3 @@ class OperatorTurbulence(SubclassBaseFile):
     ResourceType = 0xF78BAF83
     ParentResourceType = _BaseNoiseOperator.ResourceType
     parent: _BaseNoiseOperator
-

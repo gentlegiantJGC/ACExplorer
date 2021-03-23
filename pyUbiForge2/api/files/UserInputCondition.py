@@ -6,4 +6,3 @@ class UserInputCondition(SubclassBaseFile):
     ResourceType = 0x5B6AB63F
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

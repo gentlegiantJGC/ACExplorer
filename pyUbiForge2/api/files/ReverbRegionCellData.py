@@ -6,4 +6,3 @@ class ReverbRegionCellData(SubclassBaseFile):
     ResourceType = 0xD0483E1F
     ParentResourceType = _RegionCellData.ResourceType
     parent: _RegionCellData
-

@@ -6,4 +6,3 @@ class MissionStep(SubclassBaseFile):
     ResourceType = 0xB3195056
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

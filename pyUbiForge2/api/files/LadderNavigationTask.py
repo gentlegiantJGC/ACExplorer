@@ -6,4 +6,3 @@ class LadderNavigationTask(SubclassBaseFile):
     ResourceType = 0xAF2FA63A
     ParentResourceType = _GlobalNavigationTask.ResourceType
     parent: _GlobalNavigationTask
-

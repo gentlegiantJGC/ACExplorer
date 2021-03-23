@@ -6,4 +6,3 @@ class MissionActionUnlockHudItem(SubclassBaseFile):
     ResourceType = 0xA726C895
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

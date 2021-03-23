@@ -6,4 +6,3 @@ class AC2HorseTargetTracker(SubclassBaseFile):
     ResourceType = 0x81D3CEFC
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

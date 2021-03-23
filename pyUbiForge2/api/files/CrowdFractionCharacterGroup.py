@@ -6,4 +6,3 @@ class CrowdFractionCharacterGroup(SubclassBaseFile):
     ResourceType = 0x4375ADBE
     ParentResourceType = _CrowdFractionMembers.ResourceType
     parent: _CrowdFractionMembers
-

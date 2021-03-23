@@ -6,4 +6,3 @@ class PlayerSpawnActivatorComponent(SubclassBaseFile):
     ResourceType = 0xA7033693
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

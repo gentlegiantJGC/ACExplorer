@@ -6,4 +6,3 @@ class NPCActor(SubclassBaseFile):
     ResourceType = 0xB0BA1023
     ParentResourceType = _CharacterActor.ResourceType
     parent: _CharacterActor
-

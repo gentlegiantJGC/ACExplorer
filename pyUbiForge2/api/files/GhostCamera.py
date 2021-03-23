@@ -6,4 +6,3 @@ class GhostCamera(SubclassBaseFile):
     ResourceType = 0x62949FAA
     ParentResourceType = _FreeRoamingCamera2.ResourceType
     parent: _FreeRoamingCamera2
-

@@ -6,4 +6,3 @@ class TopOfLadderEventMonitor(SubclassBaseFile):
     ResourceType = 0x5CC0F941
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

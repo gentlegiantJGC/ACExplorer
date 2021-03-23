@@ -6,4 +6,3 @@ class MissionGameplayPupetteerAction(SubclassBaseFile):
     ResourceType = 0x589538B3
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

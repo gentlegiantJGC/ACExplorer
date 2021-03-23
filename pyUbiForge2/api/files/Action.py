@@ -6,4 +6,3 @@ class Action(SubclassBaseFile):
     ResourceType = 0x406089A4
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class OperatorQuaternionSlerp(SubclassBaseFile):
     ResourceType = 0xF5AB6D54
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class FXTargetEntityOperator(SubclassBaseFile):
     ResourceType = 0x28A54884
     ParentResourceType = _FXElementOperator.ResourceType
     parent: _FXElementOperator
-

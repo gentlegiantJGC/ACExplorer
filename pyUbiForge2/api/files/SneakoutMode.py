@@ -6,4 +6,3 @@ class SneakoutMode(SubclassBaseFile):
     ResourceType = 0xFF3AC46B
     ParentResourceType = _ConfrontationMode.ResourceType
     parent: _ConfrontationMode
-

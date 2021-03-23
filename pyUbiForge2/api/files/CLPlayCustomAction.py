@@ -6,4 +6,3 @@ class CLPlayCustomAction(SubclassBaseFile):
     ResourceType = 0x76DED37C
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

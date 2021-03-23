@@ -6,4 +6,3 @@ class MissionPSPConnectionDoneCondition(SubclassBaseFile):
     ResourceType = 0xAB8638B6
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

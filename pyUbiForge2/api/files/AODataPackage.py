@@ -6,4 +6,3 @@ class AODataPackage(SubclassBaseFile):
     ResourceType = 0x489B9085
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

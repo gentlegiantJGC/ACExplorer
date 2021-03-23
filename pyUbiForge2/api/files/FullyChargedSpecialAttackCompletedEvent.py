@@ -6,4 +6,3 @@ class FullyChargedSpecialAttackCompletedEvent(SubclassBaseFile):
     ResourceType = 0x804C6853
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

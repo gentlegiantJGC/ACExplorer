@@ -6,4 +6,3 @@ class BasePositionOrientationModifier(SubclassBaseFile):
     ResourceType = 0xD6FE1362
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

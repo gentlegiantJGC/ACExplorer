@@ -6,4 +6,3 @@ class AccomplishmentBracketMonitor(SubclassBaseFile):
     ResourceType = 0x2B32338D
     ParentResourceType = _AccomplishmentMonitor.ResourceType
     parent: _AccomplishmentMonitor
-

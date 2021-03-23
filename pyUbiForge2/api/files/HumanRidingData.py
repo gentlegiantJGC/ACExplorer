@@ -6,4 +6,3 @@ class HumanRidingData(SubclassBaseFile):
     ResourceType = 0xF8750A14
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

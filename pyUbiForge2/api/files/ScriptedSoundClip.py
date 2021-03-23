@@ -6,4 +6,3 @@ class ScriptedSoundClip(SubclassBaseFile):
     ResourceType = 0xA6D3C724
     ParentResourceType = _SoundClip.ResourceType
     parent: _SoundClip
-

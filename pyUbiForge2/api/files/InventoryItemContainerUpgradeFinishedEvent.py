@@ -6,4 +6,3 @@ class InventoryItemContainerUpgradeFinishedEvent(SubclassBaseFile):
     ResourceType = 0xC9610F30
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

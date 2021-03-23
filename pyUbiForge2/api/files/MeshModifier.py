@@ -6,4 +6,3 @@ class MeshModifier(SubclassBaseFile):
     ResourceType = 0x39B433EE
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

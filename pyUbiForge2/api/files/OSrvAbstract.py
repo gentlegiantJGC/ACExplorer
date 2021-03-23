@@ -6,4 +6,3 @@ class OSrvAbstract(SubclassBaseFile):
     ResourceType = 0x401A58AF
     ParentResourceType = _ESrvAbstract.ResourceType
     parent: _ESrvAbstract
-

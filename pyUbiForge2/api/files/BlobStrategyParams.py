@@ -6,4 +6,3 @@ class BlobStrategyParams(SubclassBaseFile):
     ResourceType = 0x68882CCC
     ParentResourceType = _SpawnStrategyParams.ResourceType
     parent: _SpawnStrategyParams
-

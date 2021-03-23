@@ -6,4 +6,3 @@ class OLBoat(SubclassBaseFile):
     ResourceType = 0x8BD75F3A
     ParentResourceType = _OLAbstract.ResourceType
     parent: _OLAbstract
-

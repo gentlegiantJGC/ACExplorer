@@ -6,4 +6,3 @@ class NavigationManager(SubclassBaseFile):
     ResourceType = 0x09B9C3F3
     ParentResourceType = _MandatoryWorldComponent.ResourceType
     parent: _MandatoryWorldComponent
-

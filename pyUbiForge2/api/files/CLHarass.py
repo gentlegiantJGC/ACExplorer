@@ -6,4 +6,3 @@ class CLHarass(SubclassBaseFile):
     ResourceType = 0x43FF1025
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

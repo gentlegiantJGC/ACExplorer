@@ -6,4 +6,3 @@ class SpawnSettings(SubclassBaseFile):
     ResourceType = 0xF7010C1C
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

@@ -6,4 +6,3 @@ class SceneReferencingSource(SubclassBaseFile):
     ResourceType = 0x67672A18
     ParentResourceType = _SceneActorSource.ResourceType
     parent: _SceneActorSource
-

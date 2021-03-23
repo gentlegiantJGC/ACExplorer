@@ -6,4 +6,3 @@ class BlendEvent(SubclassBaseFile):
     ResourceType = 0x2F38CBCE
     ParentResourceType = _PresentationEvent.ResourceType
     parent: _PresentationEvent
-

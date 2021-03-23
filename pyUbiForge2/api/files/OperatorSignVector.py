@@ -6,4 +6,3 @@ class OperatorSignVector(SubclassBaseFile):
     ResourceType = 0x3BCCF6FC
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

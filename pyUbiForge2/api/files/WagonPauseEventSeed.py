@@ -6,4 +6,3 @@ class WagonPauseEventSeed(SubclassBaseFile):
     ResourceType = 0x4914B4A1
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

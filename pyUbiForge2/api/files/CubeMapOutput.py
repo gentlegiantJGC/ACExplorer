@@ -6,4 +6,3 @@ class CubeMapOutput(SubclassBaseFile):
     ResourceType = 0x29E8899B
     ParentResourceType = _LinkableOutput.ResourceType
     parent: _LinkableOutput
-

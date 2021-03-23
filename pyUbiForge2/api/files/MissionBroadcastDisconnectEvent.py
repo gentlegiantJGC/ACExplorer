@@ -6,4 +6,3 @@ class MissionBroadcastDisconnectEvent(SubclassBaseFile):
     ResourceType = 0xE74A09CC
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class GcLGuardAmbush(SubclassBaseFile):
     ResourceType = 0x67D07D02
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

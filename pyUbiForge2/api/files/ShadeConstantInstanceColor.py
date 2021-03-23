@@ -6,4 +6,3 @@ class ShadeConstantInstanceColor(SubclassBaseFile):
     ResourceType = 0xF1EDEE92
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class BasicCameraTransitionPolicy(SubclassBaseFile):
     ResourceType = 0x1AA0F69D
     ParentResourceType = _ICameraTransitionPolicy.ResourceType
     parent: _ICameraTransitionPolicy
-

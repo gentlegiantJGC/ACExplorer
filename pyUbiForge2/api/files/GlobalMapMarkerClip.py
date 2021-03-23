@@ -6,4 +6,3 @@ class GlobalMapMarkerClip(SubclassBaseFile):
     ResourceType = 0x77F60E21
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

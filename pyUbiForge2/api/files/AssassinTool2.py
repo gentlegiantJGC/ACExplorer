@@ -6,4 +6,3 @@ class AssassinTool2(SubclassBaseFile):
     ResourceType = 0x4EBD7F03
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

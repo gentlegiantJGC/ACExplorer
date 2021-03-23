@@ -6,4 +6,3 @@ class BreakableShakeEvent(SubclassBaseFile):
     ResourceType = 0x941A68D7
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

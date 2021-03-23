@@ -6,4 +6,3 @@ class HumanCannonOperatorData(SubclassBaseFile):
     ResourceType = 0x9291AEF1
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

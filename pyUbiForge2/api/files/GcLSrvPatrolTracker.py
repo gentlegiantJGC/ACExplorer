@@ -6,4 +6,3 @@ class GcLSrvPatrolTracker(SubclassBaseFile):
     ResourceType = 0xB9DD0DCD
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

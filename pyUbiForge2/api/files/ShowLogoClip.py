@@ -6,4 +6,3 @@ class ShowLogoClip(SubclassBaseFile):
     ResourceType = 0x4F00989A
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

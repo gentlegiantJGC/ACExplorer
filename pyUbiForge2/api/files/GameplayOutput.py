@@ -6,4 +6,3 @@ class GameplayOutput(SubclassBaseFile):
     ResourceType = 0xE2CB024F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

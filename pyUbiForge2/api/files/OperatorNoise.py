@@ -6,4 +6,3 @@ class OperatorNoise(SubclassBaseFile):
     ResourceType = 0xC0A0384C
     ParentResourceType = _BaseNoiseOperator.ResourceType
     parent: _BaseNoiseOperator
-

@@ -6,4 +6,3 @@ class WalkthroughConsequence(SubclassBaseFile):
     ResourceType = 0x89E7E312
     ParentResourceType = _Consequence.ResourceType
     parent: _Consequence
-

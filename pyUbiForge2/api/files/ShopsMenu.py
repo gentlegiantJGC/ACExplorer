@@ -6,4 +6,3 @@ class ShopsMenu(SubclassBaseFile):
     ResourceType = 0x9A053370
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

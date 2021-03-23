@@ -6,4 +6,3 @@ class StartTrigger(SubclassBaseFile):
     ResourceType = 0xFE1B9D2A
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

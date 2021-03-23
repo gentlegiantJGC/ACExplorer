@@ -6,4 +6,3 @@ class LockedByAssassinEvent(SubclassBaseFile):
     ResourceType = 0xDE8AC21C
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

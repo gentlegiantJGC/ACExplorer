@@ -6,4 +6,3 @@ class AC2ChargeLevelAttackCondition(SubclassBaseFile):
     ResourceType = 0x3937D81E
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

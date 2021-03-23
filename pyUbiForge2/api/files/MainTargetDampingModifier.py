@@ -6,4 +6,3 @@ class MainTargetDampingModifier(SubclassBaseFile):
     ResourceType = 0xDAF42254
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

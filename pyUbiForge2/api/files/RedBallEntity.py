@@ -6,4 +6,3 @@ class RedBallEntity(SubclassBaseFile):
     ResourceType = 0x941D0BF8
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

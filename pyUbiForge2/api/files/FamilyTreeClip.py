@@ -6,4 +6,3 @@ class FamilyTreeClip(SubclassBaseFile):
     ResourceType = 0x3E3CACDF
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

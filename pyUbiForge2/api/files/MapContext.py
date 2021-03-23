@@ -6,4 +6,3 @@ class MapContext(SubclassBaseFile):
     ResourceType = 0xDF0A838D
     ParentResourceType = _UiInfoContext.ResourceType
     parent: _UiInfoContext
-

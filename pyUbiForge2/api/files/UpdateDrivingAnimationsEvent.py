@@ -6,4 +6,3 @@ class UpdateDrivingAnimationsEvent(SubclassBaseFile):
     ResourceType = 0x5BD9C34C
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

@@ -6,4 +6,3 @@ class MissionFailedMessageBox(SubclassBaseFile):
     ResourceType = 0x6C58B35A
     ParentResourceType = _FireItem.ResourceType
     parent: _FireItem
-

@@ -6,4 +6,3 @@ class MissionStateTimerUIEvent(SubclassBaseFile):
     ResourceType = 0x079DE661
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

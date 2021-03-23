@@ -6,4 +6,3 @@ class CLInvestigateHurtNPC(SubclassBaseFile):
     ResourceType = 0xFA5CA4C4
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

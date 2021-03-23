@@ -6,4 +6,3 @@ class PlayerRespawnEventConditionClip(SubclassBaseFile):
     ResourceType = 0x10E3C5D2
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

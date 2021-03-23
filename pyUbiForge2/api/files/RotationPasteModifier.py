@@ -6,4 +6,3 @@ class RotationPasteModifier(SubclassBaseFile):
     ResourceType = 0x711759AF
     ParentResourceType = _BoneModifier.ResourceType
     parent: _BoneModifier
-

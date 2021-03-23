@@ -6,4 +6,3 @@ class MissionActionAddDefaultWorldTransitionPortalAction(SubclassBaseFile):
     ResourceType = 0x0B7078D5
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

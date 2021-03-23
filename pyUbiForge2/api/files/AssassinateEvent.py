@@ -6,4 +6,3 @@ class AssassinateEvent(SubclassBaseFile):
     ResourceType = 0x86A0B893
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

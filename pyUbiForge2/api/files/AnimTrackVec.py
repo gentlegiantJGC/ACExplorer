@@ -6,4 +6,3 @@ class AnimTrackVec(SubclassBaseFile):
     ResourceType = 0xADE9A9DB
     ParentResourceType = _AnimTrackValue.ResourceType
     parent: _AnimTrackValue
-

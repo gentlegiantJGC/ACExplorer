@@ -6,4 +6,3 @@ class CLCourtesanFlirt(SubclassBaseFile):
     ResourceType = 0x156DFEFE
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

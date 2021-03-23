@@ -6,4 +6,3 @@ class OSAbstract(SubclassBaseFile):
     ResourceType = 0x2E85AB76
     ParentResourceType = _ESAbstract.ResourceType
     parent: _ESAbstract
-

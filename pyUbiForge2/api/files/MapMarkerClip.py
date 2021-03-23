@@ -6,4 +6,3 @@ class MapMarkerClip(SubclassBaseFile):
     ResourceType = 0x08E51BC5
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

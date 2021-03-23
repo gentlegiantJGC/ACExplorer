@@ -6,4 +6,3 @@ class HumanKioskData(SubclassBaseFile):
     ResourceType = 0x71627BDB
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

@@ -6,4 +6,3 @@ class SetEntityBuilderClip(SubclassBaseFile):
     ResourceType = 0x5EEE5435
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

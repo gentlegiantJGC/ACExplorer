@@ -6,4 +6,3 @@ class BuoyancyComponent(SubclassBaseFile):
     ResourceType = 0x4B4F7506
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

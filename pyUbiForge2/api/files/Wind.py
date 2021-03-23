@@ -6,4 +6,3 @@ class Wind(SubclassBaseFile):
     ResourceType = 0x8139FBC0
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

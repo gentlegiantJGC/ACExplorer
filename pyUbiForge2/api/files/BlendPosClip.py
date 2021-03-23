@@ -6,4 +6,3 @@ class BlendPosClip(SubclassBaseFile):
     ResourceType = 0x42DE7ADE
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

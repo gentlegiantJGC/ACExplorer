@@ -6,4 +6,3 @@ class BuildingUpgradedEvent(SubclassBaseFile):
     ResourceType = 0x8BBD2BE2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

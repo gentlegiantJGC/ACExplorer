@@ -6,4 +6,3 @@ class GraphVariable(SubclassBaseFile):
     ResourceType = 0xD74A1B74
     ParentResourceType = _IGraphVariable.ResourceType
     parent: _IGraphVariable
-

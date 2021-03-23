@@ -6,4 +6,3 @@ class SoundPackagesDLCAddon(SubclassBaseFile):
     ResourceType = 0x01FFF6FB
     ParentResourceType = _DLCAddon.ResourceType
     parent: _DLCAddon
-

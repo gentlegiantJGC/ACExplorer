@@ -6,4 +6,3 @@ class OperatorSignFloat(SubclassBaseFile):
     ResourceType = 0x049E4AE0
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

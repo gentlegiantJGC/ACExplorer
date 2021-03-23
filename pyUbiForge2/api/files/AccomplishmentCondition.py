@@ -6,4 +6,3 @@ class AccomplishmentCondition(SubclassBaseFile):
     ResourceType = 0x3EB1853F
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

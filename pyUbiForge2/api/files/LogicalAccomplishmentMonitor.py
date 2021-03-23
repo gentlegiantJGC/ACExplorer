@@ -6,4 +6,3 @@ class LogicalAccomplishmentMonitor(SubclassBaseFile):
     ResourceType = 0x614A11C3
     ParentResourceType = _AccomplishmentMonitor.ResourceType
     parent: _AccomplishmentMonitor
-

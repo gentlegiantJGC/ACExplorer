@@ -6,4 +6,3 @@ class AC2AssassinationTypeCondition(SubclassBaseFile):
     ResourceType = 0x0BE2132D
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

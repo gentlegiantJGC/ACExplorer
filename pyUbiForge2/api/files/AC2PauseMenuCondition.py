@@ -6,4 +6,3 @@ class AC2PauseMenuCondition(SubclassBaseFile):
     ResourceType = 0xAAAD251D
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

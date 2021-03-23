@@ -6,4 +6,3 @@ class GCLFightDummyTestTool(SubclassBaseFile):
     ResourceType = 0xFDFB050A
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

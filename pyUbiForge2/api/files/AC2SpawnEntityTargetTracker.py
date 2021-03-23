@@ -6,4 +6,3 @@ class AC2SpawnEntityTargetTracker(SubclassBaseFile):
     ResourceType = 0x244A36A7
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

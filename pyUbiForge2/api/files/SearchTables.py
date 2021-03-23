@@ -6,4 +6,3 @@ class SearchTables(SubclassBaseFile):
     ResourceType = 0x25D7F39A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

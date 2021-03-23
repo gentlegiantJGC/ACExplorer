@@ -6,4 +6,3 @@ class VisualComponent(SubclassBaseFile):
     ResourceType = 0x956B3FBC
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

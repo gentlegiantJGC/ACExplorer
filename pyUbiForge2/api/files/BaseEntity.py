@@ -6,4 +6,3 @@ class BaseEntity(SubclassBaseFile):
     ResourceType = 0x71CA3FC0
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

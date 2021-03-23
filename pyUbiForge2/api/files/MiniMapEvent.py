@@ -6,4 +6,3 @@ class MiniMapEvent(SubclassBaseFile):
     ResourceType = 0x695894E2
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

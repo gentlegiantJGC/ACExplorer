@@ -6,4 +6,3 @@ class RewardsChangeEvent(SubclassBaseFile):
     ResourceType = 0x17E9504F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

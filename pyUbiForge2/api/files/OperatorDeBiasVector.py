@@ -6,4 +6,3 @@ class OperatorDeBiasVector(SubclassBaseFile):
     ResourceType = 0x82859C8C
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

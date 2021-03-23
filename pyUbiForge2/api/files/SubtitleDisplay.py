@@ -6,4 +6,3 @@ class SubtitleDisplay(SubclassBaseFile):
     ResourceType = 0xC77F406B
     ParentResourceType = _FireItem.ResourceType
     parent: _FireItem
-

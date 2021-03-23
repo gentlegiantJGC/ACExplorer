@@ -6,4 +6,3 @@ class CameraActor(SubclassBaseFile):
     ResourceType = 0xD4E6FA7D
     ParentResourceType = _SceneActor.ResourceType
     parent: _SceneActor
-

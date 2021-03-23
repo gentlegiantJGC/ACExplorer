@@ -6,4 +6,3 @@ class MultiTargetTracker2(SubclassBaseFile):
     ResourceType = 0x52C68A9B
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

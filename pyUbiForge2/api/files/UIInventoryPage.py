@@ -6,4 +6,3 @@ class UIInventoryPage(SubclassBaseFile):
     ResourceType = 0xB9113318
     ParentResourceType = _UIInventoryInfo.ResourceType
     parent: _UIInventoryInfo
-

@@ -6,4 +6,3 @@ class UpdateRidingAnimationsEvent(SubclassBaseFile):
     ResourceType = 0xBF854EEF
     ParentResourceType = _HorseEvent.ResourceType
     parent: _HorseEvent
-

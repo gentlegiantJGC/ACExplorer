@@ -6,4 +6,3 @@ class ProximityData(SubclassBaseFile):
     ResourceType = 0x05C90C81
     ParentResourceType = _BaseReactionData.ResourceType
     parent: _BaseReactionData
-

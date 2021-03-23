@@ -6,4 +6,3 @@ class ActionCrowdBlob(SubclassBaseFile):
     ResourceType = 0xA8D3B30F
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

@@ -6,4 +6,3 @@ class ClothActionSettings(SubclassBaseFile):
     ResourceType = 0x52E5AA85
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

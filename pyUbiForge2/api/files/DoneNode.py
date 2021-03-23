@@ -6,4 +6,3 @@ class DoneNode(SubclassBaseFile):
     ResourceType = 0x8E343DFD
     ParentResourceType = _Node.ResourceType
     parent: _Node
-

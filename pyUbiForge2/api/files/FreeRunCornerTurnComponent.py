@@ -6,4 +6,3 @@ class FreeRunCornerTurnComponent(SubclassBaseFile):
     ResourceType = 0xF8ED7B7B
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

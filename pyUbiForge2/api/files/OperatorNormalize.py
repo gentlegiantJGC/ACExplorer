@@ -6,4 +6,3 @@ class OperatorNormalize(SubclassBaseFile):
     ResourceType = 0x98E64348
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class KioskEventMonitor(SubclassBaseFile):
     ResourceType = 0x2A7D5B48
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

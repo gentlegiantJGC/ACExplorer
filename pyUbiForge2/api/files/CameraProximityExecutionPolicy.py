@@ -6,4 +6,3 @@ class CameraProximityExecutionPolicy(SubclassBaseFile):
     ResourceType = 0x5D45E7C6
     ParentResourceType = _IExecutionPolicy.ResourceType
     parent: _IExecutionPolicy
-

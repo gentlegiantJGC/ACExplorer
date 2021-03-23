@@ -6,4 +6,3 @@ class VillaAfterSaveGameLoadedEvent(SubclassBaseFile):
     ResourceType = 0x5202C27D
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class ActionGamePlayPupetteer(SubclassBaseFile):
     ResourceType = 0x6D8F3BB5
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

@@ -6,4 +6,3 @@ class HudVillaTrophy(SubclassBaseFile):
     ResourceType = 0x25BBEE54
     ParentResourceType = _HudVilla.ResourceType
     parent: _HudVilla
-

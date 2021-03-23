@@ -6,4 +6,3 @@ class AccomplishmentTemporaryMonitor(SubclassBaseFile):
     ResourceType = 0x480DBED6
     ParentResourceType = _AccomplishmentMonitor.ResourceType
     parent: _AccomplishmentMonitor
-

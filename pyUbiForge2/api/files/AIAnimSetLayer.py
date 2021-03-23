@@ -6,4 +6,3 @@ class AIAnimSetLayer(SubclassBaseFile):
     ResourceType = 0x6F03DA58
     ParentResourceType = _AnimSetLayer.ResourceType
     parent: _AnimSetLayer
-

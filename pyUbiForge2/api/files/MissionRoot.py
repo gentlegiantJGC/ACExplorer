@@ -6,4 +6,3 @@ class MissionRoot(SubclassBaseFile):
     ResourceType = 0xE6545731
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

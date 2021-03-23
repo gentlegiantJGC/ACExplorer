@@ -6,4 +6,3 @@ class ItemIsInVilla(SubclassBaseFile):
     ResourceType = 0xE7746A9C
     ParentResourceType = _ItemCriteria.ResourceType
     parent: _ItemCriteria
-

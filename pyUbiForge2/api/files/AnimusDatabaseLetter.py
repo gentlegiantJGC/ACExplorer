@@ -6,4 +6,3 @@ class AnimusDatabaseLetter(SubclassBaseFile):
     ResourceType = 0x0C67004A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class OperatorReciprocalVector(SubclassBaseFile):
     ResourceType = 0xA2364ECC
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

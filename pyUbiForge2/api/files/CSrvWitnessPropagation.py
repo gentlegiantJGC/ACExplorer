@@ -6,4 +6,3 @@ class CSrvWitnessPropagation(SubclassBaseFile):
     ResourceType = 0x32191DBC
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

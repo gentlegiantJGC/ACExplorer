@@ -6,4 +6,3 @@ class IGraphRule(SubclassBaseFile):
     ResourceType = 0x9DAC16CD
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

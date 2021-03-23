@@ -6,4 +6,3 @@ class SwimEventMonitor(SubclassBaseFile):
     ResourceType = 0x7DC50563
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

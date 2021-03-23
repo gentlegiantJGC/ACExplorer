@@ -6,4 +6,3 @@ class SoundManager(SubclassBaseFile):
     ResourceType = 0x8B89559D
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

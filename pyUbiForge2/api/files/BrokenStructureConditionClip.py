@@ -6,4 +6,3 @@ class BrokenStructureConditionClip(SubclassBaseFile):
     ResourceType = 0xF2CD0564
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

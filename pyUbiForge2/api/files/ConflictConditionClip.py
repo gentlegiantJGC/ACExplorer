@@ -6,4 +6,3 @@ class ConflictConditionClip(SubclassBaseFile):
     ResourceType = 0x9C4C7B75
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

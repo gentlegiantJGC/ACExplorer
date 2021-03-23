@@ -6,4 +6,3 @@ class PathAnimationCamera(SubclassBaseFile):
     ResourceType = 0x1BE0C83E
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

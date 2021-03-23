@@ -6,4 +6,3 @@ class SelectedWeaponConditionClip(SubclassBaseFile):
     ResourceType = 0xAE30FB9D
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

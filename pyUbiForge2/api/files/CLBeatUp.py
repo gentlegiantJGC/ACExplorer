@@ -6,4 +6,3 @@ class CLBeatUp(SubclassBaseFile):
     ResourceType = 0x1572DEF7
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

@@ -6,4 +6,3 @@ class TargetEulerCameraControl(SubclassBaseFile):
     ResourceType = 0x1D2AD788
     ParentResourceType = _CameraControl.ResourceType
     parent: _CameraControl
-

@@ -6,4 +6,3 @@ class FakeEntities(SubclassBaseFile):
     ResourceType = 0xC69A7F31
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

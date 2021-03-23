@@ -6,4 +6,3 @@ class AnimTrackVec3(SubclassBaseFile):
     ResourceType = 0x7C7E6C6E
     ParentResourceType = _AnimTrackVec.ResourceType
     parent: _AnimTrackVec
-

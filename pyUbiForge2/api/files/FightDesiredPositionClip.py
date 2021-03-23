@@ -6,4 +6,3 @@ class FightDesiredPositionClip(SubclassBaseFile):
     ResourceType = 0x82B953AB
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

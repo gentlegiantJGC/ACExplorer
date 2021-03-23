@@ -6,4 +6,3 @@ class ReferencingEvent(SubclassBaseFile):
     ResourceType = 0xCB9B3D2F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

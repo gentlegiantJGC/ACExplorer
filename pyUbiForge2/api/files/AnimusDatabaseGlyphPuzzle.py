@@ -6,4 +6,3 @@ class AnimusDatabaseGlyphPuzzle(SubclassBaseFile):
     ResourceType = 0x2C88D63F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

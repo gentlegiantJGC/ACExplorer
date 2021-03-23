@@ -6,4 +6,3 @@ class ClothState(SubclassBaseFile):
     ResourceType = 0x7D6B679F
     ParentResourceType = _SoftBodyState.ResourceType
     parent: _SoftBodyState
-

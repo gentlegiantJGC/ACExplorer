@@ -6,4 +6,3 @@ class RepairArmorEvent(SubclassBaseFile):
     ResourceType = 0x1BDE20D0
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

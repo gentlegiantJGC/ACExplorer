@@ -6,4 +6,3 @@ class MissionActionTransfertIncome(SubclassBaseFile):
     ResourceType = 0x55FCE048
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

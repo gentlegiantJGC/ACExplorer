@@ -6,4 +6,3 @@ class MissionCodexStateCondition(SubclassBaseFile):
     ResourceType = 0x4CA9DD38
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

@@ -6,4 +6,3 @@ class ConditionTrigger(SubclassBaseFile):
     ResourceType = 0xAC44A853
     ParentResourceType = _StartTrigger.ResourceType
     parent: _StartTrigger
-

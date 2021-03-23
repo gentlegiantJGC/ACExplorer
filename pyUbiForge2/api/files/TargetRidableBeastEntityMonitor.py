@@ -6,4 +6,3 @@ class TargetRidableBeastEntityMonitor(SubclassBaseFile):
     ResourceType = 0x73309B55
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

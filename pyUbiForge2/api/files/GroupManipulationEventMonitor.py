@@ -6,4 +6,3 @@ class GroupManipulationEventMonitor(SubclassBaseFile):
     ResourceType = 0x7C30C488
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

@@ -6,4 +6,3 @@ class TargetMonitor(SubclassBaseFile):
     ResourceType = 0x6DEFEBDF
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

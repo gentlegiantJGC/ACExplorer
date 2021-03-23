@@ -6,4 +6,3 @@ class WagonClearAmbusherEvent(SubclassBaseFile):
     ResourceType = 0x51E1225F
     ParentResourceType = _WagonEvent.ResourceType
     parent: _WagonEvent
-

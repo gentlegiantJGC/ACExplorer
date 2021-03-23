@@ -6,4 +6,3 @@ class FamilyTreeStepInfo(SubclassBaseFile):
     ResourceType = 0x2834D40F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class GcLTreasure(SubclassBaseFile):
     ResourceType = 0xCB1325A0
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

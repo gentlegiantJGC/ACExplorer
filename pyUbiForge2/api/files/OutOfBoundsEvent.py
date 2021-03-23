@@ -6,4 +6,3 @@ class OutOfBoundsEvent(SubclassBaseFile):
     ResourceType = 0xC83A017D
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

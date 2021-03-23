@@ -6,4 +6,3 @@ class ActingClip(SubclassBaseFile):
     ResourceType = 0xF4928EE7
     ParentResourceType = _TimedClip.ResourceType
     parent: _TimedClip
-

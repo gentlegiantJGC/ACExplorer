@@ -6,4 +6,3 @@ class MusicRegionCellData(SubclassBaseFile):
     ResourceType = 0x6AA4470F
     ParentResourceType = _RegionCellData.ResourceType
     parent: _RegionCellData
-

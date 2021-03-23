@@ -6,4 +6,3 @@ class Node(SubclassBaseFile):
     ResourceType = 0xD418CC4C
     ParentResourceType = _NodeInterface.ResourceType
     parent: _NodeInterface
-

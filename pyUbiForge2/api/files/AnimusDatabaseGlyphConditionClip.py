@@ -6,4 +6,3 @@ class AnimusDatabaseGlyphConditionClip(SubclassBaseFile):
     ResourceType = 0xB3A6BA93
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

@@ -6,4 +6,3 @@ class MissionLanguageCondition(SubclassBaseFile):
     ResourceType = 0x391FFA15
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

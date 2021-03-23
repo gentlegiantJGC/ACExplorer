@@ -6,4 +6,3 @@ class GameBootstrap(SubclassBaseFile):
     ResourceType = 0xE5A83560
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

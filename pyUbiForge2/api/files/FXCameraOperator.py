@@ -6,4 +6,3 @@ class FXCameraOperator(SubclassBaseFile):
     ResourceType = 0x5BD1A06F
     ParentResourceType = _FXElementOperator.ResourceType
     parent: _FXElementOperator
-

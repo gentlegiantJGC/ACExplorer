@@ -6,4 +6,3 @@ class CLOrientedCustomAction(SubclassBaseFile):
     ResourceType = 0x7C0D763D
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

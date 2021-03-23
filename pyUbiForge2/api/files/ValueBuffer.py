@@ -6,4 +6,3 @@ class ValueBuffer(SubclassBaseFile):
     ResourceType = 0xC5F413A4
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class BoatLeaveDriver(SubclassBaseFile):
     ResourceType = 0x2FF3B966
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

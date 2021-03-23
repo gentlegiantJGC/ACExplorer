@@ -6,4 +6,3 @@ class BoneTargetPrecision(SubclassBaseFile):
     ResourceType = 0xE7A514A2
     ParentResourceType = _ITargetPrecision.ResourceType
     parent: _ITargetPrecision
-

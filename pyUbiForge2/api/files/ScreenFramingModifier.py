@@ -6,4 +6,3 @@ class ScreenFramingModifier(SubclassBaseFile):
     ResourceType = 0xF9B7C9F7
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

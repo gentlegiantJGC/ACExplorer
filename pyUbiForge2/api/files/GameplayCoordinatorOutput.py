@@ -6,4 +6,3 @@ class GameplayCoordinatorOutput(SubclassBaseFile):
     ResourceType = 0x4FB33274
     ParentResourceType = _GameplayOutput.ResourceType
     parent: _GameplayOutput
-

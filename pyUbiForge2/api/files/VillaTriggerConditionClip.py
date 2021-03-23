@@ -6,4 +6,3 @@ class VillaTriggerConditionClip(SubclassBaseFile):
     ResourceType = 0x663D780C
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

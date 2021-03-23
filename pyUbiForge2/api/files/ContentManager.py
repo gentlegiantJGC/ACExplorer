@@ -6,4 +6,3 @@ class ContentManager(SubclassBaseFile):
     ResourceType = 0x69F8F3D2
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

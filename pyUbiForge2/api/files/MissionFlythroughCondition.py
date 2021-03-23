@@ -6,4 +6,3 @@ class MissionFlythroughCondition(SubclassBaseFile):
     ResourceType = 0x5F36F8E1
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

@@ -6,4 +6,3 @@ class HudVillaCodex(SubclassBaseFile):
     ResourceType = 0x8DB259AC
     ParentResourceType = _HudVilla.ResourceType
     parent: _HudVilla
-

@@ -6,4 +6,3 @@ class DistractedEvent(SubclassBaseFile):
     ResourceType = 0x36949D96
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

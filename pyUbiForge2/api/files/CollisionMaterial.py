@@ -6,4 +6,3 @@ class CollisionMaterial(SubclassBaseFile):
     ResourceType = 0x74F7311D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

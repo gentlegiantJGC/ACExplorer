@@ -6,4 +6,3 @@ class AudioEvent(SubclassBaseFile):
     ResourceType = 0xA7A64A34
     ParentResourceType = _AudioBaseEvent.ResourceType
     parent: _AudioBaseEvent
-

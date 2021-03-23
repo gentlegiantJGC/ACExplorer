@@ -6,4 +6,3 @@ class UniqueKeyUnlockedConditionClip(SubclassBaseFile):
     ResourceType = 0xC3065953
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

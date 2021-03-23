@@ -6,4 +6,3 @@ class AnimTrackHermiteFloat(SubclassBaseFile):
     ResourceType = 0x37763313
     ParentResourceType = _AnimTrackFloat.ResourceType
     parent: _AnimTrackFloat
-

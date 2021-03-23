@@ -6,4 +6,3 @@ class FX(SubclassBaseFile):
     ResourceType = 0x824A23BA
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

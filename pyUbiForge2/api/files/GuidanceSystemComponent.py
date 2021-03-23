@@ -6,4 +6,3 @@ class GuidanceSystemComponent(SubclassBaseFile):
     ResourceType = 0xEB482613
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class UnaryAction(SubclassBaseFile):
     ResourceType = 0x807F4ABC
     ParentResourceType = _PhysicsAction.ResourceType
     parent: _PhysicsAction
-

@@ -6,4 +6,3 @@ class GuidanceObjectRemoved(SubclassBaseFile):
     ResourceType = 0xAD333D18
     ParentResourceType = _GuidanceObjectOperation.ResourceType
     parent: _GuidanceObjectOperation
-

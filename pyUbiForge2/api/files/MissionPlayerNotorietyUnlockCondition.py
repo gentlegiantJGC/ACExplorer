@@ -6,4 +6,3 @@ class MissionPlayerNotorietyUnlockCondition(SubclassBaseFile):
     ResourceType = 0xCA5E2033
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

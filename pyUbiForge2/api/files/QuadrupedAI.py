@@ -6,4 +6,3 @@ class QuadrupedAI(SubclassBaseFile):
     ResourceType = 0xA1E09870
     ParentResourceType = _AbstractCharacterAI.ResourceType
     parent: _AbstractCharacterAI
-

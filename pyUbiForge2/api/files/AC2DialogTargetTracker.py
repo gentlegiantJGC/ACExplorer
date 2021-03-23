@@ -6,4 +6,3 @@ class AC2DialogTargetTracker(SubclassBaseFile):
     ResourceType = 0xCB87FAC2
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

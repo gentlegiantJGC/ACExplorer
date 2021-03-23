@@ -6,4 +6,3 @@ class HighProfilCameraActivator(SubclassBaseFile):
     ResourceType = 0x798CA4D3
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

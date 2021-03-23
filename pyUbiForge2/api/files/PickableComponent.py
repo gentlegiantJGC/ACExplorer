@@ -6,4 +6,3 @@ class PickableComponent(SubclassBaseFile):
     ResourceType = 0xA06E18EE
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

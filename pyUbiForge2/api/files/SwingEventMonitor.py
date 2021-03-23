@@ -6,4 +6,3 @@ class SwingEventMonitor(SubclassBaseFile):
     ResourceType = 0x749164A0
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

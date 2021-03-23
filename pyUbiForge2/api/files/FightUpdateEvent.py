@@ -6,4 +6,3 @@ class FightUpdateEvent(SubclassBaseFile):
     ResourceType = 0x03DF20A4
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

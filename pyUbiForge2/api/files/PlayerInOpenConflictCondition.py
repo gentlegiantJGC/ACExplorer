@@ -6,4 +6,3 @@ class PlayerInOpenConflictCondition(SubclassBaseFile):
     ResourceType = 0xC4CD4D09
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

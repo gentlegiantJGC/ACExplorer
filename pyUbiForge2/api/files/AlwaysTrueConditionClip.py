@@ -6,4 +6,3 @@ class AlwaysTrueConditionClip(SubclassBaseFile):
     ResourceType = 0x2C51FF91
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

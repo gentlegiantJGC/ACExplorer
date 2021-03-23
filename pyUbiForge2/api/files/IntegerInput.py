@@ -6,4 +6,3 @@ class IntegerInput(SubclassBaseFile):
     ResourceType = 0xA76A9BDD
     ParentResourceType = _LinkableInput.ResourceType
     parent: _LinkableInput
-

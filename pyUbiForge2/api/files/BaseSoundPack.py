@@ -6,4 +6,3 @@ class BaseSoundPack(SubclassBaseFile):
     ResourceType = 0x85FC184D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

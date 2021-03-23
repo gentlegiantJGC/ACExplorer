@@ -6,4 +6,3 @@ class MissionActionEnableIncome(SubclassBaseFile):
     ResourceType = 0x2949B280
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

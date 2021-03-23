@@ -6,4 +6,3 @@ class Graph(SubclassBaseFile):
     ResourceType = 0xC8842AD8
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class OperatorLength(SubclassBaseFile):
     ResourceType = 0x3C9802CB
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

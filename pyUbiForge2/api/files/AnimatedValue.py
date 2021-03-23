@@ -6,4 +6,3 @@ class AnimatedValue(SubclassBaseFile):
     ResourceType = 0x92F13269
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

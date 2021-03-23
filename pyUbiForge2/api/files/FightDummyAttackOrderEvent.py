@@ -6,4 +6,3 @@ class FightDummyAttackOrderEvent(SubclassBaseFile):
     ResourceType = 0x86381698
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

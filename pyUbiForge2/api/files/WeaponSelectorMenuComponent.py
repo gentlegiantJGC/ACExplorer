@@ -6,4 +6,3 @@ class WeaponSelectorMenuComponent(SubclassBaseFile):
     ResourceType = 0x48B13C34
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

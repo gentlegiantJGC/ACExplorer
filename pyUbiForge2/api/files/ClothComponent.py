@@ -6,4 +6,3 @@ class ClothComponent(SubclassBaseFile):
     ResourceType = 0x8321699E
     ParentResourceType = _SoftBodyComponent.ResourceType
     parent: _SoftBodyComponent
-

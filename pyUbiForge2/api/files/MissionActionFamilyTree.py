@@ -6,4 +6,3 @@ class MissionActionFamilyTree(SubclassBaseFile):
     ResourceType = 0x64103B27
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

@@ -6,4 +6,3 @@ class CSrvPlayerWeaponSwitch(SubclassBaseFile):
     ResourceType = 0x943BC031
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

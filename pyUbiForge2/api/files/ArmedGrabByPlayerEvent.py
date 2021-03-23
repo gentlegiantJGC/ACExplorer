@@ -6,4 +6,3 @@ class ArmedGrabByPlayerEvent(SubclassBaseFile):
     ResourceType = 0xA66B8D40
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

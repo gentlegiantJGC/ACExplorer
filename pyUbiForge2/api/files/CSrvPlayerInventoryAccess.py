@@ -6,4 +6,3 @@ class CSrvPlayerInventoryAccess(SubclassBaseFile):
     ResourceType = 0x0D729318
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

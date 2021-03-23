@@ -6,4 +6,3 @@ class PhysicComponent(SubclassBaseFile):
     ResourceType = 0xB4347336
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

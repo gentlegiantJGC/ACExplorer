@@ -6,4 +6,3 @@ class AICondition(SubclassBaseFile):
     ResourceType = 0xC7C045E7
     ParentResourceType = _EventListener.ResourceType
     parent: _EventListener
-

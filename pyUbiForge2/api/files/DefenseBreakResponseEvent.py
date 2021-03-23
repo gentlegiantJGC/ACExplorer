@@ -6,4 +6,3 @@ class DefenseBreakResponseEvent(SubclassBaseFile):
     ResourceType = 0x4D58EDB4
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

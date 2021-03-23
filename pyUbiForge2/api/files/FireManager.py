@@ -6,4 +6,3 @@ class FireManager(SubclassBaseFile):
     ResourceType = 0x9623CB2D
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

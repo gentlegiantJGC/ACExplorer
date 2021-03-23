@@ -6,4 +6,3 @@ class DefaultVectorValue(SubclassBaseFile):
     ResourceType = 0xD6184774
     ParentResourceType = _DefaultValue.ResourceType
     parent: _DefaultValue
-

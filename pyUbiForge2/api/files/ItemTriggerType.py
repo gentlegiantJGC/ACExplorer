@@ -6,4 +6,3 @@ class ItemTriggerType(SubclassBaseFile):
     ResourceType = 0xB51F4A78
     ParentResourceType = _TriggerType.ResourceType
     parent: _TriggerType
-

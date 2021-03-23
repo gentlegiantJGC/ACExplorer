@@ -6,4 +6,3 @@ class ProceduralPolarCurveModifier(SubclassBaseFile):
     ResourceType = 0x86E15494
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

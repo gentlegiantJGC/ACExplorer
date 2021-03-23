@@ -6,4 +6,3 @@ class SphereStrategyParams(SubclassBaseFile):
     ResourceType = 0x5806157C
     ParentResourceType = _SpawnStrategyParams.ResourceType
     parent: _SpawnStrategyParams
-

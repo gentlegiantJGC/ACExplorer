@@ -6,4 +6,3 @@ class InertPropertyNodeSolver(SubclassBaseFile):
     ResourceType = 0x623476CE
     ParentResourceType = _PropertyPathNodeSolver.ResourceType
     parent: _PropertyPathNodeSolver
-

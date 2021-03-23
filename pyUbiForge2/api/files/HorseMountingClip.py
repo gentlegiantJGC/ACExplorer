@@ -6,4 +6,3 @@ class HorseMountingClip(SubclassBaseFile):
     ResourceType = 0x04B552E0
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

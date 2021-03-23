@@ -6,4 +6,3 @@ class GameplayCoordinatorComponent(SubclassBaseFile):
     ResourceType = 0x1D566A63
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class AccomplishmentForceStateEvent(SubclassBaseFile):
     ResourceType = 0x973530D4
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class LootEvent(SubclassBaseFile):
     ResourceType = 0x9FD03755
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

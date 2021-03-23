@@ -6,4 +6,3 @@ class DetectionShape(SubclassBaseFile):
     ResourceType = 0x51550B4C
     ParentResourceType = _DetectionZone.ResourceType
     parent: _DetectionZone
-

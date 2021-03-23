@@ -6,4 +6,3 @@ class GodRay(SubclassBaseFile):
     ResourceType = 0x36BE721F
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

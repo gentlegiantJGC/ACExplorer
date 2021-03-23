@@ -6,4 +6,3 @@ class FightStrategyReadyToTakeActionEvent(SubclassBaseFile):
     ResourceType = 0x4F67E055
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

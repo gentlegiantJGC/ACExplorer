@@ -6,4 +6,3 @@ class TargetSpeedCondition(SubclassBaseFile):
     ResourceType = 0x095553B7
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

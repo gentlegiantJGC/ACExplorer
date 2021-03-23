@@ -6,4 +6,3 @@ class QuadrupedPadTask(SubclassBaseFile):
     ResourceType = 0xCC16E93A
     ParentResourceType = _QuadrupedTask.ResourceType
     parent: _QuadrupedTask
-

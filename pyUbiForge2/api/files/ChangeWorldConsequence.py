@@ -6,4 +6,3 @@ class ChangeWorldConsequence(SubclassBaseFile):
     ResourceType = 0x72B1E74D
     ParentResourceType = _Consequence.ResourceType
     parent: _Consequence
-

@@ -6,4 +6,3 @@ class OperatorVectorMin(SubclassBaseFile):
     ResourceType = 0x3DC1932B
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

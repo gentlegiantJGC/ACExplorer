@@ -6,4 +6,3 @@ class DrownEvent(SubclassBaseFile):
     ResourceType = 0x3C9861C9
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

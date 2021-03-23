@@ -6,4 +6,3 @@ class ShaderLODOperatorInteger(SubclassBaseFile):
     ResourceType = 0xEAE4EF43
     ParentResourceType = _ShaderLODOperator.ResourceType
     parent: _ShaderLODOperator
-

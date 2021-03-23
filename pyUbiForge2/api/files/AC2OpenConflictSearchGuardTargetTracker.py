@@ -6,4 +6,3 @@ class AC2OpenConflictSearchGuardTargetTracker(SubclassBaseFile):
     ResourceType = 0x6600DBA0
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

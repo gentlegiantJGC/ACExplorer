@@ -6,4 +6,3 @@ class CodexPageIsInInventoryCriteria(SubclassBaseFile):
     ResourceType = 0x44D62E75
     ParentResourceType = _ItemCriteria.ResourceType
     parent: _ItemCriteria
-

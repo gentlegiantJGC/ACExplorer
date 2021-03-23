@@ -6,4 +6,3 @@ class CameraSwitcher(SubclassBaseFile):
     ResourceType = 0x09C57072
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

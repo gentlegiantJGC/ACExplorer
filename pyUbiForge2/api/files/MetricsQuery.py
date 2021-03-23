@@ -6,4 +6,3 @@ class MetricsQuery(SubclassBaseFile):
     ResourceType = 0x0E7F7BCF
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class FixedCamera2(SubclassBaseFile):
     ResourceType = 0x108C638A
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

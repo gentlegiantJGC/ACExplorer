@@ -6,4 +6,3 @@ class VillaDisplayStrValueClip(SubclassBaseFile):
     ResourceType = 0x9792AADE
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

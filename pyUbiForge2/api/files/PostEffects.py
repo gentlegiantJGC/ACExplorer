@@ -6,4 +6,3 @@ class PostEffects(SubclassBaseFile):
     ResourceType = 0xC83B8907
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

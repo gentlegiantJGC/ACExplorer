@@ -6,4 +6,3 @@ class GameFixEndOfPreload(SubclassBaseFile):
     ResourceType = 0x88F73E40
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class MissionSliceInfo(SubclassBaseFile):
     ResourceType = 0x90F22EC7
     ParentResourceType = _SliceInfo.ResourceType
     parent: _SliceInfo
-

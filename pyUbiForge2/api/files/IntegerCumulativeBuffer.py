@@ -6,4 +6,3 @@ class IntegerCumulativeBuffer(SubclassBaseFile):
     ResourceType = 0xE006229E
     ParentResourceType = _CumulativeBuffer.ResourceType
     parent: _CumulativeBuffer
-

@@ -6,4 +6,3 @@ class ActionFastTravel(SubclassBaseFile):
     ResourceType = 0x640EEE1B
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

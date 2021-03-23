@@ -6,4 +6,3 @@ class SpecifiedSource(SubclassBaseFile):
     ResourceType = 0xE7FE1FE6
     ParentResourceType = _SceneActorSource.ResourceType
     parent: _SceneActorSource
-

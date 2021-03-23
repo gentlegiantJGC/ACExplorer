@@ -6,4 +6,3 @@ class AllianceChangeEvent(SubclassBaseFile):
     ResourceType = 0x2FDA6351
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

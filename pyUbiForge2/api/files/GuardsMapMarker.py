@@ -6,4 +6,3 @@ class GuardsMapMarker(SubclassBaseFile):
     ResourceType = 0xE5D77D0C
     ParentResourceType = _MapMarker.ResourceType
     parent: _MapMarker
-

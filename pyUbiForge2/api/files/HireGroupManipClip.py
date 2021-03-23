@@ -6,4 +6,3 @@ class HireGroupManipClip(SubclassBaseFile):
     ResourceType = 0x3EA71A9B
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

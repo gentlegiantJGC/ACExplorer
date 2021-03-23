@@ -6,4 +6,3 @@ class AssassinationTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0x2E8F6878
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

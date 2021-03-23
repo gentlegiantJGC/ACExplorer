@@ -6,4 +6,3 @@ class HayStackGrabAndKillEventMonitor(SubclassBaseFile):
     ResourceType = 0x95C2E4B2
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

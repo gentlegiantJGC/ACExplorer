@@ -6,4 +6,3 @@ class MetaCategories(SubclassBaseFile):
     ResourceType = 0x1416499D
     ParentResourceType = _MetaDataItem.ResourceType
     parent: _MetaDataItem
-

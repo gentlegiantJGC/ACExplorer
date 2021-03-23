@@ -6,4 +6,3 @@ class StrongholdValueChangedEvent(SubclassBaseFile):
     ResourceType = 0x72981C28
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class AccomplishmentCollectionMonitor(SubclassBaseFile):
     ResourceType = 0x5C21AFD3
     ParentResourceType = _AccomplishmentMonitor.ResourceType
     parent: _AccomplishmentMonitor
-

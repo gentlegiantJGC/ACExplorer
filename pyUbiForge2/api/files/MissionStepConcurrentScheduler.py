@@ -6,4 +6,3 @@ class MissionStepConcurrentScheduler(SubclassBaseFile):
     ResourceType = 0x299F8BE6
     ParentResourceType = _MissionStepScheduler.ResourceType
     parent: _MissionStepScheduler
-

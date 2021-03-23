@@ -6,4 +6,3 @@ class TransformShape(SubclassBaseFile):
     ResourceType = 0xAA63E732
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

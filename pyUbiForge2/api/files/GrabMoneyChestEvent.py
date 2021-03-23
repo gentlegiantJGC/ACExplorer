@@ -6,4 +6,3 @@ class GrabMoneyChestEvent(SubclassBaseFile):
     ResourceType = 0x0D54905F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

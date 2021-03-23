@@ -6,4 +6,3 @@ class PlayVideoSoundEvent(SubclassBaseFile):
     ResourceType = 0xFBB9439A
     ParentResourceType = _SoundLogicEvent.ResourceType
     parent: _SoundLogicEvent
-

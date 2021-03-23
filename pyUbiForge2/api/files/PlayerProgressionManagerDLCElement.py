@@ -6,4 +6,3 @@ class PlayerProgressionManagerDLCElement(SubclassBaseFile):
     ResourceType = 0x9B65777A
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

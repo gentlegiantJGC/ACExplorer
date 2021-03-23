@@ -6,4 +6,3 @@ class FirstPersonCamera(SubclassBaseFile):
     ResourceType = 0xEC644E55
     ParentResourceType = _TargetEulerCamera.ResourceType
     parent: _TargetEulerCamera
-

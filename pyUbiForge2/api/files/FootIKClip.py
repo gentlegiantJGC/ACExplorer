@@ -6,4 +6,3 @@ class FootIKClip(SubclassBaseFile):
     ResourceType = 0xC93A4172
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

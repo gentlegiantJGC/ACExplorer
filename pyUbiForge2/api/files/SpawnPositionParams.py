@@ -6,4 +6,3 @@ class SpawnPositionParams(SubclassBaseFile):
     ResourceType = 0x05A88480
     ParentResourceType = _SpawningSpecParams.ResourceType
     parent: _SpawningSpecParams
-

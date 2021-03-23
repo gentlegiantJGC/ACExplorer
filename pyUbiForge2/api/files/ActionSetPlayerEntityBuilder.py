@@ -6,4 +6,3 @@ class ActionSetPlayerEntityBuilder(SubclassBaseFile):
     ResourceType = 0x5D7968E7
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

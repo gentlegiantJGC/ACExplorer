@@ -6,4 +6,3 @@ class SetEquipmentHudModeEvent(SubclassBaseFile):
     ResourceType = 0x4784599C
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

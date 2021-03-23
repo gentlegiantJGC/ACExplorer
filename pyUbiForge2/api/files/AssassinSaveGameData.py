@@ -6,4 +6,3 @@ class AssassinSaveGameData(SubclassBaseFile):
     ResourceType = 0x94D6F8F1
     ParentResourceType = _SaveGameDataObject.ResourceType
     parent: _SaveGameDataObject
-

@@ -6,4 +6,3 @@ class SSISetClip(SubclassBaseFile):
     ResourceType = 0xA6A4BEC1
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

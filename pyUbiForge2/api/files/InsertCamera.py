@@ -6,4 +6,3 @@ class InsertCamera(SubclassBaseFile):
     ResourceType = 0xA4172405
     ParentResourceType = _ThirdPersonCamera.ResourceType
     parent: _ThirdPersonCamera
-

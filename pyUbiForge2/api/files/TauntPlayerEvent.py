@@ -6,4 +6,3 @@ class TauntPlayerEvent(SubclassBaseFile):
     ResourceType = 0x5EC8DB40
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class MissionGameplayPauseTimeEvent(SubclassBaseFile):
     ResourceType = 0x22C9F1DE
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

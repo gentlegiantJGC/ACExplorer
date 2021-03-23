@@ -6,4 +6,3 @@ class VillaBuildingSettings(SubclassBaseFile):
     ResourceType = 0xFF87BB19
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

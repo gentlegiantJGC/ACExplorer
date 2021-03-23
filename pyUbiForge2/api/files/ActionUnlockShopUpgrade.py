@@ -6,4 +6,3 @@ class ActionUnlockShopUpgrade(SubclassBaseFile):
     ResourceType = 0xD5990E83
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

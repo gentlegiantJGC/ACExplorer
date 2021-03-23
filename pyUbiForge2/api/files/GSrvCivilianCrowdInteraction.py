@@ -6,4 +6,3 @@ class GSrvCivilianCrowdInteraction(SubclassBaseFile):
     ResourceType = 0xFEA9FC31
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

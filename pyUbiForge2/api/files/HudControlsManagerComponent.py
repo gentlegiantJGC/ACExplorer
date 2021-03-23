@@ -6,4 +6,3 @@ class HudControlsManagerComponent(SubclassBaseFile):
     ResourceType = 0x11A90925
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

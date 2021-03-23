@@ -6,4 +6,3 @@ class CSrvLoot(SubclassBaseFile):
     ResourceType = 0xC731F93D
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

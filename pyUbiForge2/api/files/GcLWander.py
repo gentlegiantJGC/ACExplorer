@@ -6,4 +6,3 @@ class GcLWander(SubclassBaseFile):
     ResourceType = 0x064AC8B9
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

@@ -6,4 +6,3 @@ class MissionConstraintCondition(SubclassBaseFile):
     ResourceType = 0xF5BC70FF
     ParentResourceType = _MissionConditionBase.ResourceType
     parent: _MissionConditionBase
-

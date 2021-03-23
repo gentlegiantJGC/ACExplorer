@@ -6,4 +6,3 @@ class PickableBodyData(SubclassBaseFile):
     ResourceType = 0x322C8416
     ParentResourceType = _PickableData.ResourceType
     parent: _PickableData
-

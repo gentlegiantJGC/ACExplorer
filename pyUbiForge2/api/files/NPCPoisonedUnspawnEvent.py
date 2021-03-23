@@ -6,4 +6,3 @@ class NPCPoisonedUnspawnEvent(SubclassBaseFile):
     ResourceType = 0x0DDC91E8
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

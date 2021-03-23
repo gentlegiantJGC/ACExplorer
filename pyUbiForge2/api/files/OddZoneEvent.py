@@ -6,4 +6,3 @@ class OddZoneEvent(SubclassBaseFile):
     ResourceType = 0x5069AD4E
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

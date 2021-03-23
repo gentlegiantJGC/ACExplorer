@@ -6,4 +6,3 @@ class CoordinatorOutputCondition(SubclassBaseFile):
     ResourceType = 0xC52E26DF
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

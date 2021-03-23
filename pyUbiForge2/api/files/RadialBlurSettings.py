@@ -6,4 +6,3 @@ class RadialBlurSettings(SubclassBaseFile):
     ResourceType = 0x6FB71F68
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

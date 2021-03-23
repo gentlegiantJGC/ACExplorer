@@ -6,4 +6,3 @@ class MissionFailedMenuComponent(SubclassBaseFile):
     ResourceType = 0xCE8904FB
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

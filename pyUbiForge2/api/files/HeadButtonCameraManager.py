@@ -6,4 +6,3 @@ class HeadButtonCameraManager(SubclassBaseFile):
     ResourceType = 0xCF7BDCC2
     ParentResourceType = _AISerializedManager.ResourceType
     parent: _AISerializedManager
-

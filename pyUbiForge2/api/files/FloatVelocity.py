@@ -6,4 +6,3 @@ class FloatVelocity(SubclassBaseFile):
     ResourceType = 0x4D8EDD82
     ParentResourceType = _ValueVelocity.ResourceType
     parent: _ValueVelocity
-

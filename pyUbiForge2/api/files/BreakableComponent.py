@@ -6,4 +6,3 @@ class BreakableComponent(SubclassBaseFile):
     ResourceType = 0x44F8FD99
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

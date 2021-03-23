@@ -6,4 +6,3 @@ class StepAttackFightStrategyAction(SubclassBaseFile):
     ResourceType = 0xF7F0BF9C
     ParentResourceType = _FightStrategyAction.ResourceType
     parent: _FightStrategyAction
-

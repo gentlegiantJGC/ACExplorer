@@ -6,4 +6,3 @@ class EntitySpecification(SubclassBaseFile):
     ResourceType = 0xDEC6FCE6
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

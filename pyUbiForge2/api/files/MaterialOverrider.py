@@ -6,4 +6,3 @@ class MaterialOverrider(SubclassBaseFile):
     ResourceType = 0x78A13BF7
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

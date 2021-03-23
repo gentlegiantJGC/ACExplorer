@@ -6,4 +6,3 @@ class ZoneCondition(SubclassBaseFile):
     ResourceType = 0x8A2588E8
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

@@ -6,4 +6,3 @@ class MilitaryOpenConflictTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0x5243C856
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

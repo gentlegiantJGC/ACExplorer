@@ -6,4 +6,3 @@ class QuestItemListClip(SubclassBaseFile):
     ResourceType = 0x88E655FA
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

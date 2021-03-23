@@ -6,4 +6,3 @@ class HorseHitchController(SubclassBaseFile):
     ResourceType = 0x3F25CE4E
     ParentResourceType = _VehicleComponent.ResourceType
     parent: _VehicleComponent
-

@@ -6,4 +6,3 @@ class CLTargetInvestigate(SubclassBaseFile):
     ResourceType = 0x76A9203A
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

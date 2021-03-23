@@ -6,4 +6,3 @@ class CSProximity(SubclassBaseFile):
     ResourceType = 0x08442855
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

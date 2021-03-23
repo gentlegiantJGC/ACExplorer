@@ -6,4 +6,3 @@ class LeapOfFaithTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0xFEEA4474
     ParentResourceType = _TargetObjectMonitor.ResourceType
     parent: _TargetObjectMonitor
-

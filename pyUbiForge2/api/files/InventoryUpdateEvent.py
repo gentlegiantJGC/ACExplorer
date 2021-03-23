@@ -6,4 +6,3 @@ class InventoryUpdateEvent(SubclassBaseFile):
     ResourceType = 0xAEB5ABE2
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

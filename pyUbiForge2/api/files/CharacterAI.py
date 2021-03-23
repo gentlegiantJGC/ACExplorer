@@ -6,4 +6,3 @@ class CharacterAI(SubclassBaseFile):
     ResourceType = 0x516CC959
     ParentResourceType = _AbstractCharacterAI.ResourceType
     parent: _AbstractCharacterAI
-

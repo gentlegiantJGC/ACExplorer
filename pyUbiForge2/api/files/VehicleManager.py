@@ -6,4 +6,3 @@ class VehicleManager(SubclassBaseFile):
     ResourceType = 0xA81082AD
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

@@ -6,4 +6,3 @@ class GcLPatrol(SubclassBaseFile):
     ResourceType = 0x3CA045D1
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

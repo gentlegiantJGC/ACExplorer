@@ -6,4 +6,3 @@ class VanishStateEvent(SubclassBaseFile):
     ResourceType = 0x642BED60
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

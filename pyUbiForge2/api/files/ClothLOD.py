@@ -6,4 +6,3 @@ class ClothLOD(SubclassBaseFile):
     ResourceType = 0xFA94BA7D
     ParentResourceType = _SoftBodyLOD.ResourceType
     parent: _SoftBodyLOD
-

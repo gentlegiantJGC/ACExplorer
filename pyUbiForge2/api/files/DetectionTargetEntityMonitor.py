@@ -6,4 +6,3 @@ class DetectionTargetEntityMonitor(SubclassBaseFile):
     ResourceType = 0xF161D0CA
     ParentResourceType = _TargetEntityMonitor.ResourceType
     parent: _TargetEntityMonitor
-

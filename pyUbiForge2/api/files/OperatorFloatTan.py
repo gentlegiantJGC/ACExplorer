@@ -6,4 +6,3 @@ class OperatorFloatTan(SubclassBaseFile):
     ResourceType = 0x3C00349D
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

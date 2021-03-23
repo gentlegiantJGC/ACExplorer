@@ -6,4 +6,3 @@ class Projector(SubclassBaseFile):
     ResourceType = 0xD968D421
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

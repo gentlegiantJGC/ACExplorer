@@ -6,4 +6,3 @@ class SpecialCounterClip(SubclassBaseFile):
     ResourceType = 0x4EA3742F
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

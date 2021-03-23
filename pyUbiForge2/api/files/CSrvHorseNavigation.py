@@ -6,4 +6,3 @@ class CSrvHorseNavigation(SubclassBaseFile):
     ResourceType = 0xE4A854B0
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

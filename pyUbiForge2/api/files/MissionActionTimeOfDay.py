@@ -6,4 +6,3 @@ class MissionActionTimeOfDay(SubclassBaseFile):
     ResourceType = 0xB53B8AD3
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

@@ -6,4 +6,3 @@ class SpecializedMilitaryAnimSetLayer(SubclassBaseFile):
     ResourceType = 0x444C5C5A
     ParentResourceType = _AIAnimSetLayer.ResourceType
     parent: _AIAnimSetLayer
-

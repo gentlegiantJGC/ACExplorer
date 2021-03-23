@@ -6,4 +6,3 @@ class RollModifier(SubclassBaseFile):
     ResourceType = 0x2EDE928E
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

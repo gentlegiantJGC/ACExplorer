@@ -6,4 +6,3 @@ class MissionStateConditionClip(SubclassBaseFile):
     ResourceType = 0xB33E6FBF
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

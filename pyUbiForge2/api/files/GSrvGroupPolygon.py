@@ -6,4 +6,3 @@ class GSrvGroupPolygon(SubclassBaseFile):
     ResourceType = 0xF080256A
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

@@ -6,4 +6,3 @@ class ClimbClip(SubclassBaseFile):
     ResourceType = 0xE3B2CB42
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class AxialModifier(SubclassBaseFile):
     ResourceType = 0xD5292827
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

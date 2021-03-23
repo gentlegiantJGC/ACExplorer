@@ -6,4 +6,3 @@ class ActivateAction(SubclassBaseFile):
     ResourceType = 0x02987FF1
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

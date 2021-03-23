@@ -6,4 +6,3 @@ class OperatorVectorAbs(SubclassBaseFile):
     ResourceType = 0xB429DF5D
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

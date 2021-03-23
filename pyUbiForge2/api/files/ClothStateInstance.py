@@ -6,4 +6,3 @@ class ClothStateInstance(SubclassBaseFile):
     ResourceType = 0x6086DC59
     ParentResourceType = _SoftBodyStateInstance.ResourceType
     parent: _SoftBodyStateInstance
-

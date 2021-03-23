@@ -6,4 +6,3 @@ class SceneOutput(SubclassBaseFile):
     ResourceType = 0xC0A01091
     ParentResourceType = _GameplayOutput.ResourceType
     parent: _GameplayOutput
-

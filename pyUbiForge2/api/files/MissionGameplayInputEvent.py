@@ -6,4 +6,3 @@ class MissionGameplayInputEvent(SubclassBaseFile):
     ResourceType = 0x926C58CE
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class SpringJumpEvent(SubclassBaseFile):
     ResourceType = 0x8E90E7BF
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class GcLBlockingGuards(SubclassBaseFile):
     ResourceType = 0xE178AFDB
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

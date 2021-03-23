@@ -6,4 +6,3 @@ class CannonControlDoFireEvent(SubclassBaseFile):
     ResourceType = 0x9037EEA2
     ParentResourceType = _CannonControlDoEvent.ResourceType
     parent: _CannonControlDoEvent
-

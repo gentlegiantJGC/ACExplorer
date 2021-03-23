@@ -6,4 +6,3 @@ class StolenClip(SubclassBaseFile):
     ResourceType = 0x0B5660E2
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

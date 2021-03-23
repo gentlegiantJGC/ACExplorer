@@ -6,4 +6,3 @@ class CompiledMeshInstance(SubclassBaseFile):
     ResourceType = 0x4368101B
     ParentResourceType = _CompiledResource.ResourceType
     parent: _CompiledResource
-

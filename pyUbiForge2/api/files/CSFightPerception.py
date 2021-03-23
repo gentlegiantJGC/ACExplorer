@@ -6,4 +6,3 @@ class CSFightPerception(SubclassBaseFile):
     ResourceType = 0x4E198B7F
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

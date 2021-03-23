@@ -6,4 +6,3 @@ class AnimTrackLinearQuat64(SubclassBaseFile):
     ResourceType = 0x1040EEF8
     ParentResourceType = _AnimTrackQuat64.ResourceType
     parent: _AnimTrackQuat64
-

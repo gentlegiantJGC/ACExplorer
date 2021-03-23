@@ -6,4 +6,3 @@ class AC2FightMinEnemyCountCondition(SubclassBaseFile):
     ResourceType = 0xE6EC7BBA
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

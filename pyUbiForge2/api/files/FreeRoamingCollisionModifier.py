@@ -6,4 +6,3 @@ class FreeRoamingCollisionModifier(SubclassBaseFile):
     ResourceType = 0x8D313D22
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

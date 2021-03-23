@@ -6,4 +6,3 @@ class FallEvent(SubclassBaseFile):
     ResourceType = 0x58ADF508
     ParentResourceType = _PresentationEvent.ResourceType
     parent: _PresentationEvent
-

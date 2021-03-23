@@ -6,4 +6,3 @@ class AC2ConflictCondition(SubclassBaseFile):
     ResourceType = 0x6B08569A
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

@@ -6,4 +6,3 @@ class AIComponent(SubclassBaseFile):
     ResourceType = 0x33E86CF3
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class LocalizationDLCElement(SubclassBaseFile):
     ResourceType = 0x94BE1A97
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

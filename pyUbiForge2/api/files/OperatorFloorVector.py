@@ -6,4 +6,3 @@ class OperatorFloorVector(SubclassBaseFile):
     ResourceType = 0x824E5E90
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

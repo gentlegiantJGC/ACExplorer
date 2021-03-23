@@ -6,4 +6,3 @@ class ParentEntitySource(SubclassBaseFile):
     ResourceType = 0x0E0C6066
     ParentResourceType = _SceneActorSource.ResourceType
     parent: _SceneActorSource
-

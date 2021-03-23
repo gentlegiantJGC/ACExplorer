@@ -6,4 +6,3 @@ class EulerToQuaternion(SubclassBaseFile):
     ResourceType = 0x0B4B88D4
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

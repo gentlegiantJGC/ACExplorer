@@ -6,4 +6,3 @@ class GraphicSectorComponent(SubclassBaseFile):
     ResourceType = 0x1423525D
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

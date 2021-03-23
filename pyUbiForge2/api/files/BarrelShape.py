@@ -6,4 +6,3 @@ class BarrelShape(SubclassBaseFile):
     ResourceType = 0x97CD8890
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

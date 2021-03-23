@@ -6,4 +6,3 @@ class HumanNarrowObjectData(SubclassBaseFile):
     ResourceType = 0xE57B9A5D
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

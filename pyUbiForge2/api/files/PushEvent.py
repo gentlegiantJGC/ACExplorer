@@ -6,4 +6,3 @@ class PushEvent(SubclassBaseFile):
     ResourceType = 0x6A50E579
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

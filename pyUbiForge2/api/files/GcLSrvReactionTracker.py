@@ -6,4 +6,3 @@ class GcLSrvReactionTracker(SubclassBaseFile):
     ResourceType = 0xCA710D57
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

@@ -6,4 +6,3 @@ class StateChangeOccuredEvent(SubclassBaseFile):
     ResourceType = 0x0B0095AA
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

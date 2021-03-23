@@ -6,4 +6,3 @@ class CLArcher(SubclassBaseFile):
     ResourceType = 0xCF5B228B
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

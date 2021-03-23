@@ -6,4 +6,3 @@ class RegionCellDataLoadingDistance(SubclassBaseFile):
     ResourceType = 0x084850E3
     ParentResourceType = _RegionCellData.ResourceType
     parent: _RegionCellData
-

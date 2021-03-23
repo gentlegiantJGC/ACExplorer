@@ -6,4 +6,3 @@ class TeleportCompletedEvent(SubclassBaseFile):
     ResourceType = 0xA7F106A7
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class MissionIntroActivatorRepository(SubclassBaseFile):
     ResourceType = 0xB0FFD20C
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

@@ -6,4 +6,3 @@ class BlurredMaskSettings(SubclassBaseFile):
     ResourceType = 0x3D7BDF26
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

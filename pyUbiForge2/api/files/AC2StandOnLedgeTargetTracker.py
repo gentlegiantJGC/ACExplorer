@@ -6,4 +6,3 @@ class AC2StandOnLedgeTargetTracker(SubclassBaseFile):
     ResourceType = 0x356AC078
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

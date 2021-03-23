@@ -6,4 +6,3 @@ class ClientHandler(SubclassBaseFile):
     ResourceType = 0x43C1CB94
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

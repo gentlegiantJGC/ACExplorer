@@ -6,4 +6,3 @@ class SceneActorStateConditionClip(SubclassBaseFile):
     ResourceType = 0xECA74E09
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

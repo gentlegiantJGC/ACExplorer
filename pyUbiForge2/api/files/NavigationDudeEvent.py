@@ -6,4 +6,3 @@ class NavigationDudeEvent(SubclassBaseFile):
     ResourceType = 0x5B446C0C
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

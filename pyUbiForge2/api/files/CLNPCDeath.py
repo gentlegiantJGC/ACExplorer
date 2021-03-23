@@ -6,4 +6,3 @@ class CLNPCDeath(SubclassBaseFile):
     ResourceType = 0xD80B685B
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

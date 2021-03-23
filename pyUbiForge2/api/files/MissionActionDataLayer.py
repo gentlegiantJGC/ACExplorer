@@ -6,4 +6,3 @@ class MissionActionDataLayer(SubclassBaseFile):
     ResourceType = 0xA6B3603A
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

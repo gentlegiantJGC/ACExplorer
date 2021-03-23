@@ -6,4 +6,3 @@ class BoxShape(SubclassBaseFile):
     ResourceType = 0x4EC68E98
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

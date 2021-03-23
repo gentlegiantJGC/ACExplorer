@@ -6,4 +6,3 @@ class HingeConstraint(SubclassBaseFile):
     ResourceType = 0xECEB4833
     ParentResourceType = _BaseHingeConstraint.ResourceType
     parent: _BaseHingeConstraint
-

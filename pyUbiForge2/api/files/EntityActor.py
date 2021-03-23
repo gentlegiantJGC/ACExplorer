@@ -6,4 +6,3 @@ class EntityActor(SubclassBaseFile):
     ResourceType = 0x16C13F1A
     ParentResourceType = _MultiEntityActor.ResourceType
     parent: _MultiEntityActor
-

@@ -6,4 +6,3 @@ class LinkedVectorValue(SubclassBaseFile):
     ResourceType = 0x7A1A429A
     ParentResourceType = _LinkedValue.ResourceType
     parent: _LinkedValue
-

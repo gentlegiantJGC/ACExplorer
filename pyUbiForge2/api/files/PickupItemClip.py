@@ -6,4 +6,3 @@ class PickupItemClip(SubclassBaseFile):
     ResourceType = 0x881424CF
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

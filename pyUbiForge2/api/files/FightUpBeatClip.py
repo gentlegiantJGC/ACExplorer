@@ -6,4 +6,3 @@ class FightUpBeatClip(SubclassBaseFile):
     ResourceType = 0xF078ED3E
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

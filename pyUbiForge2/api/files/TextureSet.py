@@ -6,4 +6,3 @@ class TextureSet(SubclassBaseFile):
     ResourceType = 0xD70E6670
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

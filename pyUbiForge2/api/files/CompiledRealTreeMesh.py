@@ -6,4 +6,3 @@ class CompiledRealTreeMesh(SubclassBaseFile):
     ResourceType = 0x5E5E7E30
     ParentResourceType = _CompiledResource.ResourceType
     parent: _CompiledResource
-

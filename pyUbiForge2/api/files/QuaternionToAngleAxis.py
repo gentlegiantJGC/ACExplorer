@@ -6,4 +6,3 @@ class QuaternionToAngleAxis(SubclassBaseFile):
     ResourceType = 0xC1199C46
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

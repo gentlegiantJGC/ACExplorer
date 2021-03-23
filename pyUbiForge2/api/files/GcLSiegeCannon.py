@@ -6,4 +6,3 @@ class GcLSiegeCannon(SubclassBaseFile):
     ResourceType = 0x56248991
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

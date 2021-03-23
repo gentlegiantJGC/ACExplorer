@@ -6,4 +6,3 @@ class StopVideoSoundEvent(SubclassBaseFile):
     ResourceType = 0xFD42C16F
     ParentResourceType = _SoundLogicEvent.ResourceType
     parent: _SoundLogicEvent
-

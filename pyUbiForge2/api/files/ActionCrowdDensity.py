@@ -6,4 +6,3 @@ class ActionCrowdDensity(SubclassBaseFile):
     ResourceType = 0x90B918EF
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

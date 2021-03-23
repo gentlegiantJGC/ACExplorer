@@ -6,4 +6,3 @@ class HumanLookAtData(SubclassBaseFile):
     ResourceType = 0x559FDB6D
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

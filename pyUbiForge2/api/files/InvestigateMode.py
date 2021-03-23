@@ -6,4 +6,3 @@ class InvestigateMode(SubclassBaseFile):
     ResourceType = 0xCE6C4562
     ParentResourceType = _ConfrontationMode.ResourceType
     parent: _ConfrontationMode
-

@@ -6,4 +6,3 @@ class PolarCurveModifier(SubclassBaseFile):
     ResourceType = 0xE85D8507
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

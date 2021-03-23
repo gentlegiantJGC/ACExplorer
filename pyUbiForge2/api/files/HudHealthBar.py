@@ -6,4 +6,3 @@ class HudHealthBar(SubclassBaseFile):
     ResourceType = 0xF64650D1
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

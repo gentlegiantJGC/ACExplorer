@@ -6,4 +6,3 @@ class SpawnAutonomousLogicParams(SubclassBaseFile):
     ResourceType = 0x521415E8
     ParentResourceType = _SpawningSpecParams.ResourceType
     parent: _SpawningSpecParams
-

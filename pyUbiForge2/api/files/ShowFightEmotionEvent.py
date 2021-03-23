@@ -6,4 +6,3 @@ class ShowFightEmotionEvent(SubclassBaseFile):
     ResourceType = 0x37E1DDA6
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

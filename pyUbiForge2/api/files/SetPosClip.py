@@ -6,4 +6,3 @@ class SetPosClip(SubclassBaseFile):
     ResourceType = 0xC714A4DE
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

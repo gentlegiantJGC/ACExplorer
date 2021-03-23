@@ -6,4 +6,3 @@ class MandatoryWorldComponent(SubclassBaseFile):
     ResourceType = 0x87DB1FB6
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

@@ -6,4 +6,3 @@ class FXCamera(SubclassBaseFile):
     ResourceType = 0x1798F943
     ParentResourceType = _FXElement.ResourceType
     parent: _FXElement
-

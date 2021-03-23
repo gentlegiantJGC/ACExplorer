@@ -6,4 +6,3 @@ class GuidanceSystemCylinder(SubclassBaseFile):
     ResourceType = 0x4AF26DC9
     ParentResourceType = _GuidanceSystemComponent.ResourceType
     parent: _GuidanceSystemComponent
-

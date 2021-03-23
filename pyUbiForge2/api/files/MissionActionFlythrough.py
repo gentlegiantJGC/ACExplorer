@@ -6,4 +6,3 @@ class MissionActionFlythrough(SubclassBaseFile):
     ResourceType = 0xE9041AB2
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

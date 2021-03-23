@@ -6,4 +6,3 @@ class MaterialPropertyPathNodeSolver(SubclassBaseFile):
     ResourceType = 0xBC5B87AF
     ParentResourceType = _PropertyPathNodeSolver.ResourceType
     parent: _PropertyPathNodeSolver
-

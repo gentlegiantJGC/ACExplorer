@@ -6,4 +6,3 @@ class TimedCameraActivator(SubclassBaseFile):
     ResourceType = 0xAE4C636B
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

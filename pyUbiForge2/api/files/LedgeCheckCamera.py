@@ -6,4 +6,3 @@ class LedgeCheckCamera(SubclassBaseFile):
     ResourceType = 0x83975875
     ParentResourceType = _SweetCamera.ResourceType
     parent: _SweetCamera
-

@@ -6,4 +6,3 @@ class MutualDefenseAttackFightStrategyAction(SubclassBaseFile):
     ResourceType = 0xCAE03EBC
     ParentResourceType = _FightStrategyAction.ResourceType
     parent: _FightStrategyAction
-

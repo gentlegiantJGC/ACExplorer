@@ -6,4 +6,3 @@ class AnimTrackNearestByte(SubclassBaseFile):
     ResourceType = 0xC5F01978
     ParentResourceType = _AnimTrackByte.ResourceType
     parent: _AnimTrackByte
-

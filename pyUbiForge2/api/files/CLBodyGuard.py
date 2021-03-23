@@ -6,4 +6,3 @@ class CLBodyGuard(SubclassBaseFile):
     ResourceType = 0xA2214F90
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

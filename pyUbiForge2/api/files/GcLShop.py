@@ -6,4 +6,3 @@ class GcLShop(SubclassBaseFile):
     ResourceType = 0x22BF60B5
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

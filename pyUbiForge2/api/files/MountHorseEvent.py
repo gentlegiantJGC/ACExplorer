@@ -6,4 +6,3 @@ class MountHorseEvent(SubclassBaseFile):
     ResourceType = 0x4A1A7994
     ParentResourceType = _HorseEvent.ResourceType
     parent: _HorseEvent
-

@@ -6,4 +6,3 @@ class AddDefaultWorldTransitionPortalAction(SubclassBaseFile):
     ResourceType = 0x354A551D
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

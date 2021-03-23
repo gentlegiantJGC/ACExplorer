@@ -6,4 +6,3 @@ class Report(SubclassBaseFile):
     ResourceType = 0xC38372B2
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

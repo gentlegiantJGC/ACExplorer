@@ -6,4 +6,3 @@ class GuidanceObjectAdded(SubclassBaseFile):
     ResourceType = 0x97916D86
     ParentResourceType = _GuidanceObjectOperation.ResourceType
     parent: _GuidanceObjectOperation
-

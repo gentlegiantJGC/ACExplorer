@@ -6,4 +6,3 @@ class AzimuthScreenOffsetModifier(SubclassBaseFile):
     ResourceType = 0xDAF35D61
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

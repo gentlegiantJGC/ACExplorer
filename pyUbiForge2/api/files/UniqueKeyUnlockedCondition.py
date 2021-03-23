@@ -6,4 +6,3 @@ class UniqueKeyUnlockedCondition(SubclassBaseFile):
     ResourceType = 0xCBD0BDEF
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

@@ -6,4 +6,3 @@ class FreeRoamingCamera2(SubclassBaseFile):
     ResourceType = 0xCDBA6146
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

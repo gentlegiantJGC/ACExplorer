@@ -6,4 +6,3 @@ class AbstractDeathHandler(SubclassBaseFile):
     ResourceType = 0x1E168B54
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

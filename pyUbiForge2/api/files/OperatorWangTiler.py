@@ -6,4 +6,3 @@ class OperatorWangTiler(SubclassBaseFile):
     ResourceType = 0x9AB7FEFA
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

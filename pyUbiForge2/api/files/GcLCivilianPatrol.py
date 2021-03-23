@@ -6,4 +6,3 @@ class GcLCivilianPatrol(SubclassBaseFile):
     ResourceType = 0x3EAA4EA3
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

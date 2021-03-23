@@ -6,4 +6,3 @@ class QuaternionOutput(SubclassBaseFile):
     ResourceType = 0x556DC878
     ParentResourceType = _LinkableOutput.ResourceType
     parent: _LinkableOutput
-

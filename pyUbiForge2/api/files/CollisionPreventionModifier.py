@@ -6,4 +6,3 @@ class CollisionPreventionModifier(SubclassBaseFile):
     ResourceType = 0x79CC93B4
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

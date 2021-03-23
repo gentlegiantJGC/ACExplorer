@@ -6,4 +6,3 @@ class ProximityEvent(SubclassBaseFile):
     ResourceType = 0x7502B30C
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

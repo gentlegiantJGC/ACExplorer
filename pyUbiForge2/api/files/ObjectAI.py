@@ -6,4 +6,3 @@ class ObjectAI(SubclassBaseFile):
     ResourceType = 0xED0299F4
     ParentResourceType = _AbstractObjectAI.ResourceType
     parent: _AbstractObjectAI
-

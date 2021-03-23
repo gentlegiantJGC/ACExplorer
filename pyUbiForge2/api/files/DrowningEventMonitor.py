@@ -6,4 +6,3 @@ class DrowningEventMonitor(SubclassBaseFile):
     ResourceType = 0xB287AB55
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

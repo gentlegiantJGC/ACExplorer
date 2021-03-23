@@ -6,4 +6,3 @@ class FightStrategyPositionNotOKEvent(SubclassBaseFile):
     ResourceType = 0x7E11370E
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

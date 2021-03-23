@@ -6,4 +6,3 @@ class VillaSettingSelectedConditionClip(SubclassBaseFile):
     ResourceType = 0x5C821031
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

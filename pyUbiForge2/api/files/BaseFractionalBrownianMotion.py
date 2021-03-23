@@ -6,4 +6,3 @@ class BaseFractionalBrownianMotion(SubclassBaseFile):
     ResourceType = 0x2318CE3E
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

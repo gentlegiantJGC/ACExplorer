@@ -6,4 +6,3 @@ class OperatorReciprocalFloat(SubclassBaseFile):
     ResourceType = 0xF777C0E3
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

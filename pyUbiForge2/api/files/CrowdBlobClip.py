@@ -6,4 +6,3 @@ class CrowdBlobClip(SubclassBaseFile):
     ResourceType = 0x00DC96DD
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

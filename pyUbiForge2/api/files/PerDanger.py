@@ -6,4 +6,3 @@ class PerDanger(SubclassBaseFile):
     ResourceType = 0x77DCFEE5
     ParentResourceType = _PerceptionToggle.ResourceType
     parent: _PerceptionToggle
-

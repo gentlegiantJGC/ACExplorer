@@ -6,4 +6,3 @@ class AnimusDatabaseGlyphPuzzleComponent(SubclassBaseFile):
     ResourceType = 0x316232B4
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

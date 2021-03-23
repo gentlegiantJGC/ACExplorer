@@ -6,4 +6,3 @@ class AnimTrackLinearInt(SubclassBaseFile):
     ResourceType = 0x2F4D2109
     ParentResourceType = _AnimTrackInt.ResourceType
     parent: _AnimTrackInt
-

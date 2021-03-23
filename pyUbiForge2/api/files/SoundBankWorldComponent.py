@@ -6,4 +6,3 @@ class SoundBankWorldComponent(SubclassBaseFile):
     ResourceType = 0x4DA30368
     ParentResourceType = _MandatoryWorldComponent.ResourceType
     parent: _MandatoryWorldComponent
-

@@ -6,4 +6,3 @@ class PhysicsImpulseClip(SubclassBaseFile):
     ResourceType = 0x90B15247
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class GuidanceZonePlane(SubclassBaseFile):
     ResourceType = 0xF7907244
     ParentResourceType = _GuidanceZone.ResourceType
     parent: _GuidanceZone
-

@@ -6,4 +6,3 @@ class GrabEvent(SubclassBaseFile):
     ResourceType = 0x1CB75977
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

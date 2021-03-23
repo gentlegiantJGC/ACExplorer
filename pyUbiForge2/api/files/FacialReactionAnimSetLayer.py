@@ -6,4 +6,3 @@ class FacialReactionAnimSetLayer(SubclassBaseFile):
     ResourceType = 0xCC0B966C
     ParentResourceType = _AIAnimSetLayer.ResourceType
     parent: _AIAnimSetLayer
-

@@ -6,4 +6,3 @@ class GenericGraph(SubclassBaseFile):
     ResourceType = 0xB7EA6DA8
     ParentResourceType = _Graph.ResourceType
     parent: _Graph
-

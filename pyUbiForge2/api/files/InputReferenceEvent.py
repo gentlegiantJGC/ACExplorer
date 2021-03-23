@@ -6,4 +6,3 @@ class InputReferenceEvent(SubclassBaseFile):
     ResourceType = 0x3658D1F7
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

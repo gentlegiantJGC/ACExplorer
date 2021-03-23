@@ -6,4 +6,3 @@ class CSrvOutOfBounds(SubclassBaseFile):
     ResourceType = 0x2963FA96
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

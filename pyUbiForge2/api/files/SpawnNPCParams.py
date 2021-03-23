@@ -6,4 +6,3 @@ class SpawnNPCParams(SubclassBaseFile):
     ResourceType = 0x94D05600
     ParentResourceType = _SpawnCharacterParams.ResourceType
     parent: _SpawnCharacterParams
-

@@ -6,4 +6,3 @@ class MissionTimeOfDayCondition(SubclassBaseFile):
     ResourceType = 0x7861BC1D
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

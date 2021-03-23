@@ -6,4 +6,3 @@ class FloatCumulativeBuffer(SubclassBaseFile):
     ResourceType = 0xA1A81821
     ParentResourceType = _CumulativeBuffer.ResourceType
     parent: _CumulativeBuffer
-

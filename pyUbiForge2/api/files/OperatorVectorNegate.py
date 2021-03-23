@@ -6,4 +6,3 @@ class OperatorVectorNegate(SubclassBaseFile):
     ResourceType = 0x7CA403C6
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class ObjectBankManager(SubclassBaseFile):
     ResourceType = 0x54243032
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

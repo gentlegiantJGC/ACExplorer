@@ -6,4 +6,3 @@ class AssassinationInfoEvent(SubclassBaseFile):
     ResourceType = 0xED916997
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

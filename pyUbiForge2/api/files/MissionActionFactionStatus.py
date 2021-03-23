@@ -6,4 +6,3 @@ class MissionActionFactionStatus(SubclassBaseFile):
     ResourceType = 0x499E42A1
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

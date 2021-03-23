@@ -6,4 +6,3 @@ class ActionGlobalMapMarker(SubclassBaseFile):
     ResourceType = 0x23B4FF01
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

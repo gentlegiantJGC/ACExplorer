@@ -6,4 +6,3 @@ class KillClip(SubclassBaseFile):
     ResourceType = 0x005939CC
     ParentResourceType = _MultiEntitiesClip.ResourceType
     parent: _MultiEntitiesClip
-

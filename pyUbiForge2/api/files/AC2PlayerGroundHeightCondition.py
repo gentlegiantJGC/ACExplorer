@@ -6,4 +6,3 @@ class AC2PlayerGroundHeightCondition(SubclassBaseFile):
     ResourceType = 0x4444AF59
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

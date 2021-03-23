@@ -6,4 +6,3 @@ class HoldPositionClip(SubclassBaseFile):
     ResourceType = 0x1829BD7E
     ParentResourceType = _CharacterLogicClip.ResourceType
     parent: _CharacterLogicClip
-

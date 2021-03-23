@@ -6,4 +6,3 @@ class WhiteRoomDLCAddon(SubclassBaseFile):
     ResourceType = 0xD21119F5
     ParentResourceType = _DLCAddon.ResourceType
     parent: _DLCAddon
-

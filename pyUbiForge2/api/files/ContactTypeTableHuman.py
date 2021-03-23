@@ -6,4 +6,3 @@ class ContactTypeTableHuman(SubclassBaseFile):
     ResourceType = 0x11337755
     ParentResourceType = _ContactTypeTableBase.ResourceType
     parent: _ContactTypeTableBase
-

@@ -6,4 +6,3 @@ class TrainingDummyClip(SubclassBaseFile):
     ResourceType = 0xE05E6A06
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

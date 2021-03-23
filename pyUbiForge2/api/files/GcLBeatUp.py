@@ -6,4 +6,3 @@ class GcLBeatUp(SubclassBaseFile):
     ResourceType = 0xD5DC19A8
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

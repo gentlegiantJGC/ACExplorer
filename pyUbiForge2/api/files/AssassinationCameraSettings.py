@@ -6,4 +6,3 @@ class AssassinationCameraSettings(SubclassBaseFile):
     ResourceType = 0x7AFF6565
     ParentResourceType = _InsertCameraSettings.ResourceType
     parent: _InsertCameraSettings
-

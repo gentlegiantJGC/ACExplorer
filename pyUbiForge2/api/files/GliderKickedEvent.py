@@ -6,4 +6,3 @@ class GliderKickedEvent(SubclassBaseFile):
     ResourceType = 0x169ADEF8
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

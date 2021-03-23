@@ -6,4 +6,3 @@ class CLPushTarget(SubclassBaseFile):
     ResourceType = 0x89DD370D
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

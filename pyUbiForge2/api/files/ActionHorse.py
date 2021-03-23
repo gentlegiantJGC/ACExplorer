@@ -6,4 +6,3 @@ class ActionHorse(SubclassBaseFile):
     ResourceType = 0x0E0344DE
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

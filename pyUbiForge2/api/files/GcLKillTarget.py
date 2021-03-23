@@ -6,4 +6,3 @@ class GcLKillTarget(SubclassBaseFile):
     ResourceType = 0xE1DD3705
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

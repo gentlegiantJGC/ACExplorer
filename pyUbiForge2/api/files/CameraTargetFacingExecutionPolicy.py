@@ -6,4 +6,3 @@ class CameraTargetFacingExecutionPolicy(SubclassBaseFile):
     ResourceType = 0xABC90F63
     ParentResourceType = _IExecutionPolicy.ResourceType
     parent: _IExecutionPolicy
-

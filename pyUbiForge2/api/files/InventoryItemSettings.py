@@ -6,4 +6,3 @@ class InventoryItemSettings(SubclassBaseFile):
     ResourceType = 0xC69075AB
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

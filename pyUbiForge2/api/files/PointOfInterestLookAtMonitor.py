@@ -6,4 +6,3 @@ class PointOfInterestLookAtMonitor(SubclassBaseFile):
     ResourceType = 0xF8157C61
     ParentResourceType = _TargetBoneMonitor.ResourceType
     parent: _TargetBoneMonitor
-

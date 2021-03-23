@@ -6,4 +6,3 @@ class CLFightDummy(SubclassBaseFile):
     ResourceType = 0x39CDA68E
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

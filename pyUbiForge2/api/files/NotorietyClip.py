@@ -6,4 +6,3 @@ class NotorietyClip(SubclassBaseFile):
     ResourceType = 0xFC96CCC1
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

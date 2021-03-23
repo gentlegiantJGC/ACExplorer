@@ -6,4 +6,3 @@ class GcLMCPlayerFollowNPC(SubclassBaseFile):
     ResourceType = 0x39029569
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

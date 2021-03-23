@@ -6,4 +6,3 @@ class AndTrigger(SubclassBaseFile):
     ResourceType = 0x1A481920
     ParentResourceType = _StartTrigger.ResourceType
     parent: _StartTrigger
-

@@ -6,4 +6,3 @@ class TimerRuleCondition(SubclassBaseFile):
     ResourceType = 0xC16C05E5
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

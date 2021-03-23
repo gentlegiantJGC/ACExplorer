@@ -6,4 +6,3 @@ class CSDamage(SubclassBaseFile):
     ResourceType = 0x77AB19B4
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

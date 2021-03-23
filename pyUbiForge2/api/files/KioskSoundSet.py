@@ -6,4 +6,3 @@ class KioskSoundSet(SubclassBaseFile):
     ResourceType = 0xAE493A02
     ParentResourceType = _SoundSet.ResourceType
     parent: _SoundSet
-

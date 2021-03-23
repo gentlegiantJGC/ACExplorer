@@ -6,4 +6,3 @@ class PadGhostCameraControl(SubclassBaseFile):
     ResourceType = 0xC9B98A67
     ParentResourceType = _PadPolarCameraControl.ResourceType
     parent: _PadPolarCameraControl
-

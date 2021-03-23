@@ -6,4 +6,3 @@ class AIStatechartTriggerEvent(SubclassBaseFile):
     ResourceType = 0x37598D41
     ParentResourceType = _AIStatechartEvent.ResourceType
     parent: _AIStatechartEvent
-

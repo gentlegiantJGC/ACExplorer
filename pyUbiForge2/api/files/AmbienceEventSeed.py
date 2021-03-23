@@ -6,4 +6,3 @@ class AmbienceEventSeed(SubclassBaseFile):
     ResourceType = 0x1B99FB85
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

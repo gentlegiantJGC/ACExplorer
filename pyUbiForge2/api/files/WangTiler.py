@@ -6,4 +6,3 @@ class WangTiler(SubclassBaseFile):
     ResourceType = 0x4EF2FC5A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

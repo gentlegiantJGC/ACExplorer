@@ -6,4 +6,3 @@ class HideHUDClip(SubclassBaseFile):
     ResourceType = 0x19F8201D
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

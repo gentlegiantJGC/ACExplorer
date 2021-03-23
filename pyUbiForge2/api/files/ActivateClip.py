@@ -6,4 +6,3 @@ class ActivateClip(SubclassBaseFile):
     ResourceType = 0xBC8ED33D
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

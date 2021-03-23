@@ -6,4 +6,3 @@ class ShowWeaponSelectorMenuEvent(SubclassBaseFile):
     ResourceType = 0x519BA677
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

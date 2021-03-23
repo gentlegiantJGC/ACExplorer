@@ -6,4 +6,3 @@ class CameraRuleGraphClip(SubclassBaseFile):
     ResourceType = 0xEECA29DF
     ParentResourceType = _RuleGraphClip.ResourceType
     parent: _RuleGraphClip
-

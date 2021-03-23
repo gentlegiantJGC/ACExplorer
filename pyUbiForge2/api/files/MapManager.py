@@ -6,4 +6,3 @@ class MapManager(SubclassBaseFile):
     ResourceType = 0xC773234A
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

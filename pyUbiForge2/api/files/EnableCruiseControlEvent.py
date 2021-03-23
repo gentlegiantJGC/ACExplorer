@@ -6,4 +6,3 @@ class EnableCruiseControlEvent(SubclassBaseFile):
     ResourceType = 0x3E20AF85
     ParentResourceType = _HorseEvent.ResourceType
     parent: _HorseEvent
-

@@ -6,4 +6,3 @@ class UIKit(SubclassBaseFile):
     ResourceType = 0x4F55A7FB
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class GameplayPosition(SubclassBaseFile):
     ResourceType = 0x2ADB8BEF
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class HideAction(SubclassBaseFile):
     ResourceType = 0xE2AAFDD9
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

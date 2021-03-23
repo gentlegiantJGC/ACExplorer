@@ -6,4 +6,3 @@ class CLWait(SubclassBaseFile):
     ResourceType = 0x59959FEE
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

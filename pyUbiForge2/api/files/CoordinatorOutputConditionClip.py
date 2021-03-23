@@ -6,4 +6,3 @@ class CoordinatorOutputConditionClip(SubclassBaseFile):
     ResourceType = 0xAFEC17D7
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

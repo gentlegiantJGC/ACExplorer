@@ -6,4 +6,3 @@ class ParentEnemyGroupIconEvent(SubclassBaseFile):
     ResourceType = 0x48B48D27
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

@@ -6,4 +6,3 @@ class AITask(SubclassBaseFile):
     ResourceType = 0xF32DE955
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

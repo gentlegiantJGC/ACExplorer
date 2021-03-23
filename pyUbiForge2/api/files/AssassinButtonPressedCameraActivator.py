@@ -6,4 +6,3 @@ class AssassinButtonPressedCameraActivator(SubclassBaseFile):
     ResourceType = 0x3EE2A80A
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

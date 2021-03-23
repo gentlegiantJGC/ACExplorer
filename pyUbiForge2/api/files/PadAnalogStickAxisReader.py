@@ -6,4 +6,3 @@ class PadAnalogStickAxisReader(SubclassBaseFile):
     ResourceType = 0x8810C129
     ParentResourceType = _AnalogReader.ResourceType
     parent: _AnalogReader
-

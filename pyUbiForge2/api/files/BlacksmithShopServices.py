@@ -6,4 +6,3 @@ class BlacksmithShopServices(SubclassBaseFile):
     ResourceType = 0x8A315084
     ParentResourceType = _AbstractShopServices.ResourceType
     parent: _AbstractShopServices
-

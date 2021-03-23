@@ -6,4 +6,3 @@ class BrokenStructureEventMonitor(SubclassBaseFile):
     ResourceType = 0xDBE02B97
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

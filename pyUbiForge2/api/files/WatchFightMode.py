@@ -6,4 +6,3 @@ class WatchFightMode(SubclassBaseFile):
     ResourceType = 0xBE265AB0
     ParentResourceType = _ConfrontationMode.ResourceType
     parent: _ConfrontationMode
-

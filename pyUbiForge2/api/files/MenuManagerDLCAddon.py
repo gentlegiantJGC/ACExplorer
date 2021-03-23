@@ -6,4 +6,3 @@ class MenuManagerDLCAddon(SubclassBaseFile):
     ResourceType = 0xB583099D
     ParentResourceType = _DLCAddon.ResourceType
     parent: _DLCAddon
-

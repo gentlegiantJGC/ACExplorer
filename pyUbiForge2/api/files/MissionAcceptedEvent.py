@@ -6,4 +6,3 @@ class MissionAcceptedEvent(SubclassBaseFile):
     ResourceType = 0xF7895050
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

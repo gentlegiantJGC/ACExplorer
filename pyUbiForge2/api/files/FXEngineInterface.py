@@ -6,4 +6,3 @@ class FXEngineInterface(SubclassBaseFile):
     ResourceType = 0x95F6E970
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class CLInvestigateDeadBody(SubclassBaseFile):
     ResourceType = 0x0DDFBD5E
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

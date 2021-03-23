@@ -6,4 +6,3 @@ class MissionActionUpdateMapFog(SubclassBaseFile):
     ResourceType = 0x19E23ED9
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

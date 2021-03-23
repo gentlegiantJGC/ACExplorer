@@ -6,4 +6,3 @@ class CLFightArcher(SubclassBaseFile):
     ResourceType = 0x84BE393A
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

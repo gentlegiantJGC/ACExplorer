@@ -6,4 +6,3 @@ class MarketingCamera(SubclassBaseFile):
     ResourceType = 0x5B7FC715
     ParentResourceType = _FPSCamera.ResourceType
     parent: _FPSCamera
-

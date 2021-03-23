@@ -6,4 +6,3 @@ class NavZoneClip(SubclassBaseFile):
     ResourceType = 0xA4477744
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class TestStatechartEventDerived(SubclassBaseFile):
     ResourceType = 0x0554D625
     ParentResourceType = _TestStatechartEventBase.ResourceType
     parent: _TestStatechartEventBase
-

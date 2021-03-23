@@ -6,4 +6,3 @@ class PoleEventMonitor(SubclassBaseFile):
     ResourceType = 0x01465F59
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

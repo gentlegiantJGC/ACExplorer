@@ -6,4 +6,3 @@ class OperatorArcSinFloat(SubclassBaseFile):
     ResourceType = 0x92258332
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

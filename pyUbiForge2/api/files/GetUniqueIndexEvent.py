@@ -6,4 +6,3 @@ class GetUniqueIndexEvent(SubclassBaseFile):
     ResourceType = 0xAC605958
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

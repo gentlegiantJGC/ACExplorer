@@ -6,4 +6,3 @@ class ExplorationOffsetEnhanceTargetDirectionMethod(SubclassBaseFile):
     ResourceType = 0x0A6FB7FB
     ParentResourceType = _ExplorationOffsetMethod.ResourceType
     parent: _ExplorationOffsetMethod
-

@@ -6,4 +6,3 @@ class ActionKit(SubclassBaseFile):
     ResourceType = 0x195B695E
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

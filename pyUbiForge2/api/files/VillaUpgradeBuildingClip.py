@@ -6,4 +6,3 @@ class VillaUpgradeBuildingClip(SubclassBaseFile):
     ResourceType = 0x0B100313
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

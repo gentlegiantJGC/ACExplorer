@@ -6,4 +6,3 @@ class IntegerVelocity(SubclassBaseFile):
     ResourceType = 0x5458741C
     ParentResourceType = _ValueVelocity.ResourceType
     parent: _ValueVelocity
-

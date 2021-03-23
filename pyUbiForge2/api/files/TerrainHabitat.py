@@ -6,4 +6,3 @@ class TerrainHabitat(SubclassBaseFile):
     ResourceType = 0xF09D1E67
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

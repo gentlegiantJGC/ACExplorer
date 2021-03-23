@@ -6,4 +6,3 @@ class BoatEnterDriver(SubclassBaseFile):
     ResourceType = 0x1A44EFA2
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

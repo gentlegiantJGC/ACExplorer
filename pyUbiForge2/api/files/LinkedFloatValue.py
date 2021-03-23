@@ -6,4 +6,3 @@ class LinkedFloatValue(SubclassBaseFile):
     ResourceType = 0x28F542F6
     ParentResourceType = _LinkedValue.ResourceType
     parent: _LinkedValue
-

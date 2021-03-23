@@ -6,4 +6,3 @@ class ShadeConstantSunColor(SubclassBaseFile):
     ResourceType = 0x533B2EE5
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class CharacterFleeEvent(SubclassBaseFile):
     ResourceType = 0x5AB8E003
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

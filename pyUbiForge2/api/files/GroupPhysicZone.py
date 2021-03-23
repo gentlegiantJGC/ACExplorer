@@ -6,4 +6,3 @@ class GroupPhysicZone(SubclassBaseFile):
     ResourceType = 0x06A4ADC7
     ParentResourceType = _PhysicComponent.ResourceType
     parent: _PhysicComponent
-

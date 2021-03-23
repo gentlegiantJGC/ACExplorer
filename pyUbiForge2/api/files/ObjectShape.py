@@ -6,4 +6,3 @@ class ObjectShape(SubclassBaseFile):
     ResourceType = 0x5A5D1303
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

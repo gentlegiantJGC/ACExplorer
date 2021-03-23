@@ -6,4 +6,3 @@ class AC2DialogTargetEntity(SubclassBaseFile):
     ResourceType = 0x37B2E5F3
     ParentResourceType = _ITargetEntity.ResourceType
     parent: _ITargetEntity
-

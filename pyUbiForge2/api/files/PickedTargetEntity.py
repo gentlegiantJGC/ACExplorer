@@ -6,4 +6,3 @@ class PickedTargetEntity(SubclassBaseFile):
     ResourceType = 0xF7E2905B
     ParentResourceType = _ITargetEntity.ResourceType
     parent: _ITargetEntity
-

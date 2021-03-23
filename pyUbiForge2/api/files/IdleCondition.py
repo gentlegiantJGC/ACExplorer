@@ -6,4 +6,3 @@ class IdleCondition(SubclassBaseFile):
     ResourceType = 0xAA165F33
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

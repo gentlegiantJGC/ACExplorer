@@ -6,4 +6,3 @@ class FightCameraActivator(SubclassBaseFile):
     ResourceType = 0x6258E6C1
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

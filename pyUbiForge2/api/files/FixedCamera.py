@@ -6,4 +6,3 @@ class FixedCamera(SubclassBaseFile):
     ResourceType = 0x5973A08E
     ParentResourceType = _TargetEulerCamera.ResourceType
     parent: _TargetEulerCamera
-

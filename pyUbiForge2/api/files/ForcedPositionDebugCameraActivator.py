@@ -6,4 +6,3 @@ class ForcedPositionDebugCameraActivator(SubclassBaseFile):
     ResourceType = 0x176C37CB
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

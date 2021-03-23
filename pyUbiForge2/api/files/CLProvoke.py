@@ -6,4 +6,3 @@ class CLProvoke(SubclassBaseFile):
     ResourceType = 0xB7770DC9
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

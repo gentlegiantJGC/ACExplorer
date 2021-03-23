@@ -6,4 +6,3 @@ class OperatorFracVector(SubclassBaseFile):
     ResourceType = 0x736608BB
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

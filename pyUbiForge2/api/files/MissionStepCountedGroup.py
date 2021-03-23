@@ -6,4 +6,3 @@ class MissionStepCountedGroup(SubclassBaseFile):
     ResourceType = 0x72BD8C71
     ParentResourceType = _MissionStepGroup.ResourceType
     parent: _MissionStepGroup
-

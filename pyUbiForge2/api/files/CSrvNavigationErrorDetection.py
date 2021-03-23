@@ -6,4 +6,3 @@ class CSrvNavigationErrorDetection(SubclassBaseFile):
     ResourceType = 0xC6E91FB2
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

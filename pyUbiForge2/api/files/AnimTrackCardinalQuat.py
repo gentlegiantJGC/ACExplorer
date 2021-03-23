@@ -6,4 +6,3 @@ class AnimTrackCardinalQuat(SubclassBaseFile):
     ResourceType = 0x9A20E22D
     ParentResourceType = _AnimTrackLinearQuat.ResourceType
     parent: _AnimTrackLinearQuat
-

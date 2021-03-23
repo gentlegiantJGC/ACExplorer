@@ -6,4 +6,3 @@ class HorseCamera(SubclassBaseFile):
     ResourceType = 0x8F964249
     ParentResourceType = _FreeRoamingCamera.ResourceType
     parent: _FreeRoamingCamera
-

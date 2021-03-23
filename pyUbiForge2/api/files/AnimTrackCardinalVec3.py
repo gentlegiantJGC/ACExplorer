@@ -6,4 +6,3 @@ class AnimTrackCardinalVec3(SubclassBaseFile):
     ResourceType = 0xC15FCF55
     ParentResourceType = _AnimTrackVec3.ResourceType
     parent: _AnimTrackVec3
-

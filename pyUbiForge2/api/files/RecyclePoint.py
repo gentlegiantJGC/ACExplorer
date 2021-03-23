@@ -6,4 +6,3 @@ class RecyclePoint(SubclassBaseFile):
     ResourceType = 0xB1CB2060
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

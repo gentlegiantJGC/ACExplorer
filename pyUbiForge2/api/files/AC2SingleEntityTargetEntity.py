@@ -6,4 +6,3 @@ class AC2SingleEntityTargetEntity(SubclassBaseFile):
     ResourceType = 0xEEAE3CCA
     ParentResourceType = _ITargetEntity.ResourceType
     parent: _ITargetEntity
-

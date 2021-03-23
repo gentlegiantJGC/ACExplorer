@@ -6,4 +6,3 @@ class GroupWaitCondition(SubclassBaseFile):
     ResourceType = 0x2E34547D
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

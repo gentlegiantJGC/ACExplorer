@@ -6,4 +6,3 @@ class SitClip(SubclassBaseFile):
     ResourceType = 0x80AE508C
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

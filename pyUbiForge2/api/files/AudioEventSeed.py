@@ -6,4 +6,3 @@ class AudioEventSeed(SubclassBaseFile):
     ResourceType = 0x561E06FC
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

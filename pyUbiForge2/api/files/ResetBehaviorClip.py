@@ -6,4 +6,3 @@ class ResetBehaviorClip(SubclassBaseFile):
     ResourceType = 0x27CAB3D3
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class FloatBuffer(SubclassBaseFile):
     ResourceType = 0x9E29C8B1
     ParentResourceType = _ValueBuffer.ResourceType
     parent: _ValueBuffer
-

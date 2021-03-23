@@ -6,4 +6,3 @@ class HumanSoundSet(SubclassBaseFile):
     ResourceType = 0x2B315BEA
     ParentResourceType = _SoundSet.ResourceType
     parent: _SoundSet
-

@@ -6,4 +6,3 @@ class MissionStepSkippableSequenceScheduler(SubclassBaseFile):
     ResourceType = 0xB376A68E
     ParentResourceType = _MissionStepScheduler.ResourceType
     parent: _MissionStepScheduler
-

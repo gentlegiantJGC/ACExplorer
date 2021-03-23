@@ -6,4 +6,3 @@ class XenonAccomplishmentOutput(SubclassBaseFile):
     ResourceType = 0xC7888335
     ParentResourceType = _AccomplishmentOutput.ResourceType
     parent: _AccomplishmentOutput
-

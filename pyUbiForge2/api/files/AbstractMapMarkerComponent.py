@@ -6,4 +6,3 @@ class AbstractMapMarkerComponent(SubclassBaseFile):
     ResourceType = 0xFECB0A9F
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

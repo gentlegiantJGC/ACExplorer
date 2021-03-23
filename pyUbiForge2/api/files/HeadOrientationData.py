@@ -6,4 +6,3 @@ class HeadOrientationData(SubclassBaseFile):
     ResourceType = 0x88E66A2B
     ParentResourceType = _ExtensionContextData.ResourceType
     parent: _ExtensionContextData
-

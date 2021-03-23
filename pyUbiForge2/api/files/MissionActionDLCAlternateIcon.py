@@ -6,4 +6,3 @@ class MissionActionDLCAlternateIcon(SubclassBaseFile):
     ResourceType = 0xBEB787BF
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

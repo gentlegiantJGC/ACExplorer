@@ -6,4 +6,3 @@ class AdditiveAndReader(SubclassBaseFile):
     ResourceType = 0xF379397E
     ParentResourceType = _InputReader2.ResourceType
     parent: _InputReader2
-

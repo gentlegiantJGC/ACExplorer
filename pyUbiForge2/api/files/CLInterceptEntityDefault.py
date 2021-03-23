@@ -6,4 +6,3 @@ class CLInterceptEntityDefault(SubclassBaseFile):
     ResourceType = 0x2F95E859
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

@@ -6,4 +6,3 @@ class GcLGlider(SubclassBaseFile):
     ResourceType = 0x60DB362A
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

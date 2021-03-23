@@ -6,4 +6,3 @@ class BlendCameraSettings(SubclassBaseFile):
     ResourceType = 0xF73A2917
     ParentResourceType = _CameraSettings.ResourceType
     parent: _CameraSettings
-

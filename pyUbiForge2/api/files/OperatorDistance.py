@@ -6,4 +6,3 @@ class OperatorDistance(SubclassBaseFile):
     ResourceType = 0x1BD6BAB4
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

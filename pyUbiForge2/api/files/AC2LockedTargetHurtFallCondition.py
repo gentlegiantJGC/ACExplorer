@@ -6,4 +6,3 @@ class AC2LockedTargetHurtFallCondition(SubclassBaseFile):
     ResourceType = 0x71C54D9C
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

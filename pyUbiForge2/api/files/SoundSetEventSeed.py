@@ -6,4 +6,3 @@ class SoundSetEventSeed(SubclassBaseFile):
     ResourceType = 0x92332333
     ParentResourceType = _EventSeed.ResourceType
     parent: _EventSeed
-

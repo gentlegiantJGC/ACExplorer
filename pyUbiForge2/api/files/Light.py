@@ -6,4 +6,3 @@ class Light(SubclassBaseFile):
     ResourceType = 0xAADB73F3
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

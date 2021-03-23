@@ -6,4 +6,3 @@ class DLCWorldComponent(SubclassBaseFile):
     ResourceType = 0xB98B6142
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

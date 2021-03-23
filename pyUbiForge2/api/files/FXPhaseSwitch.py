@@ -6,4 +6,3 @@ class FXPhaseSwitch(SubclassBaseFile):
     ResourceType = 0xFB2B32FD
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

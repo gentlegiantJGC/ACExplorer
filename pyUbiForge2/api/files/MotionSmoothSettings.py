@@ -6,4 +6,3 @@ class MotionSmoothSettings(SubclassBaseFile):
     ResourceType = 0x864DC837
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

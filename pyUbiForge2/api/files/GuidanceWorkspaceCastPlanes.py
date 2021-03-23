@@ -6,4 +6,3 @@ class GuidanceWorkspaceCastPlanes(SubclassBaseFile):
     ResourceType = 0xBE13EB35
     ParentResourceType = _GuidanceTask.ResourceType
     parent: _GuidanceTask
-

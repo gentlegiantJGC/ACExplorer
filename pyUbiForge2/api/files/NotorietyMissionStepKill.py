@@ -6,4 +6,3 @@ class NotorietyMissionStepKill(SubclassBaseFile):
     ResourceType = 0x939007D0
     ParentResourceType = _NotorietyMissionStep.ResourceType
     parent: _NotorietyMissionStep
-

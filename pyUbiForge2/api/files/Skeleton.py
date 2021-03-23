@@ -6,4 +6,3 @@ class Skeleton(SubclassBaseFile):
     ResourceType = 0x24AECB7C
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class MrCleanClip(SubclassBaseFile):
     ResourceType = 0xF4CE2843
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

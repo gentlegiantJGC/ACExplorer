@@ -6,4 +6,3 @@ class OperatorVectorMax(SubclassBaseFile):
     ResourceType = 0x01CCAC72
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

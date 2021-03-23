@@ -6,4 +6,3 @@ class UISetMissionFailedMessage(SubclassBaseFile):
     ResourceType = 0x1F8E6956
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

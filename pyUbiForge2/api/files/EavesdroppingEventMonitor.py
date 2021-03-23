@@ -6,4 +6,3 @@ class EavesdroppingEventMonitor(SubclassBaseFile):
     ResourceType = 0xA57EA5BA
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

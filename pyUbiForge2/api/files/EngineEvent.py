@@ -6,4 +6,3 @@ class EngineEvent(SubclassBaseFile):
     ResourceType = 0x4BED1C90
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

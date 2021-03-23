@@ -6,4 +6,3 @@ class CLSearchDeadBody(SubclassBaseFile):
     ResourceType = 0x65FAD2E2
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

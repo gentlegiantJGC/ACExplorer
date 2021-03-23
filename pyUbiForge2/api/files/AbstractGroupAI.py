@@ -6,4 +6,3 @@ class AbstractGroupAI(SubclassBaseFile):
     ResourceType = 0x0EDB5C6F
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

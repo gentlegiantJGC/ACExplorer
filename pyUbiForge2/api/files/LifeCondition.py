@@ -6,4 +6,3 @@ class LifeCondition(SubclassBaseFile):
     ResourceType = 0xCB39B54A
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

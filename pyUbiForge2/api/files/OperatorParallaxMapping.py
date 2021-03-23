@@ -6,4 +6,3 @@ class OperatorParallaxMapping(SubclassBaseFile):
     ResourceType = 0xDADE22E4
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

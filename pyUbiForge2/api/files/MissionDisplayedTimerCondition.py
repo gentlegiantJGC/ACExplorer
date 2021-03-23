@@ -6,4 +6,3 @@ class MissionDisplayedTimerCondition(SubclassBaseFile):
     ResourceType = 0xE8FCEC38
     ParentResourceType = _MissionTimedCondition.ResourceType
     parent: _MissionTimedCondition
-

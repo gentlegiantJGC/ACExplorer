@@ -6,4 +6,3 @@ class BhvAssassinData(SubclassBaseFile):
     ResourceType = 0xDB7B4621
     ParentResourceType = _CharacterBehaviorData.ResourceType
     parent: _CharacterBehaviorData
-

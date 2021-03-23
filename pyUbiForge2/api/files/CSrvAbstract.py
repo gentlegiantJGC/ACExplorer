@@ -6,4 +6,3 @@ class CSrvAbstract(SubclassBaseFile):
     ResourceType = 0x4510152E
     ParentResourceType = _ESrvAbstract.ResourceType
     parent: _ESrvAbstract
-

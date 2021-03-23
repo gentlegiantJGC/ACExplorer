@@ -6,4 +6,3 @@ class BoatCollideEvent(SubclassBaseFile):
     ResourceType = 0x1938687E
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

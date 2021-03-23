@@ -6,4 +6,3 @@ class CLDecoy(SubclassBaseFile):
     ResourceType = 0xB0B348BC
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

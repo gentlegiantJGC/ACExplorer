@@ -6,4 +6,3 @@ class FocusCamera(SubclassBaseFile):
     ResourceType = 0xA43A9F0E
     ParentResourceType = _PointOfInterestCamera.ResourceType
     parent: _PointOfInterestCamera
-

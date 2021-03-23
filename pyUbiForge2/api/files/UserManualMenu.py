@@ -6,4 +6,3 @@ class UserManualMenu(SubclassBaseFile):
     ResourceType = 0x5BE664A7
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

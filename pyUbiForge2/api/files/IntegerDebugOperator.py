@@ -6,4 +6,3 @@ class IntegerDebugOperator(SubclassBaseFile):
     ResourceType = 0x60062CA8
     ParentResourceType = _DebugOperator.ResourceType
     parent: _DebugOperator
-

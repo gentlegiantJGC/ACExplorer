@@ -6,4 +6,3 @@ class HumanLedgeData(SubclassBaseFile):
     ResourceType = 0x68FE5487
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

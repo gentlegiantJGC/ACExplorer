@@ -6,4 +6,3 @@ class YellMode(SubclassBaseFile):
     ResourceType = 0xC38D3622
     ParentResourceType = _ConfrontationMode.ResourceType
     parent: _ConfrontationMode
-

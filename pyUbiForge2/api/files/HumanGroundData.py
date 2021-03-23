@@ -6,4 +6,3 @@ class HumanGroundData(SubclassBaseFile):
     ResourceType = 0x62E58378
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

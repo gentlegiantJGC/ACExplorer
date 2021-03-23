@@ -6,4 +6,3 @@ class ActionItemSettingsLock(SubclassBaseFile):
     ResourceType = 0xC5B5B3C6
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

@@ -6,4 +6,3 @@ class AnimTrackQuatZFloat16(SubclassBaseFile):
     ResourceType = 0xDBDBFB88
     ParentResourceType = _AnimTrackQuaternion.ResourceType
     parent: _AnimTrackQuaternion
-

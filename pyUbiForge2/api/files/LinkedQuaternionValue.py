@@ -6,4 +6,3 @@ class LinkedQuaternionValue(SubclassBaseFile):
     ResourceType = 0xAAA9D298
     ParentResourceType = _LinkedValue.ResourceType
     parent: _LinkedValue
-

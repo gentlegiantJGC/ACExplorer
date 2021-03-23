@@ -6,4 +6,3 @@ class GcLAmbushWagon(SubclassBaseFile):
     ResourceType = 0xE31C3580
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

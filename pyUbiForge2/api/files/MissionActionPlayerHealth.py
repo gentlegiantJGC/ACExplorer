@@ -6,4 +6,3 @@ class MissionActionPlayerHealth(SubclassBaseFile):
     ResourceType = 0x874FB5A9
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

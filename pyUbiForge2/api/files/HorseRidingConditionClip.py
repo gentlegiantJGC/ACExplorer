@@ -6,4 +6,3 @@ class HorseRidingConditionClip(SubclassBaseFile):
     ResourceType = 0x9685040E
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

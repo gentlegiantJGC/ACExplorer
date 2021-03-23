@@ -6,4 +6,3 @@ class ThrowMoneyEvent(SubclassBaseFile):
     ResourceType = 0xDFD4F376
     ParentResourceType = _AIAnimationEvent.ResourceType
     parent: _AIAnimationEvent
-

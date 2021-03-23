@@ -6,4 +6,3 @@ class ActionTimeOfDay(SubclassBaseFile):
     ResourceType = 0x23DBD635
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

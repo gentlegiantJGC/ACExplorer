@@ -6,4 +6,3 @@ class VehicleEvent(SubclassBaseFile):
     ResourceType = 0xCDE6BD1C
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

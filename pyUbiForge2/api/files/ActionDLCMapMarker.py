@@ -6,4 +6,3 @@ class ActionDLCMapMarker(SubclassBaseFile):
     ResourceType = 0x7213EE54
     ParentResourceType = _ActionMapMarker.ResourceType
     parent: _ActionMapMarker
-

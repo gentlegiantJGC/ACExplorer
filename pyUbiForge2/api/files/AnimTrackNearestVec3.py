@@ -6,4 +6,3 @@ class AnimTrackNearestVec3(SubclassBaseFile):
     ResourceType = 0x883CF3F3
     ParentResourceType = _AnimTrackVec3.ResourceType
     parent: _AnimTrackVec3
-

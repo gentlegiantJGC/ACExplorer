@@ -6,4 +6,3 @@ class ActionChangeWorld(SubclassBaseFile):
     ResourceType = 0x6D922078
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

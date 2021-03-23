@@ -6,4 +6,3 @@ class AlwaysActiveCameraActivator(SubclassBaseFile):
     ResourceType = 0x7DFBC960
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

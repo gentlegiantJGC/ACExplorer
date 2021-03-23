@@ -6,4 +6,3 @@ class EndLoadingEvent(SubclassBaseFile):
     ResourceType = 0x53DDEA6D
     ParentResourceType = _LoadingEvent.ResourceType
     parent: _LoadingEvent
-

@@ -6,4 +6,3 @@ class OperatorDeBiasFloat(SubclassBaseFile):
     ResourceType = 0x2B203396
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

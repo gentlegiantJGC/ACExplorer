@@ -6,4 +6,3 @@ class MissionActionPlayerMoney(SubclassBaseFile):
     ResourceType = 0x4B0EE402
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

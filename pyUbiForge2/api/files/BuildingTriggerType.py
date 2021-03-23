@@ -6,4 +6,3 @@ class BuildingTriggerType(SubclassBaseFile):
     ResourceType = 0x88A7457D
     ParentResourceType = _TriggerType.ResourceType
     parent: _TriggerType
-

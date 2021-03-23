@@ -6,4 +6,3 @@ class CrowdRegion(SubclassBaseFile):
     ResourceType = 0x352B704E
     ParentResourceType = _RegionCellData.ResourceType
     parent: _RegionCellData
-

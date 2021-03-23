@@ -6,4 +6,3 @@ class MapMarkerEvent(SubclassBaseFile):
     ResourceType = 0x03D30D6C
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

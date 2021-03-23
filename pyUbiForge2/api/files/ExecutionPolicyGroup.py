@@ -6,4 +6,3 @@ class ExecutionPolicyGroup(SubclassBaseFile):
     ResourceType = 0x71033E8A
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

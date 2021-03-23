@@ -6,4 +6,3 @@ class LanguageCondition(SubclassBaseFile):
     ResourceType = 0x53E62540
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

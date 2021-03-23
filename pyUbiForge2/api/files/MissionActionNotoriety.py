@@ -6,4 +6,3 @@ class MissionActionNotoriety(SubclassBaseFile):
     ResourceType = 0x168F1762
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

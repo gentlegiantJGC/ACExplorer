@@ -6,4 +6,3 @@ class SoundSettings(SubclassBaseFile):
     ResourceType = 0xD937E964
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

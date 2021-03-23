@@ -6,4 +6,3 @@ class TrajectoryModifier(SubclassBaseFile):
     ResourceType = 0x3C7D852C
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

@@ -6,4 +6,3 @@ class GroupHiredUIEvent(SubclassBaseFile):
     ResourceType = 0xE69B401C
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

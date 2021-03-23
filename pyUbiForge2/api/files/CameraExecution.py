@@ -6,4 +6,3 @@ class CameraExecution(SubclassBaseFile):
     ResourceType = 0x1A9A18CF
     ParentResourceType = _IExecution.ResourceType
     parent: _IExecution
-

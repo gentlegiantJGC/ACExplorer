@@ -6,4 +6,3 @@ class CSrvBehaviorInteraction(SubclassBaseFile):
     ResourceType = 0xD9BE9799
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

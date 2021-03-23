@@ -6,4 +6,3 @@ class UIEvent(SubclassBaseFile):
     ResourceType = 0xF89B9074
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

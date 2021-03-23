@@ -6,4 +6,3 @@ class HumanInAirData(SubclassBaseFile):
     ResourceType = 0x9EDC74AC
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

@@ -6,4 +6,3 @@ class OddZoneComponent(SubclassBaseFile):
     ResourceType = 0x60651D59
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class CrowdFractionMembers(SubclassBaseFile):
     ResourceType = 0x7C766DF8
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

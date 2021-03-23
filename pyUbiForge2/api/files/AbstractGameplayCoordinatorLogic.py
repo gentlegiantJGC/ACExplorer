@@ -6,4 +6,3 @@ class AbstractGameplayCoordinatorLogic(SubclassBaseFile):
     ResourceType = 0xDF55BF09
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

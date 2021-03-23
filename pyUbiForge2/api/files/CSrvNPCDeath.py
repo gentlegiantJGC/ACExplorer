@@ -6,4 +6,3 @@ class CSrvNPCDeath(SubclassBaseFile):
     ResourceType = 0xDADBBB2D
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

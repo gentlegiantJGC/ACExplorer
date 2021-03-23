@@ -6,4 +6,3 @@ class PlayerAdjacencyGroupManipulationEvent(SubclassBaseFile):
     ResourceType = 0xA636C3C6
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class MissionActionLGSConfigure(SubclassBaseFile):
     ResourceType = 0x2B667A23
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

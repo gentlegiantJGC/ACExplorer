@@ -6,4 +6,3 @@ class ProgressionDampingMethod(SubclassBaseFile):
     ResourceType = 0x44759DE4
     ParentResourceType = _DampingMethod.ResourceType
     parent: _DampingMethod
-

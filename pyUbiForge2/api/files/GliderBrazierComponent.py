@@ -6,4 +6,3 @@ class GliderBrazierComponent(SubclassBaseFile):
     ResourceType = 0x68C676F2
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

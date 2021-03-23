@@ -6,4 +6,3 @@ class AISerializedManager(SubclassBaseFile):
     ResourceType = 0x0AC71715
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

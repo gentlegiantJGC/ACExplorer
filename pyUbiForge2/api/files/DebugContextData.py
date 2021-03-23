@@ -6,4 +6,3 @@ class DebugContextData(SubclassBaseFile):
     ResourceType = 0xC9D9191E
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

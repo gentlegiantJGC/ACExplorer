@@ -6,4 +6,3 @@ class WorldAmbiance(SubclassBaseFile):
     ResourceType = 0x21C2D472
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

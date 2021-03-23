@@ -6,4 +6,3 @@ class MissionActionActivateEntity(SubclassBaseFile):
     ResourceType = 0x6D948A6B
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

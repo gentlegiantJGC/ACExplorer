@@ -6,4 +6,3 @@ class CLConflict(SubclassBaseFile):
     ResourceType = 0x7F8F0456
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

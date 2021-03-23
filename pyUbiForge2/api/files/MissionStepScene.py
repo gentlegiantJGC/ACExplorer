@@ -6,4 +6,3 @@ class MissionStepScene(SubclassBaseFile):
     ResourceType = 0xB8F99093
     ParentResourceType = _MissionStepGameplay.ResourceType
     parent: _MissionStepGameplay
-

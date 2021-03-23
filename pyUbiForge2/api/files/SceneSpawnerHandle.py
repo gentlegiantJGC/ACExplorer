@@ -6,4 +6,3 @@ class SceneSpawnerHandle(SubclassBaseFile):
     ResourceType = 0x9891626B
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class CharacterTask(SubclassBaseFile):
     ResourceType = 0x47F3FD8A
     ParentResourceType = _AITask.ResourceType
     parent: _AITask
-

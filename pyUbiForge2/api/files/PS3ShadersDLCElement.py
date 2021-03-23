@@ -6,4 +6,3 @@ class PS3ShadersDLCElement(SubclassBaseFile):
     ResourceType = 0x24E6BB4B
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

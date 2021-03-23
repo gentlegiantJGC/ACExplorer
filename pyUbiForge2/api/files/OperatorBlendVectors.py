@@ -6,4 +6,3 @@ class OperatorBlendVectors(SubclassBaseFile):
     ResourceType = 0x52089548
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

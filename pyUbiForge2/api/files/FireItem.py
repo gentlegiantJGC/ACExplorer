@@ -6,4 +6,3 @@ class FireItem(SubclassBaseFile):
     ResourceType = 0x1DAB1CFE
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

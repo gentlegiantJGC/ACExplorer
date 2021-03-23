@@ -6,4 +6,3 @@ class FXPostEffectsOperator(SubclassBaseFile):
     ResourceType = 0x5F76AEC9
     ParentResourceType = _FXElementOperator.ResourceType
     parent: _FXElementOperator
-

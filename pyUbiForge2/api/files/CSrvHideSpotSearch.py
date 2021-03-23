@@ -6,4 +6,3 @@ class CSrvHideSpotSearch(SubclassBaseFile):
     ResourceType = 0x125ECE99
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

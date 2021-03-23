@@ -6,4 +6,3 @@ class VillaBuildingSettingUpdateEvent(SubclassBaseFile):
     ResourceType = 0xC0355209
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

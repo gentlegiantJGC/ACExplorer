@@ -6,4 +6,3 @@ class SurrenderMode(SubclassBaseFile):
     ResourceType = 0x32D45115
     ParentResourceType = _SelfPreservationMode.ResourceType
     parent: _SelfPreservationMode
-

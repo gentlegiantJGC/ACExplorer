@@ -6,4 +6,3 @@ class CapeEquipMenuEnableAction(SubclassBaseFile):
     ResourceType = 0x20D010F3
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

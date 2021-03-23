@@ -6,4 +6,3 @@ class ZoneList(SubclassBaseFile):
     ResourceType = 0x7AA81246
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

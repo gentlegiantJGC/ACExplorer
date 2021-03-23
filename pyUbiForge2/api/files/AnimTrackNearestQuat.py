@@ -6,4 +6,3 @@ class AnimTrackNearestQuat(SubclassBaseFile):
     ResourceType = 0xD343DE8B
     ParentResourceType = _AnimTrackQuat.ResourceType
     parent: _AnimTrackQuat
-

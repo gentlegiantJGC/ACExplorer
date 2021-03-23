@@ -6,4 +6,3 @@ class AIAnimationEvent(SubclassBaseFile):
     ResourceType = 0xF9BFCB7C
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

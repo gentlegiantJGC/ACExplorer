@@ -6,4 +6,3 @@ class GcLBourgeois(SubclassBaseFile):
     ResourceType = 0x6AD995CE
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

@@ -6,4 +6,3 @@ class LinkedIntegerValue(SubclassBaseFile):
     ResourceType = 0x89E1EB18
     ParentResourceType = _LinkedValue.ResourceType
     parent: _LinkedValue
-

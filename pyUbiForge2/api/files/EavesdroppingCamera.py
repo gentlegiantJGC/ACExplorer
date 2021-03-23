@@ -6,4 +6,3 @@ class EavesdroppingCamera(SubclassBaseFile):
     ResourceType = 0xDD1C1F11
     ParentResourceType = _FirstPersonCamera.ResourceType
     parent: _FirstPersonCamera
-

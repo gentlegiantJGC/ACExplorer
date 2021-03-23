@@ -6,4 +6,3 @@ class CameraTransformableSubObject(SubclassBaseFile):
     ResourceType = 0xBFE8C722
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

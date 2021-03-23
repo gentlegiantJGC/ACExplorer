@@ -6,4 +6,3 @@ class MissionContext(SubclassBaseFile):
     ResourceType = 0x414FF9F7
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

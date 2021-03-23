@@ -6,4 +6,3 @@ class MemoryInfo(SubclassBaseFile):
     ResourceType = 0x50FDC6EA
     ParentResourceType = _UiInfoRepositoryEntry.ResourceType
     parent: _UiInfoRepositoryEntry
-

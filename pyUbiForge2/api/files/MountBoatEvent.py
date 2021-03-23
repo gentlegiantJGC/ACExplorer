@@ -6,4 +6,3 @@ class MountBoatEvent(SubclassBaseFile):
     ResourceType = 0x3702DC90
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

@@ -6,4 +6,3 @@ class MenuManagerDLCElement(SubclassBaseFile):
     ResourceType = 0xD3DCB027
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

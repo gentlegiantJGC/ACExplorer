@@ -6,4 +6,3 @@ class GuidanceZoneCapsule(SubclassBaseFile):
     ResourceType = 0x962AC98F
     ParentResourceType = _GuidanceZone.ResourceType
     parent: _GuidanceZone
-

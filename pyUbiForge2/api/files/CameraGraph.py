@@ -6,4 +6,3 @@ class CameraGraph(SubclassBaseFile):
     ResourceType = 0x99D6A958
     ParentResourceType = _Graph.ResourceType
     parent: _Graph
-

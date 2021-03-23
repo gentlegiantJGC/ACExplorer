@@ -6,4 +6,3 @@ class BeginScriptedSoundEvent(SubclassBaseFile):
     ResourceType = 0x0248F178
     ParentResourceType = _ScriptedSoundEvent.ResourceType
     parent: _ScriptedSoundEvent
-

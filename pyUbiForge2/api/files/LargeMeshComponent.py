@@ -6,4 +6,3 @@ class LargeMeshComponent(SubclassBaseFile):
     ResourceType = 0x7E0DCA4C
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

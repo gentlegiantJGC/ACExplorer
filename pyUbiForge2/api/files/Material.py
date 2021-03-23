@@ -6,4 +6,3 @@ class Material(SubclassBaseFile):
     ResourceType = 0x85C817C3
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class FeatherDistrictInfo(SubclassBaseFile):
     ResourceType = 0x39C328FA
     ParentResourceType = _CollectibleDistrictInfo.ResourceType
     parent: _CollectibleDistrictInfo
-

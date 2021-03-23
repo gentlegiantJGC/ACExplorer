@@ -6,4 +6,3 @@ class HudMiniMap(SubclassBaseFile):
     ResourceType = 0xBED8093E
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

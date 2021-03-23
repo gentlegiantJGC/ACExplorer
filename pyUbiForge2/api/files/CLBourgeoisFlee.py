@@ -6,4 +6,3 @@ class CLBourgeoisFlee(SubclassBaseFile):
     ResourceType = 0x0B598D11
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

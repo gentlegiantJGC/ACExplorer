@@ -6,4 +6,3 @@ class LightingStack(SubclassBaseFile):
     ResourceType = 0xCCBF7D14
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class HudMissionState(SubclassBaseFile):
     ResourceType = 0x07F6E581
     ParentResourceType = _HudItem.ResourceType
     parent: _HudItem
-

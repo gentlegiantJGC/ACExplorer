@@ -6,4 +6,3 @@ class ActionPSPItemsUpdate(SubclassBaseFile):
     ResourceType = 0x0CA3D982
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

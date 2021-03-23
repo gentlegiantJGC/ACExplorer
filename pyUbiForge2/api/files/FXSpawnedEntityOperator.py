@@ -6,4 +6,3 @@ class FXSpawnedEntityOperator(SubclassBaseFile):
     ResourceType = 0xB3BACA19
     ParentResourceType = _FXElementOperator.ResourceType
     parent: _FXElementOperator
-

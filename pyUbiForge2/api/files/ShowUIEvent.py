@@ -6,4 +6,3 @@ class ShowUIEvent(SubclassBaseFile):
     ResourceType = 0x0853D7BB
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

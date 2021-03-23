@@ -6,4 +6,3 @@ class HorseHitchActorGroundData(SubclassBaseFile):
     ResourceType = 0x45705E43
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

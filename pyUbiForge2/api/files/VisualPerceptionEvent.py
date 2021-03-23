@@ -6,4 +6,3 @@ class VisualPerceptionEvent(SubclassBaseFile):
     ResourceType = 0x61CB1693
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

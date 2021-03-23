@@ -6,4 +6,3 @@ class CounterStrongResponseEvent(SubclassBaseFile):
     ResourceType = 0x4B4298FF
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class FightStrategyAbortEvent(SubclassBaseFile):
     ResourceType = 0xA98E62F3
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

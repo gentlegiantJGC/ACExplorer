@@ -6,4 +6,3 @@ class GlowEffectSettings(SubclassBaseFile):
     ResourceType = 0x93DDEAC0
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

@@ -6,4 +6,3 @@ class PauseMenuComponent(SubclassBaseFile):
     ResourceType = 0xC8826E93
     ParentResourceType = _FireItemComponent.ResourceType
     parent: _FireItemComponent
-

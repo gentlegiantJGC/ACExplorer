@@ -6,4 +6,3 @@ class BuildingLevelMaxReached(SubclassBaseFile):
     ResourceType = 0x29A18CCB
     ParentResourceType = _BuildingCriteria.ResourceType
     parent: _BuildingCriteria
-

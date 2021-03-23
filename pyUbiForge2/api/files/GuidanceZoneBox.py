@@ -6,4 +6,3 @@ class GuidanceZoneBox(SubclassBaseFile):
     ResourceType = 0x721E514F
     ParentResourceType = _GuidanceZone.ResourceType
     parent: _GuidanceZone
-

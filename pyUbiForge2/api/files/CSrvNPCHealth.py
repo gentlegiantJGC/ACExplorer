@@ -6,4 +6,3 @@ class CSrvNPCHealth(SubclassBaseFile):
     ResourceType = 0x57EEEEC7
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

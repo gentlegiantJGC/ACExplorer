@@ -6,4 +6,3 @@ class VillaContextualAFSClip(SubclassBaseFile):
     ResourceType = 0x31B27B25
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

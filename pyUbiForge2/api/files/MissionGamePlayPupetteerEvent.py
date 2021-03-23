@@ -6,4 +6,3 @@ class MissionGamePlayPupetteerEvent(SubclassBaseFile):
     ResourceType = 0xE5DFFD44
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

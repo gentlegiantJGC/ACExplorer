@@ -6,4 +6,3 @@ class AsymetricSpringDampingMethod(SubclassBaseFile):
     ResourceType = 0x8963016C
     ParentResourceType = _DampingMethod.ResourceType
     parent: _DampingMethod
-

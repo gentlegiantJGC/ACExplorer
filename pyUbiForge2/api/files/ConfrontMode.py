@@ -6,4 +6,3 @@ class ConfrontMode(SubclassBaseFile):
     ResourceType = 0xA4C8B831
     ParentResourceType = _ConfrontationMode.ResourceType
     parent: _ConfrontationMode
-

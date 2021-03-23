@@ -6,4 +6,3 @@ class OutOfBoundsSettings(SubclassBaseFile):
     ResourceType = 0x71CD9E46
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

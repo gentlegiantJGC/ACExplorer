@@ -6,4 +6,3 @@ class FXWorld(SubclassBaseFile):
     ResourceType = 0x67FEDCFD
     ParentResourceType = _FXElement.ResourceType
     parent: _FXElement
-

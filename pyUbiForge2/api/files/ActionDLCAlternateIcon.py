@@ -6,4 +6,3 @@ class ActionDLCAlternateIcon(SubclassBaseFile):
     ResourceType = 0x1574A5B9
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

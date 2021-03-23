@@ -6,4 +6,3 @@ class SpotLight(SubclassBaseFile):
     ResourceType = 0x80320FB8
     ParentResourceType = _Light.ResourceType
     parent: _Light
-

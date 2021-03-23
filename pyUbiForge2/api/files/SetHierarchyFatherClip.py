@@ -6,4 +6,3 @@ class SetHierarchyFatherClip(SubclassBaseFile):
     ResourceType = 0x4E6F39BB
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

@@ -6,4 +6,3 @@ class ShaderLODOperatorFloat(SubclassBaseFile):
     ResourceType = 0x7BEFECB5
     ParentResourceType = _ShaderLODOperator.ResourceType
     parent: _ShaderLODOperator
-

@@ -6,4 +6,3 @@ class CSrvSpeech(SubclassBaseFile):
     ResourceType = 0x80809FF8
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

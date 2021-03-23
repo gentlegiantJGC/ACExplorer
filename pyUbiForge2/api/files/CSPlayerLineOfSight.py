@@ -6,4 +6,3 @@ class CSPlayerLineOfSight(SubclassBaseFile):
     ResourceType = 0xE576690B
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

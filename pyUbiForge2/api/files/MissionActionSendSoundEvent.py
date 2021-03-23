@@ -6,4 +6,3 @@ class MissionActionSendSoundEvent(SubclassBaseFile):
     ResourceType = 0xDF63DD80
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

@@ -6,4 +6,3 @@ class WagonController(SubclassBaseFile):
     ResourceType = 0x185819ED
     ParentResourceType = _VehicleComponent.ResourceType
     parent: _VehicleComponent
-

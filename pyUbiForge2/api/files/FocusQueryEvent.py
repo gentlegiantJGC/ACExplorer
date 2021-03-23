@@ -6,4 +6,3 @@ class FocusQueryEvent(SubclassBaseFile):
     ResourceType = 0x6F81EE79
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

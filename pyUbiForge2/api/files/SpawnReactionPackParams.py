@@ -6,4 +6,3 @@ class SpawnReactionPackParams(SubclassBaseFile):
     ResourceType = 0x2A3C8822
     ParentResourceType = _SpawningSpecParams.ResourceType
     parent: _SpawningSpecParams
-

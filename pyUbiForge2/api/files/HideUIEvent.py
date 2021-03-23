@@ -6,4 +6,3 @@ class HideUIEvent(SubclassBaseFile):
     ResourceType = 0xD68D5781
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

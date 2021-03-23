@@ -6,4 +6,3 @@ class ProfileChangeEvent(SubclassBaseFile):
     ResourceType = 0xBB67ECC1
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

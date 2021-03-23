@@ -6,4 +6,3 @@ class VillaGlobalManagerDLCElement(SubclassBaseFile):
     ResourceType = 0xB16F7E09
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

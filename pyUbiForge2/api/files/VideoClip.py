@@ -6,4 +6,3 @@ class VideoClip(SubclassBaseFile):
     ResourceType = 0x3811E504
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

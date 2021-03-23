@@ -6,4 +6,3 @@ class SoundAmbienceSet(SubclassBaseFile):
     ResourceType = 0x3CFD0BBB
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class ActionPauseConditionTimer(SubclassBaseFile):
     ResourceType = 0x9DC79785
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

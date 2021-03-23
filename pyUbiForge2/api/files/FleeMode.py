@@ -6,4 +6,3 @@ class FleeMode(SubclassBaseFile):
     ResourceType = 0xD99163CF
     ParentResourceType = _SelfPreservationMode.ResourceType
     parent: _SelfPreservationMode
-

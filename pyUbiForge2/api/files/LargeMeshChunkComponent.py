@@ -6,4 +6,3 @@ class LargeMeshChunkComponent(SubclassBaseFile):
     ResourceType = 0x132FE22D
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

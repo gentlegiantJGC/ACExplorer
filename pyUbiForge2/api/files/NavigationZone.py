@@ -6,4 +6,3 @@ class NavigationZone(SubclassBaseFile):
     ResourceType = 0xD8388CF0
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

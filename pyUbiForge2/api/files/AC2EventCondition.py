@@ -6,4 +6,3 @@ class AC2EventCondition(SubclassBaseFile):
     ResourceType = 0x3B4CAA0D
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

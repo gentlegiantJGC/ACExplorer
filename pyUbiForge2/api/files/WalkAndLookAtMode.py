@@ -6,4 +6,3 @@ class WalkAndLookAtMode(SubclassBaseFile):
     ResourceType = 0xE8D48C34
     ParentResourceType = _CuriosityMode.ResourceType
     parent: _CuriosityMode
-

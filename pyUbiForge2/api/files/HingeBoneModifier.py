@@ -6,4 +6,3 @@ class HingeBoneModifier(SubclassBaseFile):
     ResourceType = 0x324796C7
     ParentResourceType = _BoneModifier.ResourceType
     parent: _BoneModifier
-

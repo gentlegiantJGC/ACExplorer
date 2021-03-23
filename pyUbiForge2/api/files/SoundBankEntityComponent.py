@@ -6,4 +6,3 @@ class SoundBankEntityComponent(SubclassBaseFile):
     ResourceType = 0xDAB4219F
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

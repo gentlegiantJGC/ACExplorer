@@ -6,4 +6,3 @@ class GroupTargetingCameraActivator(SubclassBaseFile):
     ResourceType = 0x53B8C257
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

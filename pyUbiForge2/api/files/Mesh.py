@@ -6,4 +6,3 @@ class Mesh(SubclassBaseFile):
     ResourceType = 0x415D9568
     ParentResourceType = _GraphicObject.ResourceType
     parent: _GraphicObject
-

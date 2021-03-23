@@ -6,4 +6,3 @@ class AdvancedQuery(SubclassBaseFile):
     ResourceType = 0xCFF910B7
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class UpdateMapFogEvent(SubclassBaseFile):
     ResourceType = 0xD3F6F33D
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

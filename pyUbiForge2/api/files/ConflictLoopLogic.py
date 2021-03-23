@@ -6,4 +6,3 @@ class ConflictLoopLogic(SubclassBaseFile):
     ResourceType = 0x280740E3
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

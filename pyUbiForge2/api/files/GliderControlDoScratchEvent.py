@@ -6,4 +6,3 @@ class GliderControlDoScratchEvent(SubclassBaseFile):
     ResourceType = 0xD5B572AF
     ParentResourceType = _GliderControlEvent.ResourceType
     parent: _GliderControlEvent
-

@@ -6,4 +6,3 @@ class ShadeConstantEntityVisualScaleFactor(SubclassBaseFile):
     ResourceType = 0xC284C764
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

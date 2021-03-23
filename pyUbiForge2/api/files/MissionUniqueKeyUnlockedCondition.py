@@ -6,4 +6,3 @@ class MissionUniqueKeyUnlockedCondition(SubclassBaseFile):
     ResourceType = 0x74A18E50
     ParentResourceType = _MissionCondition.ResourceType
     parent: _MissionCondition
-

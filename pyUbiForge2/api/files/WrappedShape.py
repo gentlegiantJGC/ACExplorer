@@ -6,4 +6,3 @@ class WrappedShape(SubclassBaseFile):
     ResourceType = 0x6796AA1A
     ParentResourceType = _ObjectShape.ResourceType
     parent: _ObjectShape
-

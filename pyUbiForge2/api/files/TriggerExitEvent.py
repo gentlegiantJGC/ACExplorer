@@ -6,4 +6,3 @@ class TriggerExitEvent(SubclassBaseFile):
     ResourceType = 0xD997BA8E
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

@@ -6,4 +6,3 @@ class InventoryDataItem(SubclassBaseFile):
     ResourceType = 0x54576542
     ParentResourceType = _EntityDataItem.ResourceType
     parent: _EntityDataItem
-

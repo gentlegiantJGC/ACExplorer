@@ -6,4 +6,3 @@ class MissionActionReset(SubclassBaseFile):
     ResourceType = 0x4009B158
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

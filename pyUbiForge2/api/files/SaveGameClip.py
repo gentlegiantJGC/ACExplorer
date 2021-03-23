@@ -6,4 +6,3 @@ class SaveGameClip(SubclassBaseFile):
     ResourceType = 0x8BBE3A06
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

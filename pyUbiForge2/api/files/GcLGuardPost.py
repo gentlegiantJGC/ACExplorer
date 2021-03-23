@@ -6,4 +6,3 @@ class GcLGuardPost(SubclassBaseFile):
     ResourceType = 0xF0B85884
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

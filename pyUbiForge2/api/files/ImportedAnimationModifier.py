@@ -6,4 +6,3 @@ class ImportedAnimationModifier(SubclassBaseFile):
     ResourceType = 0xC54DA4EE
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

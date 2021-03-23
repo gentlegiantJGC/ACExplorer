@@ -6,4 +6,3 @@ class FXClip(SubclassBaseFile):
     ResourceType = 0x4CF6A89D
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

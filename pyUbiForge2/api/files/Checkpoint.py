@@ -6,4 +6,3 @@ class Checkpoint(SubclassBaseFile):
     ResourceType = 0x405DF46E
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

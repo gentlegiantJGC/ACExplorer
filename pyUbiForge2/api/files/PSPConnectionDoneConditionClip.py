@@ -6,4 +6,3 @@ class PSPConnectionDoneConditionClip(SubclassBaseFile):
     ResourceType = 0x3D68B835
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

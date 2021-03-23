@@ -6,4 +6,3 @@ class FindCorpseMode(SubclassBaseFile):
     ResourceType = 0xFE5A4B51
     ParentResourceType = _ConfrontationMode.ResourceType
     parent: _ConfrontationMode
-

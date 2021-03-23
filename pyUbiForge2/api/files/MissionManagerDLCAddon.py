@@ -6,4 +6,3 @@ class MissionManagerDLCAddon(SubclassBaseFile):
     ResourceType = 0xC0548BC4
     ParentResourceType = _DLCAddon.ResourceType
     parent: _DLCAddon
-

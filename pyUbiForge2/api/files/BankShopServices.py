@@ -6,4 +6,3 @@ class BankShopServices(SubclassBaseFile):
     ResourceType = 0x8E07866C
     ParentResourceType = _AbstractShopServices.ResourceType
     parent: _AbstractShopServices
-

@@ -6,4 +6,3 @@ class OperatorModuloVector(SubclassBaseFile):
     ResourceType = 0xCE4FDF00
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class CLRest(SubclassBaseFile):
     ResourceType = 0xD96F3DDB
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

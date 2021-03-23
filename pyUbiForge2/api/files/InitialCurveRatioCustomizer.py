@@ -6,4 +6,3 @@ class InitialCurveRatioCustomizer(SubclassBaseFile):
     ResourceType = 0x9B1BAEBD
     ParentResourceType = _CameraCustomizer.ResourceType
     parent: _CameraCustomizer
-

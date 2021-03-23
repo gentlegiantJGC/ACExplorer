@@ -6,4 +6,3 @@ class FirstPersonCameraActivator(SubclassBaseFile):
     ResourceType = 0xA66B4B0C
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

@@ -6,4 +6,3 @@ class OperatorFloatSquareRoot(SubclassBaseFile):
     ResourceType = 0xF4D3248A
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

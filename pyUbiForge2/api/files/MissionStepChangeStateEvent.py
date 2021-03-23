@@ -6,4 +6,3 @@ class MissionStepChangeStateEvent(SubclassBaseFile):
     ResourceType = 0xA62612C5
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

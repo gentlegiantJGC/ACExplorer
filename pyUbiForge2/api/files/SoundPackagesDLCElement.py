@@ -6,4 +6,3 @@ class SoundPackagesDLCElement(SubclassBaseFile):
     ResourceType = 0xCD7927F7
     ParentResourceType = _ContentElement.ResourceType
     parent: _ContentElement
-

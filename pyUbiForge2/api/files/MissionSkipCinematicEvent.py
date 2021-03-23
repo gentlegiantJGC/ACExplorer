@@ -6,4 +6,3 @@ class MissionSkipCinematicEvent(SubclassBaseFile):
     ResourceType = 0x9997DCD3
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

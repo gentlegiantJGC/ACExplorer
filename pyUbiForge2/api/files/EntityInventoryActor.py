@@ -6,4 +6,3 @@ class EntityInventoryActor(SubclassBaseFile):
     ResourceType = 0xCB540239
     ParentResourceType = _EntityActor.ResourceType
     parent: _EntityActor
-

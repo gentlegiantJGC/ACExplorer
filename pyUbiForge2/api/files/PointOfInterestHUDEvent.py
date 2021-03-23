@@ -6,4 +6,3 @@ class PointOfInterestHUDEvent(SubclassBaseFile):
     ResourceType = 0xC8AE2F63
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

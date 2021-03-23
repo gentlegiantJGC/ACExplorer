@@ -6,4 +6,3 @@ class ObjectActorData(SubclassBaseFile):
     ResourceType = 0x4F454B7D
     ParentResourceType = _AIActorData.ResourceType
     parent: _AIActorData
-

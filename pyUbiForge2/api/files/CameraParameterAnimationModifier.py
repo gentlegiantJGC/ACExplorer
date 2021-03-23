@@ -6,4 +6,3 @@ class CameraParameterAnimationModifier(SubclassBaseFile):
     ResourceType = 0xFC598BA9
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

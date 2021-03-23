@@ -6,4 +6,3 @@ class FacialCustomActionUnit(SubclassBaseFile):
     ResourceType = 0x8804195C
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

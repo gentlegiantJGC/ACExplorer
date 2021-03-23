@@ -6,4 +6,3 @@ class GcLObjectCarrier(SubclassBaseFile):
     ResourceType = 0x840E8EE8
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

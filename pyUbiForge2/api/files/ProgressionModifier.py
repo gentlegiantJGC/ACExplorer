@@ -6,4 +6,3 @@ class ProgressionModifier(SubclassBaseFile):
     ResourceType = 0x6350F02C
     ParentResourceType = _CameraModifier.ResourceType
     parent: _CameraModifier
-

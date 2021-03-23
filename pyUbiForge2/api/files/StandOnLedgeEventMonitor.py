@@ -6,4 +6,3 @@ class StandOnLedgeEventMonitor(SubclassBaseFile):
     ResourceType = 0xEFC0C29E
     ParentResourceType = _TargetEventMonitor.ResourceType
     parent: _TargetEventMonitor
-

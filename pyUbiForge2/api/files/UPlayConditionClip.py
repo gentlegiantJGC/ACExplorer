@@ -6,4 +6,3 @@ class UPlayConditionClip(SubclassBaseFile):
     ResourceType = 0xC96A5477
     ParentResourceType = _ConditionClip.ResourceType
     parent: _ConditionClip
-

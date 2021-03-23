@@ -6,4 +6,3 @@ class HumanFXPack(SubclassBaseFile):
     ResourceType = 0xBA42B58E
     ParentResourceType = _FXPack.ResourceType
     parent: _FXPack
-

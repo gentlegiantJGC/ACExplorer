@@ -6,4 +6,3 @@ class SpatialTopology(SubclassBaseFile):
     ResourceType = 0x7456EEC9
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

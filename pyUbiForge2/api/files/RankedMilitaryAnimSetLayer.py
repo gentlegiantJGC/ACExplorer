@@ -6,4 +6,3 @@ class RankedMilitaryAnimSetLayer(SubclassBaseFile):
     ResourceType = 0x88842E70
     ParentResourceType = _AIAnimSetLayer.ResourceType
     parent: _AIAnimSetLayer
-

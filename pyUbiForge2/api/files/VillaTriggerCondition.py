@@ -6,4 +6,3 @@ class VillaTriggerCondition(SubclassBaseFile):
     ResourceType = 0xEED29252
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

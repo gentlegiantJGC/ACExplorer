@@ -6,4 +6,3 @@ class StatechartComponent(SubclassBaseFile):
     ResourceType = 0x0828393D
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

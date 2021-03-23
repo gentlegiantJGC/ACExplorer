@@ -6,4 +6,3 @@ class PlayerKillTargetWeaponCondition(SubclassBaseFile):
     ResourceType = 0x0529F53D
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

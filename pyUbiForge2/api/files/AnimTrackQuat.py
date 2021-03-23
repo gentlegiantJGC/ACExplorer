@@ -6,4 +6,3 @@ class AnimTrackQuat(SubclassBaseFile):
     ResourceType = 0x27014116
     ParentResourceType = _AnimTrackQuaternion.ResourceType
     parent: _AnimTrackQuaternion
-

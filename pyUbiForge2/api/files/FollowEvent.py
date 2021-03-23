@@ -6,4 +6,3 @@ class FollowEvent(SubclassBaseFile):
     ResourceType = 0x5FA94E03
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

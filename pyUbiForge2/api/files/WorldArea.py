@@ -6,4 +6,3 @@ class WorldArea(SubclassBaseFile):
     ResourceType = 0xC76018E2
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

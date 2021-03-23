@@ -6,4 +6,3 @@ class ContentPackage(SubclassBaseFile):
     ResourceType = 0x4DB4B1FE
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

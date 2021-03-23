@@ -6,4 +6,3 @@ class OperatorPointOnLines(SubclassBaseFile):
     ResourceType = 0x306CA167
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

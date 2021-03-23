@@ -6,4 +6,3 @@ class PlayerDataItem(SubclassBaseFile):
     ResourceType = 0x976076D9
     ParentResourceType = _EntityDataItem.ResourceType
     parent: _EntityDataItem
-

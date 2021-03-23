@@ -6,4 +6,3 @@ class CubeReflection(SubclassBaseFile):
     ResourceType = 0x324ADE83
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

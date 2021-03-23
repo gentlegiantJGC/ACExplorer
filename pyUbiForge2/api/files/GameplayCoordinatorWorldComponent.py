@@ -6,4 +6,3 @@ class GameplayCoordinatorWorldComponent(SubclassBaseFile):
     ResourceType = 0xEC7E0424
     ParentResourceType = _MandatoryWorldComponent.ResourceType
     parent: _MandatoryWorldComponent
-

@@ -6,4 +6,3 @@ class OperatorModuloFloat(SubclassBaseFile):
     ResourceType = 0x8873E1B7
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

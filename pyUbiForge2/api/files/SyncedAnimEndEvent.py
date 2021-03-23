@@ -6,4 +6,3 @@ class SyncedAnimEndEvent(SubclassBaseFile):
     ResourceType = 0xAC631AE8
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

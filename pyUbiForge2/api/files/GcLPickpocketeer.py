@@ -6,4 +6,3 @@ class GcLPickpocketeer(SubclassBaseFile):
     ResourceType = 0x2764F326
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

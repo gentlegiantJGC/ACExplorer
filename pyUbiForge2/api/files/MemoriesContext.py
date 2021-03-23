@@ -6,4 +6,3 @@ class MemoriesContext(SubclassBaseFile):
     ResourceType = 0xF55A5707
     ParentResourceType = _UiInfoContext.ResourceType
     parent: _UiInfoContext
-

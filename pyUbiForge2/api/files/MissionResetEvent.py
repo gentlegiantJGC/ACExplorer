@@ -6,4 +6,3 @@ class MissionResetEvent(SubclassBaseFile):
     ResourceType = 0xCEBAF67E
     ParentResourceType = _MissionEvent.ResourceType
     parent: _MissionEvent
-

@@ -6,4 +6,3 @@ class OperatorSaturateVector(SubclassBaseFile):
     ResourceType = 0x5D9618E9
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

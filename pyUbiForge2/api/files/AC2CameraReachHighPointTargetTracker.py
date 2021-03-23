@@ -6,4 +6,3 @@ class AC2CameraReachHighPointTargetTracker(SubclassBaseFile):
     ResourceType = 0x4A98B314
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

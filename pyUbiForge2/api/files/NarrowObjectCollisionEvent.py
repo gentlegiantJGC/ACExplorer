@@ -6,4 +6,3 @@ class NarrowObjectCollisionEvent(SubclassBaseFile):
     ResourceType = 0x76A1455F
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

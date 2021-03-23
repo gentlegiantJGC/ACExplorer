@@ -6,4 +6,3 @@ class MapMarkerRevertToKeyEntityEvent(SubclassBaseFile):
     ResourceType = 0x272BD565
     ParentResourceType = _MapMarkerEvent.ResourceType
     parent: _MapMarkerEvent
-

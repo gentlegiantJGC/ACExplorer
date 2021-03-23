@@ -6,4 +6,3 @@ class TimePoint(SubclassBaseFile):
     ResourceType = 0x040D27B5
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

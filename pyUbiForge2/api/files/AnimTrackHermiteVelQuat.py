@@ -6,4 +6,3 @@ class AnimTrackHermiteVelQuat(SubclassBaseFile):
     ResourceType = 0x42F0CF8E
     ParentResourceType = _AnimTrackQuat.ResourceType
     parent: _AnimTrackQuat
-

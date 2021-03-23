@@ -6,4 +6,3 @@ class LGSSolvedMissionAction(SubclassBaseFile):
     ResourceType = 0xE4BABE4E
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

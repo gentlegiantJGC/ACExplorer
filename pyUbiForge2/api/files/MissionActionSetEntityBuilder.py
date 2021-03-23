@@ -6,4 +6,3 @@ class MissionActionSetEntityBuilder(SubclassBaseFile):
     ResourceType = 0x2AAB3307
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

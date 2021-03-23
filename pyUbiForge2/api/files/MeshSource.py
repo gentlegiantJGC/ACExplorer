@@ -6,4 +6,3 @@ class MeshSource(SubclassBaseFile):
     ResourceType = 0xED586F9A
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

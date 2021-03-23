@@ -6,4 +6,3 @@ class PlayerTakeDamageCondition(SubclassBaseFile):
     ResourceType = 0x5D5D9F44
     ParentResourceType = _AICondition.ResourceType
     parent: _AICondition
-

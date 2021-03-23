@@ -6,4 +6,3 @@ class AnimusCameraActivator(SubclassBaseFile):
     ResourceType = 0x2A06F784
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

@@ -6,4 +6,3 @@ class MissionActionNavFlow(SubclassBaseFile):
     ResourceType = 0xF0645C83
     ParentResourceType = _MissionAction.ResourceType
     parent: _MissionAction
-

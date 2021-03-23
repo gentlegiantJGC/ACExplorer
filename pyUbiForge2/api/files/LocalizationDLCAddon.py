@@ -6,4 +6,3 @@ class LocalizationDLCAddon(SubclassBaseFile):
     ResourceType = 0xB05A1078
     ParentResourceType = _DLCAddon.ResourceType
     parent: _DLCAddon
-

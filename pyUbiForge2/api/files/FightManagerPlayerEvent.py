@@ -6,4 +6,3 @@ class FightManagerPlayerEvent(SubclassBaseFile):
     ResourceType = 0xDA38765E
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

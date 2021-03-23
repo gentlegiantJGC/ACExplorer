@@ -6,4 +6,3 @@ class AnimTrackValue(SubclassBaseFile):
     ResourceType = 0x67B17080
     ParentResourceType = _AnimTrack.ResourceType
     parent: _AnimTrack
-

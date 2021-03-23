@@ -6,4 +6,3 @@ class ContactPointEvent(SubclassBaseFile):
     ResourceType = 0x6C590196
     ParentResourceType = _CollisionEvent.ResourceType
     parent: _CollisionEvent
-

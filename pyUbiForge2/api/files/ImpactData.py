@@ -6,4 +6,3 @@ class ImpactData(SubclassBaseFile):
     ResourceType = 0x032F4C94
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

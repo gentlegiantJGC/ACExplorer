@@ -6,4 +6,3 @@ class CannonControlDoReloadEvent(SubclassBaseFile):
     ResourceType = 0xFBF99510
     ParentResourceType = _CannonControlDoEvent.ResourceType
     parent: _CannonControlDoEvent
-

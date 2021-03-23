@@ -6,4 +6,3 @@ class AmbientGridDebugComponent(SubclassBaseFile):
     ResourceType = 0x83A5B9ED
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

@@ -6,4 +6,3 @@ class CSPlayerFeedback(SubclassBaseFile):
     ResourceType = 0x56D5BE3F
     ParentResourceType = _CSAbstract.ResourceType
     parent: _CSAbstract
-

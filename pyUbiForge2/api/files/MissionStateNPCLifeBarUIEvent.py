@@ -6,4 +6,3 @@ class MissionStateNPCLifeBarUIEvent(SubclassBaseFile):
     ResourceType = 0xEA457D01
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

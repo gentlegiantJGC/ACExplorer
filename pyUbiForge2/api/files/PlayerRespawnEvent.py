@@ -6,4 +6,3 @@ class PlayerRespawnEvent(SubclassBaseFile):
     ResourceType = 0x073AD487
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

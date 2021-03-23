@@ -6,4 +6,3 @@ class CubeMapSource(SubclassBaseFile):
     ResourceType = 0xBABCE276
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

@@ -6,4 +6,3 @@ class DLCAddon(SubclassBaseFile):
     ResourceType = 0x14F43DD7
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

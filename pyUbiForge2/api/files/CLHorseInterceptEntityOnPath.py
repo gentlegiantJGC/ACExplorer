@@ -6,4 +6,3 @@ class CLHorseInterceptEntityOnPath(SubclassBaseFile):
     ResourceType = 0x9C5C2506
     ParentResourceType = _CLAbstract.ResourceType
     parent: _CLAbstract
-

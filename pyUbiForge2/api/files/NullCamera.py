@@ -6,4 +6,3 @@ class NullCamera(SubclassBaseFile):
     ResourceType = 0x9FED000A
     ParentResourceType = _Camera2.ResourceType
     parent: _Camera2
-

@@ -6,4 +6,3 @@ class OperatorArcCosFloat(SubclassBaseFile):
     ResourceType = 0x32069666
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

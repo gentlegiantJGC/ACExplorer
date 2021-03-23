@@ -6,4 +6,3 @@ class CSrvPickpocketBump(SubclassBaseFile):
     ResourceType = 0xC5F51B5E
     ParentResourceType = _CSrvAbstract.ResourceType
     parent: _CSrvAbstract
-

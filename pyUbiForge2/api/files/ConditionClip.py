@@ -6,4 +6,3 @@ class ConditionClip(SubclassBaseFile):
     ResourceType = 0xBA59E0EF
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

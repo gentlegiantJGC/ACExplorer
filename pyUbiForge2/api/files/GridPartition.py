@@ -6,4 +6,3 @@ class GridPartition(SubclassBaseFile):
     ResourceType = 0x0E2F4444
     ParentResourceType = _SpatialTopology.ResourceType
     parent: _SpatialTopology
-

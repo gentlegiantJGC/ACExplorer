@@ -6,4 +6,3 @@ class MultiReactionPack(SubclassBaseFile):
     ResourceType = 0x0B72B983
     ParentResourceType = _ReactionPack.ResourceType
     parent: _ReactionPack
-

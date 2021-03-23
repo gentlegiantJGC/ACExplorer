@@ -6,4 +6,3 @@ class CrowdDensityClip(SubclassBaseFile):
     ResourceType = 0xC265BD12
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

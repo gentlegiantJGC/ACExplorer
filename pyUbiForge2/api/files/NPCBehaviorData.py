@@ -6,4 +6,3 @@ class NPCBehaviorData(SubclassBaseFile):
     ResourceType = 0x81C08821
     ParentResourceType = _CharacterBehaviorData.ResourceType
     parent: _CharacterBehaviorData
-

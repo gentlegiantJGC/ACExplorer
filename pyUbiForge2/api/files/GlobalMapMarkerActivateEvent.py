@@ -6,4 +6,3 @@ class GlobalMapMarkerActivateEvent(SubclassBaseFile):
     ResourceType = 0x383A0927
     ParentResourceType = _UIEvent.ResourceType
     parent: _UIEvent
-

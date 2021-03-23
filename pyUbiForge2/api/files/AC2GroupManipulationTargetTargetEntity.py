@@ -6,4 +6,3 @@ class AC2GroupManipulationTargetTargetEntity(SubclassBaseFile):
     ResourceType = 0x43BFED6C
     ParentResourceType = _ITargetEntity.ResourceType
     parent: _ITargetEntity
-

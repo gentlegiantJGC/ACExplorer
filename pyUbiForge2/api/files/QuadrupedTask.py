@@ -6,4 +6,3 @@ class QuadrupedTask(SubclassBaseFile):
     ResourceType = 0x1FD9F38F
     ParentResourceType = _GlobalNavigationTask.ResourceType
     parent: _GlobalNavigationTask
-

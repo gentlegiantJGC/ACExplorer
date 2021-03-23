@@ -6,4 +6,3 @@ class FamilyTreeContext(SubclassBaseFile):
     ResourceType = 0x110D52BA
     ParentResourceType = _UiInfoContext.ResourceType
     parent: _UiInfoContext
-

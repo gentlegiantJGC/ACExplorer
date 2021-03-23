@@ -6,4 +6,3 @@ class RedBallManager(SubclassBaseFile):
     ResourceType = 0x0AB183B2
     ParentResourceType = _WorldComponent.ResourceType
     parent: _WorldComponent
-

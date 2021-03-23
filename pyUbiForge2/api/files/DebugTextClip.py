@@ -6,4 +6,3 @@ class DebugTextClip(SubclassBaseFile):
     ResourceType = 0x2DFC1877
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

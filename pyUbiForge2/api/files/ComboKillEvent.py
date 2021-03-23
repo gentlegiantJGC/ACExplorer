@@ -6,4 +6,3 @@ class ComboKillEvent(SubclassBaseFile):
     ResourceType = 0xB454191B
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

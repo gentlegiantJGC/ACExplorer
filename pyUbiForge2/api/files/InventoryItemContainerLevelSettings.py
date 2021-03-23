@@ -6,4 +6,3 @@ class InventoryItemContainerLevelSettings(SubclassBaseFile):
     ResourceType = 0x7F66DCB3
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class FireFontDescriptor(SubclassBaseFile):
     ResourceType = 0x58E38D86
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

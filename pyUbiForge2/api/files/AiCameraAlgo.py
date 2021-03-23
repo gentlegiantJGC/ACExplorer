@@ -6,4 +6,3 @@ class AiCameraAlgo(SubclassBaseFile):
     ResourceType = 0x201314A3
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

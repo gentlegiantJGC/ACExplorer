@@ -6,4 +6,3 @@ class ActionQuestItem(SubclassBaseFile):
     ResourceType = 0xD045DAE9
     ParentResourceType = _AIAction.ResourceType
     parent: _AIAction
-

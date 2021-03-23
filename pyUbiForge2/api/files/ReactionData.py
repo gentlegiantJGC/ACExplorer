@@ -6,4 +6,3 @@ class ReactionData(SubclassBaseFile):
     ResourceType = 0x14CC8B17
     ParentResourceType = _BaseReactionData.ResourceType
     parent: _BaseReactionData
-

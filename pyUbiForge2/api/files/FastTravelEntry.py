@@ -6,4 +6,3 @@ class FastTravelEntry(SubclassBaseFile):
     ResourceType = 0x9FF4770F
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

@@ -6,4 +6,3 @@ class IntegerToFloat(SubclassBaseFile):
     ResourceType = 0xE74A9CC1
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

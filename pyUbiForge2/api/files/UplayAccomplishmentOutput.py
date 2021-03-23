@@ -6,4 +6,3 @@ class UplayAccomplishmentOutput(SubclassBaseFile):
     ResourceType = 0x26DA75EF
     ParentResourceType = _AccomplishmentOutput.ResourceType
     parent: _AccomplishmentOutput
-

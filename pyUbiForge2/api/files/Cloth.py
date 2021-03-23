@@ -6,4 +6,3 @@ class Cloth(SubclassBaseFile):
     ResourceType = 0xE33044BA
     ParentResourceType = _SoftBody.ResourceType
     parent: _SoftBody
-

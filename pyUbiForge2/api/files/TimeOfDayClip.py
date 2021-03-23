@@ -6,4 +6,3 @@ class TimeOfDayClip(SubclassBaseFile):
     ResourceType = 0x63E55773
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

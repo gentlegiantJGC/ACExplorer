@@ -6,4 +6,3 @@ class CameraComponent(SubclassBaseFile):
     ResourceType = 0x51C46EA2
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

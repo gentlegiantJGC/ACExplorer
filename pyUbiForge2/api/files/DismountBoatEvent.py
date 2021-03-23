@@ -6,4 +6,3 @@ class DismountBoatEvent(SubclassBaseFile):
     ResourceType = 0x3F675D85
     ParentResourceType = _BoatEvent.ResourceType
     parent: _BoatEvent
-

@@ -6,4 +6,3 @@ class HumanClimbData(SubclassBaseFile):
     ResourceType = 0xA23B4E9A
     ParentResourceType = _ActorContextData.ResourceType
     parent: _ActorContextData
-

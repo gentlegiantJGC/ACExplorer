@@ -6,4 +6,3 @@ class AC2DesynchronizationCondition(SubclassBaseFile):
     ResourceType = 0x15F098EC
     ParentResourceType = _IRuleCondition.ResourceType
     parent: _IRuleCondition
-

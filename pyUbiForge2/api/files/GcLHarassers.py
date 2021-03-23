@@ -6,4 +6,3 @@ class GcLHarassers(SubclassBaseFile):
     ResourceType = 0xEE2B3494
     ParentResourceType = _GcLAbstract.ResourceType
     parent: _GcLAbstract
-

@@ -6,4 +6,3 @@ class UiInfoRepositoryEntry(SubclassBaseFile):
     ResourceType = 0xF1B07933
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

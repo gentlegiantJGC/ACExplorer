@@ -6,4 +6,3 @@ class TargetObject(SubclassBaseFile):
     ResourceType = 0x81A302B2
     ParentResourceType = _Target.ResourceType
     parent: _Target
-

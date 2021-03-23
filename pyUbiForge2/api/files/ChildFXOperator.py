@@ -6,4 +6,3 @@ class ChildFXOperator(SubclassBaseFile):
     ResourceType = 0xE63E194E
     ParentResourceType = _FXElementOperator.ResourceType
     parent: _FXElementOperator
-

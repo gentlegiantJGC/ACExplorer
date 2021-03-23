@@ -6,4 +6,3 @@ class CharacterBehavior(SubclassBaseFile):
     ResourceType = 0xF193915C
     ParentResourceType = _AIComponent.ResourceType
     parent: _AIComponent
-

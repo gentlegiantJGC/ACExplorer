@@ -6,4 +6,3 @@ class PlayFacialCustomActionEvent(SubclassBaseFile):
     ResourceType = 0x513BD524
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

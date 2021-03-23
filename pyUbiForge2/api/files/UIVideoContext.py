@@ -6,4 +6,3 @@ class UIVideoContext(SubclassBaseFile):
     ResourceType = 0xC76BA14F
     ParentResourceType = _UiInfoContext.ResourceType
     parent: _UiInfoContext
-

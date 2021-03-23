@@ -6,4 +6,3 @@ class ManualStartTrigger(SubclassBaseFile):
     ResourceType = 0xF633A53F
     ParentResourceType = _StartTrigger.ResourceType
     parent: _StartTrigger
-

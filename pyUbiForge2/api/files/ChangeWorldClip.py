@@ -6,4 +6,3 @@ class ChangeWorldClip(SubclassBaseFile):
     ResourceType = 0xB42B56FD
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

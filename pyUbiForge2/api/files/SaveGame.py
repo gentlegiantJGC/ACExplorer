@@ -6,4 +6,3 @@ class SaveGame(SubclassBaseFile):
     ResourceType = 0xBDBE3B52
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

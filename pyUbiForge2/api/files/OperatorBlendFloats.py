@@ -6,4 +6,3 @@ class OperatorBlendFloats(SubclassBaseFile):
     ResourceType = 0xEFD14B23
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

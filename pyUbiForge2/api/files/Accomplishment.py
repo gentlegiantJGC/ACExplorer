@@ -6,4 +6,3 @@ class Accomplishment(SubclassBaseFile):
     ResourceType = 0x60B663FB
     ParentResourceType = _ManagedObject.ResourceType
     parent: _ManagedObject
-

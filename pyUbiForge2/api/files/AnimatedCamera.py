@@ -6,4 +6,3 @@ class AnimatedCamera(SubclassBaseFile):
     ResourceType = 0x2E494526
     ParentResourceType = _Camera.ResourceType
     parent: _Camera
-

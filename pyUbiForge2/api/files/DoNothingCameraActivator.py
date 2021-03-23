@@ -6,4 +6,3 @@ class DoNothingCameraActivator(SubclassBaseFile):
     ResourceType = 0x489987F1
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

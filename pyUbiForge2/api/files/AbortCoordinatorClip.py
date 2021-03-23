@@ -6,4 +6,3 @@ class AbortCoordinatorClip(SubclassBaseFile):
     ResourceType = 0x01FAC597
     ParentResourceType = _Clip.ResourceType
     parent: _Clip
-

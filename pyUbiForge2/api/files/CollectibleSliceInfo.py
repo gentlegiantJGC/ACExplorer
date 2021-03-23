@@ -6,4 +6,3 @@ class CollectibleSliceInfo(SubclassBaseFile):
     ResourceType = 0x24375BD4
     ParentResourceType = _AdditionalSliceInfo.ResourceType
     parent: _AdditionalSliceInfo
-

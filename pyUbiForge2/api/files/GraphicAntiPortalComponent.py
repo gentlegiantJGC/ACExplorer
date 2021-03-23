@@ -6,4 +6,3 @@ class GraphicAntiPortalComponent(SubclassBaseFile):
     ResourceType = 0xC4F2A686
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

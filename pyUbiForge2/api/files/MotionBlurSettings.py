@@ -6,4 +6,3 @@ class MotionBlurSettings(SubclassBaseFile):
     ResourceType = 0xBBAFC1DB
     ParentResourceType = _PostEffect.ResourceType
     parent: _PostEffect
-

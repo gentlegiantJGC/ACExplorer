@@ -6,4 +6,3 @@ class DistanceSpringDampingMethod(SubclassBaseFile):
     ResourceType = 0x976D1B9B
     ParentResourceType = _SpringDampingMethod.ResourceType
     parent: _SpringDampingMethod
-

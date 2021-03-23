@@ -6,4 +6,3 @@ class LightingHairAnisotropic(SubclassBaseFile):
     ResourceType = 0x3D1CA8BD
     ParentResourceType = _LightingOperator.ResourceType
     parent: _LightingOperator
-

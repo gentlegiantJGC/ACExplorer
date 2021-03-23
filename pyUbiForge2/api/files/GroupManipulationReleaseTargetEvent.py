@@ -6,4 +6,3 @@ class GroupManipulationReleaseTargetEvent(SubclassBaseFile):
     ResourceType = 0xF86E79B8
     ParentResourceType = _Event.ResourceType
     parent: _Event
-

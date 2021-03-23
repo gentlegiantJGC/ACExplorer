@@ -6,4 +6,3 @@ class OperatorFloatNegate(SubclassBaseFile):
     ResourceType = 0xA4FB41FF
     ParentResourceType = _Operator.ResourceType
     parent: _Operator
-

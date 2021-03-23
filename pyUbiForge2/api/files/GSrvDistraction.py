@@ -6,4 +6,3 @@ class GSrvDistraction(SubclassBaseFile):
     ResourceType = 0xEB32BD83
     ParentResourceType = _Statechart.ResourceType
     parent: _Statechart
-

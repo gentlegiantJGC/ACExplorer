@@ -6,4 +6,3 @@ class PatrolPath(SubclassBaseFile):
     ResourceType = 0x6D29F95F
     ParentResourceType = _Component.ResourceType
     parent: _Component
-

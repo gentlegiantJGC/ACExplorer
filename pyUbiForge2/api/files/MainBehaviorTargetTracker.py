@@ -6,4 +6,3 @@ class MainBehaviorTargetTracker(SubclassBaseFile):
     ResourceType = 0x07894C47
     ParentResourceType = _ITargetTracker.ResourceType
     parent: _ITargetTracker
-

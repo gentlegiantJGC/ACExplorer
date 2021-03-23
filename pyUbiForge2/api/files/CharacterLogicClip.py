@@ -6,4 +6,3 @@ class CharacterLogicClip(SubclassBaseFile):
     ResourceType = 0x6FCD074A
     ParentResourceType = _MultiEntitiesClip.ResourceType
     parent: _MultiEntitiesClip
-

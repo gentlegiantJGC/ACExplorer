@@ -6,4 +6,3 @@ class HumanSpeedCameraActivator(SubclassBaseFile):
     ResourceType = 0xD2807C71
     ParentResourceType = _CameraActivator.ResourceType
     parent: _CameraActivator
-

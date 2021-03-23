@@ -6,4 +6,3 @@ class PrivilegesChangeEvent(SubclassBaseFile):
     ResourceType = 0xF4C1D362
     ParentResourceType = _Event.ResourceType
     parent: _Event
-
