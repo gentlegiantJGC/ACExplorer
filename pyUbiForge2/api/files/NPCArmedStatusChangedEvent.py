@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Event import Event as _Event
 
 
 class NPCArmedStatusChangedEvent(SubclassBaseFile):
     ResourceType = 0x3A6D529B
-    ParentResourceType = 0xFA6F25A3
+    ParentResourceType = _Event.ResourceType
+    parent: _Event
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ExtensionContextData import ExtensionContextData as _ExtensionContextData
 
 
 class HeadOrientationData(SubclassBaseFile):
     ResourceType = 0x88E66A2B
-    ParentResourceType = 0x2C1F68F9
+    ParentResourceType = _ExtensionContextData.ResourceType
+    parent: _ExtensionContextData
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Event import Event as _Event
 
 
 class DangerEvent(SubclassBaseFile):
     ResourceType = 0xAB86EE9A
-    ParentResourceType = 0xFA6F25A3
+    ParentResourceType = _Event.ResourceType
+    parent: _Event
+

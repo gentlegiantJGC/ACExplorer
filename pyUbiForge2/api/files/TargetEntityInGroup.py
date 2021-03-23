@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Target import Target as _Target
 
 
 class TargetEntityInGroup(SubclassBaseFile):
     ResourceType = 0x062FC835
-    ParentResourceType = 0x1AC52ADE
+    ParentResourceType = _Target.ResourceType
+    parent: _Target
+

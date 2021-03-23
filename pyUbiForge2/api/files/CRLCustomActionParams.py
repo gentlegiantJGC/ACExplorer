@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .PushConcurrentReactionParams import PushConcurrentReactionParams as _PushConcurrentReactionParams
 
 
 class CRLCustomActionParams(SubclassBaseFile):
     ResourceType = 0xD3B30B3D
-    ParentResourceType = 0x6EC67D59
+    ParentResourceType = _PushConcurrentReactionParams.ResourceType
+    parent: _PushConcurrentReactionParams
+

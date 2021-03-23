@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AccomplishmentEventMonitor import AccomplishmentEventMonitor as _AccomplishmentEventMonitor
 
 
 class AccomplishmentAdditionalDataCounterMonitor(SubclassBaseFile):
     ResourceType = 0x1DF2724B
-    ParentResourceType = 0xDE912BC9
+    ParentResourceType = _AccomplishmentEventMonitor.ResourceType
+    parent: _AccomplishmentEventMonitor
+

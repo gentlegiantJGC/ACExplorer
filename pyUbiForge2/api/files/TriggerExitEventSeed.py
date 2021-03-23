@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .TriggerEventSeed import TriggerEventSeed as _TriggerEventSeed
 
 
 class TriggerExitEventSeed(SubclassBaseFile):
     ResourceType = 0xE0F5805B
-    ParentResourceType = 0x5C1EE4A0
+    ParentResourceType = _TriggerEventSeed.ResourceType
+    parent: _TriggerEventSeed
+

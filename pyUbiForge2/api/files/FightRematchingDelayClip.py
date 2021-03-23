@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Clip import Clip as _Clip
 
 
 class FightRematchingDelayClip(SubclassBaseFile):
     ResourceType = 0x76D5186A
-    ParentResourceType = 0x0D12BB59
+    ParentResourceType = _Clip.ResourceType
+    parent: _Clip
+

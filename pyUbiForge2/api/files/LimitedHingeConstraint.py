@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .BaseHingeConstraint import BaseHingeConstraint as _BaseHingeConstraint
 
 
 class LimitedHingeConstraint(SubclassBaseFile):
     ResourceType = 0xE1DD46AF
-    ParentResourceType = 0xA423D3B5
+    ParentResourceType = _BaseHingeConstraint.ResourceType
+    parent: _BaseHingeConstraint
+

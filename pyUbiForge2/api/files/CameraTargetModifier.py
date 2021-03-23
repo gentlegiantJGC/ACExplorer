@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .CameraModifier import CameraModifier as _CameraModifier
 
 
 class CameraTargetModifier(SubclassBaseFile):
     ResourceType = 0xE8F43ADF
-    ParentResourceType = 0x26375B2A
+    ParentResourceType = _CameraModifier.ResourceType
+    parent: _CameraModifier
+

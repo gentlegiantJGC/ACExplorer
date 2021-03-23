@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .PolarCameraControl import PolarCameraControl as _PolarCameraControl
 
 
 class PadPolarCameraControl(SubclassBaseFile):
     ResourceType = 0x1B4871CA
-    ParentResourceType = 0x4AD57894
+    ParentResourceType = _PolarCameraControl.ResourceType
+    parent: _PolarCameraControl
+

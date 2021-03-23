@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .UiInfoRepositoryEntry import UiInfoRepositoryEntry as _UiInfoRepositoryEntry
 
 
 class UiInfoContext(SubclassBaseFile):
     ResourceType = 0x5A3FAE75
-    ParentResourceType = 0xF1B07933
+    ParentResourceType = _UiInfoRepositoryEntry.ResourceType
+    parent: _UiInfoRepositoryEntry
+

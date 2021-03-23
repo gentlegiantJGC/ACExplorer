@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .SelfPreservationMode import SelfPreservationMode as _SelfPreservationMode
 
 
 class SurrenderMode(SubclassBaseFile):
     ResourceType = 0x32D45115
-    ParentResourceType = 0x3FBC8C9D
+    ParentResourceType = _SelfPreservationMode.ResourceType
+    parent: _SelfPreservationMode
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ReferencingEvent import ReferencingEvent as _ReferencingEvent
 
 
 class ReferencingConstraintEvent(SubclassBaseFile):
     ResourceType = 0xA045E114
-    ParentResourceType = 0xCB9B3D2F
+    ParentResourceType = _ReferencingEvent.ResourceType
+    parent: _ReferencingEvent
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AIComponent import AIComponent as _AIComponent
 
 
 class CharacterBehavior(SubclassBaseFile):
     ResourceType = 0xF193915C
-    ParentResourceType = 0x33E86CF3
+    ParentResourceType = _AIComponent.ResourceType
+    parent: _AIComponent
+

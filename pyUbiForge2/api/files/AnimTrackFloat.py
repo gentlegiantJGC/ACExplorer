@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AnimTrackValue import AnimTrackValue as _AnimTrackValue
 
 
 class AnimTrackFloat(SubclassBaseFile):
     ResourceType = 0xB3637621
-    ParentResourceType = 0x67B17080
+    ParentResourceType = _AnimTrackValue.ResourceType
+    parent: _AnimTrackValue
+

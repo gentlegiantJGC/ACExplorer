@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ITargetEntity import ITargetEntity as _ITargetEntity
 
 
 class AC2GroupManipulationTargetTargetEntity(SubclassBaseFile):
     ResourceType = 0x43BFED6C
-    ParentResourceType = 0x699FF698
+    ParentResourceType = _ITargetEntity.ResourceType
+    parent: _ITargetEntity
+

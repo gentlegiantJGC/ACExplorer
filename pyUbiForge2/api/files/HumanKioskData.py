@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ActorContextData import ActorContextData as _ActorContextData
 
 
 class HumanKioskData(SubclassBaseFile):
     ResourceType = 0x71627BDB
-    ParentResourceType = 0xE00AE315
+    ParentResourceType = _ActorContextData.ResourceType
+    parent: _ActorContextData
+

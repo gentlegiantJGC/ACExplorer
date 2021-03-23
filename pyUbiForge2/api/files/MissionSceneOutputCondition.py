@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .MissionConstraintCondition import MissionConstraintCondition as _MissionConstraintCondition
 
 
 class MissionSceneOutputCondition(SubclassBaseFile):
     ResourceType = 0x6087DF35
-    ParentResourceType = 0xF5BC70FF
+    ParentResourceType = _MissionConstraintCondition.ResourceType
+    parent: _MissionConstraintCondition
+

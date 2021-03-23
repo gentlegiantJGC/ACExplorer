@@ -32,12 +32,8 @@ class BaseFile(ABC):
 
 class SubclassBaseFile(BaseFile, ABC):
     ParentResourceType: int = None
-    _parent: BaseFile
+    parent: BaseFile
 
     def __init__(self, file_id: int, file: FileDataWrapper):
         super().__init__(file_id, file)
-        self._parent = file.get_parser(self.ParentResourceType)(file_id, file)
-
-    @property
-    def parent(self) -> BaseFile:
-        return self._parent
+        self.parent = file.get_parser(self.ParentResourceType)(file_id, file)

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .OSrvAbstract import OSrvAbstract as _OSrvAbstract
 
 
 class OSrvLoot(SubclassBaseFile):
     ResourceType = 0x909EEC72
-    ParentResourceType = 0x401A58AF
+    ParentResourceType = _OSrvAbstract.ResourceType
+    parent: _OSrvAbstract
+

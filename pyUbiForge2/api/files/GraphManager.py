@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .UniverseComponent import UniverseComponent as _UniverseComponent
 
 
 class GraphManager(SubclassBaseFile):
     ResourceType = 0xFC1DA7EC
-    ParentResourceType = 0xEED18A51
+    ParentResourceType = _UniverseComponent.ResourceType
+    parent: _UniverseComponent
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .GameplayOutput import GameplayOutput as _GameplayOutput
 
 
 class GameplayCoordinatorOutput(SubclassBaseFile):
     ResourceType = 0x4FB33274
-    ParentResourceType = 0xE2CB024F
+    ParentResourceType = _GameplayOutput.ResourceType
+    parent: _GameplayOutput
+

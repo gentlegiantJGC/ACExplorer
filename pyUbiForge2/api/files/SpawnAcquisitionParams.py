@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .SpawnAbstractAcquisitionParams import SpawnAbstractAcquisitionParams as _SpawnAbstractAcquisitionParams
 
 
 class SpawnAcquisitionParams(SubclassBaseFile):
     ResourceType = 0x52F96969
-    ParentResourceType = 0xB906E397
+    ParentResourceType = _SpawnAbstractAcquisitionParams.ResourceType
+    parent: _SpawnAbstractAcquisitionParams
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .GcLAbstract import GcLAbstract as _GcLAbstract
 
 
 class GcLKillTarget(SubclassBaseFile):
     ResourceType = 0xE1DD3705
-    ParentResourceType = 0x7FE3107E
+    ParentResourceType = _GcLAbstract.ResourceType
+    parent: _GcLAbstract
+

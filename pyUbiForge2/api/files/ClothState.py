@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .SoftBodyState import SoftBodyState as _SoftBodyState
 
 
 class ClothState(SubclassBaseFile):
     ResourceType = 0x7D6B679F
-    ParentResourceType = 0xA83A3056
+    ParentResourceType = _SoftBodyState.ResourceType
+    parent: _SoftBodyState
+

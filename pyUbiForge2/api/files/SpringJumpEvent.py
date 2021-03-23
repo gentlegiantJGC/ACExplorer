@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Event import Event as _Event
 
 
 class SpringJumpEvent(SubclassBaseFile):
     ResourceType = 0x8E90E7BF
-    ParentResourceType = 0xFA6F25A3
+    ParentResourceType = _Event.ResourceType
+    parent: _Event
+

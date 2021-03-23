@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Component import Component as _Component
 
 
 class PuzzleElementActionsComponent_LGS(SubclassBaseFile):
     ResourceType = 0x16BFE5F7
-    ParentResourceType = 0xCB0F23F4
+    ParentResourceType = _Component.ResourceType
+    parent: _Component
+

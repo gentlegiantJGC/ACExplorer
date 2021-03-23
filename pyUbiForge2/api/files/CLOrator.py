@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .CLAbstract import CLAbstract as _CLAbstract
 
 
 class CLOrator(SubclassBaseFile):
     ResourceType = 0xB08B39EE
-    ParentResourceType = 0x47C0C658
+    ParentResourceType = _CLAbstract.ResourceType
+    parent: _CLAbstract
+

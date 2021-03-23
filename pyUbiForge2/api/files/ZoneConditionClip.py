@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ActionFilterConditionClip import ActionFilterConditionClip as _ActionFilterConditionClip
 
 
 class ZoneConditionClip(SubclassBaseFile):
     ResourceType = 0x1461226F
-    ParentResourceType = 0x6925E8FB
+    ParentResourceType = _ActionFilterConditionClip.ResourceType
+    parent: _ActionFilterConditionClip
+

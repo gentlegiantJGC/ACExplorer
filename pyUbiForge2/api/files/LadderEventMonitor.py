@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .TargetEventMonitor import TargetEventMonitor as _TargetEventMonitor
 
 
 class LadderEventMonitor(SubclassBaseFile):
     ResourceType = 0x442EBE3E
-    ParentResourceType = 0x79F2AEF4
+    ParentResourceType = _TargetEventMonitor.ResourceType
+    parent: _TargetEventMonitor
+

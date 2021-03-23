@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .GuidanceZone import GuidanceZone as _GuidanceZone
 
 
 class GuidanceZoneMesh(SubclassBaseFile):
     ResourceType = 0xC17A08FC
-    ParentResourceType = 0xA5C13BC2
+    ParentResourceType = _GuidanceZone.ResourceType
+    parent: _GuidanceZone
+

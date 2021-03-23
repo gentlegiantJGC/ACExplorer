@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .SoftBodyLODInstance import SoftBodyLODInstance as _SoftBodyLODInstance
 
 
 class ClothLODInstance(SubclassBaseFile):
     ResourceType = 0x8C655B8E
-    ParentResourceType = 0xC8429835
+    ParentResourceType = _SoftBodyLODInstance.ResourceType
+    parent: _SoftBodyLODInstance
+

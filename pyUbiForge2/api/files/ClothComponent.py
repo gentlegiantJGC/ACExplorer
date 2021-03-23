@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .SoftBodyComponent import SoftBodyComponent as _SoftBodyComponent
 
 
 class ClothComponent(SubclassBaseFile):
     ResourceType = 0x8321699E
-    ParentResourceType = 0xB48EBA69
+    ParentResourceType = _SoftBodyComponent.ResourceType
+    parent: _SoftBodyComponent
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AccomplishmentBracketMonitor import AccomplishmentBracketMonitor as _AccomplishmentBracketMonitor
 
 
 class AccomplishmentBracketTimedMonitor(SubclassBaseFile):
     ResourceType = 0xBC399355
-    ParentResourceType = 0x2B32338D
+    ParentResourceType = _AccomplishmentBracketMonitor.ResourceType
+    parent: _AccomplishmentBracketMonitor
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .LinkableInput import LinkableInput as _LinkableInput
 
 
 class VectorInput(SubclassBaseFile):
     ResourceType = 0x656931BC
-    ParentResourceType = 0xA42F1A65
+    ParentResourceType = _LinkableInput.ResourceType
+    parent: _LinkableInput
+

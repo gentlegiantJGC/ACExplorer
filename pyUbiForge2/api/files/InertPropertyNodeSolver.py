@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .PropertyPathNodeSolver import PropertyPathNodeSolver as _PropertyPathNodeSolver
 
 
 class InertPropertyNodeSolver(SubclassBaseFile):
     ResourceType = 0x623476CE
-    ParentResourceType = 0x45CABF31
+    ParentResourceType = _PropertyPathNodeSolver.ResourceType
+    parent: _PropertyPathNodeSolver
+

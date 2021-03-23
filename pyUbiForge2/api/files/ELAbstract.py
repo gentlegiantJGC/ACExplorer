@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .EntityAIProcess import EntityAIProcess as _EntityAIProcess
 
 
 class ELAbstract(SubclassBaseFile):
     ResourceType = 0x4ADEB61F
-    ParentResourceType = 0xC90FE3E6
+    ParentResourceType = _EntityAIProcess.ResourceType
+    parent: _EntityAIProcess
+

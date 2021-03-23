@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .PostEffect import PostEffect as _PostEffect
 
 
 class MotionBlurSettings(SubclassBaseFile):
     ResourceType = 0xBBAFC1DB
-    ParentResourceType = 0xE3B2F767
+    ParentResourceType = _PostEffect.ResourceType
+    parent: _PostEffect
+

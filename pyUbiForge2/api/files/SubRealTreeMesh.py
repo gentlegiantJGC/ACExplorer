@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ManagedObject import ManagedObject as _ManagedObject
 
 
 class SubRealTreeMesh(SubclassBaseFile):
     ResourceType = 0xFE8CCC18
-    ParentResourceType = 0xBB96607D
+    ParentResourceType = _ManagedObject.ResourceType
+    parent: _ManagedObject
+

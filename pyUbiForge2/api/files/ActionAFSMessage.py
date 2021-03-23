@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AIAction import AIAction as _AIAction
 
 
 class ActionAFSMessage(SubclassBaseFile):
     ResourceType = 0xFE1A95A0
-    ParentResourceType = 0xA02405B7
+    ParentResourceType = _AIAction.ResourceType
+    parent: _AIAction
+

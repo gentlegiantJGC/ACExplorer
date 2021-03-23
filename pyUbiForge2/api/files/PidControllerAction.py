@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .UnaryAction import UnaryAction as _UnaryAction
 
 
 class PidControllerAction(SubclassBaseFile):
     ResourceType = 0xDFE31AFD
-    ParentResourceType = 0x807F4ABC
+    ParentResourceType = _UnaryAction.ResourceType
+    parent: _UnaryAction
+

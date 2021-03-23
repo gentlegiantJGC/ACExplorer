@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Clip import Clip as _Clip
 
 
 class HideHUDClip(SubclassBaseFile):
     ResourceType = 0x19F8201D
-    ParentResourceType = 0x0D12BB59
+    ParentResourceType = _Clip.ResourceType
+    parent: _Clip
+

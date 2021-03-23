@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .FireItemComponent import FireItemComponent as _FireItemComponent
 
 
 class SubtitleDisplayComponent(SubclassBaseFile):
     ResourceType = 0x2A6970AE
-    ParentResourceType = 0x44CB8949
+    ParentResourceType = _FireItemComponent.ResourceType
+    parent: _FireItemComponent
+

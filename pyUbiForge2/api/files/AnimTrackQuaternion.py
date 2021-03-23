@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AnimTrackValue import AnimTrackValue as _AnimTrackValue
 
 
 class AnimTrackQuaternion(SubclassBaseFile):
     ResourceType = 0x8BDB6032
-    ParentResourceType = 0x67B17080
+    ParentResourceType = _AnimTrackValue.ResourceType
+    parent: _AnimTrackValue
+

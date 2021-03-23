@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .SoundLogicEvent import SoundLogicEvent as _SoundLogicEvent
 
 
 class ScriptedSoundEvent(SubclassBaseFile):
     ResourceType = 0xD470E95E
-    ParentResourceType = 0x65BA85CD
+    ParentResourceType = _SoundLogicEvent.ResourceType
+    parent: _SoundLogicEvent
+

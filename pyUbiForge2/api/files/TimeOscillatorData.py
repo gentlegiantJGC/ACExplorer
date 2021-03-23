@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ICustomShaderSetup import ICustomShaderSetup as _ICustomShaderSetup
 
 
 class TimeOscillatorData(SubclassBaseFile):
     ResourceType = 0xECE5D96C
-    ParentResourceType = 0x74A59C1F
+    ParentResourceType = _ICustomShaderSetup.ResourceType
+    parent: _ICustomShaderSetup
+

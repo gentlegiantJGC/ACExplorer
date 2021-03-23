@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AnimTrackVec3 import AnimTrackVec3 as _AnimTrackVec3
 
 
 class AnimTrackCardinalVec3(SubclassBaseFile):
     ResourceType = 0xC15FCF55
-    ParentResourceType = 0x7C7E6C6E
+    ParentResourceType = _AnimTrackVec3.ResourceType
+    parent: _AnimTrackVec3
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .MapMarkerActivateEvent import MapMarkerActivateEvent as _MapMarkerActivateEvent
 
 
 class MapMarkerActivateZoneEvent(SubclassBaseFile):
     ResourceType = 0x9C44F137
-    ParentResourceType = 0xC7F9DFC8
+    ParentResourceType = _MapMarkerActivateEvent.ResourceType
+    parent: _MapMarkerActivateEvent
+

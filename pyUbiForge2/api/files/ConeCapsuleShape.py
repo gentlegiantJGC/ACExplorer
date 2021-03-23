@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ObjectShape import ObjectShape as _ObjectShape
 
 
 class ConeCapsuleShape(SubclassBaseFile):
     ResourceType = 0x6AAD6AFA
-    ParentResourceType = 0x5A5D1303
+    ParentResourceType = _ObjectShape.ResourceType
+    parent: _ObjectShape
+

@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .TriggerEventSeed import TriggerEventSeed as _TriggerEventSeed
 
 
 class TriggerEnterEventSeed(SubclassBaseFile):
     ResourceType = 0xFDFEFA9F
-    ParentResourceType = 0x5C1EE4A0
+    ParentResourceType = _TriggerEventSeed.ResourceType
+    parent: _TriggerEventSeed
+

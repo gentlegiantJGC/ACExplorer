@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .InsertCamera import InsertCamera as _InsertCamera
 
 
 class FightSpecialMovesCamera(SubclassBaseFile):
     ResourceType = 0xFF2C552A
-    ParentResourceType = 0xA4172405
+    ParentResourceType = _InsertCamera.ResourceType
+    parent: _InsertCamera
+

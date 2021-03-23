@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .AIStatechartEvent import AIStatechartEvent as _AIStatechartEvent
 
 
 class AIStatechartTriggerEvent(SubclassBaseFile):
     ResourceType = 0x37598D41
-    ParentResourceType = 0x4FA4F690
+    ParentResourceType = _AIStatechartEvent.ResourceType
+    parent: _AIStatechartEvent
+

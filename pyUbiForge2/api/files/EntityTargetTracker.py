@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ITargetTracker import ITargetTracker as _ITargetTracker
 
 
 class EntityTargetTracker(SubclassBaseFile):
     ResourceType = 0x431EF57C
-    ParentResourceType = 0x11B96F01
+    ParentResourceType = _ITargetTracker.ResourceType
+    parent: _ITargetTracker
+

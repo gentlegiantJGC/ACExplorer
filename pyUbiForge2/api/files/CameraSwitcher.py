@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ManagedObject import ManagedObject as _ManagedObject
 
 
 class CameraSwitcher(SubclassBaseFile):
     ResourceType = 0x09C57072
-    ParentResourceType = 0xBB96607D
+    ParentResourceType = _ManagedObject.ResourceType
+    parent: _ManagedObject
+

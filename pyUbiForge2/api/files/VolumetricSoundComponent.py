@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Component import Component as _Component
 
 
 class VolumetricSoundComponent(SubclassBaseFile):
     ResourceType = 0x09734394
-    ParentResourceType = 0xCB0F23F4
+    ParentResourceType = _Component.ResourceType
+    parent: _Component
+

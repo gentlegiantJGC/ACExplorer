@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .ScriptedSoundClip import ScriptedSoundClip as _ScriptedSoundClip
 
 
 class BeginScriptedSoundClip(SubclassBaseFile):
     ResourceType = 0x48680984
-    ParentResourceType = 0xA6D3C724
+    ParentResourceType = _ScriptedSoundClip.ResourceType
+    parent: _ScriptedSoundClip
+

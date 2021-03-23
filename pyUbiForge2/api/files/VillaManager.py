@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .WorldComponent import WorldComponent as _WorldComponent
 
 
 class VillaManager(SubclassBaseFile):
     ResourceType = 0x4632640E
-    ParentResourceType = 0xDD4B9F35
+    ParentResourceType = _WorldComponent.ResourceType
+    parent: _WorldComponent
+

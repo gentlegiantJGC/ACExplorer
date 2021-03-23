@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .Component import Component as _Component
 
 
 class GodRay(SubclassBaseFile):
     ResourceType = 0x36BE721F
-    ParentResourceType = 0xCB0F23F4
+    ParentResourceType = _Component.ResourceType
+    parent: _Component
+

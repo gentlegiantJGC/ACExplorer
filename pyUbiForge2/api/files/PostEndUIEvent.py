@@ -1,6 +1,9 @@
 from pyUbiForge2.api.game import SubclassBaseFile
+from .UIEvent import UIEvent as _UIEvent
 
 
 class PostEndUIEvent(SubclassBaseFile):
     ResourceType = 0x1F78B8DD
-    ParentResourceType = 0xF89B9074
+    ParentResourceType = _UIEvent.ResourceType
+    parent: _UIEvent
+
