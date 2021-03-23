@@ -101,7 +101,7 @@ class FileDataWrapper(BytesIO):
     def read_file_switch(self) -> Union["BaseFile", int]:
         return self._game.read_file_switch(self)
 
-    def read_switch(self):
+    def read_switch(self) -> int:
         return self._game.read_switch(self)
 
     def get_parser(self, resource_type: int) -> Type["BaseFile"]:

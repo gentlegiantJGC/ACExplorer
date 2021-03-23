@@ -236,7 +236,7 @@ class BaseGame:
             return file.read_file_id()
         raise Exception("I am not quite sure what to do here.")
 
-    def read_switch(self, file: FileDataWrapper):
+    def read_switch(self, file: FileDataWrapper) -> int:
         switch = file.read_uint_8()
         if switch == 0:
             file.read_uint_8()  # may be unused
@@ -246,10 +246,10 @@ class BaseGame:
             # code
         elif switch == 1:
             file.read_uint_8()
-            file.read_uint_32()
+            return file.read_uint_32()
         else:
             file.read_uint_8()  # may be unused
-            file.read_uint_32()
+            return file.read_uint_32()
 
     def read_file(self, file: FileDataWrapper) -> "BaseFile":
         """Read a file id, resource type and the file payload and return the data packed into a class."""
