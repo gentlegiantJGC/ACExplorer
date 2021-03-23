@@ -2,6 +2,7 @@ import time
 import unittest
 from typing import Type, Dict
 import os
+import traceback
 
 from pyUbiForge2.api import log, BaseGame
 
@@ -28,32 +29,57 @@ class BaseGameTestCase:
                                 self._game.get_file(file_id, forge_name, data_file_id)
                                 success += 1
                             except Exception as e:
-                                failure_reasons.setdefault(str(e), 0)
-                                failure_reasons[str(e)] += 1
+                                msg = str(e)
+                                if not msg:
+                                    msg = traceback.format_exc()
+                                failure_reasons.setdefault(msg, 0)
+                                failure_reasons[msg] += 1
                                 failures += 1
-                                sane_file_name = "".join([c for c in file_name if c.isalpha() or c.isdigit() or c==' ']).rstrip()
+                                sane_file_name = "".join(
+                                    [
+                                        c
+                                        for c in file_name
+                                        if c.isalpha() or c.isdigit() or c == " "
+                                    ]
+                                ).rstrip()
                                 path = f"./error_format/{resource_type}/{self._game.GameIdentifier}/{forge_name}/{data_file_id:X}/{file_id:X}{sane_file_name}.bin"
                                 os.makedirs(os.path.dirname(path), exist_ok=True)
                                 try:
-                                    self._game.get_file(file_id, forge_name, data_file_id, path)
+                                    self._game.get_file(
+                                        file_id, forge_name, data_file_id, path
+                                    )
                                 except:
                                     pass
-                                if failures >= 300:
+                                if failures >= 5000:
                                     time.sleep(0.1)
-                                    for reason, count in sorted(failure_reasons.items(), key=lambda x: x[1], reverse=True):
+                                    for reason, count in sorted(
+                                        failure_reasons.items(),
+                                        key=lambda x: x[1],
+                                        reverse=True,
+                                    ):
                                         print(reason, count)
-                                    raise Exception(f"Success {success}, Failure {failures}")
-            print(f"Success {success}, Failure {failures}")
+                                    raise Exception(
+                                        f"Success {success}, Failure {failures}, {100*success/(success+failures)}%"
+                                    )
             time.sleep(0.1)
-            for reason, count in sorted(failure_reasons.items(), key=lambda x: x[1], reverse=True):
+            for reason, count in sorted(
+                failure_reasons.items(), key=lambda x: x[1], reverse=True
+            ):
                 print(reason, count)
+            msg = f"{resource_type}: Success {success}, Failure {failures}, {100*success/(success+failures)}%"
+            if failures:
+                raise Exception(msg)
+            else:
+                print(msg)
 
-        @unittest.skip
         def test_mesh(self):
             self._test_file(0x415D9568)
 
         def test_entity(self):
             self._test_file(0x0984415E)
+
+        def test_data_block(self):
+            self._test_file(0xAC2BBF68)
 
         def test_get_file_counts(self):
             files = {}
@@ -72,4 +98,6 @@ class BaseGameTestCase:
                 for data_file_id in forge_file.data_file_ids:
                     forge_file.get_decompressed_files(data_file_id)
                 log.info(f"Finished decompressing {forge_file.file_name}")
-            log.info(f"Finished decompressing all forge files in {round(time.time()-start_time)} seconds")
+            log.info(
+                f"Finished decompressing all forge files in {round(time.time()-start_time)} seconds"
+            )
