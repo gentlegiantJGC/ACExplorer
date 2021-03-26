@@ -59,25 +59,36 @@ class BaseGameTestCase:
                                     ):
                                         print(reason, count)
                                     raise Exception(
-                                        f"Success {success}, Failure {failures}, {100*success/(success+failures)}%"
+                                        f"{resource_type:08X}: Success {success}, Failure {failures}, {100*success/(success+failures)}%"
                                     )
             time.sleep(0.1)
             for reason, count in sorted(
                 failure_reasons.items(), key=lambda x: x[1], reverse=True
             ):
                 print(reason, count)
-            msg = f"{resource_type}: Success {success}, Failure {failures}, {100*success/(success+failures)}%"
+            msg = f"{resource_type:08X}: Success {success}, Failure {failures}, {100*success/(success+failures)}%"
             if failures:
                 raise Exception(msg)
             else:
                 print(msg)
 
-        def test_mesh(self):
-            self._test_file(0x415D9568)
-
+        @unittest.skip
         def test_entity(self):
             self._test_file(0x0984415E)
 
+        @unittest.skip
+        def test_mesh(self):
+            self._test_file(0x415D9568)
+
+        @unittest.skip
+        def test_lod_selector(self):
+            self._test_file(0x51DC6B80)
+
+        @unittest.skip
+        def test_texture_map(self):
+            self._test_file(0xA2B7E917)
+
+        @unittest.skip
         def test_data_block(self):
             self._test_file(0xAC2BBF68)
 
@@ -88,8 +99,13 @@ class BaseGameTestCase:
                     for resource_type, _ in data_file.files.values():
                         files.setdefault(resource_type, 0)
                         files[resource_type] += 1
-            for resource_type, count in files.items():
-                print(f"{resource_type:08X}", count)
+            for resource_type, count in sorted(files.items(), key=lambda x: x[1], reverse=True):
+                try:
+                    cls = self._game.get_parser(resource_type)
+                except:
+                    print(f"{resource_type:08X}", count)
+                else:
+                    print(f"{resource_type:08X}", cls.__name__, count)
 
         @unittest.skip
         def test_decompress(self):
