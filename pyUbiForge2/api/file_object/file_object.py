@@ -104,6 +104,9 @@ class FileDataWrapper(BytesIO):
     def read_switch(self) -> int:
         return self._game.read_switch(self)
 
+    def read_large_switch(self):
+        return self._game.read_large_switch(self)
+
     def get_parser(self, resource_type: int) -> Type["BaseFile"]:
         return self._game.get_parser(resource_type)
 

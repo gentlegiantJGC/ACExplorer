@@ -199,57 +199,23 @@ class BaseGame:
                 f.close()
 
     def get_object_ref(self, file: FileDataWrapper):
-        file.read_uint_8()
-        file.read_uint_32()
+        raise NotImplementedError
 
     def read_main_file(self, file: FileDataWrapper) -> "BaseFile":
-        assert file.read_uint_8() == 1, "Expected the first byte to be 1"
-        return file.read_file()
+        raise NotImplementedError
 
     def read_header_file(self, file: FileDataWrapper) -> Union["BaseFile", int]:
         """Read a file with an extra byte before."""
-        switch = file.read_uint_8()
-        if switch == 0:
-            return file.read_file()
-        elif switch == 1:
-            # from ParseHeaderFile_nested
-            return file.read_file()
-        elif switch == 2:
-            count = file.read_uint_32()
-            # raise NotImplementedError("Header switch == 2")  # might be nothing
-        elif switch == 3:
-            return 0
-        else:
-            raise NotImplementedError(f"Header switch == {switch}")
+        raise NotImplementedError
 
     def read_file_switch(self, file: FileDataWrapper) -> Union["BaseFile", int]:
-        switch = file.read_uint_8()
-        if switch == 0:
-            return file.read_header_file()
-        elif 1 <= switch <= 2:
-            return file.read_file_id()
-        elif switch == 3:
-            return 0
-        elif switch == 4:
-            return file.read_header_file()
-        elif switch == 5:
-            return file.read_file_id()
-        raise Exception("I am not quite sure what to do here.")
+        raise NotImplementedError
 
     def read_switch(self, file: FileDataWrapper) -> int:
-        switch = file.read_uint_8()
-        if switch == 0:
-            file.read_uint_8()  # may be unused
-            file.read_uint_32()
-            file.read_uint_32()
-            raise NotImplementedError
-            # code
-        elif switch == 1:
-            file.read_uint_8()
-            return file.read_uint_32()
-        else:
-            file.read_uint_8()  # may be unused
-            return file.read_uint_32()
+        raise NotImplementedError
+
+    def read_large_switch(self, file: FileDataWrapper):
+        raise NotImplementedError
 
     def read_file(self, file: FileDataWrapper) -> "BaseFile":
         """Read a file id, resource type and the file payload and return the data packed into a class."""
